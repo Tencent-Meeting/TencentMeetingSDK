@@ -10,7 +10,11 @@
 
 # 快速入门
 
-部分会前功能需要接入方通过REST API的形式来实现：[文档地址](https://cloud.tencent.com/document/product/1095/42407)
+- 通过腾讯会议售后获取到SDK包后，从SDK内的Demo程序代码可快速了解SDK功能和接入方法
+- 对于Server端参与的账号接入，需提前阅读《SDK鉴权与登录说明》文档：[文档地址](Docs/Common/SDK鉴权与登录说明.md)
+- 对于每个终端，都有对应接入文档介绍如何搭建集成环境和接口的对接，文档入口见下文
+- 最全SDK的功能接口描述，在统一的接口参考文档中介绍，文档入口见下文
+- 部分会前功能需要接入方通过REST API调用的形式来实现：[文档地址](https://cloud.tencent.com/document/product/1095/42407)
 
 # 账户鉴权和登录指引
 [SDK鉴权与登录说明](Docs/Common/SDK鉴权与登录说明.md)
