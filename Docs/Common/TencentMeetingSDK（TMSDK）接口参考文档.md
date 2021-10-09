@@ -344,7 +344,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 ### showMeetingDetailView【即将推出】
 * 可用版本：>= 2.18.2
-* 函数形式：void showMeetingDetailView(string meeting_id, string period_id)
+* 函数形式：void showMeetingDetailView(string meeting_id, string current_sub_meeting_id)
 * 函数说明：显示某一个具体会议的界面。登陆完成后，才可调用
 * 返回值类型：void
 * 返回值说明：无
@@ -353,7 +353,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |meeting_id |string |是 |(无) |会议标识号 |
-|period_id |string |是|(无)|非周期性会议传0，周期会议转period_id |
+|current_sub_meeting_id |string |是|(无)|非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APis获取 |
 
 ### showJoinMeetingView【即将推出】
 * 可用版本：>= 2.18.2
