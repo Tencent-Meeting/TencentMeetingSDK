@@ -1,7 +1,7 @@
 
 # 文档修订记录
 | 日期 | 修改内容 | SDK版本 |
-|--|--|--|
+|---|---|---|
 | 2021-7-18 | 第一版初稿 | 2.18.0 |
 | 2021-8-6 | 对错误码做了统一描述 | 2.18.0 |
 | 2021-8-18 | 新增的接口：设置会议信息和邀请信息回调接口 | 2.18.0 |
@@ -49,7 +49,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ## 2.1 InitParam数据结构
 
 |产品 |属性 |类型 |必填 |默认值 |说明 |
-|--|--|--|--|--|--|
+|---|---|---|---|---|---|
 |公有云SDK专用 |sdk_id |string |必填 |(无) |SDK ID |
 |公有云SDK专用|sdk_token |string |必填 |(无) |SDK Token |
 |私有化SDK专用 |server_host |string |必填，二选一 |(无) |私有化服务器地址，格式为：{protocol}://{domain}:{port}，protocol默认为http；port默认为29666 |
@@ -61,21 +61,25 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ## 2.2 SDKCallback回调代理
 
 ### onSDKInitializeResult
+* 说明：调用SDK初始化的结果回调
+
 |参数名 |参数类型 | 参数说明 |
-|--|--|--|
+|---|---|---|
 | code | int | SDK初始化结果码 |
 | msg | string | SDK初始化结果信息 |
 
 ### onShowLogsResult【即将推出】
-需要版本>2.18.0
+* 说明：调用`showLogs`的结果回调
+* 可用版本：>= 2.18.2
+
 |参数名 |参数类型 | 参数说明 |
-|--|--|--|
+|---|---|---|
 | code | int | 打开日志文件夹结果码 |
 | msg | string | 打开日志文件夹结果信息 |
 
 ### onSDKError 
 |参数名 |参数类型 | 参数说明 |
-|--|--|--|
+|---|---|---|
 | code | int | 错误码 |
 | msg | string | 错误信息 |
 
@@ -97,7 +101,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |init_param |**InitParam** |是 |(无) |初始化参数 |
 |callback |**SDKCallback** |是 |(无) |SDK回调代理，接入方实现该代理，用来响应SDK回调 |
 
@@ -116,7 +120,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |new_sdk_token |string |是 |(无) |新SDK Token |
 
 ### getCurrentSDKToken
@@ -170,27 +174,22 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ## 3.1 AuthenticationCallback回调代理
 
 ### onLogin
-说明：账户登录的回调。
+* 说明：账户登录的回调。
+
 |参数名 |参数类型 |参数说明 |
-|--|--|--|
+|---|---|---|
 | code | int | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
 |msg |string |结果信息 |
 
 ### onLogout
-说明：账户登出的回调。
+* 说明：账户登出的回调。
+
 |参数名 |参数类型 |参数说明 |
-|--|--|--|
+|---|---|---|
 |type |int |登出类型：1、手动登出；2、强制登出（同端登录被踢） |
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
 |msg |string |结果信息 |
 
-### onJumpUrlWithLoginStatus【即将推出】
-需要版本>2.18.0
-说明：带登录态跳转的回调。
-|参数名 |参数类型 |参数说明 |
-|--|--|--|
-| code | int | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
-|msg |string |结果信息 |
 
 ## 3.2 AccountService成员
 
@@ -202,7 +201,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |callback |AuthenticationCallback |是 |(无) |接入方实现的回调代理实例 |
 
 ### login
@@ -213,7 +212,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |sso_url |string |是 |(无) |单点登录的URL地址，由接入方的服务端生成并返回给接入方客户端 |
 
 ### logout
@@ -238,7 +237,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |taget_url | string | 是 | (无) | 要跳转的目标URL地址，该地址对应页面必须是会议相关的地址，比如云录制页 |
 
 
@@ -248,32 +247,36 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ## 4.1 PreMeetingCallback回调代理
 
 ### onJoinMeeting
-说明：入会的回调。
+* 说明：入会的回调。
+
 |参数名 |参数类型 |参数说明 |
-|--|--|--|
+|---|---|---|
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
 |msg |string |结果信息 |
 | meeting_code | string | 会议号 |
 
 ### onShowScreenCastViewResult【即将移除】
-说明：打开无线投屏的回调。
+* 说明：打开无线投屏的回调。
+
 |参数名 |参数类型 |参数说明 |
-|--|--|--|
+|---|---|---|
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
 |msg |string |结果信息 |
 
 ### onActionResult【即将推出】
-需要版本>2.18.0
-说明：会前界面各种用户行为操作的回调。
+* 说明：会前界面各种用户行为操作的回调。
+* 可用版本：>= 2.18.2
+
 |参数名 |参数类型 |参数说明 |
-|--|--|--|
+|---|---|---|
 |action_type |int |表示用户的何种行为操作，详情参考下表 |
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
 |msg |string |结果信息 |
 
+其中`action_type`值对应的含义如下：
 
 | 名称 | 行为操作的枚举值 | 说明 |
-|--|--|--|
+|---|---|---|
 | ShowPreMeetingView | 0    | 打开会前界面的回调 |
 | ShowScreenCastView | 1    | 打开无线投屏的回调 |
 | ShowHistoricalMeetingView | 2    | 打开历史会议界面的回调|
@@ -292,7 +295,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |callback |PreMeetingCallback |是 |(无) |接入方实现的回调代理实例 |
 
 ### joinMeeting
@@ -303,12 +306,12 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |param |**JoinParam** |是 |(无) |入会参数 |
 * JoinParam格式
 
 |属性 |类型 |必填 |默认值 |说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |meeting_code |string |是 |(无) |会议号 |
 |user_display_name |string |否 |账户的用户名 |会议中显示的名称 |
 |password |string |否 |(空) |会议密码 |
@@ -332,7 +335,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：无
 
 ### showHistoricalMeetingView【即将推出】
-* 需要版本>2.18.0
+* 可用版本：>= 2.18.2
 * 函数形式：void showHistoricalMeetingView()
 * 函数说明：显示用户历史会议界面。登录完成后，才可调用。
 * 返回值类型：void
@@ -340,7 +343,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：无
 
 ### showMeetingDetailView【即将推出】
-* 需要版本>2.18.0
+* 可用版本：>= 2.18.2
 * 函数形式：void showMeetingDetailView(string meeting_id, string period_id)
 * 函数说明：显示某一个具体会议的界面。登陆完成后，才可调用
 * 返回值类型：void
@@ -348,12 +351,12 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |meeting_id |string |是 |(无) |会议标识号 |
 |period_id |string |是|(无)|非周期性会议传0，周期会议转period_id |
 
 ### showJoinMeetingView【即将推出】
-* 需要版本>2.18.0
+* 可用版本：>= 2.18.2
 * 函数形式：void showJoinMeetingView()
 * 函数说明：显示加入会议界面。登录完成后，才可调用。
 * 返回值类型：void
@@ -361,7 +364,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：无
 
 ### showScheduleMeetingView【即将推出】
-* 需要版本>2.18.0
+* 可用版本：>= 2.18.2
 * 函数形式：void showScheduleMeetingView(string meeting_type)
 * 函数说明：显示预定会议会议界面。登录完成后，才可调用。
 * 返回值类型：void
@@ -369,11 +372,11 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |meeting_type | string | 否 | 0 | 会议类型，0:普通会议；1:在线大会 |
 
 ### showMeetingSettingView【即将推出】
-* 需要版本>2.18.0
+* 可用版本：>= 2.18.2
 * 函数形式：void showMeetingSettingView()
 * 函数说明：显示设置管理界面。登录完成后，才可调用。
 * 返回值类型：void
@@ -387,20 +390,24 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ## 5.1 InMeetingCallback回调代理
 
 ### onLeaveMeeting
-说明：离会的回调。
+* 说明：离会的回调。
+* 返回值：无
+* 参数说明：
+
 |参数名 |参数类型 |参数说明 |
-|--|--|--|
+|---|---|---|
 |type |int |离会类型，1：用户自身操作离会；2：被踢出会议；3：会议结束 |
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
 |msg |string |结果信息|
 | meeting_code | string | 会议号 |
 
 ### onInviteMeeting
-说明：用户在会议中界面点击下方工具栏邀请按钮后的回调。
-返回值：无
-参数说明：
+* 说明：用户在会议中界面点击下方工具栏邀请按钮后的回调。
+* 返回值：无
+* 参数说明：
+
 |参数名 |参数类型 |参数说明 |
-|--|--|--|
+|---|---|---|
 |invite_info |string |邀请的相关信息，JSON字符串 |
 
 invite_info内容
@@ -424,11 +431,12 @@ invite_info内容
 }
 ```
 ### onShowMeetingInfo
-说明：用户在会议中界面点击展示会议信息的回调。
-返回值：无
-参数说明：
+* 说明：用户在会议中界面点击展示会议信息的回调。
+* 返回值：无
+* 参数说明：
+
 |参数名 |参数类型 |参数说明 |
-|--|--|--|
+|---|---|---|
 |meeting_info |string |会议信息，JSON字符串，meeting_info目前跟invite_info内容一样 |
 
 
@@ -442,7 +450,7 @@ invite_info内容
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |callback |InMeetingCallback |是 |(无) |接入方实现的回调代理实例 |
 
 ### leaveMeeting
@@ -453,7 +461,7 @@ invite_info内容
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |end_meeting |bool |否 |false |是否结束会议，仅当前账户是会议主持人时，该参数才有效 |
 
 ### enableInviteCallback
@@ -464,7 +472,7 @@ invite_info内容
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |enable |bool |否 |false |是否使用 |
 |show   |bool |是 |true  |是否显示邀请页面，如果否，SDK不会展示自身邀请界面，完全由接入方实现邀请界面和内容，如果enable为flase，show在SDK中被设置为true了|
 
@@ -476,14 +484,15 @@ invite_info内容
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|--|--|--|--|--|
+|---|---|---|---|---|
 |enable |bool |否 |false |是否使用 |
 |show   |bool |是 |true  |是否显示会议信息页面，如果否，SDK不会展示自身会议信息界面，完全由接入方实现会议信息界面和内容，如果enable为flase，show在SDK中被设置为true了|
+
 
 # 6. 错误码
 
 | 名称 | 错误码 | 说明 |
-|--|--|--|
+|---|---|---|
 | kTMSDKErrorSuccess | 0                 | 成功。 |
 | kTMSDKErrorServerConfigFail | -1001    | 设置服务地址或获取服务配置失败 |
 | kTMSDKErrorInvalidAuthCode | -1002     | 获取AuthCode，登录时传入参数不正确可能会导致 |

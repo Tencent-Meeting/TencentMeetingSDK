@@ -1,8 +1,9 @@
-[TOC]
 
 # Demo使用
 
 ## 1. 获取SDK
+请联系售后人员获得SDK
+
 ## 2. 打开Demo工程
 打开Demo/TencentMeetingSDKDemo.xcodeproj
 ## 3. 配置SDK账号
@@ -23,7 +24,7 @@
 SDK Demo的bundle id为XXX.XXX.XXX
 SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.BroadcastUploadExtension
 
-## 5.Xcode点击运行
+## 5. Xcode点击运行
 
 # SDK接入
 
@@ -173,8 +174,7 @@ fi
 ## 6. 屏幕共享扩展接入
 
 - 新建Broadcast Upload Extesion，注意最低支持iOS版本为iOS 12.0
-
-<img src="images/broadcast.png" alt="broadcast" style="zoom:150%;" />
+![broadcast](images/broadcast.png)
 
 - 设置屏幕共享扩展依赖TencentMeetingBroadcastExtension.framework，主页Embed设置为Do Not Embed
 

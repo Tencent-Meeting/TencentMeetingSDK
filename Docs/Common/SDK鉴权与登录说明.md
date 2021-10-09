@@ -1,5 +1,3 @@
-[TOC]
-
 
 # 简介
 每位接入腾讯会议SDK的客户，将拥有独有的安全凭证，对通信过程进行验证。所以，客户在技术接入前，请联系腾讯会议对接人进行信息登记，并申请相关的秘钥等信息。
@@ -43,12 +41,12 @@
 ![SDK Login Flow](images/image-1623298049225.png)
 
 **关键流程说明**：
-1. 当要进行登录操作时，客户的Client端调用SDK的`Login()`方法。
-2. 如果未登录或登录过期失效，SDK则会发起回调`OnAuthCodeRefresh`通知到客户的Client端。
-3. 客户的Client端此时需向客户的Server端请求ID Token（简写id_token）和SSO URL，用于登录的身份认证，这个过程属于客户自身业务，与腾讯会议无关。
-4. 客户的Server端根据请求用户的信息，并通过持有的ID Secret生成id_token，具体生成方法见下文的`ID Token生成说明`。
-5. 客户的Client端将获取到的id_token和SSO URL拼接成实际请求的URL地址。
-6. 客户的Client端调用腾讯会议SDK的`SetAuthCodeFromSSOUrl(URL)`方法，请求登录身份认证。
+1. 客户的Client端请求自己业务上的账户登录。
+2. 客户端Server端登录验证成功，返回账户信息给Client端，`以上两步为客户自身的业务逻辑`，与腾讯会议无关。
+3. 客户的Client端此时需向客户的Server端请求包含ID Token（简写id_token）的SSO URL，用于登录的身份认证，`该功能属于客户自身业务接口`，与腾讯会议无关。
+4. 客户的Server端根据请求用户的信息，并通过持有的ID Secret生成id_token，并拼接成SSO URL，具体生成方法见下文的`ID Token生成说明`。
+5. 客户的Client端从Server端获取到SSO URL。
+6. 客户的Client端调用腾讯会议SDK的`Login(SSO_URL)`方法，请求登录身份认证。
 7. 腾讯会议SDK访问带有id_token参数信息的SSO URL，从IDaaS服务方获取Authorization Code。
 8. 腾讯会议SDK将获得的Authorization Code以及SDK Token发给腾讯会议Server端请求登录验证，登录结果将返回给SDK。
 9. 当身份认证成功后，SDK会向Client端发起`OnLogin`的回调，完成登录。

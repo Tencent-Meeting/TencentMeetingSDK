@@ -1,13 +1,15 @@
-- # SAASSDK接入手册-Windows
+ # Windows SDK接入手册
   
-  ## 1. Windows SDK 集成接入指南
+  ## 1. 集成接入指南
   ### 1.1 版本环境提示
   - 本指南适用的 SDK 版本： v2.18.0.0
   - 支持 win7 及其以上的系统
+
   ### 1.2 SDK组成
   - demo
   - SDK
   SDK解压之后，打开文件夹，包含以下几个部分：
+
   | 目录名             | 说明                      |
   | ------------------ | ------------------------- |
   | Include            | SDK 接口头文件             |
@@ -18,13 +20,16 @@
   ### 1.3 集成步骤
   #### 1.3.1 申请你的 SDK Key & SDK Secret
   为了让SDK 正常使用，需要为 SDK 配置独有的安全凭证，安全凭证包括 SDK Key 和SDK Secret ，对每一次请求进行验证。联系腾讯会议商务对接人进行信息登记进行 SDK Key & SDK Secret 申请，包含以下信息：
-  | 属性     | 填值     |
+ 
+ | 属性     | 填值     |
   | -------- | -------- |
   | 应用名称 | 必填     |
   | 平台类型 | Windows  |
   | 签名信息 | 必填     |
   | 备注信息 | （选填） |
+
   申请通过后，系统将为应用生成对应SDK Key & SDK Secret 提供客户，用于生成 SDK Token 并在 SDK 初始化时进行合法性验证，生成规则见 2.1。
+
   <font color=red> 注意：为保证您的应用安全性，请将认证相关信息（包括但不限于SDK Key 、 SDKSecret 、 appId ）及企业个人身份信息部署到您的 Sever 端进行获取。!!</font>
   
   #### 1.3.2 配置visual studio
@@ -129,101 +134,14 @@ GetWemeetSDKInstance()->GetInMeetingService()->SetCallback(this);
   GetWemeetSDKInstance()->GetPreMeetingService()->ShowScreenCastView();
   ```
   ## 2.鉴权与登录
-  ### 2.1 JWT简介
-  鉴权和登录流程都使用[JWT](https://jwt.io/)  标准协议（ RFC 7519）
-  <font color=red>注：使用1.3.1 中申请的 SDK Key 以及 SDK Secret!!</font>
-  JWT包含三部分：
+ 详情请参考[《SDK鉴权与登录说明》](../Common/SDK鉴权与登录说明.md)
 
-  1. Header（头部）
-  1. Payload（负载）
-  1. Signature（签名）
-  - **Header**
-    alg属性表示签名的算法（algorithm），默认是HMAC SHA256（写成HS256）。typ属性表示这个令牌（token）的类型（type），JWT令牌统一写为JWT
-  ```json 
-  {
-  "alg": "HS256",
-  "typ": "JWT"
-  }
-  ```
-<font color=red> 注意：需要明确下来签名算法!!</font>
-  将上面的JSON对象使用 Base64URL 算法（详见后文）转成字符串
 
-  - **Payload**
-  ```json 
-  {
-  "aud": "Tencent Meeting", // 受众
-  "exp": 1590804000, // 过期时间
-  "iat": 1588212000, // 签发时间
-  "iss": "sdk_key", // 申请到的 sdk_key
-  "sub": "1234567890" // 用户唯一标识 uid
-  }
-  ```
-<font color=red> 注意：Header 和 Payload 是明文。不要在这两个元素中存储机密信息。!!</font>
-  将上面的JSON对象使用 Base64URL 算法（详见后文）转成字符串
-
-  - **Signature**
-    用第一步中申请sdk 分配的 sdksecret ，使用 Header 里面指定的签名算法，按照下面的公式产生 Signature 。
-  ``` json
-  HMACSHA256(
-  base64UrlEncode(header) + "." +
-  base64UrlEncode(payload),
-  sdksecret)
-  ```
-  算出Signature 以后，把 Header 、 Payload 、 Signature 三个部分拼成一个字符串，每个部分之间用 点 ""（（..）分隔 sdk_token 生成。
-  ### 2.2 生成sdk_token鉴权
-  SDK Token用于调用 SDK 时的机构身份识别，使用 JWT 实现。由业务服务端生成sdk_token ，提供给业务客户端初始化 SDK 时传入。
- <font color=red> 注：为保证您的应用安全性，请在服务器端存储密钥并且生成Token ，请使用 1.3.1 中申请的 sdkkey 以及 sdksecret。!!</font>
-
-  #### 2.2.1 服务端生成sdk_token
-  根据服务器端所用语言，如未引入过，请在JWT 上查找对应 JWT 签名（至少支持HS256 ）所需依赖库并引入，以 JAVA 为例，在 maven 引入依赖：
-  ``` Java
-  <dependency>
-  <groupId>com.nimbusds</groupId>
-  <artifactId>nimbus-jose-jwt</artifactId>
-  <version>4.11.2</version>
-  </dependency>
-  ```
-  然后实例化您的签名类：
-  ``` Java
-  class TokenProvider {
-      protected final RSASSASigner signer;
-      public final JWSHeader header;
-      public TokenProvider(byte[] sharedSecret) {
-      // 读取 secret并创建签名实例
-      this.signer = new RSASSASigner(sharedSecret);
-      this.header = new JWSHeader.Builder(JWSAlgorithm.HS256).type(JOSEObjectType.JWT).build();
-      }
-  }
-  ```
-  该类给下一节的接口提供签名方法。
-  #### 2.2.3 服务端提供 sdk_token 生成接口
-  服务器端提供Token 生成接口，当接口收到客户端请求时，封装信息，调用上一节的签名实例 假设为 provider 获得 Token ，返回给客户端。
-  生成的sdk_token 样例如下：
-  ``` json
-  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJUZW5jZW50IE1lZXRpbmciLCJleHAiOjE1OTA4MDQwMDAsImlhdCI6MTU4ODIxMjAwMCwiaXNzIjoic2RrX2tleSIsInN1YiI6IjEyMzQ1Njc4OTAifQ.lTj3fSAit9hyTrlnnlb5sJx0oK3F8XtuJnPzKEcD3xg
-  ```
-  #### 2.2.3 客户端消费 sdk_token
-  初始化SDK 时，需先从服务端获取 sdk_token ，并将其传入 SDK 初始化上下文内，见3.1 初始化 sdk 。
-  ### 2.3 生成 id_token 登录
-  id_token用于 提供可信的机构用户身份给腾讯会议。
-<font color=red> 注：为保证您的应用安全性，请在服务器端存储密钥并且生成Token ，使用 idsecret。!!</font>
-
-  #### 2.3.1 同2.2.1
-  #### 2.3.2 同2.2.2
-  #### 2.3.4 客户端消费 id_token
-  提供接口给客户端 （与 2.2.3 区别在于标红部分）
-  服务器端提供Token 生成接口，<font color=red>  不可接受匿名请求，可以获取当前用户的信息，!! 当接口收到客户端请求时，封装身份信息，调用上一节的签名实例 假设为 provider 获得 Token返回给客户端。</font>
-
-  #### 2.3.4 客户端消费 id_token
-  客户端在认证SDK 时，先调用上一节的接口获得 Token 后，请求腾讯会议身份管理服务换取授权码。此处可参考 demo 工程中 AuthCodeHelper.kt 内的实现。
   ## 3. Windows SDK API 接口文档
-  接口说明可参考统一接口文档
-```
-## 3. Windows SDK 错误码对照表
+  接口和错误码说明，可参考统一的[《TencentMeetingSDK（TMSDK）接口参考文档》](../Common/TencentMeetingSDK（TMSDK）接口参考文档.md)
 
-错误码说明可参考统一接口文档
 
-## 4. FAQ
+  ## 4. FAQ
 
 - 出现以下错误，请按照前面的工程配置，检查 SDK 头文件的目录是否正确添加：
 > fatal error C1083: Cannot open include file: 'wemeet_sdk.h': No such file or directory
