@@ -2,7 +2,7 @@
 # 概述
 腾讯会议（Tencent Meeting，TM）SDK 是为参与腾讯会议生态系统建设的合作方开发者接入并访问腾讯会议资源和服务提供的一组开发工具包。
 
-合作伙伴可以通过二次开发，将腾讯会议 SDK 集成至企业内部的 OA 系统中。
+合作伙伴可以通过二次开发，将腾讯会议 SDK 集成至企业内部的办公应用系统中。
 
 目前，腾讯会议 SDK 已支持包含 Mac、Windows、iOS、Android 等主流平台以及 QT、Electron 等框架。
 
@@ -17,18 +17,21 @@
 - 部分会前功能需要接入方通过REST API调用的形式来实现：[文档地址](https://cloud.tencent.com/document/product/1095/42407)
 
 # 账户鉴权和登录指引
+接入方的服务端需要重点参考的账号系统对接说明：
+
 [SDK鉴权与登录说明](Docs/Common/SDK鉴权与登录说明.md)
 
-# 各端接入文档
-| 终端 | 相关文档 |
-|--- |--- |
-| Android | [接入手册](Docs/Android/Android接入手册.md) |
-| iOS | [接入手册](Docs/iOS/iOS接入手册.md) |
-| MacOS | [接入手册](Docs/MacOS/MacOS接入手册.md) |
-| Windows | [接入手册](Docs/Windows/Windows接入手册.md) |
+# 接入说明文档
+接入方的客户端需要了解的说明文档，请结合SDK Demo程序代码一起参考：
 
-# 统一接口参考
-[TencentMeetingSDK（TMSDK）接口参考文档](Docs/Common/TencentMeetingSDK（TMSDK）接口参考文档.md)
+| 终端 | 相关文档 | 说明 |
+|--- |--- |--- |
+| Android | [接入手册](Docs/Android/Android接入手册.md) | 集成说明、常见问题说明 |
+| iOS | [接入手册](Docs/iOS/iOS接入手册.md) | 集成说明、常见问题说明 |
+| MacOS | [接入手册](Docs/MacOS/MacOS接入手册.md) | 集成说明、常见问题说明 |
+| Windows | [接入手册](Docs/Windows/Windows接入手册.md) | 集成说明、常见问题说明 |
+| All | [TencentMeetingSDK（TMSDK）接口参考文档](Docs/Common/TencentMeetingSDK（TMSDK）接口参考文档.md) | 接口参考的统一说明，各端都涉及到 |
+
 
 # 接入过SDK旧版如何迁移新版
 

@@ -1,31 +1,31 @@
 
-# 简介
+# 1. 简介
 每位接入腾讯会议SDK的客户，将拥有独有的安全凭证，对通信过程进行验证。所以，客户在技术接入前，请联系腾讯会议对接人进行信息登记，并申请相关的秘钥等信息。
 
-## 准备工作
+## 1.1 准备工作
 1. 通过腾讯会议对接人获取：`SDK ID`和`SDK Secret`，用于后续生成`SDK Token`签名之用，并在SDK初始化时传入。
 2. 客户生成RSA私钥和公钥，私钥成为`ID Secret`，用于后续生成`ID Token`签名之用，公钥提交到腾讯会议，用于验证`ID Token`。
 3. 确认SSO登录URL的子域名名称，并获得`SSO URL`地址
 
-## 什么是SDK Token
+## 1.2 什么是SDK Token
 客户（机构）的安全凭证，通过SDK ID（别名`SDK Key`）和SDK Secret生成，来验证SDK的使用者所属的机构，是客户（机构）的唯一标识凭证。
 
-## 什么是ID Token
+## 1.3 什么是ID Token
 对客户下的使用者账户进行认证的安全凭证，每个登录的用户都需要通过ID Secret来生成不同的ID Token，从而进行身份验证。
 
 **注意：** 为保证您的应用安全性，请将秘钥信息（包括但不限于SDK ID、SDK Secret、ID Secret）及企业身份信息部署到您的Sever端，不可由终端程序持有保管。
 
 
-# 流程说明
+# 2. 流程说明
 
-## 整体总流程概述
+## 2.1 整体总流程概述
 1. 客户的终端启动时，向客户的服务端请求SDK Token，服务端通过SDK ID和SDK Secret生成SDK Token返回给终端
 2. 客户的终端调用SDK初始化接口，将SDK Token设置进去，完成初始化流程
 3. 客户的终端通过自己协议完成登录，获取当前用户信息（该流程与腾讯会议无关）
 4. 客户的终端向客户的服务端请求获取当前用户的ID Token和SSO URL，服务端通过ID Secret和当前用户信息生成ID Token返回给终端
 5. 客户的终端调用SDK登录接口，如果没有之前已登录的有效信息，SDK会回调客户的终端程序，在回调中将SSO URL和ID Token拼接成完整URL设置进来，完成登录。
 
-## 初始化流程
+## 2.2 初始化流程
 ![SDK Initialize Flow](images/image-1623296733287.png)
 
 **关键流程说明**：
@@ -37,7 +37,7 @@
 **注意：SDK Token应由Server端来生成，Client端`不可以`持有SDK Secret来生成Token，否则`存在安全风险`**
 
 
-## 登录流程
+## 2.3 登录流程
 ![SDK Login Flow](images/image-1623298049225.png)
 
 **关键流程说明**：
@@ -54,8 +54,103 @@
 **注意：ID Token应由Server端来生成，Client端`不可以`持有ID Secret来生成Token，否则`存在安全风险`**
 
 
+# 3. SDK Token生成说明
 
-# JWT简介
+SDK Token 按照`JWT Token规范`实现，用于调用 SDK 时的机构身份识别。
+
+由`客户的Server端`生成，提供给客户的Client端用来初始化 SDK 时传入。
+
+关于`JWT`相关知识点，可参考文末的`附录：JWT简介`
+
+
+## 3.1 SDK Token的格式
+SDK Token是JWT的格式，其各个部分定义如下：
+
+### Header
+```
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+```
+以上部分为固定值，按照上面写死即可。签名算法是SHA256。
+
+
+### Payload
+```
+{
+  "aud": "Tencent Meeting",	// 受众，固定写死为"Tencent Meeting"
+  "exp": 1590804000,		// Token过期时间，由客户自己决定（单位：秒）
+  "iat": 1588212000, 		// Token签发生成时间（当前时间，单位：秒）
+  "iss": "2012081666" 		// 申请到的SDK ID
+}
+```
+数据Payload部分包含以上四个属性，按要求填写即可。
+所有涉及到时间的属性，都是Unix时间戳，即从1970年1月1日（UTC/GMT的午夜）开始所经过的秒数，不考虑闰秒。
+
+**`建议`**：上面`exp`过期时间的时长最好远大于客户端一般使用的时长，避免用户在使用过程中sdk_token过期而无法使用。经验建议值：15-30天。
+
+
+### Signature
+客户的Server端通过上文申请到的SDK Secret作为签名的secret，对整个数据进行SHA256签名。
+
+## 3.2 示例
+假设某客户的信息如下：
+| 数据项 | 数值 |
+| :--- | :--- |
+| SDK ID | 2012081666 |
+| SDK Secret | ZR8ztBMyoCX74DnSYyLUDdhE0sQ5ufxqad6w |
+
+那么，客户的Server端需要生成的Header和Payload的JSON原始数据如上节所描述（不包含JSON中的注释）。
+最终，SDK token：`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJUZW5jZW50IE1lZXRpbmciLCJleHAiOjE1OTA4MDQwMDAsImlhdCI6MTU4ODIxMjAwMCwiaXNzIjoiMjAxMjA4MTY2NiJ9.wwatJAaGDfLvus65Ndwg_xhmvEki3Xn7hAP4A7AVDv8`
+
+
+
+
+# 4. ID Token生成说明
+
+SDK Token 按照`JWT Token规范`实现，当客户是通过OpenID Connect（OIDC）协议跟IDaaS服务方进行认证接入时，ID Token用于在用户登录时做身份认证使用。
+
+由`客户的Server端`生成，提供给Client端用于用户登录身份验证使用。
+
+>OIDC 是基于 OAuth 2.0 的可互操作的身份验证协议，作为一个开放授权标准，它允许用户让第三方应用访问该用户在某服务的特定私有资源但是不提供账号密码信息给第三方应用。OIDC 是目前对开发者最友好的身份认证协议之一，让开发者更加轻松地进行集成。
+
+关于`JWT`相关知识点，可参考文末的`附录：JWT简介`
+
+
+## 4.1 ID Token的格式
+ID Token是JWT的格式，其各部分定义如下：
+
+### Header
+```
+{
+  "typ": "JWT",
+  "alg": "RS256"
+}
+```
+以上字段都是固定值，其中alg字段是RS256，表示用RSA签名。
+
+
+### Payload
+```
+{
+  "sub": "123456789",		//IDaaS系统中的username字段，对应腾讯会议的userId字段
+  "iss": "2012081666",		//SDK ID
+  "name": "tencent_dev04",	//IDaaS系统中的displayName字段，对应腾讯会议的username字段，即显示名称
+  "exp": 1619554966,		//Token过期时间（单位：秒）
+  "iat": 1601387166 		//Token签发生成时间（当前时间，单位：秒）
+}
+```
+数据Payload部分包含以上五个属性，按要求填写即可。
+所有涉及到时间的属性，都是Unix时间戳，即从1970年1月1日（UTC/GMT的午夜）开始所经过的秒数，不考虑闰秒。
+
+如果过期，需再次请求id_token并重新登录。
+
+### Signature
+客户与IDaaS服务方约定生成的ID Secret，此处客户的Server端使用该ID Secret对整个数据进行签名，RSA签名方式。
+
+
+# 附录：JWT简介
 在`初始化`和`登录流程`中涉及到的Token都使用了 [JWT](https://jwt.io/) 标准协议（[RFC 7519](https://tools.ietf.org/html/rfc7519)），因此这章节对JWT做简单介绍，如已了解可跳过。
 
 JWT包含三部分，通过点号`.`分割为：
@@ -148,92 +243,3 @@ SDK库支持的常见语言：
 * PHP
 * Kotlin
 
-
-
-# SDK Token生成说明
-
-SDK Token 按照`JWT Token规范`实现，用于调用 SDK 时的机构身份识别。
-由`客户的Server端`生成，提供给客户的Client端用来初始化 SDK 时传入。
-
-## SDK Token的格式
-SDK Token是JWT的格式，其各个部分定义如下：
-
-### Header
-```
-{
-  "alg": "HS256",
-  "typ": "JWT"
-}
-```
-以上部分为固定值，按照上面写死即可。签名算法是SHA256。
-
-
-### Payload
-```
-{
-  "aud": "Tencent Meeting",	// 受众，固定写死为"Tencent Meeting"
-  "exp": 1590804000,		// Token过期时间，由客户自己决定（单位：秒）
-  "iat": 1588212000, 		// Token签发生成时间（当前时间，单位：秒）
-  "iss": "2012081666" 		// 申请到的SDK ID
-}
-```
-数据Payload部分包含以上四个属性，按要求填写即可。
-所有涉及到时间的属性，都是Unix时间戳，即从1970年1月1日（UTC/GMT的午夜）开始所经过的秒数，不考虑闰秒。
-
-**`建议`**：上面`exp`过期时间的时长最好远大于客户端一般使用的时长，避免用户在使用过程中sdk_token过期而无法使用。经验建议值：15-30天。
-
-
-### Signature
-客户的Server端通过上文申请到的SDK Secret作为签名的secret，对整个数据进行SHA256签名。
-
-## 示例
-假设某客户的信息如下：
-| 数据项 | 数值 |
-| :--- | :--- |
-| SDK ID | 2012081666 |
-| SDK Secret | ZR8ztBMyoCX74DnSYyLUDdhE0sQ5ufxqad6w |
-
-那么，客户的Server端需要生成的Header和Payload的JSON原始数据如上节所描述（不包含JSON中的注释）。
-最终，SDK token：`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJUZW5jZW50IE1lZXRpbmciLCJleHAiOjE1OTA4MDQwMDAsImlhdCI6MTU4ODIxMjAwMCwiaXNzIjoiMjAxMjA4MTY2NiJ9.wwatJAaGDfLvus65Ndwg_xhmvEki3Xn7hAP4A7AVDv8`
-
-
-
-
-# ID Token生成说明
-
-SDK Token 按照`JWT Token规范`实现，当客户是通过OpenID Connect（OIDC）协议跟IDaaS服务方进行认证接入时，ID Token用于在用户登录时做身份认证使用。
-由`客户的Server端`生成，提供给Client端用于用户登录身份验证使用。
-
->OIDC 是基于 OAuth 2.0 的可互操作的身份验证协议，作为一个开放授权标准，它允许用户让第三方应用访问该用户在某服务的特定私有资源但是不提供账号密码信息给第三方应用。OIDC 是目前对开发者最友好的身份认证协议之一，让开发者更加轻松地进行集成。
-
-
-## ID Token的格式
-ID Token是JWT的格式，其各部分定义如下：
-
-### Header
-```
-{
-  "typ": "JWT",
-  "alg": "RS256"
-}
-```
-以上字段都是固定值，其中alg字段是RS256，表示用RSA签名。
-
-
-### Payload
-```
-{
-  "sub": "123456789",		//IDaaS系统中的username字段，对应腾讯会议的userId字段
-  "iss": "2012081666",		//SDK ID
-  "name": "tencent_dev04",	//IDaaS系统中的displayName字段，对应腾讯会议的username字段，即显示名称
-  "exp": 1619554966,		//Token过期时间（单位：秒）
-  "iat": 1601387166 		//Token签发生成时间（当前时间，单位：秒）
-}
-```
-数据Payload部分包含以上五个属性，按要求填写即可。
-所有涉及到时间的属性，都是Unix时间戳，即从1970年1月1日（UTC/GMT的午夜）开始所经过的秒数，不考虑闰秒。
-
-如果过期，需再次请求id_token并重新登录。
-
-### Signature
-客户与IDaaS服务方约定生成的ID Secret，此处客户的Server端使用该ID Secret对整个数据进行签名，RSA签名方式。
