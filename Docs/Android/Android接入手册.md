@@ -7,7 +7,7 @@
 - 如果您还在使用android.support.*，建议您迁移到AndroidX，建议迁移前满足以下条件
 	1. Android Studio 3.2及以上
 	1. Gradle版本4.6及以上
-	1. 项目编译版本28及以上
+	1. 项目编译版本30及以上
 - 迁移到Android X步骤
 	1. 在Android studio中点击`Refactor > Migrate to AndroidX`，依照提示进行迁移即可。(迁移过程遇到问题可以参考官方文档)
 	1. 通过反射取support包内class的代码，可以全局搜索android.support找到对应的位置手动名进行替换
