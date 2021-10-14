@@ -29,8 +29,15 @@
 # SDK接入调整
 
 ## 1. 接入环境
-新版SDK接入的环境上与旧版相似，可参考各端的接入手册，按照步骤检查接入前的准备工作。
- 
+新版SDK接入的环境上与旧版相似，但也存在区别，请参考各端的接入手册，按照步骤检查接入前的准备工作。
+
+| 终端 | 相关文档 | 说明 |
+|--- |--- |--- |
+| Android | [接入手册](../Android/Android接入手册.md) | 集成说明、常见问题说明 |
+| iOS | [接入手册](../iOS/iOS接入手册.md) | 集成说明、常见问题说明 |
+| MacOS | [接入手册](../MacOS/MacOS接入手册.md) | 集成说明、常见问题说明 |
+| Windows | [接入手册](../Windows/Windows接入手册.md) | 集成说明、常见问题说明 |
+
 ## 2. 初始化
 初始化的调用上，param参数基本一样，只是会区分公有云和私有化的参数，对于公有云SaaS SDK只考虑公有云相关参数即可。
 
@@ -42,7 +49,7 @@ void initialize(InitParam init_param, SDKCallback callback)
 ```
 具体接口函数格式请参考[TencentMeetingSDK（TMSDK）接口参考文档](../Common/TencentMeetingSDK（TMSDK）接口参考文档.md)
 
-`注意`：响应SDK初始化回调 onSDKInitializeResult ， `回调结果成功才表示初始化完成`
+<font color="red">注意</font>：响应SDK初始化回调 onSDKInitializeResult ， `回调结果成功才表示初始化完成`
 
 ## 3.回调的方法
 - 在旧版SDK中，各类回调响应是通过调用类似setXXXCallback函数来实现设置。
@@ -50,11 +57,11 @@ void initialize(InitParam init_param, SDKCallback callback)
 而入会的回调，是在`PreMeetingService`的`setPreMeetingCallback`函数来设置。
 
 ## 4. 登录登出
-- 在旧版SDK中，登录函数只是login()，没有传任何参数，函数会先判断之前是否登录过，如果本地有登录信息会快速登录，然后回调onLogin中表示成功。
-如果不能快速登录，则回调 onAuthCodeRefresh，并需要客户设置sso url。
+- 在旧版SDK中，登录函数只是`login()`，没有传任何参数，函数会先判断之前是否登录过，如果本地有登录信息会快速登录，然后回调onLogin中表示成功。
+如果不能快速登录，则回调 `onAuthCodeRefresh`，并需要客户设置sso url。
 
-- 新版SDK登录函数login是在AccountService中，并直接将sso url作为参数传入进来，不用去响应类似onAuthCodeRefresh这样的回调， 
-在`AuthenticationCallback.onLogin`中响应登录结果即可。
+- 新版SDK登录函数`login`是在`AccountService`中，并直接将sso url作为参数传入进来，不用去响应类似onAuthCodeRefresh这样的回调， 
+在`AuthenticationCallback.onLogin`中响应登录结果即可。格式如下：
 
 ```
 void login(string sso_url)
@@ -73,7 +80,7 @@ void joinMeeting(JoinParam param)
 在旧版SDK中，通过调用`ForwardHome()`来显示会前的主页，而在新版SDK中是通过调用`PreMeetingService.showPreMeetingView()`来实现。
 
 
-## 6. 错误码
+## 7. 错误码
 旧版SDK各端错误码有部分不相同，新版各端统一一套错误码。
 
 具体请参考[TencentMeetingSDK（TMSDK）接口参考文档](../Common/TencentMeetingSDK（TMSDK）接口参考文档.md)
