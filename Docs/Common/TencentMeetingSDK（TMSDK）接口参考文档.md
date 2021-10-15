@@ -346,7 +346,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 返回值说明：无
 * 参数说明：无
 
-### showHistoricalMeetingView【即将推出】
+### showHistoricalMeetingView
 * 可用版本：>= 2.18.1
 * 函数形式：void showHistoricalMeetingView()
 * 函数说明：显示用户历史会议界面。登录完成后，才可调用。
@@ -354,7 +354,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 返回值说明：无
 * 参数说明：无
 
-### showMeetingDetailView【即将推出】
+### showMeetingDetailView
 * 可用版本：>= 2.18.1
 * 函数形式：void showMeetingDetailView(string meeting_id, string current_sub_meeting_id)
 * 函数说明：显示某一个具体会议的界面。登陆完成后，才可调用
