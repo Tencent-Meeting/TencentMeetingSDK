@@ -241,6 +241,17 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |---|---|---|---|---|
 |taget_url | string | 是 | (无) | 要跳转的目标URL地址，该地址对应页面必须是会议相关的地址，比如云录制页 |
 
+### getUrlWithLoginStatus
+* 函数形式：string getUrlWithLoginStatus(string target_url)
+* 函数说明：获取一个带登录态的URL链接，该地址必须是会议相关的、并支持登录态方式的页面，必须登录成功才可调用。
+* 返回值类型：string
+* 返回值说明：一个带登录态的URL链接
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|taget_url | string | 是 | (无) | 要访问的目标URL地址，该地址对应页面必须是会议相关的地址，比如云录制页 |
+
 
 # 4. PreMeetingService说明
 用来管理会议前相关的操作和数据的获取，包括入会、快速会议、预定会议、投屏、获取会议列表等等
@@ -336,7 +347,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：无
 
 ### showHistoricalMeetingView【即将推出】
-* 可用版本：>= 2.18.2
+* 可用版本：>= 2.18.1
 * 函数形式：void showHistoricalMeetingView()
 * 函数说明：显示用户历史会议界面。登录完成后，才可调用。
 * 返回值类型：void
@@ -344,7 +355,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：无
 
 ### showMeetingDetailView【即将推出】
-* 可用版本：>= 2.18.2
+* 可用版本：>= 2.18.1
 * 函数形式：void showMeetingDetailView(string meeting_id, string current_sub_meeting_id)
 * 函数说明：显示某一个具体会议的界面。登陆完成后，才可调用
 * 返回值类型：void
