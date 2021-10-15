@@ -242,6 +242,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |taget_url | string | 是 | (无) | 要跳转的目标URL地址，该地址对应页面必须是会议相关的地址，比如云录制页 |
 
 ### getUrlWithLoginStatus
+* 可用版本：>= 2.18.1
 * 函数形式：string getUrlWithLoginStatus(string target_url)
 * 函数说明：获取一个带登录态的URL链接，该地址必须是会议相关的、并支持登录态方式的页面，必须登录成功才可调用。
 * 返回值类型：string
