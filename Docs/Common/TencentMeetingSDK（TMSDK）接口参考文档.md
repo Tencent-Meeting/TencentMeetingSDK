@@ -357,7 +357,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ### showMeetingDetailView
 * 可用版本：>= 2.18.1
 * 函数形式：void showMeetingDetailView(string meeting_id, string current_sub_meeting_id)
-* 函数说明：显示某一个具体会议的界面。登陆完成后，才可调用
+* 函数说明：显示某一个具体会议的界面。登陆完成后，才可调用。如果输入错误的meeting_id或者current_sub_meeting_id有的字段会显示’-‘
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：
