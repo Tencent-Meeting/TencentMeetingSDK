@@ -12,18 +12,18 @@ addon，使用里面封装的接口即可。
 
 #### 1.2.1 Win32环境node文件
 
-![](images\1.png)
+![1.png](images/1.png)
 
 #### 1.2.2 Win64环境node文件
-![](images\2.png)
+![2.png](images/2.png)
 
 #### 1.2.3 Mac位环境node文件
 
-![](images\3.png)
+![3.png](images/3.png)
 
 #### 1.2.4 Mac SDK 文件
 
-![](images\4.png)
+![4.png](images/4.png)
 
 > **说明：在windows和mac上wemeet_electron_sdk.node的依赖文件是不一样的，但是我们提供的 .node 文件导出的接口是一致的，所以编码接入的时候无需平台的差异性，打包的时候将对应平台的依赖文件对应目录即可。**
 
@@ -43,7 +43,7 @@ addon，使用里面封装的接口即可。
 - 方法一：Electron_Demo目录下执行npm install安装依赖
 - 方法二：Windows内置了npm依赖包可以直接解压，解压node_modules_x86.zip到当前目录，得到32位windows node环境依赖node_modules目录
 
-![](images\5.png)
+![5.png](images/5.png)
 
 **三、运行demo**
 
@@ -64,7 +64,7 @@ Electron_Demo目录下执行npm start
 - 方法一：Electron_Demo目录下执行npm install安装依赖
 
 - 方法二：Windows内置了npm依赖包可以直接解压，解压node_modules_x64.zip到当前目录，得到64位windows node环境依赖node_modules目录
-![](images\6.png)
+![6.png](images/6.png)
 
 **三、运行demo**
 
@@ -115,7 +115,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 目录结构如下：
 
-![](images\7.png)
+![7.png](images/7.png)
 
 **注意，要保证`Release`目录已经拷贝到`wemeet_electron_sdk.node`的的同级目录下**
 
@@ -146,7 +146,8 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 ```
 
 目录结构如下：
-![](images\8.png)
+
+![8.png](images/8.png)
 
 **注意，要保证`Release`目录已经拷贝到`wemeet_electron_sdk.node`的的同级目录下**
 
