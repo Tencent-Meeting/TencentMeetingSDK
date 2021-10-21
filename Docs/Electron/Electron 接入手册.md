@@ -188,7 +188,8 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 ### 1、初始化 SDK
 
 ```
-wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name);
+windows端：wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, app_icon);
+mac端：wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name);
 ```
 
 ### 2、登录
