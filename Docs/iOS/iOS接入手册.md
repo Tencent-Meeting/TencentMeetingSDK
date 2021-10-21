@@ -22,7 +22,7 @@
 
 注意(因为主App启动屏幕共享扩展的需要根据扩展的Bundle Id来觉得启动那个扩展)：
 SDK Demo的bundle id为XXX.XXX.XXX
-SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.BroadcastUploadExtension
+SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 
 ## 5. Xcode点击运行
 
