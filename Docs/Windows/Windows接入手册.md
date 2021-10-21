@@ -65,6 +65,7 @@
   params.sdk_token = "sdk_token";
   params.data_path = sdk_path.c_str(); // 【必填】日志和配置保存目录，需要utf-8编码
   params.app_name = ""; //品牌名称
+  params.app_icon = ""; //工具栏图标路径，需要utf-8编码
   GetWemeetSDKInstance()->Initialize(params,this)
   ```
   ##### 1.3.3.3 设置回调
