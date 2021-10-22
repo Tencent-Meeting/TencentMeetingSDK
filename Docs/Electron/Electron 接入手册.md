@@ -76,7 +76,7 @@ Electron_Demo目录下执行npm start
 
 1. 在demo_saas_sdk文件夹下启用终端，执行start_electron.sh脚本。 x86_64环境下在终端输入，arm64环境下在终端输入bash start_electron.sh arm64。
 2. 执行完脚本后，等待即可，无报错情况下会自动打开demo。
-3. 执行成功过一次脚本后，再次运行demo可输入如下指令或再次执行脚本，npm start在electron_Demo目录下运行npm install & npm start。
+3. 执行成功过一次脚本后，再次运行demo可输入“npm start”指令或再次执行脚本。
 
 
 
