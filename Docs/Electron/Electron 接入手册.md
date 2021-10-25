@@ -6,7 +6,7 @@
 2. nodejs
 
 ### 1.2 文件说明
-为了简化 electon 的接入，我们封装了一个 node.js 的 addon，可以在 electron 中直接导入这个
+为了简化 electron 的接入，我们封装了一个 node.js 的 addon，可以在 electron 中直接导入这个
 addon，使用里面封装的接口即可。
 这个 nodejs 的 addon 的名字是 wemeet_electron_sdk.node, windows 和 mac 都是这个名字
 
