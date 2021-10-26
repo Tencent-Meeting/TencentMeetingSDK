@@ -201,7 +201,7 @@ wemeet_sdk.Login(sso_url);
 ### 3、入会
 
 ``` 
-wemeet_sdk.JoinMeeting(meeting_code, user_display_name, password, mic_on, camera_on, speaker_on, face_beauty_on, invite_url)
+wemeet_sdk.JoinMeeting(meeting_code, user_display_name, password, invite_url, mic_on, camera_on, speaker_on, face_beauty_on)
 ```
 
 ### 4、显示home界面
