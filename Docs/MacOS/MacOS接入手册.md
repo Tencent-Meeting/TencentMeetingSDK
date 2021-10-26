@@ -126,6 +126,7 @@ Demo 工程主要用于展示 SDK 功能，API 调用示例， demo 工程 在 `
     param.meetingCode = self.meetingCodeTextField.stringValue;
     param.userDisplayName = self.userNameTextField.stringValue;
     param.password = self.passwordTextField.stringValue;
+    param.inviteUrl = self.inviteUrlTextField.stringValue;
     param.cameraOn = self.cameraCheckBox.state == NSControlStateValueOn;
     param.micOn = self.micCheckBox.state == NSControlStateValueOn;
     param.faceBeautyOn = self.faceBeautyCheckBox.state == NSControlStateValueOn;
