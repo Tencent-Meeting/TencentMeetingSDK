@@ -328,6 +328,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |meeting_code |string |是 |(无) |会议号 |
 |user_display_name |string |否 |账户的用户名 |会议中显示的名称 |
 |password |string |否 |(空) |会议密码 |
+|invite_url |string |否 |腾讯会议默认URL链接 |自定义URL链接 |
 |mic_on |bool |否 |SDK默认设置 |是否开启麦克风 |
 |camera_on |bool |否 |SDK默认设置 |是否开启摄像头 |
 |speaker_on |bool |否 |SDK默认设置 |是否开启扬声器(仅移动端) |
