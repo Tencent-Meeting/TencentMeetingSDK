@@ -328,6 +328,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |meeting_code |string |是 |(无) |会议号 |
 |user_display_name |string |否 |账户的用户名 |会议中显示的名称 |
 |password |string |否 |(空) |会议密码 |
+|invite_url |string |否 |腾讯会议默认URL链接 |自定义URL链接 |
 |mic_on |bool |否 |SDK默认设置 |是否开启麦克风 |
 |camera_on |bool |否 |SDK默认设置 |是否开启摄像头 |
 |speaker_on |bool |否 |SDK默认设置 |是否开启扬声器(仅移动端) |
@@ -440,7 +441,7 @@ invite_info内容
     "pstn": "",
     "meeting_pstn_json": "",
     "subject": "",// 会议主题
-	"participate_id": "" //参会者id
+    "participate_id": "" //参会者id
 }
 ```
 ### onShowMeetingInfo
@@ -487,7 +488,7 @@ invite_info内容
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |enable |bool |否 |false |是否使用 |
-|show   |bool |是 |true  |是否显示邀请页面，如果否，SDK不会展示自身邀请界面，完全由接入方实现邀请界面和内容，如果enable为flase，show在SDK中被设置为true了|
+|show   |bool |是 |true  |是否显示邀请页面，如果为true，SDK不会展示自身邀请界面，完全由接入方实现邀请界面和内容展示；如果为false，则还是显示SDK的邀请界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
 
 ### enableMeetingInfoCallback
 * 函数形式：void enableMeetingInfoCallback(bool enable, bool show)
@@ -499,7 +500,7 @@ invite_info内容
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |enable |bool |否 |false |是否使用 |
-|show   |bool |是 |true  |是否显示会议信息页面，如果否，SDK不会展示自身会议信息界面，完全由接入方实现会议信息界面和内容，如果enable为flase，show在SDK中被设置为true了|
+|show   |bool |是 |true  |是否显示会议信息页面，如果为true，SDK不会展示自身会议信息界面，完全由接入方实现会议信息界面和内容展示；如果为false，则还是显示SDK的会议信息界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
 
 
 # 6. 错误码

@@ -65,6 +65,7 @@
   params.sdk_token = "sdk_token";
   params.data_path = sdk_path.c_str(); // 【必填】日志和配置保存目录，需要utf-8编码
   params.app_name = ""; //品牌名称
+  params.app_icon = ""; //工具栏图标路径，需要utf-8编码
   GetWemeetSDKInstance()->Initialize(params,this)
   ```
   ##### 1.3.3.3 设置回调
@@ -122,6 +123,8 @@ GetWemeetSDKInstance()->GetInMeetingService()->SetCallback(this);
   JoinMeetingParams params;
   params.meeting_code = ""; //【必填】会议号
   params.user_display_name = ""; //入会昵称，如果空则使用登录账号的昵称
+  params.password = ""; //入会密码
+  params.invite_url = ""; //如果为空显示腾讯会议的邀请链接
   params.face_beauty_on = true; //是否入会开启美颜
   params.mic_on = true; //是否入会开启麦克风
   params.camera_on = ""; //是否入会开启摄像头
