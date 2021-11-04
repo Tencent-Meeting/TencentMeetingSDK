@@ -17,13 +17,17 @@ addon，使用里面封装的接口即可。
 #### 1.2.2 Win64环境node文件
 ![2.png](images/2.png)
 
-#### 1.2.3 Mac位环境node文件
+#### 1.2.3 Mac x86_64位环境node文件
 
 ![3.png](images/3.png)
 
-#### 1.2.4 Mac SDK 文件
+#### 1.2.4 Mac arm64位环境node文件
 
 ![4.png](images/4.png)
+
+#### 1.2.5 Mac SDK 文件
+
+![5.png](images/5.png)
 
 > **说明：在windows和mac上wemeet_electron_sdk.node的依赖文件是不一样的，但是我们提供的 .node 文件导出的接口是一致的，所以编码接入的时候无需平台的差异性，打包的时候将对应平台的依赖文件对应目录即可。**
 
@@ -151,13 +155,13 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 **注意，要保证`Release`目录已经拷贝到`wemeet_electron_sdk.node`的的同级目录下**
 
-#### 2.2.3 Mac 环境
+#### 2.2.3 Mac x86_64环境
 
 一. 安装nodejs，安装electron
 
 二. 新建electron工程
 
-三. 将wemeet_electron_sdk.node拷贝到 `output/Mac`目录下。
+三. 将wemeet_electron_sdk.node拷贝到 `output/mac/x86_64`目录下。
 
 四. 在package.json加配置
 
@@ -169,7 +173,35 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 五. 修改start.js，拷贝SDK文件，参考demo的start.js：
 
-Mac端：将SDK文件（即TMSDK.framework）拷贝至node_modules/electron/dist/xxx.app/Contents/Frameworks目录下
+Mac端：将SDK文件（即SDK/x86_64/TMSDK.framework）拷贝至node_modules/electron/dist/xxx.app/Contents/Frameworks目录下
+
+六. 在js中导入 wemeet_electron_sdk.node 文件
+
+```javascript
+// path_to_your_wemeet_electron_sdk.node 表示 wemeet_electron_sdk.node的路径
+const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
+// 这里导入的 wemeet_sdk 会在接下来的接口说明中使用
+```
+
+#### 2.2.4 Mac arm64环境
+
+一. 安装nodejs，安装electron
+
+二. 新建electron工程
+
+三. 将wemeet_electron_sdk.node拷贝到 `output/mac/arm64`目录下。
+
+四. 在package.json加配置
+
+```javascript
+"scripts": {
+  "start": "node start.js && electron ."
+}
+```
+
+五. 修改start.js，拷贝SDK文件，参考demo的start.js：
+
+Mac端：将SDK文件（即SDK/arm64/TMSDK.framework）拷贝至node_modules/electron/dist/xxx.app/Contents/Frameworks目录下
 
 六. 在js中导入 wemeet_electron_sdk.node 文件
 
