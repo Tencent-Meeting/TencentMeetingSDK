@@ -47,7 +47,7 @@ addon，使用里面封装的接口即可。
 - 方法一：Electron_Demo目录下执行npm install安装依赖
 - 方法二：Windows内置了npm依赖包可以直接解压，解压node_modules_x86.zip到当前目录，得到32位windows node环境依赖node_modules目录
 
-![5.png](images/5.png)
+![6.png](images/6.png)
 
 **三、运行demo**
 
@@ -68,7 +68,7 @@ Electron_Demo目录下执行npm start
 - 方法一：Electron_Demo目录下执行npm install安装依赖
 
 - 方法二：Windows内置了npm依赖包可以直接解压，解压node_modules_x64.zip到当前目录，得到64位windows node环境依赖node_modules目录
-![6.png](images/6.png)
+![7.png](images/7.png)
 
 **三、运行demo**
 
@@ -119,7 +119,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 目录结构如下：
 
-![7.png](images/7.png)
+![8.png](images/8.png)
 
 **注意，要保证`Release`目录已经拷贝到`wemeet_electron_sdk.node`的的同级目录下**
 
@@ -151,7 +151,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 目录结构如下：
 
-![8.png](images/8.png)
+![9.png](images/9.png)
 
 **注意，要保证`Release`目录已经拷贝到`wemeet_electron_sdk.node`的的同级目录下**
 
