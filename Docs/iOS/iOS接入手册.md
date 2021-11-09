@@ -142,10 +142,12 @@ fi
     TMJoinParam *joinParam = [TMJoinParam new];
     joinParam.meetingCode = textFields[0].text;
     joinParam.userDisplayName = textFields[1].text;
-    joinParam.cameraOn = [self switchOn:textFields[2]];
-    joinParam.micOn = [self switchOn:textFields[3]];
-    joinParam.speakerOn = [self switchOn:textFields[4]];
-    joinParam.faceBeautyOn = [self switchOn:textFields[5]];
+    joinParam.password = textFields[2].text;
+    joinParam.inviteUrl = textFields[3].text;
+    joinParam.cameraOn = [self switchOn:textFields[4]];
+    joinParam.micOn = [self switchOn:textFields[5]];
+    joinParam.speakerOn = [self switchOn:textFields[6]];
+    joinParam.faceBeautyOn = [self switchOn:textFields[7]];
     [[[TencentMeetingSDK instance] getPreMeetingService] joinMeeting:joinParam];
 }
 
