@@ -480,7 +480,7 @@ invite_info内容
 
 ### enableInviteCallback
 * 函数形式：void enableInviteCallback(bool enable, bool show)
-* 函数说明：设置是否使用邀请回调，如果使用，点击会议中界面下方工具栏上的邀请按钮，会将会议信息通过onInviteMeeting回调
+* 函数说明：设置是否使用邀请回调，如果使用，点击会议中界面下方工具栏上的邀请按钮，会将会议信息通过onInviteMeeting回调；保证接口调用在初始化回调成功之后。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：
@@ -488,11 +488,11 @@ invite_info内容
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |enable |bool |否 |false |是否使用 |
-|show   |bool |是 |true  |是否显示邀请页面，如果为true，SDK不会展示自身邀请界面，完全由接入方实现邀请界面和内容展示；如果为false，则还是显示SDK的邀请界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
+|show   |bool |是 |true  |是否显示邀请页面，如果为false，SDK不会展示自身邀请界面，完全由接入方实现邀请界面和内容展示；如果为true，则还是显示SDK的邀请界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
 
 ### enableMeetingInfoCallback
 * 函数形式：void enableMeetingInfoCallback(bool enable, bool show)
-* 函数说明：设置是否使用会议信息回调，如果使用，点击会议title后面(i)信息按钮，会将会议信息通过onShowMeetingInfo回调
+* 函数说明：设置是否使用会议信息回调，如果使用，点击会议title后面(i)信息按钮，会将会议信息通过onShowMeetingInfo回调；保证接口调用在初始化回调成功之后。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：
@@ -500,7 +500,7 @@ invite_info内容
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |enable |bool |否 |false |是否使用 |
-|show   |bool |是 |true  |是否显示会议信息页面，如果为true，SDK不会展示自身会议信息界面，完全由接入方实现会议信息界面和内容展示；如果为false，则还是显示SDK的会议信息界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
+|show   |bool |是 |true  |是否显示会议信息页面，如果为false，SDK不会展示自身会议信息界面，完全由接入方实现会议信息界面和内容展示；如果为true，则还是显示SDK的会议信息界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
 
 
 # 6. 错误码
