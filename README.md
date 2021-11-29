@@ -27,8 +27,8 @@
 |--- |--- |--- |
 | Android | [接入手册](Docs/Android/Android接入手册.md) | 集成说明、常见问题说明 |
 | iOS | [接入手册](Docs/iOS/iOS接入手册.md) | 集成说明、常见问题说明 |
-| MacOS | [接入手册](Docs/MacOS/MacOS接入手册.md) | 集成说明、常见问题说明 |
-| Windows | [接入手册](Docs/Windows/Windows接入手册.md) | 集成说明、常见问题说明 |
+| MacOS | [接入手册](Docs/MacOS/MacOS接入手册.md) [Electron接入手册](Docs/Electron/Electron接入手册.md) | 集成说明、常见问题说明 |
+| Windows | [接入手册](Docs/Windows/Windows接入手册.md) [Electron接入手册](Docs/Electron/Electron接入手册.md) | 集成说明、常见问题说明 |
 | All | [TencentMeetingSDK（TMSDK）接口参考文档](Docs/Common/TencentMeetingSDK（TMSDK）接口参考文档.md) | 接口参考的统一说明，各端都涉及到 |
 
 
