@@ -6,7 +6,7 @@ Q1.接入腾讯会议SDK的应用，Archive后的产物，点击Distribute APP�
 
 A：根本原因是打包过程中，修改了SDK内部的framework的版本号，导致了相对应的部分模块没有加载而crash。打包时请注意下面的选项：Manage Version and Build Number。
 
-<img src="./images/Xnip2021-12-06_10-27-10.png" alt="Xnip2021-12-06_10-27-10" style="zoom:30%;" />
+<img src="./images/Xnip2021-12-07_19-12-16.png" alt="Xnip2021-12-06_10-27-10" style="zoom:30%;" />
 
 
 
@@ -72,7 +72,7 @@ A: 横竖屏设置的优先级顺序是：Appdelegate/Info.plist=>TabBarControll
 
 Q4.预定会议后的邮件UI异常问题。
 
-<img src="./images/Xnip2021-12-05_22-14-32.png" alt="1" style="zoom:67%;" />
+<img src="./images/Xnip2021-12-07_19-11-31.png" alt="1" style="zoom:67%;" />
 
 A:检查下主APP 中是否含有**FDFullscreenPopGesture** 这个库
 
