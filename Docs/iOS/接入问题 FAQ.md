@@ -28,6 +28,10 @@ A: 横竖屏设置的优先级顺序是：Appdelegate/Info.plist=>TabBarControll
     [classList addObject:@"UserInfoViewController"];
     [classList addObject:@"HandsupViewController"];
     [classList addObject:@"MeetingSettingViewController"];
+    [classList addObject:@"WMFaceBeautySettingViewController"];
+    [classList addObject:@"RedPacketSendViewController"];
+    [classList addObject:@"RedPacketDetailViewController"];
+    [classList addObject:@"WMWatchLiveViewController"];
     BOOL needLandscape = NO;
     for (NSString *item in classList) {
         if ([topVC isKindOfClass:NSClassFromString(item)]) {
@@ -45,10 +49,14 @@ A: 横竖屏设置的优先级顺序是：Appdelegate/Info.plist=>TabBarControll
 - (BOOL)shouldAutorotate {
     UIViewController *topVC = self.selectedViewController;
     NSMutableArray<NSString *> *classList = [NSMutableArray new];
-    [classList addObject:@"MeetingViewController"];
+   	[classList addObject:@"MeetingViewController"];
     [classList addObject:@"UserInfoViewController"];
     [classList addObject:@"HandsupViewController"];
     [classList addObject:@"MeetingSettingViewController"];
+    [classList addObject:@"WMFaceBeautySettingViewController"];
+    [classList addObject:@"RedPacketSendViewController"];
+    [classList addObject:@"RedPacketDetailViewController"];
+    [classList addObject:@"WMWatchLiveViewController"];
     BOOL needLandscape = NO;
     for (NSString *item in classList) {
         if ([topVC isKindOfClass:NSClassFromString(item)]) {
