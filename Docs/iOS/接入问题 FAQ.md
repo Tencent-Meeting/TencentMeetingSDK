@@ -6,7 +6,7 @@ Q1.接入腾讯会议SDK的应用，Archive后的产物，点击Distribute APP�
 
 A：根本原因是打包过程中，修改了SDK内部的framework的版本号，导致了相对应的部分模块没有加载而crash。打包时请注意下面的选项：Manage Version and Build Number。
 
-<img src="/Users/suzhengquan/Desktop/SaaS SDK 接入问题 FAQ/images/Xnip2021-12-06_10-27-10.png" alt="Xnip2021-12-06_10-27-10" style="zoom:30%;" />
+<img src="./images/Xnip2021-12-06_10-27-10.png" alt="Xnip2021-12-06_10-27-10" style="zoom:30%;" />
 
 
 
