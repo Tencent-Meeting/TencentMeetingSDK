@@ -80,18 +80,21 @@ fi
 ````
 - (void)SDKInit:(NSString *)SDKId SDKToken:(NSString *)SDKToken {
     TMInitParam* initParams = [TMInitParam new];
-    initParams.sdkId = SDKId;
-    initParams.sdkToken = SDKToken;
-    [self startAnimation];
+    initParams.sdkId = @"";
+    initParams.sdkToken = @"";
+    initParams.appName = @"";
     [[TencentMeetingSDK instance] initialize:initParams delegate:self];
+    
+    [[[TencentMeetingSDK instance] getInMeetingService] enableInviteCallback:YES show:YES;
+    [[[TencentMeetingSDK instance] getInMeetingService] enableMeetingInfoCallback:YES show:YES];
 }
 
 #pragma mark - TMSDKProtocol
 - (void)onSDKInitializeResult:(TMSDKResult)code msg:(NSString *)msg; {
     NSLog(@"SDK init complete, code is %ld", code);
-    [self stopAnimation];
-    if (code == kSDKErrorSuccess) {
-        self.setupButton.enabled = NO;
+    if (code == kTMSDKErrorSuccess) {
+        [[[TencentMeetingSDK instance] getInMeetingService] setDelegate:self];
+        [[[TencentMeetingSDK instance] getPreMeetingService] setDelegate:self];
     }
 }
 
@@ -102,22 +105,17 @@ fi
 ```
 
 - (void)login:(NSString *)SSOUrl forceKickOtherDevice:(BOOL)forceKickOtherDevice {
-    [self startAnimation];
-    [[[TencentMeetingSDK instance] getAccountService] setDelegate:self];
-    [[[TencentMeetingSDK instance] getAccountService] login:SSOUrl forceKickOtherDevice:forceKickOtherDevice];
+    [[[TencentMeetingSDK instance] getAccountService] login:SSOUrl forceKickOtherDevice:YES];
 }
 
 - (void)logout {
-    [self startAnimation];
     [[[TencentMeetingSDK instance] getAccountService] logout];
 }
 
 #pragma mark - TMAuthenticationProtocol
 - (void)onLogin:(TMSDKResult)code msg:(NSString *)msg {
-    NSLog(@"SDK login complete, code is %ld", (long)code);
-    [self stopAnimation];
-    [self showAlert:[NSString stringWithFormat:@"SDK login complete, code is %ld", (long)code]];
-    if (code == kSDKErrorSuccess) {
+    NSLog(@"SDK login complete, code is %ld, msg is %@", (long)code, msg);
+    if (code == kTMSDKErrorSuccess) {
         self.loginButton.enabled = NO;
         self.logoutButton.enabled = YES;
     }
@@ -125,9 +123,7 @@ fi
 
 - (void)onLogout:(TMLogoutType)type code:(TMSDKResult)code msg:(NSString *)msg {
     NSLog(@"SDK logout complete, type is %ld, code is %ld", type, (long)code);
-    [self stopAnimation];
-    [self showAlert:[NSString stringWithFormat:@"SDK logout complete, type is %ld, code is %ld", type, (long)code]];
-    if (code == kSDKErrorSuccess) {
+    if (code == kTMSDKErrorSuccess) {
         self.loginButton.enabled = YES;
         self.logoutButton.enabled = NO;
     }
@@ -140,29 +136,63 @@ fi
 ```
 - (void)joinMeeting:(NSArray<UITextField *> *)textFields {
     TMJoinParam *joinParam = [TMJoinParam new];
-    joinParam.meetingCode = textFields[0].text;
-    joinParam.userDisplayName = textFields[1].text;
-    joinParam.password = textFields[2].text;
-    joinParam.inviteUrl = textFields[3].text;
-    joinParam.cameraOn = [self switchOn:textFields[4]];
-    joinParam.micOn = [self switchOn:textFields[5]];
-    joinParam.speakerOn = [self switchOn:textFields[6]];
-    joinParam.faceBeautyOn = [self switchOn:textFields[7]];
+    joinParam.meetingCode = @"";
+    joinParam.userDisplayName = @"";
+    joinParam.password = @"";
+    joinParam.inviteUrl = @"";
+    joinParam.cameraOn = YES;
+    joinParam.micOn = YES;
+    joinParam.speakerOn = YES;
+    joinParam.faceBeautyOn = YES;
     [[[TencentMeetingSDK instance] getPreMeetingService] joinMeeting:joinParam];
 }
 
 - (void)leaveMeeting:(NSArray<UITextField *> *)textFields {
-    BOOL endMeeting = [self switchOn:textFields[0]];
-    [[[TencentMeetingSDK instance] getInMeetingService] leaveMeeting:endMeeting];
+    [[[TencentMeetingSDK instance] getInMeetingService] leaveMeeting:YES];
 }
 
 #pragma mark - TMPreMeetingProtocol
 - (void)onJoinMeeting:(TMSDKResult)code msg:(NSString *)msg meetingCode:(NSString *)meetingCode {
     NSLog(@"SDK join complete, code is %ld, msg is %@, meetingCode is %@", (long)code, msg, meetingCode);
-    if (code != kSDKErrorSuccess) {
-        [self showAlert:[NSString stringWithFormat:@"SDK join complete, code is %ld, msg is %@, meetingCode is %@", (long)code, msg, meetingCode]];
+    if (code != kTMSDKErrorSuccess) {
     }
 }
+
+- (void)onShowScreenCastViewResult:(TMSDKResult)code msg:(NSString *)msg {
+    NSLog(@"SDK show screen cast complete, code is %ld, msg is %@", (long)code, msg);
+    if (code != kTMSDKErrorSuccess) {
+    }
+}
+
+- (void)onActionResult:(TMSDKActionType)actionType code:(TMSDKResult)code msg:(nonnull NSString *)msg {
+    NSString *content;
+    switch (actionType) {
+        case kTMSDKActionTypeShowPreMeetingView:
+            content = [NSString stringWithFormat:@"展示会前界面结果：%ld 描述信息：%@", (long)code, msg];
+            break;
+        case kTMSDKActionTypeShowScreenCastView:
+            content = [NSString stringWithFormat:@"无线投屏结果：%ld 描述信息：%@", (long)code, msg];
+            break;
+        case kTMSDKActionTypeShowHistoricalMeetingView:
+            content = [NSString stringWithFormat:@"展示历史会议界面结果：%ld 描述信息：%@", (long)code, msg];
+            break;
+        case kTMSDKActionTypeShowMeetingDetailView:
+            content = [NSString stringWithFormat:@"展示会议详情结果：%ld 描述信息：%@", (long)code, msg];
+            break;
+        case kTMSDKActionTypeShowJoinMeetingView:
+            content = [NSString stringWithFormat:@"展示加入会议界面结果：%ld 描述信息：%@", (long)code, msg];
+            break;
+        case kTMSDKActionTypeShowScheduleMeetingView:
+            content = [NSString stringWithFormat:@"展示预定会议界面结果：%ld 描述信息：%@", (long)code, msg];
+            break;
+        case kTMSDKActionTypeShowMeetingSettingView:
+            content = [NSString stringWithFormat:@"展示会议设置界面结果：%ld 描述信息：%@", (long)code, msg];
+            break;
+    }
+    NSLog(@"onActionResult, action is %ld, code is %ld, msg is %@",(long)actionType, (long)code, msg);
+    if (code != kTMSDKErrorSuccess) {
+        [self showMessageOnCurrentVC:[NSString stringWithFormat:@"onActionResult, action is %ld, code is %ld, msg is %@",(long)actionType, (long)code, msg]];
+    }
 
 #pragma mark - TMInMeetingProtocol
 - (void)onLeaveMeeting:(TMLeaveType)type code:(TMSDKResult)code msg:(NSString *)msg meetingCode:(NSString *)meetingCode {
@@ -170,6 +200,16 @@ fi
     if (code != kSDKErrorSuccess) {
         [self showAlert:[NSString stringWithFormat:@"SDK leave complete, type is %ld, code is %ld, meetingCode is %@", (long)type, (long)code, meetingCode]];
     }
+}
+
+- (void)onInviteMeeting:(NSString *)invite_info {
+    NSLog(@"invite_info: %@", invite_info);
+    [self showMessage:invite_info];
+}
+
+- (void)onShowMeetingInfo:(NSString *)meeting_info {
+    NSLog(@"meeting_info: %@", meeting_info);
+    [self showMessage:meeting_info];
 }
 ```
 
