@@ -4,7 +4,7 @@
 
 Q1.接入腾讯会议SDK的应用，Archive后的产物，点击Distribute APP，使用AppStore Connect导出的启动时会崩溃。但是用Adhoc打包ipa安装又是正常的。
 
-A：根本原因是客户那边在打包时，修改了我们framework的版本号，导致了我们的部分模块没有加载而crash。打包时注意下面的选项：Manage Version and Build Number。
+A：根本原因是打包过程中，修改了SDK内部的framework的版本号，导致了相对应的部分模块没有加载而crash。打包时请注意下面的选项：Manage Version and Build Number。
 
 <img src="/Users/suzhengquan/Desktop/SaaS SDK 接入问题 FAQ/images/Xnip2021-12-06_10-27-10.png" alt="Xnip2021-12-06_10-27-10" style="zoom:30%;" />
 
@@ -12,11 +12,11 @@ A：根本原因是客户那边在打包时，修改了我们framework的版本�
 
 Q2.初始化和登录都有收到成功回调，调用入会接口没看弹框也没收到回调
 
-A: 未初始化SDK前先调用了accountService的isLogin函数，导致accountService里面的监听在第一次初始化的时候未生效，而accountService是一个单例，监听的方法写在了后续SDK init时也不会。请检查是否在TMSDK init方法前调用AccountService的方法，如isLogin方法，所有的SDK方法需要在TMSDK初始化之后才能使用。
+A: 未初始化SDK前，先调用了accountService的isLogin函数，导致accountService里面的监听在第一次初始化的时候未生效，而accountService是一个单例，监听的方法写在了后续SDK init时也不会调用。请检查是否在TMSDK init方法前调用AccountService的方法，如isLogin方法，所有的SDK方法需要在TMSDK初始化之后才能使用。
 
 Q3.接入SDK 后，会中横竖屏问题。
 
-A: 横竖屏设置的优先级顺序是：Appdelegate/Info.plist=>TabBarController=>NavigationController=>ViewController。目前SDK在NavigationController=>ViewController这个已经设置支持会中页面MeetingViewController转屏,需要客户在Info.plist和TabBarController设置支持转屏
+A: 横竖屏设置的优先级顺序是：Appdelegate/Info.plist=>TabBarController=>NavigationController=>ViewController。目前SDK在NavigationController=>ViewController这个已经设置支持会中页面MeetingViewController转屏,需要在Info.plist和TabBarController设置支持转屏
 ```
 
 1、在你们的自定义的UITabBarController，添加以下方法
@@ -78,7 +78,7 @@ A:检查下主APP 中是否含有**FDFullscreenPopGesture** 这个库
 
 Q5.共享屏幕没反应，倒计时3秒  然后没有录屏效果。
 
-A：检查extension。建议用WemeetExtension，原来的扩展名(BroadcastUploadExtension)太通用，这个有可能跟客户重命名。需要后缀改成WemeetExtension，扩展的后缀要是主app的bundle id + .WemeetExtension
+A：请检查extension。建议用WemeetExtension，原来的扩展名(BroadcastUploadExtension)太通用，有可能会重名。需要后缀改成WemeetExtension，扩展的后缀要是主app的bundle id + .WemeetExtension
 
 Q6.masonry 导致的crash问题。
 
@@ -90,5 +90,5 @@ A: SDK 内部已做兼容处理。
 
 Q8.从会中页面进入美颜等二级页面，控制器UI层级异常。
 
-A: 检查用户是否含有 **FDFullscreenPopGesture**这个第三方库。
+A: 请检查是否含有 **FDFullscreenPopGesture**这个第三方库。
 
