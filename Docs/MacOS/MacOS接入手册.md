@@ -58,12 +58,19 @@ Demo 工程主要用于展示 SDK 功能，API 调用示例， demo 工程 在 `
 
 ### 1.4.3 权限配置
 
-需要添加摄像头权限和Mic权限，在工程的  `Info.plist` 文件中添加以下键值对:
+在工程的  `Info.plist` 文件中添加以下键值对:
 
 | **Key**                               | **Type** | **Value**                                          |
 | ------------------------------------- | -------- | -------------------------------------------------- |
-| Privacy - Microphone Usage Descriptio | String   | 使用麦克风的目的,  如 "使用xx功能时使用您的麦克风" |
-| Privacy - Camera Usage Description    | String   | 使用摄像头的目的，如 "使用xx功能时使用您的相机"    |
+| Privacy - Microphone Usage Descriptio | String   | NSMicrophoneUsageDescription(使用麦克风的目的,  如 "使用xx功能时使用您的麦克风") |
+| Privacy - Camera Usage Description    | String   | NSCameraUsageDescription(使用摄像头的目的，如 "使用xx功能时使用您的相机")    |
+| Privacy - AppleEvents Sending Usage Description   | String   | NSAppleEventsUsageDescription(批注跟随 PowerPoint 翻页功能需要)    |
+
+在工程的 entitlements 文件中配置以下键值对：
+
+| **Key**     | **Type** | **Value**  |
+| ------------ | -------- | ----- |
+| Apple Events | Boolean   | YES |
 
 # 2. SDK快速接入
 
