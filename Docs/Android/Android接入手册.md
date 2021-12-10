@@ -212,7 +212,7 @@ dependencies {
 
 ## 2. Android接入特殊步骤
 
-Android SDK初始化除在《TencentMeetingSDK（TMSDK）接口参考文档》中已有说明的 `TMSDK.initialize` 外，还需要在Application的`onCreate` 下 调用 `initOnApplicationCreate` ，这个步骤主要用于设置context以及必要的状态，不会进行真正的初始化操作
+Android SDK初始化除在《TencentMeetingSDK（TMSDK）接口参考文档》中已有说明的 `TMSDK.initialize` 外，还需要在Application的`onCreate` 下 调用 `initOnApplicationCreate` ，这个步骤主要用于设置context以及必要的状态，不会进行真正的初始化操作（注意这个方法initOnApplicationCreate必须在所有进程初始化）
 
 ```kotlin
 @Override
