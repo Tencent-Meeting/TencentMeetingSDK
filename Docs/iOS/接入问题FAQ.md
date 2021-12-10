@@ -1,6 +1,4 @@
-### SaaS SDK 接入问题 FAQ
-
-### 2.18.1
+# FAQ
 
 Q1.接入腾讯会议SDK的应用，Archive后的产物，点击Distribute APP，使用AppStore Connect导出的启动时会崩溃。但是用Adhoc打包ipa安装又是正常的。
 

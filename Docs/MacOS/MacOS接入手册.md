@@ -174,7 +174,3 @@ Demo 工程主要用于展示 SDK 功能，API 调用示例， demo 工程 在 `
 
 # 4. 更多功能
 请参考《TencentMeetingSDK（TMSDK）接口参考》文档
-
-
-# 5. FAQ
-
