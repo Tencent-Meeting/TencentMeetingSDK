@@ -8,7 +8,8 @@
 | 2021-8-26 | 接口调整：登录时如果账号已登录是否强制让对方下线 | 2.18.0 |
 | 2021-8-30 | 接口调整：入会和离会回调接口增加meeting_code字段 | 2.18.0 |
 | 2021-10-9 | 新增接口：获取登录态URL、显示历史会议列表、显示历史会议详情页 | 2.18.1 |
-| 即将推出 | 新增的接口：快速创建会议、预定会议、获取当前会议信息、显示加入会议界面、显示设置界面 | -- |
+| 2021-10-20 | 新增接口：显示加入会议界面、显示预定会议界面、显示会议设置界面、相关回调| 2.18.2 |
+| 即将推出 | 新增的接口：快速创建会议、获取当前会议信息 | -- |
 
 
 
@@ -69,7 +70,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | code | int | SDK初始化结果码 |
 | msg | string | SDK初始化结果信息 |
 
-### onShowLogsResult【即将推出】
+### onShowLogsResult
 * 说明：调用`showLogs`的结果回调
 * 可用版本：>= 2.18.2
 
@@ -191,6 +192,14 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
 |msg |string |结果信息 |
 
+### onJumpUrlWithLoginStatus
+* 说明：带登录态跳转的回调。
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |结果信息 |
+
 
 ## 3.2 AccountService成员
 
@@ -276,8 +285,8 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
 |msg |string |结果信息 |
 
-### onActionResult【即将推出】
-* 说明：会前界面各种用户行为操作的回调。
+### onActionResult
+* 说明：用户调用SDK接口的各种行为操作的回调,仅通过sdk接口调用会产生。
 * 可用版本：>= 2.18.2
 
 |参数名 |参数类型 |参数说明 |
@@ -369,7 +378,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |meeting_id |string |是 |(无) |会议标识号 |
 |current_sub_meeting_id |string |是|(无)|非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APis获取 |
 
-### showJoinMeetingView【即将推出】
+### showJoinMeetingView
 * 可用版本：>= 2.18.2
 * 函数形式：void showJoinMeetingView()
 * 函数说明：显示加入会议界面。登录完成后，才可调用。
@@ -377,9 +386,9 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 返回值说明：无
 * 参数说明：无
 
-### showScheduleMeetingView【即将推出】
+### showScheduleMeetingView
 * 可用版本：>= 2.18.2
-* 函数形式：void showScheduleMeetingView(string meeting_type)
+* 函数形式：void showScheduleMeetingView(int meeting_type)
 * 函数说明：显示预定会议会议界面。登录完成后，才可调用。
 * 返回值类型：void
 * 返回值说明：无
@@ -387,9 +396,9 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
-|meeting_type | string | 否 | 0 | 会议类型，0:普通会议；1:在线大会 |
+|meeting_type | int | 是 |(无)| 会议类型，0:普通会议；1:在线大会（仅桌面端支持在线大会） |
 
-### showMeetingSettingView【即将推出】
+### showMeetingSettingView
 * 可用版本：>= 2.18.2
 * 函数形式：void showMeetingSettingView()
 * 函数说明：显示设置管理界面。登录完成后，才可调用。
@@ -527,3 +536,4 @@ invite_info内容
 | kTMSDKErrorIsLogining | -1017  | 已经在登录状态中，重复登录 |
 | kTMSDKErrorLoginNetError | -1018  | 登陆过程出现网络错误 |
 | kTMSDKErrorTokenVerifyFailed | -1019  | token校验失败，可能是token过期或token失效，需要refreshToken后再登录 |
+| kTMSDKErrorChildProcessCrash | -1020  | 子进程出现了crash |
