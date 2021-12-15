@@ -86,8 +86,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | msg | string | 错误信息 |
 
 ### OnResetSDKState
-* 说明：SDK发生错误，需要重置状态并初始化
+* 说明：SDK发生错误，需要重置状态
 * 可用版本：>= 2.18.2
+* 详细说明：当code为-1019时，使用中token过期了，需要重新登录再继续使用；当code为-1020时，SDK进程崩溃了，需要重新初始化、登录后再继续使用
 
 |参数名 |参数类型 | 参数说明 |
 |---|---|---|
