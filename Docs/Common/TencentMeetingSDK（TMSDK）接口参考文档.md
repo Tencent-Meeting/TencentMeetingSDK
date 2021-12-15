@@ -62,7 +62,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ## 2.2 SDKCallback回调代理
 
-### onSDKInitializeResult
+### OnSDKInitializeResult
 * 说明：调用SDK初始化的结果回调
 
 |参数名 |参数类型 | 参数说明 |
@@ -70,7 +70,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | code | int | SDK初始化结果码 |
 | msg | string | SDK初始化结果信息 |
 
-### onShowLogsResult
+### OnShowLogsResult
 * 说明：调用`showLogs`的结果回调
 * 可用版本：>= 2.18.2
 
@@ -79,17 +79,17 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | code | int | 打开日志文件夹结果码 |
 | msg | string | 打开日志文件夹结果信息 |
 
-### onSDKError 
+### OnSDKError 
 |参数名 |参数类型 | 参数说明 |
 |---|---|---|
 | code | int | 错误码 |
 | msg | string | 错误信息 |
 
-### onResetSDKState
+### OnResetSDKState
 * 说明：发生错误，需要重置状态
 * 可用版本：>= 2.18.2
 * 详细说明：当code为-1019时，表示使用中sdktoken过期了，需要refreshSDKToken、重新登录后再继续使用；当code为-1020时，表示SDK进程崩溃了，需要重新初始化、登录后再继续使用
-
+  当code为1的时候，表示ipc断链，会议进程退出，需要重新走一遍初始化和登录流程
 |参数名 |参数类型 | 参数说明 |
 |---|---|---|
 | code | int | 错误码 |
