@@ -544,5 +544,5 @@ invite_info内容
 | kTMSDKErrorCancelJoin | -1016  | 用户手动取消入会 |
 | kTMSDKErrorIsLogining | -1017  | 已经在登录状态中，重复登录 |
 | kTMSDKErrorLoginNetError | -1018  | 登陆过程出现网络错误 |
-| kTMSDKErrorTokenVerifyFailed | -1019  | token校验失败，可能是token过期或token失效，需要refreshToken后再登录 |
+| kTMSDKErrorTokenVerifyFailed | -1019  | token校验失败，可能是登录时token过期或使用时token失效，需要refreshToken后再登录 |
 | kTMSDKErrorChildProcessCrash | -1020  | 子进程出现了crash |
