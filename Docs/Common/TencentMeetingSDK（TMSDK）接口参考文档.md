@@ -85,6 +85,16 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | code | int | 错误码 |
 | msg | string | 错误信息 |
 
+### OnResetSDKState
+* 说明：发生错误，需要重置状态
+* 可用版本：>= 2.18.2
+* 详细说明：当code为-1019时，表示使用中sdktoken过期了，需要refreshSDKToken、重新登录后再继续使用；当code为-1020时，表示SDK进程崩溃了，需要重新初始化、登录后再继续使用
+
+|参数名 |参数类型 | 参数说明 |
+|---|---|---|
+| code | int | 错误码 |
+| msg | string | 错误信息 |
+
 
 ## 2.3 TMSDK成员
 
@@ -535,5 +545,5 @@ invite_info内容
 | kTMSDKErrorCancelJoin | -1016  | 用户手动取消入会 |
 | kTMSDKErrorIsLogining | -1017  | 已经在登录状态中，重复登录 |
 | kTMSDKErrorLoginNetError | -1018  | 登陆过程出现网络错误 |
-| kTMSDKErrorTokenVerifyFailed | -1019  | token校验失败，可能是token过期或token失效，需要refreshToken后再登录 |
+| kTMSDKErrorTokenVerifyFailed | -1019  | sdktoken校验失败，可能是登录时sdktoken过期或使用时sdktoken失效，需要refreshToken后再登录 |
 | kTMSDKErrorChildProcessCrash | -1020  | 子进程出现了crash |
