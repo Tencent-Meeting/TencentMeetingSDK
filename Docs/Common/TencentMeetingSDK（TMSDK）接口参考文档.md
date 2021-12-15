@@ -85,6 +85,15 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | code | int | 错误码 |
 | msg | string | 错误信息 |
 
+### OnResetSDKState
+* 说明：SDK发生错误，需要重置状态并初始化
+* 可用版本：>= 2.18.2
+
+|参数名 |参数类型 | 参数说明 |
+|---|---|---|
+| code | int | 错误码，详情参考`6. 错误码`章节 |
+| msg | string | 错误信息 |
+
 
 ## 2.3 TMSDK成员
 
