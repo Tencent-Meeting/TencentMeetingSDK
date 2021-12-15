@@ -31,7 +31,7 @@
 | MacOS | [接入手册](Docs/MacOS/MacOS接入手册.md)                                                 | 集成说明、常见问题说明      |
 | Windows | [接入手册](Docs/Windows/Windows接入手册.md) [接入问题FAQ](Docs/Windows/接入问题FAQ.md)          | 集成说明、常见问题说明      |
  | Electron | [Electron接入手册](Docs/Electron/Electron接入手册.md)                                   | 集成说明、常见问题说明 |
- | QT | [QT接入手册](Docs/QT/QT接入手册.md)                                                     | 集成说明、常见问题说明 |
+ | QT | [QT接入手册](Docs/Qt/QT接入手册.md)                                                     | 集成说明、常见问题说明 |
 
 
 # 集成过SDK旧版如何迁移新版
