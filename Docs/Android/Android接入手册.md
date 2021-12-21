@@ -288,6 +288,11 @@ android {
   ```
 
   - 其他字段含义可以参考Android官网：https://developer.android.com/training/articles/security-config?hl=zh-cn
-
+- Q:Didn't find class "androidx.localbroadcastmanager.content.LocalBroadcastManager"  && java.lang.NoClassDefFoundError: Failed resolution of: Landroidx/swiperefreshlayout/widget/CircularProgressDrawable; 当出现这个两个类找不到的时候，可能是com.google.android.material:material的版本过高导致的，
+- A:在gradle的dependencies添加下面依赖：
+```
+        implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+        implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+```	
 - 应用异常退出后，切换账号登录异常或者登录的账号信息错误
 > 如果登录的账号发生切换，请主动调用登出接口以清空登录态，再重新尝试登录。
