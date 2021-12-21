@@ -15,7 +15,7 @@
 
 # 1. SDK使用说明
 
-以下方法为伪代码，起示意作用，具体各终端代码样例参考SDK包中的Demo代码工程。
+以下接口方法为`伪代码`，起示意作用，为了表示各端统一的接口形式。具体接口方法参考各端接口代码定义和SDK包中的Demo代码工程样例。
 
 ## 1.1 获取SDK实例方法
 ``` 
@@ -88,7 +88,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### onResetSDKState
 * 说明：发生错误，需要重置状态
 * 可用版本：>= 2.18.2
-* 详细说明：当code为-1019时，表示使用中sdktoken过期了，需要refreshSDKToken、重新登录后再继续使用；当code为-1020时，表示SDK进程崩溃了，需要重新初始化、登录后再继续使用
+* 详细说明：当code为-1019时，表示使用中sdktoken过期了，需要refreshSDKToken、重新登录后再继续使用；当code为-1020时，会议进程退出，需要重新走一遍初始化和登录流程
 
 |参数名 |参数类型 | 参数说明 |
 |---|---|---|
@@ -128,7 +128,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 函数形式：int refreshSDKToken(string new_sdk_token)
 * 函数说明：更新SDK Token，替换掉过期或快过期的SDK Token。
 * 返回值类型：int
-* 返回值说明：处理结果的错误码，0表示成功；其他值表示失败，详情参考`6. 错误码`章节。
+* 返回值说明：处理结果的错误码，0表示成功；其他值表示失败，如：**-1008**表示**无效参数**。详情参考`6. 错误码`章节。
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
@@ -499,7 +499,7 @@ invite_info内容
 
 ### enableInviteCallback
 * 函数形式：void enableInviteCallback(bool enable, bool show)
-* 函数说明：设置是否使用邀请回调，如果使用，点击会议中界面下方工具栏上的邀请按钮，会将会议信息通过onInviteMeeting回调
+* 函数说明：设置是否使用邀请回调，如果使用，点击会议中界面下方工具栏上的邀请按钮，会将会议信息通过onInviteMeeting回调；保证接口调用在初始化回调成功之后。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：
@@ -507,11 +507,11 @@ invite_info内容
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |enable |bool |否 |false |是否使用 |
-|show   |bool |是 |true  |是否显示邀请页面，如果为true，SDK不会展示自身邀请界面，完全由接入方实现邀请界面和内容展示；如果为false，则还是显示SDK的邀请界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
+|show   |bool |是 |true  |是否显示邀请页面，如果为false，SDK不会展示自身邀请界面，完全由接入方实现邀请界面和内容展示；如果为true，则还是显示SDK的邀请界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
 
 ### enableMeetingInfoCallback
 * 函数形式：void enableMeetingInfoCallback(bool enable, bool show)
-* 函数说明：设置是否使用会议信息回调，如果使用，点击会议title后面(i)信息按钮，会将会议信息通过onShowMeetingInfo回调
+* 函数说明：设置是否使用会议信息回调，如果使用，点击会议title后面(i)信息按钮，会将会议信息通过onShowMeetingInfo回调；保证接口调用在初始化回调成功之后。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：
@@ -519,31 +519,33 @@ invite_info内容
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |enable |bool |否 |false |是否使用 |
-|show   |bool |是 |true  |是否显示会议信息页面，如果为true，SDK不会展示自身会议信息界面，完全由接入方实现会议信息界面和内容展示；如果为false，则还是显示SDK的会议信息界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
+|show   |bool |是 |true  |是否显示会议信息页面，如果为false，SDK不会展示自身会议信息界面，完全由接入方实现会议信息界面和内容展示；如果为true，则还是显示SDK的会议信息界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
 
 
 # 6. 错误码
 
-| 名称 | 错误码 | 说明 |
-|---|---|---|
-| kTMSDKErrorSuccess | 0                 | 成功。 |
-| kTMSDKErrorServerConfigFail | -1001    | 设置服务地址或获取服务配置失败 |
-| kTMSDKErrorInvalidAuthCode | -1002     | 获取AuthCode，登录时传入参数不正确可能会导致 |
-| kTMSDKErrorLogoutInMeeting | -1003     | 正在会议中，无法退出，需先离会 |
-| kTMSDKErrorLoginAborted | -1004        | 多次调用Login时，前次登录过程取消 |
-| kTMSDKErrorUnknown | -1005             | 未知错误，出现该错误码，请官方联系 |
-| kTMSDKErrorUserNotAuthorized | -1006   | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |
-| kTMSDKErrorUserInMeeting | -1007       | 已在会议中。在入会、投屏、显示会前界面的时候，用户在会议中，需先退出。 |
-| kTMSDKErrorInvalidParam | -1008        | 无效参数。在调用SDK接口时，包含无效参数。 |
-| kTMSDKErrorInvalidMeetingCode | -1009  | 无效会议号 |
-| kTMSDKErrorInvalidNickname | -1010     | 无效入会的用户名称，可能长度过长导致 |
-| kTMSDKErrorDuplicateInitCall | -1011   | 重复调用初始化 |
-| kTMSDKErrorAccountAlreadyLogin | -1012  | 账号已登录|
-| kTMSDKErrorSdkNotInitialized | -1013  | SDK未初始化|
-| kTMSDKErrorSyncCallTimeout | -1014  | SDK同步调用超时|
-| kTMSDKErrorNotInMeeting | -1015  | 非入会状态调用会议中接口|
-| kTMSDKErrorCancelJoin | -1016  | 用户手动取消入会 |
-| kTMSDKErrorIsLogining | -1017  | 已经在登录状态中，重复登录 |
-| kTMSDKErrorLoginNetError | -1018  | 登陆过程出现网络错误 |
-| kTMSDKErrorTokenVerifyFailed | -1019  | sdktoken校验失败，可能是登录时sdktoken过期或使用时sdktoken失效，需要refreshToken后再登录 |
-| kTMSDKErrorChildProcessCrash | -1020  | 子进程出现了crash |
+| 名称 | 错误码 | 说明 | 回调函数 |
+|---|---|---|---|
+| kTMSDKErrorSuccess | 0                 | 成功。 |									 |
+| kTMSDKErrorServerConfigFail | -1001    | 私有云SDK设置服务地址或获取服务配置失败      |onSDKInitializeResult()|
+| kTMSDKErrorInvalidAuthCode | -1002     | 获取AuthCode，登录时传入参数不正确可能会导致 |onLogin()|
+| kTMSDKErrorLogoutInMeeting | -1003     | 正在会议中，无法退出，需先离会 |onLogout()|
+| kTMSDKErrorLoginAborted | -1004        | ~~多次调用Login时，前次登录过程取消~~(已废弃) |onLogin()|
+| kTMSDKErrorUnknown | -1005             | 未知错误，出现该错误码，请官方联系 |onLogin()|
+| kTMSDKErrorUserNotAuthorized | -1006   | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
+| kTMSDKErrorUserInMeeting | -1007       | 已在会议中。在入会、投屏、显示会前界面的时候，用户在会议中，需先退出。 |onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
+| kTMSDKErrorInvalidParam | -1008        | 无效参数。在调用SDK接口时，包含无效参数。 |onSDKError()、onSDKInitializeResult()、onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onActionResult()、onSDKInitializeResult()|
+| kTMSDKErrorInvalidMeetingCode | -1009  | 无效会议号 |onJoinMeeting()|
+| kTMSDKErrorInvalidNickname | -1010     | 无效入会的用户名称，可能长度过长导致 |onJoinMeeting()|
+| kTMSDKErrorDuplicateInitCall | -1011   | 重复调用初始化	    |onSDKInitializeResult()|
+| kTMSDKErrorAccountAlreadyLogin | -1012  | 账号已登录|onLogin()|
+| kTMSDKErrorSdkNotInitialized | -1013  | SDK未初始化||
+| kTMSDKErrorSyncCallTimeout | -1014  | SDK同步调用超时||
+| kTMSDKErrorNotInMeeting | -1015  | 非入会状态调用会议中接口|onLeaveMeeting()|
+| kTMSDKErrorCancelJoin | -1016  | 用户手动取消入会 |onJoinMeeting()|
+| kTMSDKErrorIsLogining | -1017  | 已经在登录状态中，重复登录 |onLogin()|
+| kTMSDKErrorLoginNetError | -1018  | 登陆过程出现网络错误 |onLogin()|
+| kTMSDKErrorTokenVerifyFailed | -1019  | sdktoken校验失败，可能是登录时sdktoken过期或使用时sdktoken失效，需要refreshToken后再登录 |onResetSDKState()、onLogin()|
+| kTMSDKErrorChildProcessCrash | -1020  | 子进程退出 |onResetSDKState()|
+| kTMSDKErrorMultiAccountLoginConflict|-1021|已登录状态下，未调用logout就切换账号登录 | onLogin()|
+
