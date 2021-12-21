@@ -88,7 +88,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### onResetSDKState
 * 说明：发生错误，需要重置状态
 * 可用版本：>= 2.18.2
-* 详细说明：当code为-1019时，表示使用中sdktoken过期了，需要refreshSDKToken、重新登录后再继续使用；当code为-1020时，表示SDK进程崩溃了，需要重新初始化、登录后再继续使用；当code为1的时候，表示ipc断链，会议进程退出，需要重新走一遍初始化和登录流程
+* 详细说明：当code为-1019时，表示使用中sdktoken过期了，需要refreshSDKToken、重新登录后再继续使用；当code为-1020时，会议进程退出，需要重新走一遍初始化和登录流程
 
 |参数名 |参数类型 | 参数说明 |
 |---|---|---|
@@ -288,7 +288,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 | meeting_code | string | 会议号 |
 
 ### onShowScreenCastViewResult【即将移除】
-* 说明：打开无线投屏的回调。
+* 说明：打开无线投屏界面的回调。
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
@@ -310,7 +310,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 | 名称 | 行为操作的枚举值 | 说明 |
 |---|---|---|
 | ShowPreMeetingView | 0    | 打开会前界面的回调 |
-| ShowScreenCastView | 1    | 打开无线投屏的回调 |
+| ShowScreenCastView | 1    | 打开无线投屏界面的回调 |
 | ShowHistoricalMeetingView | 2    | 打开历史会议界面的回调|
 | ShowMeetingDetailView | 3    | 打开某一会议详情的回调 |
 | ShowJoinMeetingView | 4    | 打开加入会议界面的回调 |
@@ -546,6 +546,6 @@ invite_info内容
 | kTMSDKErrorIsLogining | -1017  | 已经在登录状态中，重复登录 |onLogin()|
 | kTMSDKErrorLoginNetError | -1018  | 登陆过程出现网络错误 |onLogin()|
 | kTMSDKErrorTokenVerifyFailed | -1019  | sdktoken校验失败，可能是登录时sdktoken过期或使用时sdktoken失效，需要refreshToken后再登录 |onResetSDKState()、onLogin()|
-| kTMSDKErrorChildProcessCrash | -1020  | 子进程出现了crash |onResetSDKState()|
-|kTMSDKErrorMultiAccountLoginConflict|-1021|已登录状态下，未调用logout就切换账号登录 | onLogin()|
+| kTMSDKErrorChildProcessCrash | -1020  | 子进程退出 |onResetSDKState()|
+| kTMSDKErrorMultiAccountLoginConflict|-1021|已登录状态下，未调用logout就切换账号登录 | onLogin()|
 
