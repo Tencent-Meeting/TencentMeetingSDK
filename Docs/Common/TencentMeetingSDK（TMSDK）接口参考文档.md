@@ -288,7 +288,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 | meeting_code | string | 会议号 |
 
 ### onShowScreenCastViewResult【即将移除】
-* 说明：打开无线投屏的回调。
+* 说明：打开无线投屏界面的回调。
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
@@ -310,7 +310,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 | 名称 | 行为操作的枚举值 | 说明 |
 |---|---|---|
 | ShowPreMeetingView | 0    | 打开会前界面的回调 |
-| ShowScreenCastView | 1    | 打开无线投屏的回调 |
+| ShowScreenCastView | 1    | 打开无线投屏界面的回调 |
 | ShowHistoricalMeetingView | 2    | 打开历史会议界面的回调|
 | ShowMeetingDetailView | 3    | 打开某一会议详情的回调 |
 | ShowJoinMeetingView | 4    | 打开加入会议界面的回调 |
