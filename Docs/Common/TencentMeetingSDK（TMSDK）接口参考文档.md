@@ -238,7 +238,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 ### logout
 * 函数形式：void logout()
-* 函数说明：发起登出请求，登出结果会在回调`AuthenticationCallback.onLogout`返回。请不用在收到该回调前，调用`login`函数。
+* 函数说明：发起登出请求，登出结果会在回调`AuthenticationCallback.onLogout`返回。请不要在收到该回调前，调用`login`函数。
 <span style="color:red">如果要切换账户，必须先调`logout`，然后在`onLogout`的回调里面调用`login`。</span>
 * 返回值类型：void
 * 返回值说明：无
