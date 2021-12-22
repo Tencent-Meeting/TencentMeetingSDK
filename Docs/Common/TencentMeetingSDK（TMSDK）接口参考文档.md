@@ -243,7 +243,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 参数说明：无
 
 ### isLoggedIn
-* 函数形式：void isLoggedIn()
+* 函数形式：bool isLoggedIn()
 * 函数说明：判断是否已登录
 * 返回值类型：bool
 * 返回值说明：是否已登录
