@@ -9,7 +9,6 @@
 | 2021-8-30 | 接口调整：入会和离会回调接口增加meeting_code字段 | 2.18.0 |
 | 2021-10-9 | 新增接口：获取登录态URL、显示历史会议列表、显示历史会议详情页 | 2.18.1 |
 | 2021-10-20 | 新增接口：显示加入会议界面、显示预定会议界面、显示会议设置界面、相关回调| 2.18.2 |
-| 即将推出 | 新增的接口：快速创建会议、获取当前会议信息 | -- |
 
 
 
@@ -41,7 +40,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
     4. 响应登录回调`AuthenticationCallback.onLogin`，**回调结果成功表示登录成功**
 4. 入会
     1. 获取`PreMeetingService`实例
-    2. 设置回调代理`setPreMeetingCallback`         
+    2. 设置回调代理`setPreMeetingCallback`
     3. 调用`PreMeetingService.joinMeeting`进行入会
     4. 响应入会回调`PreMeetingCallback.onJoinMeeting`，回调结果成功表示入会成功
 
@@ -79,7 +78,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | code | int | 打开日志文件夹结果码 |
 | msg | string | 打开日志文件夹结果信息 |
 
-### onSDKError 
+### onSDKError
 |参数名 |参数类型 | 参数说明 |
 |---|---|---|
 | code | int | 错误码 |
@@ -227,7 +226,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ### login
 * 函数形式：void login(string sso_url)
 * 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。请不要在收到该回调前，调用`logout`函数。
-<span style="color:red">如果要切换账户，必须先调`logout`，然后在`onLogout`的回调里面调用`login`。</span>
+  <span style="color:red">如果要切换账户，必须先调`logout`，然后在`onLogout`的回调里面调用`login`。</span>
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：
@@ -239,7 +238,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ### logout
 * 函数形式：void logout()
 * 函数说明：发起登出请求，登出结果会在回调`AuthenticationCallback.onLogout`返回。请不要在收到该回调前，调用`login`函数。
-<span style="color:red">如果要切换账户，必须先调`logout`，然后在`onLogout`的回调里面调用`login`。</span>
+  <span style="color:red">如果要切换账户，必须先调`logout`，然后在`onLogout`的回调里面调用`login`。</span>
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
@@ -528,26 +527,26 @@ invite_info内容
 
 | 名称 | 错误码 | 说明 | 回调函数 |
 |---|---|---|---|
-| kTMSDKErrorSuccess | 0                 | 成功。 |									 |
-| kTMSDKErrorServerConfigFail | -1001    | 私有云SDK设置服务地址或获取服务配置失败      |onSDKInitializeResult()|
-| kTMSDKErrorInvalidAuthCode | -1002     | 获取AuthCode，登录时传入参数不正确可能会导致 |onLogin()|
+| kTMSDKErrorSuccess | 0                 | 成功。|				 |
+| kTMSDKErrorServerConfigFail | -1001    | 私有云SDK设置服务地址错误或获取服务配置失败     |onSDKInitializeResult()|
+| kTMSDKErrorInvalidAuthCode | -1002     | 无效AuthCode，登录参数不正确或IDaaS登录跳转存在问题   |onLogin()|
 | kTMSDKErrorLogoutInMeeting | -1003     | 正在会议中，无法退出，需先离会 |onLogout()|
 | kTMSDKErrorLoginAborted | -1004        | ~~多次调用Login时，前次登录过程取消~~(已废弃) |onLogin()|
-| kTMSDKErrorUnknown | -1005             | 未知错误，出现该错误码，请官方联系 |onLogin()|
+| kTMSDKErrorUnknown | -1005             | 未知错误，出现该错误码，请与官方联系 |onLogin()|
 | kTMSDKErrorUserNotAuthorized | -1006   | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
 | kTMSDKErrorUserInMeeting | -1007       | 已在会议中。在入会、投屏、显示会前界面的时候，用户在会议中，需先退出。 |onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
 | kTMSDKErrorInvalidParam | -1008        | 无效参数。在调用SDK接口时，包含无效参数。 |onSDKError()、onSDKInitializeResult()、onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onActionResult()、onSDKInitializeResult()|
 | kTMSDKErrorInvalidMeetingCode | -1009  | 无效会议号 |onJoinMeeting()|
 | kTMSDKErrorInvalidNickname | -1010     | 无效入会的用户名称，可能长度过长导致 |onJoinMeeting()|
-| kTMSDKErrorDuplicateInitCall | -1011   | 重复调用初始化	    |onSDKInitializeResult()|
-| kTMSDKErrorAccountAlreadyLogin | -1012  | 账号已登录|onLogin()|
-| kTMSDKErrorSdkNotInitialized | -1013  | SDK未初始化||
-| kTMSDKErrorSyncCallTimeout | -1014  | SDK同步调用超时||
-| kTMSDKErrorNotInMeeting | -1015  | 非入会状态调用会议中接口|onLeaveMeeting()|
+| kTMSDKErrorDuplicateInitCall | -1011   | 重复调用初始化  |onSDKInitializeResult()|
+| kTMSDKErrorAccountAlreadyLogin | -1012 | 账号已登录，重复登录调用 |onLogin()|
+| kTMSDKErrorSdkNotInitialized | -1013  | SDK未初始化 ||
+| kTMSDKErrorSyncCallTimeout | -1014  | SDK同步调用超时 ||
+| kTMSDKErrorNotInMeeting | -1015  | 非入会状态调用会议中接口 |onLeaveMeeting()|
 | kTMSDKErrorCancelJoin | -1016  | 用户手动取消入会 |onJoinMeeting()|
-| kTMSDKErrorIsLogining | -1017  | 已经在登录状态中，重复登录 |onLogin()|
-| kTMSDKErrorLoginNetError | -1018  | 登陆过程出现网络错误 |onLogin()|
+| kTMSDKErrorIsLogining | -1017  | 正在登录过程中的重复登录调用 |onLogin()|
+| kTMSDKErrorLoginNetError | -1018  | 登录过程出现网络错误 |onLogin()|
 | kTMSDKErrorTokenVerifyFailed | -1019  | sdktoken校验失败，可能是登录时sdktoken过期或使用时sdktoken失效，需要refreshToken后再登录 |onResetSDKState()、onLogin()|
 | kTMSDKErrorChildProcessCrash | -1020  | 子进程退出 |onResetSDKState()|
-| kTMSDKErrorMultiAccountLoginConflict|-1021|已登录状态下，未调用logout就切换账号登录 | onLogin()|
+| kTMSDKErrorMultiAccountLoginConflict|-1021| A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
 
