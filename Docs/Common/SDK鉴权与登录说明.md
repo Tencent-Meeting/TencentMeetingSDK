@@ -11,7 +11,7 @@
 客户（机构）的安全凭证，通过SDK ID（别名`SDK Key`）和SDK Secret生成，来验证SDK的使用者所属的机构，是客户（机构）的唯一标识凭证。
 
 ## 1.3 什么是ID Token
-对客户下的使用者账户进行认证的安全凭证，每个登录的用户都需要通过ID Secret来生成不同的ID Token，从而进行身份验证。
+对客户下的使用者账户进行认证的安全凭证，每个登录的用户都需要通过ID Secret的私钥来生成不同的ID Token，从而进行身份验证。
 
 **注意：** 为保证您的应用安全性，请将秘钥信息（包括但不限于SDK ID、SDK Secret、ID Secret）及企业身份信息部署到您的Sever端，不可由终端程序持有保管。
 
@@ -34,7 +34,10 @@
 3. 客户的Server端在生成token时，需用SDK Secret来做签名。
 4. 客户的Client端获取到sdk_id和sdk_token后，即可调用腾讯会议SDK的初始化函数，返回初始化结果。
 
-**注意：SDK Token应由Server端来生成，Client端`不可以`持有SDK Secret来生成Token，否则`存在安全风险`**
+**<span style="color:red">注意</span>**：
+- SDK Token应由Server端来生成，Client端`不可以`持有SDK Secret来生成Token，否则`存在安全风险`
+- SDK Token不包含用户的账户信息，因此客户端切换账户时，可以不用更新SDK Token，并可以在SDK Token有效期内本地缓存SDK Token。
+- SDK Token有效期为使用SDK的有效周期，过期后，即使已经登录了，SDK也将无法使用，并会踢出登录，SDK也提供了相应接口更新SDK Token。
 
 
 ## 2.3 登录流程
@@ -51,8 +54,9 @@
 8. 腾讯会议SDK将获得的Authorization Code以及SDK Token发给腾讯会议Server端请求登录验证，登录结果将返回给SDK。
 9. 当身份认证成功后，SDK会向Client端发起`OnLogin`的回调，完成登录。
 
-**注意：ID Token应由Server端来生成，Client端`不可以`持有ID Secret来生成Token，否则`存在安全风险`**
-
+**<span style="color:red">注意</span>**：
+- ID Token应由Server端来生成，Client端`不可以`持有ID Secret来生成Token，否则`存在安全风险`**
+- ID Token有效期仅在登录时验证，如果过期，将不能进行登录。已登录后不受影响。
 
 # 3. SDK Token生成说明
 
@@ -88,8 +92,10 @@ SDK Token是JWT的格式，其各个部分定义如下：
 数据Payload部分包含以上四个属性，按要求填写即可。
 所有涉及到时间的属性，都是Unix时间戳，即从1970年1月1日（UTC/GMT的午夜）开始所经过的秒数，不考虑闰秒。
 
-**`注意`**：SDK Token表示该企业在会议使用的授权，跟该企业下的用户账号无关，所以上面`exp`过期时间的时长最好远大于客户端一般使用的时长，
-避免用户在使用过程中sdk_token过期而无法使用。经验建议值：15-30天。如果使用过程中，SDK Token过期，会有回调接口通知给客户，如果正好在会议中，则会退会并退出登录。
+**<span style="color:red">注意</span>**：
+- SDK Token表示该企业在会议使用的授权，跟该企业下的用户账号无关，所以上面`exp`过期时间的时长最好远大于客户端一般使用的时长，
+- 避免用户在使用过程中sdk_token过期而无法使用。经验建议值：15-30天。如果使用过程中，SDK Token过期，会有回调接口通知给客户，如果正好在会议中过期，则会退会并退出登录。
+
 具体请参考[TencentMeetingSDK（TMSDK）接口参考文档](../Common/TencentMeetingSDK（TMSDK）接口参考文档.md)
 
 
