@@ -318,6 +318,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 | ShowJoinMeetingView | 4    | 打开加入会议界面的回调 |
 | ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 |
 | ShowMeetingSettingView | 6    | 打开会议设置界面的回调 |
+| ClosePreMeetingView | 100    | 关闭会前界面的回调 |
 
 ## 4.2 PreMeetingService成员
 
