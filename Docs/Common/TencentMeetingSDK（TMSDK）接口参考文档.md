@@ -14,7 +14,10 @@
 
 # 1. SDK使用说明
 
-以下接口方法为`伪代码`，起示意作用，为了表示各端统一的接口形式。具体接口方法参考各端接口代码定义和SDK包中的Demo代码工程样例。
+<font color="red">**参考前必看:**</font>
+
+以下接口方法格式为`伪代码`，起示意作用，为了表示各端统一的接口形式。
+因为代码风格各端各不相同，具体接口命名风格可参考各端SDK接口代码定义和SDK包中的Demo代码工程样例源代码。
 
 ## 1.1 获取SDK实例方法
 ``` 
@@ -226,7 +229,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ### login
 * 函数形式：void login(string sso_url)
 * 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。请不要在收到该回调前，调用`logout`函数。
-  <span style="color:red">如果要切换账户，必须先调`logout`，然后在`onLogout`的回调里面调用`login`。</span>
+  如果要切换账户，必须先调`logout`，然后在`onLogout`的回调里面调用`login`。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：
@@ -238,7 +241,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ### logout
 * 函数形式：void logout()
 * 函数说明：发起登出请求，登出结果会在回调`AuthenticationCallback.onLogout`返回。请不要在收到该回调前，调用`login`函数。
-  <span style="color:red">如果要切换账户，必须先调`logout`，然后在`onLogout`的回调里面调用`login`。</span>
+  如果要切换账户，必须先调`logout`，然后在`onLogout`的回调里面调用`login`。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
