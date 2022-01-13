@@ -424,6 +424,7 @@ PreMeetingCallback 需实现以下成员函数：
 | ShowJoinMeetingView | 4    | 打开加入会议界面的回调 |
 | ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 |
 | ShowMeetingSettingView | 6    | 打开会议设置界面的回调 |
+| ClosePreMeetingView | 100    | 关闭会前界面的回调 |
 
 
 # 5. InMeetingService 说明
