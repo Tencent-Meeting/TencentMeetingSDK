@@ -478,7 +478,7 @@ PreMeetingCallback 需实现以下成员函数：
 |enable |bool |否 |false |是否使用 |
 |show   |bool |是 |true  |是否显示会议信息页面，如果为false，SDK不会展示自身会议信息界面，完全由接入方实现会议信息界面和内容展示；如果为true，则还是显示SDK的会议信息界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
 
-## 5.1 InMeetingCallback 回调代理
+## 5.2 InMeetingCallback 回调代理
 
 InMeetingCallback 需实现以下成员函数：
 
