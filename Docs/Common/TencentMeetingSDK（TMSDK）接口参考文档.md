@@ -377,7 +377,7 @@ AuthenticationCallback 需实现以下成员函数：
 ### showMeetingSettingView
 * 可用版本：>= 2.18.2
 * 函数形式：void showMeetingSettingView()
-* 函数说明：显示设置管理界面。登录完成后，才可调用。
+* 函数说明：显示设置管理界面。初始化后，才可调用。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
