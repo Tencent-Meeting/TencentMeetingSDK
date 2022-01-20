@@ -110,7 +110,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### showLogs
 * 函数形式：void showLogs()
-* 函数说明：帮助用户获取日志，移动端会对日志目录打包，并打开系统的分享；桌面端会打开日志文件夹。
+* 函数说明：帮助用户获取日志，移动端会对日志目录打包，并打开系统的分享；桌面端会打开日志文件夹。调用结果通过`SDKCallback.onShowLogsResult`回调通知。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
@@ -125,21 +125,21 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 
 ### getAccountService
-* 函数形式：string getAccountService()
+* 函数形式：AccountService getAccountService()
 * 函数说明：获取SDK`AccountService`的对象实例。
 * 返回值类型：AccountService
 * 返回值说明：`AccountService`的对象实例
 * 参数说明：无
 
 ### getPreMeetingService
-* 函数形式：string getPreMeetingService()
+* 函数形式：PreMeetingService getPreMeetingService()
 * 函数说明：获取SDK`PreMeetingService`的对象实例。
 * 返回值类型：PreMeetingService
 * 返回值说明：`PreMeetingService`的对象实例
 * 参数说明：无
 
 ### getInMeetingService
-* 函数形式：string getInMeetingService()
+* 函数形式：InMeetingService getInMeetingService()
 * 函数说明：获取SDK`InMeetingService`的对象实例。
 * 返回值类型：InMeetingService
 * 返回值说明：`InMeetingService`的对象实例
