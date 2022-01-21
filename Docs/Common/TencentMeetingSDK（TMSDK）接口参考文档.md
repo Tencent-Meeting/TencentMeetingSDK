@@ -556,7 +556,7 @@ invite_info内容
 | kTMSDKErrorCancelJoin | -1016  | 用户手动取消入会 |onJoinMeeting()|
 | kTMSDKErrorIsLogining | -1017  | 正在登录过程中的重复登录调用 |onLogin()|
 | kTMSDKErrorLoginNetError | -1018  | 登录过程出现网络错误 |onLogin()|
-| kTMSDKErrorTokenVerifyFailed | -1019  | sdktoken校验失败，可能是登录时sdktoken过期或使用时sdktoken失效，需要refreshToken后再登录 |onResetSDKState()、onLogin()|
+| kTMSDKErrorTokenVerifyFailed | -1019  | sdktoken校验失败，可能是登录时sdktoken过期或使用时sdktoken失效，需要refreshSDKToken后再登录 |onResetSDKState()、onLogin()|
 | kTMSDKErrorChildProcessCrash | -1020  | 子进程退出 |onResetSDKState()|
 | kTMSDKErrorMultiAccountLoginConflict|-1021| A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
 
