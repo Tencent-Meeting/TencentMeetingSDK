@@ -316,10 +316,10 @@ wemeet_sdk.AddJsCallback(call_back)
 
 说明：这个函数是electron的sdk独有的函数，call_back 是一个js的function，参数是一个json字符串
 
-#### 17、SDK窗口置顶
+#### 17、会中窗口置顶
 
 ```
-wemeet_sdk.BringViewTop()
+wemeet_sdk.BringInMeetingViewTop()
 ```
 说明：3.0.1加入
 
