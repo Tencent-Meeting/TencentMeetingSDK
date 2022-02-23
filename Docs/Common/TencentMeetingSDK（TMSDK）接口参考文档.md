@@ -147,10 +147,11 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### bringViewTop
 * 函数形式：void bringViewTop()
-* 函数说明：将SDK窗口置顶。如果SDK当前可显示窗口，则不做任何操作
+* 函数说明：将SDK窗口置顶，如果SDK当前没有可显示窗口，则不做任何操作。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
+* 注：仅Mac、Windows、electron有该接口
 
 
 ## 2.2 SDKCallback 回调代理
