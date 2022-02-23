@@ -321,6 +321,7 @@ wemeet_sdk.AddJsCallback(call_back)
 ```
 wemeet_sdk.BringViewTop()
 ```
+说明：3.0.1加入
 
 ## 4. 回调说明
 
