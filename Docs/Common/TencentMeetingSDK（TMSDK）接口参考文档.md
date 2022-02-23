@@ -9,7 +9,7 @@
 | 2021-8-30 | 接口调整：入会和离会回调接口增加meeting_code字段 | 2.18.0 |
 | 2021-10-9 | 新增接口：获取登录态URL、显示历史会议列表、显示历史会议详情页 | 2.18.1 |
 | 2021-10-20 | 新增接口：显示加入会议界面、显示预定会议界面、显示会议设置界面、相关回调| 2.18.2 |
-| 2022-02-23 | 新增接口：新增SDK窗口置顶(bringViewTop)接口| 3.0.1 |
+| 2022-02-23 | 新增接口：新增会中窗口置顶(BringInMeetingViewTop)接口| 3.0.1 |
 
 
 # 1. SDK使用说明
@@ -144,14 +144,6 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 返回值类型：InMeetingService
 * 返回值说明：`InMeetingService`的对象实例
 * 参数说明：无
-
-### bringViewTop
-* 函数形式：void bringViewTop()
-* 函数说明：将SDK窗口置顶，如果SDK当前没有可显示窗口，则不做任何操作。
-* 返回值类型：void
-* 返回值说明：无
-* 参数说明：无
-* 注：仅Mac、Windows、electron有该接口
 
 
 ## 2.2 SDKCallback 回调代理
@@ -486,6 +478,16 @@ PreMeetingCallback 需实现以下成员函数：
 |---|---|---|---|---|
 |enable |bool |否 |false |是否使用 |
 |show   |bool |是 |true  |是否显示会议信息页面，如果为false，SDK不会展示自身会议信息界面，完全由接入方实现会议信息界面和内容展示；如果为true，则还是显示SDK的会议信息界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
+
+
+### bringInMeetingViewTop
+* 函数形式：void bringInMeetingViewTop()
+* 函数说明：将SDK窗口置顶，如果SDK当前没有可显示窗口，则不做任何操作。
+* 返回值类型：void
+* 返回值说明：无
+* 参数说明：无
+* 注：仅Mac、Windows、electron有该接口
+
 
 ## 5.2 InMeetingCallback 回调代理
 
