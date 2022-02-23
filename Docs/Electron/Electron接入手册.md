@@ -321,7 +321,7 @@ wemeet_sdk.AddJsCallback(call_back)
 ```
 wemeet_sdk.BringInMeetingViewTop()
 ```
-说明：3.0.102加入
+说明：如果当前没有会中窗口，则不做任何操作。没有回调。3.0.102加入。
 
 ## 4. 回调说明
 
