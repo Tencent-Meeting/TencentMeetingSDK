@@ -482,7 +482,7 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### bringInMeetingViewTop
 * 函数形式：void bringInMeetingViewTop()
-* 函数说明：将SDK窗口置顶，如果SDK当前没有可显示窗口，则不做任何操作。
+* 函数说明：将会中窗口置顶，如果当前没有会中窗口，则不做任何操作。没有回调。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
