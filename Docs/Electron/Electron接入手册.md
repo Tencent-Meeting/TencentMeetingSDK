@@ -316,6 +316,13 @@ wemeet_sdk.AddJsCallback(call_back)
 
 说明：这个函数是electron的sdk独有的函数，call_back 是一个js的function，参数是一个json字符串
 
+#### 17、会中窗口置顶
+
+```
+wemeet_sdk.BringInMeetingViewTop()
+```
+说明：如果当前没有会中窗口，则不做任何操作。没有回调。3.0.102加入。
+
 ## 4. 回调说明
 
 所有接口的调用接口都是通过异步回调返回的，这里异步回调的返回值是一个标准的json字符串，格式如下：
