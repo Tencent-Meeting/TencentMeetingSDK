@@ -1,6 +1,6 @@
 # FAQ
 
-### ts中是用wemeet sdk
+### TypeScript中是用wemeet sdk
 1. 项目中引入node-loader
 2. 添加配置
 ```javascript
