@@ -123,6 +123,16 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | iOS | {宿主App沙盒路径}/AppData/Library/Application Support/{宿主App的BundleID}/Global/Logs |
 | Android | /Data/Data/{宿主App的PackageName}/Global/Logs |
 
+### handleSchema
+* 函数形式：void handleSchema(string schemaUrl)
+* 函数说明： 一键跳转页面, 通过解析schemaUrl里面的字段跳转不同页面
+* 返回值类型： void
+* 返回值说明：无
+* 参数说明：无
+* 
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|schemaUrl |string |是 |(无) |跳转链接 格式位{wemeet://page/页面?meeting_code=&token=&launch_id=&user_code=&meeting_type_flags=0}|
 
 ### getAccountService
 * 函数形式：AccountService getAccountService()
