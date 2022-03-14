@@ -129,7 +129,6 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 返回值类型： void
 * 返回值说明：无
 * 参数说明：无
-* 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |schemaUrl |string |是 |(无) |跳转链接 格式为{wemeet://page/页面?meeting_code=&token=&launch_id=&user_code=&meeting_type_flags=0}|
