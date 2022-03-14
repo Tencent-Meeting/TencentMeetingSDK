@@ -125,7 +125,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### handleSchema
 * 函数形式：void handleSchema(string schemaUrl)
-* 函数说明： 一键跳转页面, 通过解析schemaUrl里面的字段跳转不同页面,参数若带有user_code(idass请求获取的authcode)并且在未登录的情况下，无法跳转到置顶页面；
+* 函数说明： 一键跳转页面, 通过解析schemaUrl里面的字段跳转不同页面,参数若带有user_code(idass请求获取的authcode)并且在未登录的情况下，无法跳转到指定页面；
              参数带有user_code并且之前已经登录，会按照之前登录的账号进行跳转；参数带有user_code,之前未登录，按照user_code对应的用户进行页面跳转。
 * 返回值类型： void
 * 返回值说明：无
