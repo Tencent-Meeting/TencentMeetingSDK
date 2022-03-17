@@ -31,11 +31,14 @@ android {
 - Q:重复class报错，目前会出现此类问题的主要以x5内核和imsdk下的文件为主
 
   A:执行./gradlew app:dependencies(window下执行gradlew app:dependencies)，对照输出依赖将sdk中的依赖排除出去，例如
-
+    移除glide  wemeet-kapt 
+    移除bugly  tm-bugly-sdk 
 ```groovy
     implementation "com.tencent.wemeet: ${wemeet_version}" {
         exclude group: 'com.tencent.tbssdk', module: 'tbssdk'
         exclude group: 'com.tencent.wemeet', module: 'imsdk'
+	exclude module: 'wemeet-kapt'
+	exclude module: 'tm-bugly-sdk'
     }
 ```
 - Q:javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
@@ -71,3 +74,6 @@ android {
 ```	
 - 应用异常退出后，切换账号登录异常或者登录的账号信息错误
 > 如果登录的账号发生切换，请主动调用登出接口以清空登录态，再重新尝试登录。
+
+- Q:收到分享回调显示透明activity但是背景activity显示的不是会中界面
+- A:请联系技术支持
