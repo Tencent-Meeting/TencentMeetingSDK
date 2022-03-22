@@ -571,4 +571,4 @@ invite_info内容
 | kTMSDKErrorTokenVerifyFailed | -1019  | sdktoken校验失败，可能是登录时sdktoken过期或使用时sdktoken失效，需要refreshSDKToken后再登录 |onResetSDKState()、onLogin()|
 | kTMSDKErrorChildProcessCrash | -1020  | 子进程退出 |onResetSDKState()|
 | kTMSDKErrorMultiAccountLoginConflict|-1021| A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
-
+| kTMSDKErrorJoinMeetingServiceFailed|-1022| 服务端拒绝入会，可能是频繁入会请求、输入无效会议号等情况，请用返回错误码和错误描述联系官方 | onJoinMeeting()|
