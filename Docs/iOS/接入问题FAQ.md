@@ -14,7 +14,7 @@ A: 未初始化SDK前，先调用了accountService的isLogin函数，导致accou
 
 Q3.接入SDK 后，会中横竖屏问题。
 
-A: 横竖屏设置的优先级顺序是：Appdelegate/Info.plist=>TabBarController=>NavigationController=>ViewController。目前SDK在NavigationController=>ViewController这个已经设置支持会中页面MeetingViewController转屏,需要在Info.plist和TabBarController设置支持转屏
+A: 横竖屏设置的优先级顺序是：Appdelegate/Info.plist=>TabBarController=>NavigationController=>ViewController。目前SDK在NavigationController=>ViewController这个已经设置支持会中页面MeetingViewController转屏，但由于横竖屏的优先级问题，仍需您在自己的App里设置会议相关VC支持横竖屏。如您的App层级为Tabber->Nav，则需要在Tabbar和Nav的基类里都支持相关VC横竖屏，下面是在Tabbar里配置相关VC横竖屏的代码，iOS横竖屏具体知识可参照这篇文章[iOS横竖屏适配](https://www.jianshu.com/p/a2201f39b6a7)
 ```
 
 1、在你们的自定义的UITabBarController，添加以下方法
