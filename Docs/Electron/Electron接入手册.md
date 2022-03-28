@@ -257,58 +257,58 @@ wemeet_sdk.LeaveMeeting(end_meeting)
 ### 7、会议信息回调开关
 
 ``` 
-wemeet_sdk.SetNeedShareCallback(invite_on, invite_show)
-```
-
-#### 8、邀请回调开关
-
-```
 wemeet_sdk.SetNeedMeetingInfoCallback(info_on, info_show)
 ```
 
-#### 9、无线投屏
+### 8、邀请回调开关
+
+```
+wemeet_sdk.SetNeedShareCallback(invite_on, invite_show)
+```
+
+### 9、无线投屏
 
 ```
 wemeet_sdk.ScreenCasting()
 ```
 
-#### 10、打开日志目录
+### 10、打开日志目录
 
 ```
 wemeet_sdk.OpenLogDirectory()
 ```
 
-#### 11、检查登录态
+### 11、检查登录态
 
 ```
 wemeet_sdk.IsAuthorized()
 ```
 
-#### 12、显示会议历史
+### 12、显示会议历史
 
 ```
 wemeet_sdk.ShowHistoricalMeetingView();
 ```
 
-#### 13、显示会议详情
+### 13、显示会议详情
 
 ```
 wemeet_sdk.ShowMeetingDetailView(meeting_id, current_sub_meeting_id)
 ```
 
-#### 14、登录态跳转
+### 14、登录态跳转
 
 ```
 wemeet_sdk.JumpUrlWithLoginStatus(target_url)
 ```
 
-#### 15、反初始化
+### 15、反初始化
 
 ```
 wemeet_sdk.ReleaseWemeetSDK()
 ```
 
-#### 16、添加js回调
+### 16、添加js回调
 
 ```
 wemeet_sdk.AddJsCallback(call_back)
@@ -316,7 +316,7 @@ wemeet_sdk.AddJsCallback(call_back)
 
 说明：这个函数是electron的sdk独有的函数，call_back 是一个js的function，参数是一个json字符串
 
-#### 17、会中窗口置顶
+### 17、会中窗口置顶
 
 ```
 wemeet_sdk.BringInMeetingViewTop()
