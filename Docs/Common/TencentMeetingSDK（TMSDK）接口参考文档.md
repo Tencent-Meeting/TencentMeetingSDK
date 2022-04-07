@@ -204,10 +204,13 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 ### login
 * 函数形式：void login(string sso_url)
-* 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。请不要在收到该回调前，调用`logout`函数。
-  如果要切换账户，必须先调`logout`，然后在`onLogout`的回调里面调用`login`。
+* 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。
 * 返回值类型：void
 * 返回值说明：无
+* 注意事项：
+  - 在收到`onLogin`该回调前，调用`logout`函数会取消登录过程。
+  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`login`。
+  - 平时退出App不用调用`logout`，这样下次启动程序后调用`login`针对相同账户可以快速登录。    
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
@@ -216,10 +219,14 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 ### logout
 * 函数形式：void logout()
-* 函数说明：发起登出请求，登出结果会在回调`AuthenticationCallback.onLogout`返回。请不要在收到该回调前，调用`login`函数。
-  如果要切换账户，必须先调`logout`，然后在`onLogout`的回调里面调用`login`。未登录时也可以调用logout，会回调success。
+* 函数说明：发起登出请求，登出结果会在回调`AuthenticationCallback.onLogout`返回。
 * 返回值类型：void
 * 返回值说明：无
+* 注意事项：
+  - 请不要在收到`onLogout`回调前，调用`login`函数。
+  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`login`。
+  - 未登录时调用`logout`，会回调success。
+  - 平时退出App不用调用`logout`，这样下次启动程序后调用`login`针对相同账户可以快速登录。    
 * 参数说明：无
 
 ### isLoggedIn
