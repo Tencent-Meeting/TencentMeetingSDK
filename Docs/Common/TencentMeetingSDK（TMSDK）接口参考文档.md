@@ -81,8 +81,8 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |公有云SDK专用|sdk_token |string |必填 |(无) |SDK Token |
 |私有化SDK专用 |server_host |string |必填，二选一 |(无) |私有化服务器地址，格式为：{protocol}://{domain}:{port}，protocol默认为http；port默认为29666 |
 |私有化SDK专用|org_domain |string |必填，二选一 |(无) |组织机构域，如填写，SDK则会通过`org_domain`从公有云服务上获取私有化服务器地址，并覆盖`server_host`的值 |
-|通用 |data_path |string |否 | %AppData%\Tencent\WeMeet\Global\Logs | 仅`Windows`支持：自定义SDK数据存储路径，里面包括日志目录。 |
-|通用 |app_name |string |否 |腾讯会议 | 指定显示的品牌名称 |
+|通用 |data_path |string |否 | %AppData%\Tencent\WeMeet | 仅`Windows`支持：自定义SDK数据存储路径，里面包括日志目录。 |
+|通用 |app_name |string |否 |网络会议 | 指定显示的品牌名称 |
 
 
 ### isInitialized
@@ -211,7 +211,8 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 最佳实践和注意事项：
   - 在收到`onLogin`该回调前，调用`logout`函数会取消登录过程。
   - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`login`。不切换账户的情况，不用调`logout`。
-  - 平时退出App不用调用`logout`，这样下次启动程序后调用`login`针对相同账户可以快速登录。    
+  - 平时退出App不用调用`logout`，这样下次启动程序后调用`login`针对相同账户可以快速登录。
+  - 已登录某个账号，再次调用`login`重复登录相同账号，回调会是登录成功，而再次登录不同账号，则会回调提示账号登录冲突
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
