@@ -1,13 +1,20 @@
 # 1. SDK 整体的基本时序步骤
-1. 获取SDK实例
+1. 获取SDK实例（各端代码方式略有不同）
+
 2. SDK初始化
-    1. 调用`TMSDK.initialize`进行SDK初始化，并在参数中设置回调代理`SDKCallback`
-    2. 响应SDK初始化回调`SDKCallback.onSDKInitializeResult`，**回调结果成功才表示初始化完成**
+    
+    ![SDK Initialize Flow](images/image-1623296733287.png)
+    
+    1. 接入方客户端从接入方服务端或者本地自己的缓存获取初始化的相关参数。
+    2. 调用`TMSDK.initialize`进行SDK初始化，并在参数中设置回调代理`SDKCallback`
+    3. 响应SDK初始化回调`SDKCallback.onSDKInitializeResult`，**回调结果成功才表示初始化完成**
+    
 3. 登录
     1. 获取`AccountService`实例
     2. 设置回调代理`setAuthenticationCallback`
     3. 调用`AccountService.login`进行登录
     4. 响应登录回调`AuthenticationCallback.onLogin`，**回调结果成功表示登录成功**
+    
 4. 入会
     1. 获取`PreMeetingService`实例
     2. 设置回调代理`setPreMeetingCallback`
@@ -25,7 +32,7 @@
 * `sdk_token`是用来验证SDK的使用者所属的机构的凭证，因此跟使用的用户账号无关，所以，在确保安全的前提下，可以在客户端自己账号登录之前去向服务端获取。
 * `sdk_token`不包含用户的账户信息，因此客户端切换账户时，可以不用更新`sdk_token`。
 * `sdk_token`的有效期内，在客户端运行的生命周期里，只用服务端获取一次`sdk_token`，甚至可以缓存到本地，下次启动时直接读取，减少从服务端请求。
-* `sdk_token`有效期失效后，SDK会退出账号的登录态，并回调`onResetSDKState`通知接入方重新获取并更新`sdk_token`。
+* `sdk_token`有效期失效后，SDK会退出账号的登录态，并通过`onResetSDKState`回调（code:-1019）通知接入方重新获取并更新`sdk_token`。
 * 私有化SDK的情况下，初始化函数中参数`server_host`和`org_domain`只能选一个，两个都填写的话，后者覆盖前者。这个参数也建议从接入方的服务端获取。
 
 
@@ -34,6 +41,7 @@
 ## 2.2 初始化时机
 * 因为初始化会议SDK会需要一段时间，原则上，初始化时机越早越好
 * 尽量在程序一启动的时候就初始化SDK。如果能在登录接入方自己账号系统之前初始化更好。
+* 如果初始化没有完成回调，后续登录等操作会被阻塞。
 
 
 
@@ -89,17 +97,20 @@
 
 ## 4.1 入会时机
 
-* 必须在登录完成，并收到登录成功的回调之后，方可调用入会接口入会。
+* 必须同时满足以下三个条件：
+  1. 已初始化（收到初始化成功的回调之后）
+  2. 已登录完成（收到登录成功的回调之后）
+  3. 当前不在会议中
 
 * 入会的途径有两种：
   1. 接入方根据自己业务的要求，调用`joinMeeting`接口进行入会
   2. 用户在SDK内的界面上操作界面进行入会
-* 以上两种入会方式，接入方都会收到SDK的`onJoinMeeting`回调通知。
+* 以上两种方式入会，接入方都会收到SDK的`onJoinMeeting`回调通知。
 
 
 
 ## 4.2 注意事项
 
-* 同账号在其他设备上入会，会将当前会议踢出
-
+* 同账号在其他设备上入会，会将当前会议踢出。
+* 接入方程序退出之前，如果正在会议中，记得要调用退出会议接口进行离会。
 
