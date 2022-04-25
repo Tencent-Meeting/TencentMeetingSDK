@@ -11,6 +11,7 @@
 | 2021-10-20 | 新增接口：显示加入会议界面、显示预定会议界面、显示会议设置界面、相关回调| 2.18.2 |
 | 2022-02-23 | 新增接口：新增会中窗口置顶(BringInMeetingViewTop)接口| 3.0.102 |
 | 2022-03-03 | 修改登出接口说明| - |
+| 2022-04-08 | 新增关于登录登出最佳实践和注意事项的说明| - |
 
 
 # 1. SDK使用说明
@@ -80,8 +81,8 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |公有云SDK专用|sdk_token |string |必填 |(无) |SDK Token |
 |私有化SDK专用 |server_host |string |必填，二选一 |(无) |私有化服务器地址，格式为：{protocol}://{domain}:{port}，protocol默认为http；port默认为29666 |
 |私有化SDK专用|org_domain |string |必填，二选一 |(无) |组织机构域，如填写，SDK则会通过`org_domain`从公有云服务上获取私有化服务器地址，并覆盖`server_host`的值 |
-|通用 |data_path |string |否 | %AppData%\Tencent\WeMeet\Global\Logs | 仅`Windows`支持：自定义SDK数据存储路径，里面包括日志目录。 |
-|通用 |app_name |string |否 |腾讯会议 | 指定显示的品牌名称 |
+|通用 |data_path |string |否 | %AppData%\Tencent\WeMeet | 仅`Windows`支持：自定义SDK数据存储路径，里面包括日志目录。 |
+|通用 |app_name |string |否 |网络会议 | 指定显示的品牌名称 |
 
 
 ### isInitialized
@@ -207,10 +208,11 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。
 * 返回值类型：void
 * 返回值说明：无
-* 注意事项：
+* 最佳实践和注意事项：
   - 在收到`onLogin`该回调前，调用`logout`函数会取消登录过程。
-  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`login`。
-  - 平时退出App不用调用`logout`，这样下次启动程序后调用`login`针对相同账户可以快速登录。    
+  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`login`。不切换账户的情况，不用调`logout`。
+  - 平时退出App不用调用`logout`，这样下次启动程序后调用`login`针对相同账户可以快速登录。
+  - 已登录某个账号，再次调用`login`重复登录相同账号，回调会是登录成功，而再次登录不同账号，则会回调提示账号登录冲突
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
@@ -222,9 +224,9 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 函数说明：发起登出请求，登出结果会在回调`AuthenticationCallback.onLogout`返回。
 * 返回值类型：void
 * 返回值说明：无
-* 注意事项：
-  - 请不要在收到`onLogout`回调前，调用`login`函数。
-  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`login`。
+* 最佳实践和注意事项：
+  - 调用`logout`后，请不要在收到`onLogout`回调之前，调用`login`函数。
+  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`login`。不切换账户的情况，不用调`logout`。
   - 未登录时调用`logout`，会回调success。
   - 平时退出App不用调用`logout`，这样下次启动程序后调用`login`针对相同账户可以快速登录。    
 * 参数说明：无

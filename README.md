@@ -33,6 +33,12 @@
  | Electron | [Electron接入手册](Docs/Electron/Electron接入手册.md)  [接入问题FAQ](Docs/Electron/接入问题FAQ.md)   | 集成说明、常见问题说明 |
  | QT | [QT接入手册](Docs/Qt/QT接入手册.md)                                                     | 集成说明、常见问题说明 |
 
+# 最佳实践说明
+
+对于接入过程中的最佳实践的说明，避免接入方式不当而导致不必要的问题。
+
+[SDK接入最佳实践说明](Docs/Common/SDK接入最佳实践说明.md)
+
 
 # 集成过SDK旧版如何迁移新版
 
