@@ -231,7 +231,7 @@ public void onCreate() {
             .setNotificationSmallIconResId(R.mipmap.ic_logo_round)
             .showNotificationLargeIcon(true)
             .build()
-        TMSDK.setMeetingNotificationConfig(notificationConfig)
+ TMSDK.setMeetingNotificationConfig(notificationConfig)
 ```
 
 ## 3. FAQ
