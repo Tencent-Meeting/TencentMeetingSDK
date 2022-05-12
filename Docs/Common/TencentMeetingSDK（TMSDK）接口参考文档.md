@@ -311,7 +311,6 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### joinMeeting
 * 函数形式：void joinMeeting(JoinParam param)
-* 函数形式：void joinMeetingByJSON(string json_param)
 * 函数说明：发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
 * 返回值类型：void
 * 返回值说明：无
@@ -333,6 +332,13 @@ AuthenticationCallback 需实现以下成员函数：
 |speaker_on |bool |否 |SDK默认设置 |是否开启扬声器(仅移动端) |
 |face_beauty_on |bool |否 |SDK默认设置 |是否开启美颜 |
 
+### joinMeetingByJSON
+* 函数形式：void joinMeetingByJSON(string json_param)
+* 函数说明：发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
+* 返回值类型：void
+* 返回值说明：无
+* 适用版本：3.0.106及以上
+* 参数说明：json字段与JoinParam中的参数相对应
 * json参数示例：
 ```
 {
@@ -346,7 +352,7 @@ AuthenticationCallback 需实现以下成员函数：
     "face_beauty_on":true
 }
 ```
-meeting_code必须是string类型
+meeting_code必须是string类型，
 
 ### showPreMeetingView
 * 函数形式：void showPreMeetingView()
