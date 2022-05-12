@@ -223,6 +223,16 @@ public void onCreate() {
 }
 ```
 
+自定义通知栏样式：
+
+```kotlin
+ val notificationConfig = NotificationConfig.Builder()
+            .setNotificationLargeIconResId(R.mipmap.ic_logo_round)
+            .setNotificationSmallIconResId(R.mipmap.ic_logo_round)
+            .showNotificationLargeIcon(true)
+            .build()
+ TMSDK.setMeetingNotificationConfig(notificationConfig)
+```
 
 ## 3. FAQ
 
