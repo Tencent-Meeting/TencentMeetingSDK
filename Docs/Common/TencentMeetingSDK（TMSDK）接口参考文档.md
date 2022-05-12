@@ -352,7 +352,7 @@ AuthenticationCallback 需实现以下成员函数：
     "face_beauty_on":true
 }
 ```
-meeting_code必须是string类型，
+meeting_code必须是string类型
 
 ### showPreMeetingView
 * 函数形式：void showPreMeetingView()
