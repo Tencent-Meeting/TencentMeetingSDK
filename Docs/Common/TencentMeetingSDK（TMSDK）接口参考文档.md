@@ -332,6 +332,26 @@ AuthenticationCallback 需实现以下成员函数：
 |speaker_on |bool |否 |SDK默认设置 |是否开启扬声器(仅移动端) |
 |face_beauty_on |bool |否 |SDK默认设置 |是否开启美颜 |
 
+* 函数形式：void joinMeetingByJSON(string json_param)
+* 返回值类型：void
+* 返回值说明：无
+* 参数说明：
+|属性 |类型 |必填 |默认值 |说明 |
+|---|---|---|---|---|
+|json_param |string |是 |(无) |会议号 |
+json参数示例：
+{
+    "meeting_code":"872951439",
+    "user_display_name":"用户名",
+    "password":"8888",
+    "invite_url":"邀请链接",
+    "camera_on":true,
+    "mic_on":true,
+    "speaker_on":true,
+    "face_beauty_on":true
+}
+meeting_code必须是string类型
+
 ### showPreMeetingView
 * 函数形式：void showPreMeetingView()
 * 函数说明：显示SDK自带的会前界面。登录完成后，才可调用。
