@@ -12,6 +12,7 @@
 | 2022-02-23 | 新增接口：新增会中窗口置顶(BringInMeetingViewTop)接口| 3.0.102 |
 | 2022-03-03 | 修改登出接口说明| - |
 | 2022-04-08 | 新增关于登录登出最佳实践和注意事项的说明| - |
+| 2022-05-12 | 新增接口：新增入会(joinMeetingByJSON)接口| 3.0.106 |
 
 
 # 1. SDK使用说明
@@ -114,7 +115,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### showLogs
 * 函数形式：void showLogs()
-* 函数说明：帮助用户获取日志，移动端会对日志目录打包，并打开系统的分享；桌面端会打开日志文件夹。调用结果通过`SDKCallback.onShowLogsResult`回调通知。
+* !!#ff0000函数说明：帮助用户获取日志，移动端会对日志目录打包，并打开系统的分享；桌面端会打开日志文件夹。调用结果通过`SDKCallback.onShowLogsResult`回调通知。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
