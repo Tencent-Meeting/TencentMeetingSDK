@@ -12,6 +12,7 @@
 | 2022-02-23 | 新增接口：新增会中窗口置顶(BringInMeetingViewTop)接口| 3.0.102 |
 | 2022-03-03 | 修改登出接口说明| - |
 | 2022-04-08 | 新增关于登录登出最佳实践和注意事项的说明| - |
+| 2022-05-12 | 新增接口：新增入会(joinMeetingByJSON)接口| 3.0.106 |
 
 
 # 1. SDK使用说明
@@ -331,6 +332,32 @@ AuthenticationCallback 需实现以下成员函数：
 |camera_on |bool |否 |SDK默认设置 |是否开启摄像头 |
 |speaker_on |bool |否 |SDK默认设置 |是否开启扬声器(仅移动端) |
 |face_beauty_on |bool |否 |SDK默认设置 |是否开启美颜 |
+
+### joinMeetingByJSON
+* 函数形式：void joinMeetingByJSON(string json_param)
+* 函数说明：发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
+* 返回值类型：void
+* 返回值说明：
+  * JSON中字段与JoinParam中的参数相对应
+  * JSON中字段的类型需与上面表格JoinParam中参数类型要求一致
+  * meeting_code必须是string类型
+  * 除非必填字段外，其他字段可不传
+* 适用版本：3.0.106及以上
+* 参数说明：json字段与JoinParam中的参数相对应
+* json参数示例：
+```
+{
+    "meeting_code":"872951439",
+    "user_display_name":"用户名",
+    "password":"8888",
+    "invite_url":"邀请链接",
+    "camera_on":true,
+    "mic_on":true,
+    "speaker_on":true,
+    "face_beauty_on":true
+}
+```
+meeting_code必须是string类型
 
 ### showPreMeetingView
 * 函数形式：void showPreMeetingView()
