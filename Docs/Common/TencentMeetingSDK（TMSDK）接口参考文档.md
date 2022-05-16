@@ -134,8 +134,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 函数说明：PC端设置代理接口，通过json串传递代理配置参数；调用结果通过`SDKCallback.OnSetProxyResult`回调通知。
 * 返回值类型：void
 * 返回值说明：无
-* 参数说明：无
-* JSON中字段的类型需与下面表格中保持一致:
+* 参数说明：proxy_info 是以JSON串的格式输入,JSON中字段的类型需与下面表格中保持一致:
 * 除非必填字段外，其他字段可不传
 * protocol为string类型，可设置为SOCKS5或者http两种协议
 * agent_typ为int类型，0，全局，1，仅媒体，2，除媒体外
