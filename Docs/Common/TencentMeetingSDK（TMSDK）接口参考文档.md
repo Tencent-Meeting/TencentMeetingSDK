@@ -13,7 +13,7 @@
 | 2022-03-03 | 修改登出接口说明| - |
 | 2022-04-08 | 新增关于登录登出最佳实践和注意事项的说明| - |
 | 2022-05-12 | 新增接口：新增入会(joinMeetingByJSON)接口| 3.0.106 |
-| 2022-05-13 | 新增接口：新增设置代理(SetProxyInfo)接口| 3.0.106 |
+| 2022-05-13 | 新增接口：新增设置代理(setProxyInfo)接口| 3.0.106 |
 
 
 # 1. SDK使用说明
@@ -129,9 +129,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | iOS | {宿主App沙盒路径}/AppData/Library/Application Support/{宿主App的BundleID}/Global/Logs |
 | Android | /Data/Data/{宿主App的PackageName}/Global/Logs |
 
-### SetProxyInfo
-* 函数形式：void SetProxyInfo(string proxy_info)
-* 函数说明：PC端设置代理接口，通过json串传递代理配置参数；调用结果通过`SDKCallback.OnSetProxyResult`回调通知。
+### setProxyInfo
+* 函数形式：void setProxyInfo(string proxy_info)
+* 函数说明：PC端设置代理接口，通过json串传递代理配置参数；调用结果通过`SDKCallback.onSetProxyResult`回调通知。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：proxy_info 是以JSON串的格式输入,JSON中字段的类型需与下面表格中保持一致:
@@ -221,10 +221,10 @@ SDKCallback 需实现以下成员函数：
 | code | int | 错误码 |
 | msg | string | 错误信息 |
 
-### OnSetProxyResult
-* 说明：代理设置接口`SetProxyInfo`的回调
+### onSetProxyResult
+* 说明：代理设置接口`setProxyInfo`的回调
 * 可用版本：>= 3.0.106及以上
-* 详细说明：当code为-1024，表示无效json串，需要检测`SetProxyInfo`传入的json串是否符合格式标准；当code为-1025，表示ip代理设置失败，需要检"ip+端口+用户名+密码"是否配置正确
+* 详细说明：当code为-1024，表示无效json串，需要检测`setProxyInfo`传入的json串是否符合格式标准；当code为-1025，表示ip代理设置失败，需要检"ip+端口+用户名+密码"是否配置正确
 
 |参数名 |参数类型 | 参数说明 |
 |---|---|---|
