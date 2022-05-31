@@ -388,14 +388,12 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：void joinMeetingByJSON(string json_param)
 * 函数说明：发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
 * 返回值类型：void
-* 返回值说明：
-  * JSON中字段与JoinParam中的参数相对应
-  * JSON中字段的类型需与上面表格JoinParam中参数类型要求一致
-  * meeting_code必须是string类型
-  * 除非必填字段外，其他字段可不传
+* 返回值说明：无
 * 适用版本：3.0.106及以上
 * 参数说明：
-  * JSON中的字段与JoinParam中的参数相对应，并可以缺省非必填参数字段，SDK将自动使用默认值。
+  * JSON中字段与JoinParam中的参数相对应
+  * JSON中字段的类型需与上面表格JoinParam中参数类型要求一致
+  * 除非必填字段外，其他字段可不传，SDK将自动使用默认值。
   * meeting_code必须是string类型。
 * json参数示例：
 ```
