@@ -284,31 +284,38 @@ wemeet_sdk.OpenLogDirectory()
 wemeet_sdk.IsAuthorized()
 ```
 
-### 12、显示会议历史
+### 12、检查初始化状态
+
+```
+wemeet_sdk.IsInitialized()
+```
+说明: 调用InitWemeetSDK，接收到初始化成功回调后，返回true，没接收初始化成功回调前返回false，3.0.107加入。
+
+### 13、显示会议历史
 
 ```
 wemeet_sdk.ShowHistoricalMeetingView();
 ```
 
-### 13、显示会议详情
+### 14、显示会议详情
 
 ```
 wemeet_sdk.ShowMeetingDetailView(meeting_id, current_sub_meeting_id)
 ```
 
-### 14、登录态跳转
+### 15、登录态跳转
 
 ```
 wemeet_sdk.JumpUrlWithLoginStatus(target_url)
 ```
 
-### 15、反初始化
+### 16、反初始化
 
 ```
 wemeet_sdk.ReleaseWemeetSDK()
 ```
 
-### 16、添加js回调
+### 17、添加js回调
 
 ```
 wemeet_sdk.AddJsCallback(call_back)
@@ -316,16 +323,80 @@ wemeet_sdk.AddJsCallback(call_back)
 
 说明：这个函数是electron的sdk独有的函数，call_back 是一个js的function，参数是一个json字符串
 
-### 17、会中窗口置顶
+### 18、会中窗口置顶
 
 ```
 wemeet_sdk.BringInMeetingViewTop()
 ```
 说明：如果当前没有会中窗口，则不做任何操作。没有回调。3.0.102加入。
 
+### 19、获取当前sdk_token
+
+```
+wemeet_sdk.GetCurrentSDKToken()
+```
+说明：同步接口，返回类型string，返回当前sdk登录使用的sdk_token串。3.0.107加入。
+
+### 20、刷新sdk_token
+
+```
+wemeet_sdk.RefreshSDKToken(sdk_token)
+```
+说明：同步接口，参数是要刷新的sdk_token串。返回类型int，失败返回错误码，成功返回0。
+
+### 21、获取带登录态的url链接
+
+```
+wemeet_sdk.GetUrlWithLoginStatus(url)
+```
+说明：同步接口，参数url为不带登录态的url，返回类型string，返回带登录态的url。
+
+### 22、设置代理
+
+```
+wemeet_sdk.SetProxyInfo(proxy_info)
+```
+说明：参数proxy_info为json格式的string类型，格式可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 23、通过json串入会
+
+```
+wemeet_sdk.JoinMeetingByJSON(meeting_josn)
+```
+说明：参数meeting_josn为json格式的string类型，格式可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 24、显示预定会议页面
+
+```
+wemeet_sdk.ShowScheduleMeetingView(meeting_type)
+```
+说明：参数meeting_type为会议类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 25、显示投屏页面
+
+```
+wemeet_sdk.ShowScreenCastView()
+```
+说明：展示投屏页面。
+
+### 26、显示加入会议页面
+
+```
+wemeet_sdk.ShowJoinMeetingView()
+```
+说明：展示加入会议页面。
+
+### 27、获取sdk的版本号
+
+```
+wemeet_sdk.GetSDKVersion()
+```
+说明：返回string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+
 ## 4. 回调说明
 
-所有接口的调用接口都是通过异步回调返回的，这里异步回调的返回值是一个标准的json字符串，格式如下：
+除GetSDKVersion、GetCurrentSDKToken、RefreshSDKToken、GetUrlWithLoginStatus外，其它所有接口的调用接口都是通过异步回调返回的，这里异步回调的返回值是一个标准的json字符串，格式如下：
 
 | Key   | 类型   | 说明                                    |
 | ----- | ------ | --------------------------------------- |
