@@ -67,7 +67,11 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### initialize
 * 函数形式：void initialize(InitParam init_param, SDKCallback callback)
-* 函数说明：初始化SDK并设置回调代理，除`getSDKVersion`之外，在调用的所有接口函数之前，`必须第一个调用该函数`。通过`SDKCallback.onSDKInitializeResult`回调来返回初始化结果。初始化成功后，重复调用无效。
+* 函数说明：
+  * 初始化SDK并设置回调代理，通过`SDKCallback.onSDKInitializeResult`回调来返回初始化结果。
+  * 初始化成功后，重复调用无效。
+  * 除`getSDKVersion`之外，在调用的所有接口函数之前，`必须第一个先调用该函数`。
+  * 按照个保法要求，App需要在用户同意了隐私协议之后才可以调用该初始化函数。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：
@@ -355,7 +359,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### joinMeeting
 * 函数形式：void joinMeeting(JoinParam param)
-* 函数说明：发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
+* 函数说明：
+  * 发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
+  * 如果想使用JoinParam参数中缺省的默认值，请使用`joinMeetingByJSON`函数
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：
@@ -363,6 +369,7 @@ AuthenticationCallback 需实现以下成员函数：
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |param |**JoinParam** |是 |(无) |入会参数 |
+
 * JoinParam格式
 
 |属性 |类型 |必填 |默认值 |说明 |
@@ -371,10 +378,11 @@ AuthenticationCallback 需实现以下成员函数：
 |user_display_name |string |否 |账户的用户名 |会议中显示的名称 |
 |password |string |否 |(空) |会议密码 |
 |invite_url |string |否 |腾讯会议默认URL链接 |自定义URL链接 |
-|mic_on |bool |否 |SDK默认设置 |是否开启麦克风 |
-|camera_on |bool |否 |SDK默认设置 |是否开启摄像头 |
-|speaker_on |bool |否 |SDK默认设置 |是否开启扬声器(仅移动端) |
-|face_beauty_on |bool |否 |SDK默认设置 |是否开启美颜 |
+|mic_on |bool |否 |SDK本地设置 |是否开启麦克风 |
+|camera_on |bool |否 |SDK本地设置 |是否开启摄像头 |
+|speaker_on |bool |否 |SDK本地设置 |是否开启扬声器(仅移动端) |
+|face_beauty_on |bool |否 |SDK本地设置 |是否开启美颜 |
+
 
 ### joinMeetingByJSON
 * 函数形式：void joinMeetingByJSON(string json_param)
@@ -386,7 +394,9 @@ AuthenticationCallback 需实现以下成员函数：
   * meeting_code必须是string类型
   * 除非必填字段外，其他字段可不传
 * 适用版本：3.0.106及以上
-* 参数说明：json字段与JoinParam中的参数相对应
+* 参数说明：
+  * JSON中的字段与JoinParam中的参数相对应，并可以缺省非必填参数字段，SDK将自动使用默认值。
+  * meeting_code必须是string类型。
 * json参数示例：
 ```
 {
@@ -400,7 +410,7 @@ AuthenticationCallback 需实现以下成员函数：
     "face_beauty_on":true
 }
 ```
-meeting_code必须是string类型
+
 
 ### showPreMeetingView
 * 函数形式：void showPreMeetingView()
