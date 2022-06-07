@@ -204,7 +204,7 @@ repositories {
 dependencies {
 	...
 	//wemeet_version为使用sdk版本
-	implementation "com.tencent.wemeet:wemeet-sdk :${wemeet_version}"
+	implementation "com.tencent.wemeet:tm-android-sdk:${wemeet_version}"
 	...
 }
 ```
