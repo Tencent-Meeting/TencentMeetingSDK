@@ -128,7 +128,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 | 终端 | 日志路径 |
 | ------ | ------ |
-| Windows | %AppData%\Tencent\WeMeet\Global\Logs 或者是接入方设置的自定义数据目录下 |
+| Windows |`tmsdkapp.exe`同级目录或者是接入方设置的自定义数据目录下 |
 | MacOS | ~/Library/Containers/{宿主App的BundleID}/Data/Library/Global/Logs |
 | iOS | {宿主App沙盒路径}/AppData/Library/Application Support/{宿主App的BundleID}/Global/Logs |
 | Android | /Data/Data/{宿主App的PackageName}/Global/Logs |
