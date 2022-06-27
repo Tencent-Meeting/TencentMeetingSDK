@@ -463,7 +463,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
-|meeting_type | int | 是 |(无)| 会议类型，0:普通会议；1:在线大会（仅桌面端支持在线大会） |
+|meeting_type | int | 是 |(无)| 会议类型，0:普通会议；1:在线大会 |
 
 ### showMeetingSettingView
 * 可用版本：>= 2.18.2
