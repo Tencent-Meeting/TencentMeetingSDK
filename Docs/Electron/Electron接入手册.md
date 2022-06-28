@@ -38,8 +38,18 @@ addon，使用里面封装的接口即可。
 #### 1.3.1 32位 Windows
 **一、拷贝SDK**
 
-- 方法一：将文件说明中的windows SDK目录下Release的所有内容拷贝到output/win/win32/Release目录下，把wemeet_base.dll和wemeetsdk_x86.dll拷贝到output/win/win32/下。
+- 方法一： 按照如下表格拷贝依赖文件
 
+| 名称   | 原路径   | 目的路径  |
+| ----- | ------ | --------------------------------------- |
+| api-ms-win*.dll  | SDK |   output/win/win32    |
+| msvcp140.dll  | SDK    | output/win/win32    |
+| concrt140.dll   | SDK | output/win/win32 |
+| vcomp140.dll | SDK | output/win/win32 |
+| vcruntime140.dll | SDK | output/win/win32 |
+| ucrtbase.dll | SDK | output/win/win32 |
+| wemeet_base.dll | SDK | output/win/win32 |
+| Release文件夹 | SDK | output/win/win32 |
 - 方法二:  直接执行output/win/win32/copy_win32_release.bat(bat文件中的内容也就是做了方法1的操作，写成了脚本)
 
 **二、安装electron以及相关的依赖**
@@ -59,7 +69,16 @@ Electron_Demo目录下执行npm start
 
 **一、拷贝SDK**
 
-- 方法一：将文件说明中的windows SDK目录下Release的所有内容拷贝到output/win/x64/Release目录下，把wemeet_base_x64.dll和wemeetsdk_x64.dll拷贝到output/win/x64/下。
+- 方法一：按照如下表格拷贝依赖文件
+
+ | 名称   | 原路径   | 目的路径  |
+| ----- | ------ | --------------------------------------- |
+| api-ms-win*.dll  | SDK/Release/x64 |   output/win/x64    |
+| msvcp140.dll  | SDK/Release/x64    | output/win/x64    |
+| vcruntime140.dll | SDK/Release/x64 | output/win/x64 |
+| ucrtbase.dll | SDK/Release/x64 | output/win/x64 |
+| wemeet_base_x64.dll | SDK | output/win/x64 |
+| Release文件夹 | SDK | output/win/x64 |
 
 - 方法二:  直接执行output/win/x64/copy_win32_release.bat(bat文件中的内容也就是做了方法1的操作，写成了脚本)
 
