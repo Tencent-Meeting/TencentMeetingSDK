@@ -428,11 +428,22 @@ AuthenticationCallback 需实现以下成员函数：
 
 
 ### showPreMeetingView
-* 函数形式：void showPreMeetingView()
+* 函数形式：void showPreMeetingView(TMSDKMainUIStyle style = kTMSDKMainUIStyleClassic)
+
 * 函数说明：显示SDK自带的会前界面。登录完成后，才可调用。
+
 * 返回值类型：void
+
 * 返回值说明：无
-* 参数说明：无
+
+* 参数说明：style默认为kTMSDKMainUIStyleClassic
+
+  ```
+  enum TMSDKMainUIStyle {
+  	 kTMSDKMainUIStyleClassic,
+     kTMSDKMainUIStyleTabs
+  }
+  ```
 
 ### showScreenCastView
 * 函数形式：void showScreenCastView()
