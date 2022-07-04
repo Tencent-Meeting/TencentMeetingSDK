@@ -161,6 +161,7 @@
 -keep class androidx.lifecycle.ReportFragment
 -keep class android.app.ResourcesManager { *; }
 -keep class android.content.res.ResourcesKey { *; }
+-keep class com.tencent.wemeet.**{*;}
 
 ```
 
