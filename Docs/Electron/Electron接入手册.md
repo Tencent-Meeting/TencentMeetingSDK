@@ -301,6 +301,7 @@ wemeet_sdk.OpenLogDirectory()
 
 ```
 wemeet_sdk.IsAuthorized()
+说明: 异步接口，调用登录，接收到登录成功回调后，返回true，没接收登录成功回调前返回false。
 ```
 
 ### 12、检查初始化状态
@@ -308,7 +309,7 @@ wemeet_sdk.IsAuthorized()
 ```
 wemeet_sdk.IsInitialized()
 ```
-说明: 调用InitWemeetSDK，接收到初始化成功回调后，返回true，没接收初始化成功回调前返回false，3.0.107加入。
+说明: 异步接口，调用InitWemeetSDK，接收到初始化成功回调后，返回true，没接收初始化成功回调前返回false，3.0.107加入。
 
 ### 13、显示会议历史
 
@@ -415,7 +416,7 @@ wemeet_sdk.GetSDKVersion()
 
 ## 4. 回调说明
 
-除GetSDKVersion、GetCurrentSDKToken、RefreshSDKToken、GetUrlWithLoginStatus外，其它所有接口的调用接口都是通过异步回调返回的，这里异步回调的返回值是一个标准的json字符串，格式如下：
+除GetSDKVersion、GetCurrentSDKToken、RefreshSDKToken、GetUrlWithLoginStatus外，其它所有接口的调用都是通过异步回调返回的，这里异步回调的返回值是一个标准的json字符串，格式如下：
 
 | Key   | 类型   | 说明                                    |
 | ----- | ------ | --------------------------------------- |
