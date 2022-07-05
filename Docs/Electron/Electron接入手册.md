@@ -301,8 +301,8 @@ wemeet_sdk.OpenLogDirectory()
 
 ```
 wemeet_sdk.IsAuthorized()
-说明: 异步接口，调用登录，接收到登录成功回调后，返回true，没接收登录成功回调前返回false。
 ```
+说明: 异步接口，调用登录，接收到登录成功回调后，返回true，没接收登录成功回调前返回false。
 
 ### 12、检查初始化状态
 
