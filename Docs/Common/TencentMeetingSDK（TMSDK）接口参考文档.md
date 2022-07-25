@@ -178,10 +178,16 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
   
 |参数名 |参数类型 |参数必填|参数默认值| 参数说明 |
 |---|---|---|---|---|
-| schema_url | string | 是 |（无）|跳转链接 格式为{wemeet://page/页面？meeting_code=&user_code=&};页面目前支持in_meeting|
+| schema_url | string | 是 |（无）| 参数：{{protocol://}page/页面?meeting_code=&user_code=&};`{protocol://}为可选填,为URL Scheme的注册协议名称;页面目前支持inmeeting`|
 
  入参示例：
-  wemeet://page/inmeeting?meeting_code=842385127&user_code=4989455f6fd6f1e9c9083d3c5253a48d
+```
+    示例1：page/inmeeting?meeting_code=842385127&user_code=4989455f6fd6f1e9c9083d3c5253a48d
+```
+```
+    示例2：testapp://page/inmeeting?meeting_code=842385127&user_code=4989455f6fd6f1e9c9083d3c5253a48d; 其中testapp为URL Scheme注册协议名称
+```
+  
 
 ### getAccountService
 * 函数形式：AccountService getAccountService()
