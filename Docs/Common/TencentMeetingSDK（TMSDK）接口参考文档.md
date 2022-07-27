@@ -87,8 +87,8 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |---|---|---|---|---|---|
 |公有云SDK专用 |sdk_id |string |必填 |(无) |SDK ID |
 |公有云SDK专用|sdk_token |string |必填 |(无) |SDK Token |
-|私有化SDK专用 |server_address |string |必填，二选一 |(无) |私有化服务器地址，格式为：{protocol}://{domain}:{port}，protocol默认为http；port默认为29666; 如需配置两个域名，请用';'分隔 |
-|私有化SDK专用|org_domain |string |必填，二选一 |(无) |组织机构域，如填写，SDK则会通过`org_domain`从公有云服务上获取私有化服务器地址，并覆盖`server_address`的值 |
+|私有化SDK专用 |server_host |string |必填，二选一 |(无) |私有化服务器地址，格式为：{protocol}://{domain}:{port}，protocol默认为http；port默认为29666; 如需配置两个域名，请用';'分隔 |
+|私有化SDK专用|org_domain |string |必填，二选一 |(无) |组织机构域，如填写，SDK则会通过`org_domain`从公有云服务上获取私有化服务器地址，并覆盖`server_host`的值 |
 |通用 |data_path |string |否 |无 | 仅`Windows`支持传空串,且默认路径为`tmsdkapp.exe`同级目录 |
 |通用 |app_name |string |否 |网络会议 | 指定显示的品牌名称 |
 
