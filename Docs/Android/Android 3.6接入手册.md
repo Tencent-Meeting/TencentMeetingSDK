@@ -248,6 +248,22 @@ A: compileSdkVersion 31及以上
 ```
 A:implementation "javax.xml.bind:jaxb-api:2.3.1"
 ```
+- Q:接入sdk后，出现运行时异常：java.lang.UnsatisfiedLinkError
+- A:目前会议的so只支持armeabi-v7a和arm64-v8a的架构，需要检查是否做了以下配置
+```
+android {
+	...
+    defaultConfig {
+		...
+        ndk {
+          	//可以根据需求减少abi，但是不能增加其他abi
+            setAbiFilters(['armeabi-v7a', 'arm64-v8a'])
+        }
+		...
+    }
+	...
+}
+```
 - Q:遇到编译错误：Invoke-customs are only supported starting with Android O
 A:请在build.gradle中添加：
 ```groovy
