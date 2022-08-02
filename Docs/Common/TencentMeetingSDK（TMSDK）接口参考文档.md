@@ -449,8 +449,8 @@ AuthenticationCallback 需实现以下成员函数：
 
   ```
   enum TMSDKMainUIStyle {
-  	 kTMSDKMainUIStyleClassic,
-     kTMSDKMainUIStyleTabs
+    kTMSDKMainUIStyleClassic,
+    kTMSDKMainUIStyleTabs
   }
   ```
 
