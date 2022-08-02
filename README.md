@@ -26,7 +26,7 @@
 | 终端 | 相关文档                                                                            | 说明               |
 |--- |---------------------------------------------------------------------------------|------------------|
 | All | [TencentMeetingSDK（TMSDK）接口参考文档](Docs/Common/TencentMeetingSDK（TMSDK）接口参考文档.md) | 接口参考的统一说明，各端都涉及到 |
-| Android | [接入手册](Docs/Android/Android接入手册.md) [接入问题FAQ](Docs/Android/接入问题FAQ.md)          | 集成说明、常见问题说明      |
+| Android | [3.0接入手册](Docs/Android/Android接入手册.md) [3.6接入手册](Docs/Android/Android3.6接入手册.md)  [接入问题FAQ](Docs/Android/接入问题FAQ.md)          | 集成说明、常见问题说明      |
 | iOS | [接入手册](Docs/iOS/iOS接入手册.md) [接入问题FAQ](Docs/iOS/接入问题FAQ.md)                      | 集成说明、常见问题说明      |
 | MacOS | [接入手册](Docs/MacOS/MacOS接入手册.md)                                                 | 集成说明、常见问题说明      |
 | Windows | [接入手册](Docs/Windows/Windows接入手册.md) [接入问题FAQ](Docs/Windows/接入问题FAQ.md)          | 集成说明、常见问题说明      |
