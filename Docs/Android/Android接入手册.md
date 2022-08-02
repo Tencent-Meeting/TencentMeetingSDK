@@ -161,6 +161,7 @@
 -keep class androidx.lifecycle.ReportFragment
 -keep class android.app.ResourcesManager { *; }
 -keep class android.content.res.ResourcesKey { *; }
+-keep class com.tencent.wemeet.**{*;}
 
 ```
 
@@ -304,6 +305,12 @@ android {
 ```
         implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
         implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+```	
+- Q:在会中收到邀请或者分享回调后显示邀请或者分享界面异常怎么处理
+- A:
+```
+       在邀请或者分享的activity里面添加 android:taskAffinity=".meeting.inmeeting.InMeetingActivity"
+       在启动邀请或者分享界面离添加 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 ```	
 - 应用异常退出后，切换账号登录异常或者登录的账号信息错误
 > 如果登录的账号发生切换，请主动调用登出接口以清空登录态，再重新尝试登录。

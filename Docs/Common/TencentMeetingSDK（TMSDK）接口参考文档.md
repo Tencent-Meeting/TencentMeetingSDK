@@ -14,6 +14,8 @@
 | 2022-04-08 | 新增关于登录登出最佳实践和注意事项的说明| - |
 | 2022-05-12 | 新增接口：新增入会(joinMeetingByJSON)接口| 3.0.106 |
 | 2022-05-13 | 新增接口：新增设置代理(setProxyInfo)接口| 3.0.106 |
+| 2022-08-02 | 新增接口：新增处理Schema(handleSchema)接口，更新showPreMeetingView函数，新增可选参数| 3.6.100 |
+
 
 
 # 1. SDK使用说明
@@ -166,6 +168,30 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
     "password" : ""
    }
 ```
+### handleSchema
+* 函数形式：void handleSchema (string schema_url)
+* 函数说明：一键跳转页面，通过解析schema_url不同页面跳转指定界面。
+* 返回值类型：void
+* 返回值说明：无
+* 参数说明：参数带有user_code且SDK已登录，按照已登录用户跳转；参数带有user_code且SDK未登录，按照user_code用户跳转。
+* 可用版本：>= 3.6.100及以上
+* user_code获取说明: 以企业21539303为例：SSOURL+id_token拼接访问获取，得到链接
+  https://meeting.tencent.com/open-platform/sso?redirect_uri=wemeet%3A%2F%2Fauth%2F%sso%3Fsso_auth_code%3D4989455f6fd6f1e9c9083d3c5253a48d&corp_id=215319303
+  user_code为4989455f6fd6f1e9c9083d3c5253a48d
+  
+|参数名 |参数类型 |参数必填|参数默认值| 参数说明 |
+|---|---|---|---|---|
+| schema_url | string | 是 |（无）| 参数：{{protocol://}page/页面?meeting_code=&user_code=&};`{protocol://}为可选填,为URL Scheme的注册协议名称;页面目前支持inmeeting`|
+
+ 入参示例：
+```
+    示例1：page/inmeeting?meeting_code=842385127&user_code=4989455f6fd6f1e9c9083d3c5253a48d
+```
+```
+    示例2：testapp://page/inmeeting?meeting_code=842385127&user_code=4989455f6fd6f1e9c9083d3c5253a48d; 其中testapp为URL Scheme注册协议名称
+```
+  
+
 ### getAccountService
 * 函数形式：AccountService getAccountService()
 * 函数说明：获取SDK`AccountService`的对象实例。
@@ -411,11 +437,22 @@ AuthenticationCallback 需实现以下成员函数：
 
 
 ### showPreMeetingView
-* 函数形式：void showPreMeetingView()
+* 函数形式：void showPreMeetingView(TMSDKMainUIStyle style = kTMSDKMainUIStyleClassic)
+
 * 函数说明：显示SDK自带的会前界面。登录完成后，才可调用。
+
 * 返回值类型：void
+
 * 返回值说明：无
-* 参数说明：无
+
+* 参数说明：style默认为kTMSDKMainUIStyleClassic
+
+  ```
+  enum TMSDKMainUIStyle {
+    kTMSDKMainUIStyleClassic,
+    kTMSDKMainUIStyleTabs
+  }
+  ```
 
 ### showScreenCastView
 * 函数形式：void showScreenCastView()
