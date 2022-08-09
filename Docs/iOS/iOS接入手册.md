@@ -26,6 +26,7 @@ SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 
 ## 5. Xcode点击运行
 
+
 # SDK接入
 
 ## 1. 环境版本提示
@@ -34,46 +35,17 @@ SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 + 支持 iOS 10.0+
 + 屏幕共享扩展支持 iOS 12.0+
 
-## 2. 工程配置framework
+## 2. 配置Framework
+> 腾讯会议SDK低于3.6.1版本，请参看第8步
 
-在App的主工程的主target中添加TencentMeetingSDK.framework，设置Embed为Embed & Sign；
+- 工程的主target，在General、Frameworks, libraies, and Embedded Content，将腾讯会议的SDK（路径在SDK/TencentMeetingSDK/)集成到工程中，注意每个动态库设置为Embed & Sign。
 
-![framework](images/framework.png)
+![sdk_in1](images/sdk_in1.png)
+![sdk_in2](images/sdk_in2.png)
 
-在App的主工程的主target中Build Phases中添加New Run Script Phase
+- 配置Framework搜索路径
 
-![script](images/script.png)
-
-新添加的Phase要在Embed Frameworks后面，添加以下脚本
-
-```
-chmod +x ./handler.sh && ./handler.sh
-```
-
-handlers.sh脚本在Demo中有一份，handlers.sh脚本要跟xcodeproj文件放在一个目录下，handler.sh内容为
-
-```
-PRODUCTS_DIR=${TARGET_BUILD_DIR}/${WRAPPER_NAME}
-TencentMeetingSDKFrameworksPath=${PRODUCTS_DIR}/Frameworks/TencentMeetingSDK.framework/Frameworks
-
-# resign Frameworks
-function resign_embed_frameworks(){
-  for f in $(find ${1} -name '*.framework')
-  do
-    codesign --force --sign "${EXPANDED_CODE_SIGN_IDENTITY}" --preserve-metadata=identifier,entitlements --timestamp=none "$f"
-    if [ -d ${f}/'Frameworks' ]; then
-      resign_embed_frameworks ${f}/'Frameworks'
-    fi
-  done
-}
-
-# copy to
-if [[ -d ${TencentMeetingSDKFrameworksPath} ]]; then
-  cp -r ${TencentMeetingSDKFrameworksPath}/* ${PRODUCTS_DIR}/Frameworks
-  rm -rf ${TencentMeetingSDKFrameworksPath}
-  resign_embed_frameworks ${PRODUCTS_DIR}
-fi
-```
+![sdk_in3](images/sdk_in3.png)
 
 ## 3. 初始化
 
@@ -216,6 +188,7 @@ fi
 ## 6. 屏幕共享扩展接入
 
 - 新建Broadcast Upload Extesion，注意最低支持iOS版本为iOS 12.0
+
 ![broadcast](images/broadcast.png)
 
 - 设置屏幕共享扩展依赖TencentMeetingBroadcastExtension.framework，主页Embed设置为Do Not Embed
@@ -234,6 +207,48 @@ fi
 
 ​	使用流程：1.确定应用已经接入bugly 2.提供appid(指bugly qq产品上显示的appid) 给技术支持。3.提供bundle id 给技术支持。
 
+## 8.低版本配置Framework
+
+> 适用于腾讯会议SDK版本低于3.6.1
+
+在App的主工程的主target中添加TencentMeetingSDK.framework，设置Embed为Embed & Sign；
+
+![framework](images/framework.png)
+
+在App的主工程的主target中Build Phases中添加New Run Script Phase
+
+![script](images/script.png)
+
+新添加的Phase要在Embed Frameworks后面，添加以下脚本
+
+```
+chmod +x ./handler.sh && ./handler.sh
+```
+
+handlers.sh脚本在Demo中有一份，handlers.sh脚本要跟xcodeproj文件放在一个目录下，handler.sh内容为
+
+```
+PRODUCTS_DIR=${TARGET_BUILD_DIR}/${WRAPPER_NAME}
+TencentMeetingSDKFrameworksPath=${PRODUCTS_DIR}/Frameworks/TencentMeetingSDK.framework/Frameworks
+
+# resign Frameworks
+function resign_embed_frameworks(){
+  for f in $(find ${1} -name '*.framework')
+  do
+    codesign --force --sign "${EXPANDED_CODE_SIGN_IDENTITY}" --preserve-metadata=identifier,entitlements --timestamp=none "$f"
+    if [ -d ${f}/'Frameworks' ]; then
+      resign_embed_frameworks ${f}/'Frameworks'
+    fi
+  done
+}
+
+# copy to
+if [[ -d ${TencentMeetingSDKFrameworksPath} ]]; then
+  cp -r ${TencentMeetingSDKFrameworksPath}/* ${PRODUCTS_DIR}/Frameworks
+  rm -rf ${TencentMeetingSDKFrameworksPath}
+  resign_embed_frameworks ${PRODUCTS_DIR}
+fi
+```
 # 更多功能
 
 请参考《TencentMeetingSDK（TMSDK）接口参考》文档
