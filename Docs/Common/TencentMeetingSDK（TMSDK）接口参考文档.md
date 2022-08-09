@@ -337,6 +337,24 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |---|---|---|---|---|
 |target_url | string | 是 | (无) | 要访问的目标URL地址，该地址对应页面必须是会议相关的地址，比如云录制页 |
 
+### GetUserInfo
+* 可用版本：>= 3.6.1
+* 函数形式：string GetUserInfo()
+* 函数说明：获取当前登录用户的用户信息
+* 返回值类型：string
+* 返回值说明：返回一个json字符串，字符串格式：
+```
+{
+    "user_id": "aaaaaa"
+}
+```
+* 参数说明：
+> 桌面端使用参数获取结果；移动端没有参数，使用返回值获取结果；
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|buf | char * | 是 | (无) | 缓冲区地址 |
+|buf_len | int | 是 | (无) | 缓冲区长度 |
 ## 3.2 AuthenticationCallback 回调代理
 
 AuthenticationCallback 需实现以下成员函数：
@@ -510,6 +528,31 @@ AuthenticationCallback 需实现以下成员函数：
 * 返回值说明：无
 * 参数说明：无
 
+### QueryMeetingInfo
+* 可用版本：>= 3.6.1
+* 函数形式：void QueryMeetingInfo(string param)
+* 函数说明：查询会议信息
+* 返回值类型：void
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|param | string | 是 |(无)| json字符串，例如，{"meeting_id": ["111", "222", "333"]} |
+
+
+### QuickMeeting
+* 可用版本：>= 3.6.1
+* 函数形式：void QuickMeeting(string param)
+* 函数说明：查询会议信息
+* 返回值类型：void
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|param | string | 是 |(无)| json字符串，目前是空，{} |
+
 ## 4.2 PreMeetingCallback 回调代理
 
 PreMeetingCallback 需实现以下成员函数：
@@ -552,7 +595,10 @@ PreMeetingCallback 需实现以下成员函数：
 | ShowJoinMeetingView | 4    | 打开加入会议界面的回调 |
 | ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 |
 | ShowMeetingSettingView | 6    | 打开会议设置界面的回调 |
-| ClosePreMeetingView | 100    | 关闭会前界面的回调 |
+| ClosePreMeetingView | 7    | 关闭会前界面的回调 |
+| QueryMeetingInfo | 8    | 关查询会议信息的回调 |
+| InviteUsers | 9   | 预定会议邀请用户的回调 |
+| QuickMeeting | 10    | 快速的回调 |
 
 
 # 5. InMeetingService 说明
