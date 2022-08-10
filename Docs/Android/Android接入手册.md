@@ -164,6 +164,33 @@
 -keep class com.tencent.wemeet.**{*;}
 
 ```
+- 如果项目开启了资源混淆，例如AndResGuard，需在资源混淆白名单中加上：
+```
+[
+    // your icon
+    "R.mipmap.ic_logo",
+    "R.mipmap.ic_logo_round",
+    // for fabric
+    "R.string.com.crashlytics.*",
+    // for google-services.json
+    "R.string.google_app_id",
+    "R.string.gcm_defaultSenderId",
+    "R.string.default_web_client_id",
+    "R.string.ga_trackingId",
+    "R.string.firebase_database_url",
+    "R.string.google_api_key",
+    "R.string.google_crash_reporting_api_key",
+    "R.id.rpItemCover",
+    "R.id.rpItemDetail",
+    "R.raw.ring",
+    "R.layout.home_menu_bar_debug_state_layout",
+    "R.id.pingDelayTitle,",
+    "R.id.pktLossProTitle",
+    "R.id.routerDelayTitle",
+    "R.id.tvContent",
+    "R.id.guideline",
+]
+```
 
 ### 1.2 SDK组成
 - Demo 样例工程
