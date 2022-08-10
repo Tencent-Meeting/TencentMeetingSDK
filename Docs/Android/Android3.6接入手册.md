@@ -165,6 +165,57 @@
 -keep class com.tencent.wemeet.**{*;}
 
 ```
+- 如果项目开启了资源混淆，例如AndResGuard，需在资源混淆白名单中加上：
+```
+[
+    // your icon
+    "R.mipmap.ic_logo",
+    "R.mipmap.ic_logo_round",
+    // for fabric
+    "R.string.com.crashlytics.*",
+    // for google-services.json
+    "R.string.google_app_id",
+    "R.string.gcm_defaultSenderId",
+    "R.string.default_web_client_id",
+    "R.string.ga_trackingId",
+    "R.string.firebase_database_url",
+    "R.string.google_api_key",
+    "R.string.google_crash_reporting_api_key",
+    "R.id.rpItemCover",
+    "R.id.rpItemDetail",
+    "R.raw.ring",
+    "R.layout.home_menu_bar_debug_state_layout",
+    "R.id.pingDelayTitle",
+    "R.id.pktLossProTitle",
+    "R.id.routerDelayTitle",
+    "R.id.tvContent",
+    "R.id.guideline",
+    "R.drawable.file_icon_com",
+    "R.drawable.file_icon_excel",
+    "R.drawable.file_icon_mind",
+    "R.drawable.file_icon_pdf",
+    "R.drawable.file_icon_pic",
+    "R.drawable.file_icon_ppt",
+    "R.drawable.file_icon_txt",
+    "R.drawable.file_icon_unknown",
+    "R.drawable.file_icon_vid",
+    "R.drawable.file_icon_word",
+    // huawei hms core sdk
+    "R.string.hms*",
+    "R.string.connect_server_fail_prompt_toast",
+    "R.string.getting_message_fail_prompt_toast",
+    "R.string.no_available_network_prompt_toast",
+    "R.string.third_app_*",
+    "R.string.upsdk_*",
+    "R.layout.hms*",
+    "R.layout.upsdk_*",
+    "R.drawable.upsdk*",
+    "R.color.upsdk*",
+    "R.dimen.upsdk*",
+    "R.style.upsdk*",
+    "R.string.agc*"
+]
+```
 
 ### 1.2 SDK组成
 - Demo 样例工程
