@@ -534,6 +534,28 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数说明：查询会议信息
 * 返回值类型：void
 * 返回值说明：无，通过回调onActionResult的QueryMeetingInfo回调结果
+* 回调内容说明：
+
+| 名称 | 示例 | 说明 |
+|---|---|---|
+|action_type||onActionResult回调类型|
+|code|||
+|msg|返回内容|
+```
+{
+    "meeting_info": [
+        {
+            "meeting_id": "111",
+            "meeting_status": 0 
+        },
+        {
+            "meeting_id": "111",
+            "meeting_status": 0
+        }
+    ]
+}
+```
+
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
