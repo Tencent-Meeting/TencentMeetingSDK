@@ -560,7 +560,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
-|param | string | 是 |(无)| json字符串，例如，{"meeting_id": ["111", "222", "333"]} |
+|param | string | 是 |(无)| json字符串，例如，{"meeting_id": ["111", "222", "333"]}，meeting_id数组长度不大于5个 |
 
 
 ### QuickMeeting
