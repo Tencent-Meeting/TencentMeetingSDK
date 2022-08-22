@@ -533,7 +533,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：void QueryMeetingInfo(string param)
 * 函数说明：查询会议信息
 * 返回值类型：void
-* 返回值说明：无
+* 返回值说明：无，通过回调onActionResult的QueryMeetingInfo回调结果
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
@@ -544,9 +544,9 @@ AuthenticationCallback 需实现以下成员函数：
 ### QuickMeeting
 * 可用版本：>= 3.6.1
 * 函数形式：void QuickMeeting(string param)
-* 函数说明：查询会议信息
+* 函数说明：快速会议
 * 返回值类型：void
-* 返回值说明：无
+* 返回值说明：无，通过回调onActionResult的QuickMeeting回调结果
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
