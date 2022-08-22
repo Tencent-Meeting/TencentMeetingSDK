@@ -568,7 +568,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：void QuickMeeting(string param)
 * 函数说明：快速会议
 * 返回值类型：void
-* 返回值说明：无，通过回调onActionResult的QuickMeeting回调结果
+* 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
@@ -620,7 +620,6 @@ PreMeetingCallback 需实现以下成员函数：
 | ClosePreMeetingView | 7    | 关闭会前界面的回调 |
 | QueryMeetingInfo | 8    | 关查询会议信息的回调 |
 | InviteUsers | 9   | 预定会议邀请用户的回调 |
-| QuickMeeting | 10    | 快速的回调 |
 
 
 # 5. InMeetingService 说明
