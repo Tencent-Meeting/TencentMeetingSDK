@@ -548,7 +548,7 @@ AuthenticationCallback 需实现以下成员函数：
 ### QuickMeeting
 * 可用版本：>= 3.6.1
 * 函数形式：void QuickMeeting()
-* 函数说明：快速会议
+* 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，发起第二次调用；
 * 返回值类型：void
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：无
