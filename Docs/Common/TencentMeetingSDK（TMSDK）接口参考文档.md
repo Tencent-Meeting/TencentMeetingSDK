@@ -616,6 +616,18 @@ PreMeetingCallback 需实现以下成员函数：
 * 注：3.0.102加入，仅Mac、Windows、electron有该接口。
 
 
+### switchPIPModel
+* 函数形式：void leaveMeeting(bool isEnterPip)
+* 函数说明：进入悬浮窗或者退出悬浮窗状态，结果会在回调`InMeetingCallback.onSwitchPiPResult`返回。
+* 返回值类型：void
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|isEnterPip |bool |否 |false |退出悬浮窗状态 |true |进入悬浮窗状态  |
+
+
 ## 5.2 InMeetingCallback 回调代理
 
 InMeetingCallback 需实现以下成员函数：
@@ -670,6 +682,15 @@ invite_info内容
 |---|---|---|
 |meeting_info |string |会议信息，JSON字符串，meeting_info目前跟invite_info内容一样 |
 
+### onSwitchPiPResult
+* 说明：进入悬浮窗或者退出悬浮窗状态的回调。
+* 返回值：无
+* 参数说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+|msg |string |结果信息|
 
 # 6. 错误码
 
@@ -700,3 +721,6 @@ invite_info内容
 | kTMSDKErrorJoinMeetingServiceFailed|-1022| 服务端拒绝入会，可能是频繁入会请求、输入无效会议号等情况，请用返回错误码和错误描述联系官方 | onJoinMeeting()|
 | kTMSDKErrorInvalidJsonString|-1024| 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()|
 | kTMSDKErrorProxySetFailed|-1025| 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
+| kTMSDKErrorScreenShareOpenNotSupportSwitchPip|-1027| 正在屏幕共享无法进入悬浮窗状态 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1028| 用户在等候室无法进入悬浮窗状态 |onSwitchPiPResult()|
+
