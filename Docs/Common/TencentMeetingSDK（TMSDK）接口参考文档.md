@@ -625,7 +625,7 @@ PreMeetingCallback 需实现以下成员函数：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
-|isEnterPip |bool |否 |无 | false 退出悬浮窗状态 true 进入悬浮窗状态  |
+|isEnterPip |bool |是 |true or false | false 退出悬浮窗状态 true 进入悬浮窗状态  |
 
 ## 5.2 InMeetingCallback 回调代理
 
