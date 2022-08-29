@@ -93,6 +93,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |私有化SDK专用|org_domain |string |必填，二选一 |(无) |组织机构域，如填写，SDK则会通过`org_domain`从公有云服务上获取私有化服务器地址，并覆盖`server_host`的值 |
 |通用 |data_path |string |否 |`tmsdkapp.exe`同级目录 | 仅`Windows`支持:自定义SDK数据存储路径，里面包括日志目录。 |
 |通用 |app_name |string |否 |网络会议 | 指定显示的品牌名称 |
+|公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us） |
 
 
 ### isInitialized
