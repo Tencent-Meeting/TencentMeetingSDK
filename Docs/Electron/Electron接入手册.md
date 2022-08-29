@@ -413,6 +413,13 @@ wemeet_sdk.GetSDKVersion()
 ```
 说明：返回string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
+### 28、一键跳转指定页面
+
+```
+wemeet_sdk.HandleSchema(schema_url)
+```
+说明：参数schema_url为跳转链接，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
 
 ## 4. 回调说明
 
