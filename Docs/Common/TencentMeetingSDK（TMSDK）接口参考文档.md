@@ -511,6 +511,48 @@ AuthenticationCallback 需实现以下成员函数：
 * 返回值说明：无
 * 参数说明：无
 
+### QueryMeetingInfo
+* 可用版本：>= 3.6.1
+* 函数形式：void QueryMeetingInfo(string param)
+* 函数说明：查询会议信息
+* 返回值类型：void
+* 返回值说明：无，通过回调onActionResult的QueryMeetingInfo回调结果
+* 回调内容说明：
+
+| 名称 | 示例 | 说明 |
+|---|---|---|
+|action_type||onActionResult回调类型|
+|code|||
+|msg|返回内容|
+```
+{
+    "meeting_info": [
+        {
+            "meeting_id": "111",
+            "meeting_status": 0 
+        },
+        {
+            "meeting_id": "111",
+            "meeting_status": 0
+        }
+    ]
+}
+```
+
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|param | string | 是 |(无)| json字符串，例如，{"meeting_id": ["111", "222", "333"]}，meeting_id数组长度不大于5个 |
+
+
+### QuickMeeting
+* 可用版本：>= 3.6.1
+* 函数形式：void QuickMeeting()
+* 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，发起第二次调用；
+* 返回值类型：void
+* 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
+* 参数说明：无
 ## 4.2 PreMeetingCallback 回调代理
 
 PreMeetingCallback 需实现以下成员函数：
@@ -553,7 +595,9 @@ PreMeetingCallback 需实现以下成员函数：
 | ShowJoinMeetingView | 4    | 打开加入会议界面的回调 |
 | ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 |
 | ShowMeetingSettingView | 6    | 打开会议设置界面的回调 |
-| ClosePreMeetingView | 100    | 关闭会前界面的回调 |
+| ClosePreMeetingView | 7    | 关闭会前界面的回调 |
+| QueryMeetingInfo | 8    | 关查询会议信息的回调 |
+| InviteUsers | 9   | 预定会议邀请用户的回调 |
 
 
 # 5. InMeetingService 说明
