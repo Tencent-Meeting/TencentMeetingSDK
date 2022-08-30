@@ -1,4 +1,4 @@
-# Electron 接入手册
+# Electron3.6 接入手册
 
 ## 1. demo环境配置说明
 ### 1.1 环境要求
@@ -17,17 +17,13 @@ addon，使用里面封装的接口即可。
 #### 1.2.2 Win64环境node文件
 ![2.png](images/2.png)
 
-#### 1.2.3 Mac x86_64位环境node文件
+#### 1.2.3 Mac x86_64 & arm64位环境node文件
 
-![3.png](images/3.png)
-
-#### 1.2.4 Mac arm64位环境node文件
-
-![4.png](images/4.png)
+![10.png](images/10.png)
 
 #### 1.2.5 Mac SDK 文件
 
-![5.png](images/5.png)
+![12.png](images/12.png)
 
 > **说明：在windows和mac上wemeet_electron_sdk.node的依赖文件是不一样的，但是我们提供的 .node 文件导出的接口是一致的，所以编码接入的时候无需平台的差异性，打包的时候将对应平台的依赖文件对应目录即可。**
 
@@ -94,14 +90,15 @@ Electron_Demo目录下执行npm start
 Electron_Demo目录下执行npm start
 
 
-
 #### 1.3.3 Mac 环境
 
-1. 在demo_saas_sdk文件夹下启用终端，执行start_electron.sh脚本。 x86_64环境下在终端输入，arm64环境下在终端输入bash start_electron.sh arm64。
+1. 在demo_saas_sdk文件夹下启用终端，执行start_electron.sh脚本。注:此时用到的framework是双架构。
 2. 执行完脚本后，等待即可，无报错情况下会自动打开demo。
 3. 执行成功过一次脚本后，再次运行demo可输入“npm start”指令或再次执行脚本。
 
+**Q:压缩包中`SDK/TMSDK.framework`是一个双架构的framework，可以在x86和arm64下运行，但是体积过大,如何拆分成单架构的framework?**
 
+**A:将`TMSDK.framework`和`mac_build_framework`放在同级目录，双击运行`mac_build_framework`，等待即可，无报错情况下会在`Build/Products/Release/framework`下生成x86和arm64两个平台的架构包**
 
 ## 2. SDK 接入说明
 ### 2.1 申请 SDK Id & SDK Secret
@@ -180,7 +177,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 二. 新建electron工程
 
-三. 将wemeet_electron_sdk.node拷贝到 `output/mac/x86_64`目录下。
+三. 将wemeet_electron_sdk.node拷贝到 `output/mac`目录下。
 
 四. 在package.json加配置
 
@@ -192,7 +189,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 五. 修改start.js，拷贝SDK文件，参考demo的start.js：
 
-Mac端：将SDK文件（即SDK/x86_64/TMSDK.framework）拷贝至node_modules/electron/dist/xxx.app/Contents/Frameworks目录下
+Mac端：将SDK文件（即SDK/TMSDK.framework）拷贝至`node_modules/electron/dist/xxx.app/Contents/Frameworks`目录下(注：此时framework是一个双架构包，拆包操作请查看1.3.3)
 
 六. 在js中导入 wemeet_electron_sdk.node 文件
 
@@ -208,7 +205,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 二. 新建electron工程
 
-三. 将wemeet_electron_sdk.node拷贝到 `output/mac/arm64`目录下。
+三. 将wemeet_electron_sdk.node拷贝到 `output/mac`目录下。
 
 四. 在package.json加配置
 
@@ -220,7 +217,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 五. 修改start.js，拷贝SDK文件，参考demo的start.js：
 
-Mac端：将SDK文件（即SDK/arm64/TMSDK.framework）拷贝至node_modules/electron/dist/xxx.app/Contents/Frameworks目录下
+Mac端：将SDK文件（即SDK/TMSDK.framework）拷贝至`node_modules/electron/dist/xxx.app/Contents/Frameworks`目录下(注：此时framework是一个双架构包，拆包操作请查看1.3.3)
 
 六. 在js中导入 wemeet_electron_sdk.node 文件
 
