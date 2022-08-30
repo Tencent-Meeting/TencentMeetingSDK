@@ -23,7 +23,7 @@ addon，使用里面封装的接口即可。
 
 #### 1.2.5 Mac SDK 文件
 
-![12.png](images/12.png)
+![11.png](images/11.png)
 
 > **说明：在windows和mac上wemeet_electron_sdk.node的依赖文件是不一样的，但是我们提供的 .node 文件导出的接口是一致的，所以编码接入的时候无需平台的差异性，打包的时候将对应平台的依赖文件对应目录即可。**
 
