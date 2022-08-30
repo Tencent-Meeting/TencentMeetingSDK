@@ -617,7 +617,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 
 ### switchPIPModel
-* 函数形式：void leaveMeeting(bool isEnterPip)
+* 可用版本：>= 3.6.2
+* 适用平台：android&ios
+* 函数形式：void switchPIPModel(bool isEnterPip)
 * 函数说明：进入悬浮窗或者退出悬浮窗状态，结果会在回调`InMeetingCallback.onSwitchPiPResult`返回。
 * 返回值类型：void
 * 返回值说明：无
