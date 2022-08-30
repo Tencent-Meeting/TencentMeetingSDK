@@ -724,4 +724,9 @@ invite_info内容
 | kTMSDKErrorProxySetFailed|-1025| 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
 | kTMSDKErrorScreenShareOpenNotSupportSwitchPip|-1027| 正在屏幕共享无法进入悬浮窗状态 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1028| 用户在等候室无法进入悬浮窗状态 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1029| app处于后台状态无法进入悬浮窗状态 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1030| 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1031| 进入悬浮窗状态失败 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1032| 没有悬浮窗权限 |onSwitchPiPResult()|
+
 
