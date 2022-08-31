@@ -15,6 +15,7 @@
 | 2022-05-12 | 新增接口：新增入会(joinMeetingByJSON)接口| 3.0.106 |
 | 2022-05-13 | 新增接口：新增设置代理(setProxyInfo)接口| 3.0.106 |
 | 2022-08-02 | 新增接口：新增处理Schema(handleSchema)接口，更新showPreMeetingView函数，新增可选参数| 3.6.100 |
+| 2022-08-30 | 新增接口：新增处理switchPipModel(switchPipModel)接口| 3.6.200 |
 
 
 
@@ -722,11 +723,9 @@ invite_info内容
 | kTMSDKErrorJoinMeetingServiceFailed|-1022| 服务端拒绝入会，可能是频繁入会请求、输入无效会议号等情况，请用返回错误码和错误描述联系官方 | onJoinMeeting()|
 | kTMSDKErrorInvalidJsonString|-1024| 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()|
 | kTMSDKErrorProxySetFailed|-1025| 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
-| kTMSDKErrorScreenShareOpenNotSupportSwitchPip|-1027| 正在屏幕共享无法进入悬浮窗状态 |onSwitchPiPResult()|
-| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1028| 用户在等候室无法进入悬浮窗状态 |onSwitchPiPResult()|
-| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1029| app处于后台状态无法进入悬浮窗状态 |onSwitchPiPResult()|
-| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1030| 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
-| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1031| 进入悬浮窗状态失败 |onSwitchPiPResult()|
-| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1032| 没有悬浮窗权限 |onSwitchPiPResult()|
+| kTMSDKErrorScreenShareOpenNotSupportSwitchPip|-1027| 正在屏幕共享&用户在等候室&app处于后台无法进入悬浮窗状态 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1028| 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1029| 进入悬浮窗状态失败 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1030| 没有悬浮窗权限 |onSwitchPiPResult()|
 
 
