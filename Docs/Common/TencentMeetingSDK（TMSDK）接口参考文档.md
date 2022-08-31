@@ -488,7 +488,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 - 可用版本：>= 3.6.2
 - 函数形式：void showMeetingDetailView(string meeting_id, string current_sub_meeting_id, string start_time, bool is_history)
-- 函数说明：显示某一个具体会议的界面。登陆完成后，才可调用。如果输入错误的meeting_id或者current_sub_meeting_id有的字段会显示’-‘，输入错误的start_time可能导致页面加载失败，设置准确的start_time参数接口执行效率更高。
+- 函数说明：显示某一个具体会议的界面。登陆完成后，才可调用。如果输入错误的meeting_id或者current_sub_meeting_id则会议页面有的字段会显示’-‘；如果输入错误的start_time可能导致页面加载失败，设置准确的start_time参数接口执行效率更高；该接口回调详见4.2中onActionResult说明
 - 返回值类型：void
 - 返回值说明：无
 - 参数说明：
