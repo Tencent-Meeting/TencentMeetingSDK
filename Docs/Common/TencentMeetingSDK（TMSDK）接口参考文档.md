@@ -471,7 +471,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 返回值说明：无
 * 参数说明：无
 
-### showMeetingDetailView
+### showMeetingDetailView【即将移除】
 * 可用版本：>= 2.18.1
 * 函数形式：void showMeetingDetailView(string meeting_id, string current_sub_meeting_id)
 * 函数说明：显示某一个具体会议的界面。登陆完成后，才可调用。如果输入错误的meeting_id或者current_sub_meeting_id有的字段会显示’-‘
@@ -483,6 +483,22 @@ AuthenticationCallback 需实现以下成员函数：
 |---|---|---|---|---|
 |meeting_id |string |是 |(无) |会议标识号 |
 |current_sub_meeting_id |string |是|(无)|非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APis获取 |
+
+### showMeetingDetailView
+
+- 可用版本：>= 3.6.2
+- 函数形式：void showMeetingDetailView(string meeting_id, string current_sub_meeting_id, string start_time, bool is_history)
+- 函数说明：显示某一个具体会议的界面。登陆完成后，才可调用。如果输入错误的meeting_id或者current_sub_meeting_id有的字段会显示’-‘，输入错误的start_time可能导致页面加载失败，设置准确的start_time参数接口执行效率更高。
+- 返回值类型：void
+- 返回值说明：无
+- 参数说明：
+
+| 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
+| ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
+| meeting_id             | string   | 是       | (无)       | 会议标识号                                                   |
+| current_sub_meeting_id | string   | 是       | (无)       | 非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APis获取 |
+| start_time             | string   | 是       | (无)       | 会议开始时间戳(单位秒)；如：2022-01-01 00:00:00时间戳1640966400。注意：该参数传入不正确，可能导致页面加载失败 |
+| is_history             | bool     | 否       | true       | 控制展示会议还是会后会议详情页面，如果为true，展示会后会议详情页面；如果为false，展示会议详情页面； |
 
 ### showJoinMeetingView
 * 可用版本：>= 2.18.2
