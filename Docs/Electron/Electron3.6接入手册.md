@@ -21,7 +21,7 @@ addon，使用里面封装的接口即可。
 
 ![10.png](images/10.png)
 
-#### 1.2.5 Mac SDK 文件
+#### 1.2.4 Mac SDK 文件
 
 ![11.png](images/11.png)
 
@@ -96,9 +96,11 @@ Electron_Demo目录下执行npm start
 
    方法一、执行命令（注：此时用到的framework、wemeet_electron_sdk.node默认都是双架构）
 
-   1.1、npm install 
+   1.1、按1.2.4中操作执行文件拷贝
 
-   1.2、npm start
+   1.2、npm install 
+
+   1.3、npm start
 
    方法二、执行start_electron.sh脚本（注：此时wemeet_electron_sdk.node文件会重新构建生成当前机器对应架构的。如：M1机器上生成arm64架构的，Intel机器上生成x86_64架构的）
 
