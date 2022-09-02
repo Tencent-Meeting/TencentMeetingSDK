@@ -15,7 +15,7 @@
 | 2022-05-12 | 新增接口：新增入会(joinMeetingByJSON)接口| 3.0.106 |
 | 2022-05-13 | 新增接口：新增设置代理(setProxyInfo)接口| 3.0.106 |
 | 2022-08-02 | 新增接口：新增处理Schema(handleSchema)接口，更新showPreMeetingView函数，新增可选参数| 3.6.100 |
-| 2022-08-30 | 新增接口：新增处理switchPipModel(switchPipModel)接口| 3.6.200 |
+| 2022-08-30 | 新增接口：新增处理最小化悬浮窗(switchPipModel)接口、支持初始化设置英文、更新新版的打开会议详情页接口(showMeetingDetailView)、新增查询会议信息接口(QueryMeetingInfo)、新增快速会议接口(QuickMeeting)| 3.6.200 |
 
 
 
@@ -94,7 +94,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |私有化SDK专用|org_domain |string |必填，二选一 |(无) |组织机构域，如填写，SDK则会通过`org_domain`从公有云服务上获取私有化服务器地址，并覆盖`server_host`的值 |
 |通用 |data_path |string |否 |`tmsdkapp.exe`同级目录 | 仅`Windows`支持:自定义SDK数据存储路径，里面包括日志目录。 |
 |通用 |app_name |string |否 |网络会议 | 指定显示的品牌名称 |
-|公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，传入其它值将显示为zh-cn，3.6.2及以上版本可用） |
+|公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，如传入其它值则显示为zh-cn，3.6.200及以上版本可用） |
 
 
 ### isInitialized
@@ -486,9 +486,14 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### showMeetingDetailView
 
-- 可用版本：>= 3.6.2
+- 可用版本：>= 3.6.200
 - 函数形式：void showMeetingDetailView(string meeting_id, string current_sub_meeting_id, string start_time, bool is_history)
-- 函数说明：显示某一个具体会议的界面。登陆完成后，才可调用。如果输入错误的meeting_id或者current_sub_meeting_id则会议页面有的字段会显示’-‘；如果输入错误的start_time可能导致页面加载失败，设置准确的start_time参数接口执行效率更高；该接口回调详见4.2中onActionResult说明
+- 函数说明：
+  - 显示某一个具体会议的界面。
+  - 登陆完成后，才可调用。
+  - 如果输入错误的meeting_id或者current_sub_meeting_id，会议页面中有的字段则会显示’-‘；
+  - 如果输入错误的start_time可能导致页面加载失败，设置准确的start_time参数接口执行效率更高；
+  - 该接口回调详见4.2中onActionResult说明
 - 返回值类型：void
 - 返回值说明：无
 - 参数说明：
@@ -529,11 +534,17 @@ AuthenticationCallback 需实现以下成员函数：
 * 参数说明：无
 
 ### QueryMeetingInfo
-* 可用版本：>= 3.6.2
+* 可用版本：>= 3.6.200
 * 函数形式：void QueryMeetingInfo(string param)
 * 函数说明：查询会议信息
 * 返回值类型：void
 * 返回值说明：无，通过回调onActionResult的QueryMeetingInfo回调结果
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|param | string | 是 |(无)| json字符串，例如，{"meeting_id": ["111", "222", "333"]}，一次请求的meeting_id数组长度不大于5个 |
+
 * 回调内容说明：
 
 | 名称 | 示例 | 说明 |
@@ -556,20 +567,16 @@ AuthenticationCallback 需实现以下成员函数：
 }
 ```
 
-* 参数说明：
-
-|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|---|---|---|---|---|
-|param | string | 是 |(无)| json字符串，例如，{"meeting_id": ["111", "222", "333"]}，meeting_id数组长度不大于5个 |
-
 
 ### QuickMeeting
-* 可用版本：>= 3.6.2
+* 可用版本：>= 3.6.200
 * 函数形式：void QuickMeeting()
 * 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
 * 返回值类型：void
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：无
+
+
 ## 4.2 PreMeetingCallback 回调代理
 
 PreMeetingCallback 需实现以下成员函数：
@@ -679,8 +686,8 @@ PreMeetingCallback 需实现以下成员函数：
 
 
 ### switchPIPModel
-* 可用版本：>= 3.6.2
-* 适用平台：android&ios
+* 可用版本：>= 3.6.200
+* 适用平台：android & ios
 * 函数形式：void switchPIPModel(bool isEnterPip)
 * 函数说明：进入悬浮窗或者退出悬浮窗状态，结果会在回调`InMeetingCallback.onSwitchPiPResult`返回。
 * 返回值类型：void
@@ -689,7 +696,8 @@ PreMeetingCallback 需实现以下成员函数：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
-|isEnterPip |bool |是 |true or false | false 退出悬浮窗状态 true 进入悬浮窗状态  |
+|isEnterPip |bool |是 |true or false | false 退出悬浮窗状态；true 进入悬浮窗状态  |
+
 
 ## 5.2 InMeetingCallback 回调代理
 
