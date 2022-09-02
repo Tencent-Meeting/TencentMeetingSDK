@@ -566,7 +566,18 @@ AuthenticationCallback 需实现以下成员函数：
     ]
 }
 ```
+返回会议信息中，字段说明：
 
+| 名称 | 数值 | 说明 |
+|---  |---   |---  |
+| kMeetingStateUnknown | -1 | 未知状态 |
+| kMeetingStateNotStarted | 0 | 待开始，当前时间在会议开始时间之前 |
+| kMeetingStateCancel | 1 | 用户取消 |
+| kMeetingStateStarted | 2 | 会议进行中 |
+| kMeetingStateDeleted | 3 | 会议被删除 |
+| kMeetingStateReadyToBeStarted | 4 | 会议开始时间到了，无人入会 |
+| kMeetingStateNone | 6| 当前时间在会议结束时间之后，并且无人在会议中 |
+| kMeetingStateRecycled | 7| 会议失效 |
 
 ### QuickMeeting
 * 可用版本：>= 3.6.200
