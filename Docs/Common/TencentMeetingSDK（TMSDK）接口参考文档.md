@@ -15,6 +15,7 @@
 | 2022-05-12 | 新增接口：新增入会(joinMeetingByJSON)接口| 3.0.106 |
 | 2022-05-13 | 新增接口：新增设置代理(setProxyInfo)接口| 3.0.106 |
 | 2022-08-02 | 新增接口：新增处理Schema(handleSchema)接口，更新showPreMeetingView函数，新增可选参数| 3.6.100 |
+| 2022-08-30 | 新增接口：新增处理最小化悬浮窗(switchPipModel)接口、支持初始化设置英文、更新新版的打开会议详情页接口(showMeetingDetailView)、新增查询会议信息接口(QueryMeetingInfo)、新增快速会议接口(QuickMeeting)| 3.6.200 |
 
 
 
@@ -93,6 +94,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |私有化SDK专用|org_domain |string |必填，二选一 |(无) |组织机构域，如填写，SDK则会通过`org_domain`从公有云服务上获取私有化服务器地址，并覆盖`server_host`的值 |
 |通用 |data_path |string |否 |`tmsdkapp.exe`同级目录 | 仅`Windows`支持:自定义SDK数据存储路径，里面包括日志目录。 |
 |通用 |app_name |string |否 |网络会议 | 指定显示的品牌名称 |
+|公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，如传入其它值则显示为zh-cn，3.6.200及以上版本可用） |
 
 
 ### isInitialized
@@ -469,7 +471,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 返回值说明：无
 * 参数说明：无
 
-### showMeetingDetailView
+### showMeetingDetailView【即将移除】
 * 可用版本：>= 2.18.1
 * 函数形式：void showMeetingDetailView(string meeting_id, string current_sub_meeting_id)
 * 函数说明：显示某一个具体会议的界面。登陆完成后，才可调用。如果输入错误的meeting_id或者current_sub_meeting_id有的字段会显示’-‘
@@ -481,6 +483,27 @@ AuthenticationCallback 需实现以下成员函数：
 |---|---|---|---|---|
 |meeting_id |string |是 |(无) |会议标识号 |
 |current_sub_meeting_id |string |是|(无)|非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APis获取 |
+
+### showMeetingDetailView
+
+- 可用版本：>= 3.6.200
+- 函数形式：void showMeetingDetailView(string meeting_id, string current_sub_meeting_id, string start_time, bool is_history)
+- 函数说明：
+  - 显示某一个具体会议的界面。
+  - 登陆完成后，才可调用。
+  - 如果输入错误的meeting_id或者current_sub_meeting_id，会议页面中有的字段则会显示’-‘；
+  - 如果输入错误的start_time可能导致页面加载失败，设置准确的start_time参数接口执行效率更高；
+  - 该接口回调详见4.2中onActionResult说明
+- 返回值类型：void
+- 返回值说明：无
+- 参数说明：
+
+| 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
+| ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
+| meeting_id             | string   | 是       | (无)       | 会议标识号                                                   |
+| current_sub_meeting_id | string   | 是       | (无)       | 非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APis获取 |
+| start_time             | string   | 是       | (无)       | 会议开始时间戳(单位秒)；如：2022-01-01 00:00:00时间戳1640966400。注意：该参数传入不正确，可能导致页面加载失败 |
+| is_history             | bool     | 否       | true       | 控制展示会议还是会后会议详情页面，如果为true，展示会后会议详情页面；如果为false，展示会议详情页面； |
 
 ### showJoinMeetingView
 * 可用版本：>= 2.18.2
@@ -509,6 +532,61 @@ AuthenticationCallback 需实现以下成员函数：
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
+
+### QueryMeetingInfo
+* 可用版本：>= 3.6.200
+* 函数形式：void QueryMeetingInfo(string param)
+* 函数说明：查询会议信息
+* 返回值类型：void
+* 返回值说明：无，通过回调onActionResult的QueryMeetingInfo回调结果
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|param | string | 是 |(无)| json字符串，例如，{"meeting_id": ["111", "222", "333"]}，一次请求的meeting_id数组长度不大于5个 |
+
+* 回调内容说明：
+
+| 名称 | 示例 | 说明 |
+|---|---|---|
+|action_type||onActionResult回调类型|
+|code|||
+|msg|返回内容|
+```
+{
+    "meeting_info": [
+        {
+            "meeting_id": "111",
+            "meeting_status": 0 
+        },
+        {
+            "meeting_id": "111",
+            "meeting_status": 0
+        }
+    ]
+}
+```
+返回会议信息中，meeting_status字段说明：
+
+| 名称 | 数值 | 说明 |
+|---  |---   |---  |
+| kMeetingStateUnknown | -1 | 未知状态 |
+| kMeetingStateNotStarted | 0 | 待开始，当前时间在会议开始时间之前 |
+| kMeetingStateCancel | 1 | 用户取消 |
+| kMeetingStateStarted | 2 | 会议进行中 |
+| kMeetingStateDeleted | 3 | 会议被删除 |
+| kMeetingStateReadyToBeStarted | 4 | 会议开始时间到了，无人入会 |
+| kMeetingStateNone | 6| 当前时间在会议结束时间之后，并且无人在会议中 |
+| kMeetingStateRecycled | 7| 会议失效 |
+
+### QuickMeeting
+* 可用版本：>= 3.6.200
+* 函数形式：void QuickMeeting()
+* 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
+* 返回值类型：void
+* 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
+* 参数说明：无
+
 
 ## 4.2 PreMeetingCallback 回调代理
 
@@ -552,7 +630,9 @@ PreMeetingCallback 需实现以下成员函数：
 | ShowJoinMeetingView | 4    | 打开加入会议界面的回调 |
 | ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 |
 | ShowMeetingSettingView | 6    | 打开会议设置界面的回调 |
-| ClosePreMeetingView | 100    | 关闭会前界面的回调 |
+| ClosePreMeetingView | 7    | 关闭会前界面的回调 |
+| QueryMeetingInfo | 8    | 关查询会议信息的回调 |
+| InviteUsers | 9   | 预定会议邀请用户的回调 |
 
 
 # 5. InMeetingService 说明
@@ -616,6 +696,20 @@ PreMeetingCallback 需实现以下成员函数：
 * 注：3.0.102加入，仅Mac、Windows、electron有该接口。
 
 
+### switchPIPModel
+* 可用版本：>= 3.6.200
+* 适用平台：android & ios
+* 函数形式：void switchPIPModel(bool isEnterPip)
+* 函数说明：进入悬浮窗或者退出悬浮窗状态，结果会在回调`InMeetingCallback.onSwitchPiPResult`返回。
+* 返回值类型：void
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|isEnterPip |bool |是 |true or false | false 退出悬浮窗状态；true 进入悬浮窗状态  |
+
+
 ## 5.2 InMeetingCallback 回调代理
 
 InMeetingCallback 需实现以下成员函数：
@@ -670,6 +764,15 @@ invite_info内容
 |---|---|---|
 |meeting_info |string |会议信息，JSON字符串，meeting_info目前跟invite_info内容一样 |
 
+### onSwitchPiPResult
+* 说明：进入悬浮窗或者退出悬浮窗状态的回调。
+* 返回值：无
+* 参数说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+|msg |string |结果信息|
 
 # 6. 错误码
 
@@ -700,3 +803,9 @@ invite_info内容
 | kTMSDKErrorJoinMeetingServiceFailed|-1022| 服务端拒绝入会，可能是频繁入会请求、输入无效会议号等情况，请用返回错误码和错误描述联系官方 | onJoinMeeting()|
 | kTMSDKErrorInvalidJsonString|-1024| 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()|
 | kTMSDKErrorProxySetFailed|-1025| 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
+| kTMSDKErrorScreenShareOpenNotSupportSwitchPip|-1027| 正在屏幕共享&用户在等候室&app处于后台无法进入悬浮窗状态 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1028| 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1029| 进入悬浮窗状态失败 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1030| 没有悬浮窗权限 |onSwitchPiPResult()|
+
+
