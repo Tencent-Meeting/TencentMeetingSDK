@@ -72,6 +72,7 @@ Electron_Demo目录下执行npm start
 | api-ms-win*.dll  | SDK/Release/x64 |   output/win/x64    |
 | msvcp140.dll  | SDK/Release/x64    | output/win/x64    |
 | vcruntime140.dll | SDK/Release/x64 | output/win/x64 |
+| vcruntime140_1.dll | SDK/Release/x64 | output/win/x64 |
 | ucrtbase.dll | SDK/Release/x64 | output/win/x64 |
 | wemeet_base_x64.dll | SDK | output/win/x64 |
 | Release文件夹 | SDK | output/win/x64 |
@@ -337,6 +338,10 @@ wemeet_sdk.ShowHistoricalMeetingView();
 ```
 wemeet_sdk.ShowMeetingDetailView(meeting_id, current_sub_meeting_id)
 ```
+版本 >=3.6.200 重载ShowMeetingDetailView接口，入参可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明：
+```
+wemeet_sdk.ShowMeetingDetailView(meeting_id, current_sub_meeting_id, start_time, is_history)
+```
 
 ### 15、登录态跳转
 
@@ -434,6 +439,19 @@ wemeet_sdk.GetSDKVersion()
 wemeet_sdk.HandleSchema(schema_url)
 ```
 说明：参数schema_url为跳转链接，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 29、查询会议信息
+
+```
+wemeet_sdk.QueryMeetingInfo(meeting_info)
+```
+说明：>= 3.6.200版本，meeting_info为json格式字符串，详细可参考《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+### 30、快速会议
+
+```
+wemeet_sdk.QuickMeeting()
+```
+说明：>= 3.6.200版本。
 
 
 ## 4. 回调说明
