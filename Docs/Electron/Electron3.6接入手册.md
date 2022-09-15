@@ -45,6 +45,7 @@ addon，使用里面封装的接口即可。
 | vcruntime140.dll | SDK | output/win/win32 |
 | ucrtbase.dll | SDK | output/win/win32 |
 | wemeet_base.dll | SDK | output/win/win32 |
+| wemeetsdk_x86.dll | SDK | output/win/win32 |
 | Release文件夹 | SDK | output/win/win32 |
 - 方法二:  直接执行output/win/win32/copy_win32_release.bat(bat文件中的内容也就是做了方法1的操作，写成了脚本)
 
@@ -75,6 +76,7 @@ Electron_Demo目录下执行npm start
 | vcruntime140_1.dll | SDK/Release/x64 | output/win/x64 |
 | ucrtbase.dll | SDK/Release/x64 | output/win/x64 |
 | wemeet_base_x64.dll | SDK | output/win/x64 |
+| wemeetsdk_x64.dll | SDK | output/win/x64 |
 | Release文件夹 | SDK | output/win/x64 |
 
 - 方法二:  直接执行output/win/x64/copy_win32_release.bat(bat文件中的内容也就是做了方法1的操作，写成了脚本)
