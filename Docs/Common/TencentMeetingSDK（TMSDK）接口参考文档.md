@@ -139,8 +139,6 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### setProxyInfo
 * 函数形式：void setProxyInfo(string proxy_info)
-* 设置代理要求：setProxyInfo要在onSDKInitializeResult返回成功以后。
-* 设置代理要求：登录login要在onSetProxyResult返回成功以后。
 * 函数说明：PC端设置代理接口，通过json串传递代理配置参数；调用结果通过`SDKCallback.onSetProxyResult`回调通知。
 * 返回值类型：void
 * 返回值说明：无
@@ -149,6 +147,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * protocol为string类型，可设置为SOCKS5或者http两种协议
 * agent_typ为int类型，0，全局，1，仅媒体，2，除媒体外
 * 可用版本：>= 3.0.106及以上
+* 注意事项：
+    ①、setProxyInfo要在onSDKInitializeResult返回成功以后。
+    ②、登录login要在onSetProxyResult返回成功以后。
 
 |属性 |类型 |必填 |默认值 |说明 |
 |---|---|---|---|---|
