@@ -268,7 +268,7 @@ dependencies {
 
 Android SDK初始化除在《TencentMeetingSDK（TMSDK）接口参考文档》中已有说明的 `TMSDK.initialize` 外，还需要在Application的`onCreate` 下 调用 `initOnApplicationCreate` ，这个步骤主要用于设置context以及必要的状态，不会进行真正的初始化操作（注意这个方法initOnApplicationCreate必须在所有进程初始化）
 
-**为支持隐私合规,已在3.6.2版本提供支持隐私合规的接入方式**
+**为支持隐私合规,已在3.6.200版本提供支持隐私合规的接入方式**
 - initOnApplicationCreate在原有基础上提供重载方法
 ```
     //原有方式，不支持隐私合规
