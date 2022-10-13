@@ -268,12 +268,39 @@ dependencies {
 
 Android SDK初始化除在《TencentMeetingSDK（TMSDK）接口参考文档》中已有说明的 `TMSDK.initialize` 外，还需要在Application的`onCreate` 下 调用 `initOnApplicationCreate` ，这个步骤主要用于设置context以及必要的状态，不会进行真正的初始化操作（注意这个方法initOnApplicationCreate必须在所有进程初始化）
 
+**为支持隐私合规,已在3.6.2版本提供支持隐私合规的接入方式**
+- initOnApplicationCreate在原有基础上提供重载方法
+```
+    //原有方式，不支持隐私合规
+    TMSDK.initOnApplicationCreate(Application application); 
+
+    //支持隐私合规的接入方式，此时`isPrivacyNeedGrant`参数需要传true，表示开启隐私合规检查。如果此参数为false，则表示SDK不支持隐私合规
+    TMSDK.initOnApplicationCreate(Application application, boolean isPrivacyNeedGrant); 
+```
+- 增加用户同意SDK隐私授权接口
+```
+    //如果initOnApplicationCreate传入参数`isPrivacyNeedGrant`为true，必须调用notifyPrivacyGranted后方可正常初始化SDK,否则会导致SDK异常
+    TMSDK.notifyPrivacyGranted(Context context);
+```
+- 接入展示
 ```kotlin
+//DemoApplication
 @Override
 public void onCreate() {
+
   super.onCreate();
-  TMSDK.initOnApplicationCreate(this);
+  TMSDK.initOnApplicationCreate(this, true);
 }
+
+//DemoActivity
+//首次启动，在用户同意隐私授权后的适当时机调用：
+mBtnAgree.setOnClickListener(
+        v -> {
+            TMSDK.notifyPrivacyGranted(DemoActivity.this);
+            TMSDK.INSTANCE.initialize(initParams, sdkCallback)
+            ...
+        }
+);
 ```
 
 自定义通知栏样式：
@@ -370,7 +397,7 @@ android {
 ```
         implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
         implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-```	
+```
 - 应用异常退出后，切换账号登录异常或者登录的账号信息错误
 > 如果登录的账号发生切换，请主动调用登出接口以清空登录态，再重新尝试登录。
 
