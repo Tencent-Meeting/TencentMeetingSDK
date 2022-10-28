@@ -16,7 +16,7 @@
 | 2022-05-13 | 新增接口：新增设置代理(setProxyInfo)接口| 3.0.106 |
 | 2022-08-02 | 新增接口：新增处理Schema(handleSchema)接口，更新showPreMeetingView函数，新增可选参数| 3.6.100 |
 | 2022-08-30 | 新增接口：新增处理最小化悬浮窗(switchPipModel)接口、支持初始化设置英文、更新新版的打开会议详情页接口(showMeetingDetailView)、新增查询会议信息接口(QueryMeetingInfo)、新增快速会议接口(QuickMeeting)| 3.6.200 |
-
+| 2022-09-26 | 新增接口：quickMeetingByJSON；QuickMeeting和JoinMeeting接口添加meeting_window_title参数 | 3.6.300
 
 
 # 1. SDK使用说明
@@ -413,6 +413,7 @@ AuthenticationCallback 需实现以下成员函数：
 |camera_on |bool |否 |SDK本地设置 |是否开启摄像头 |
 |speaker_on |bool |否 |SDK本地设置 |是否开启扬声器(仅移动端) |
 |face_beauty_on |bool |否 |SDK本地设置 |是否开启美颜 |
+|meeting_window_title |string |否 |(空) |会中窗口标题，如果是空则以initialize接口的app_name为准。3.6.300及以后支持 |
 
 
 ### joinMeetingByJSON
@@ -436,7 +437,8 @@ AuthenticationCallback 需实现以下成员函数：
     "camera_on":true,
     "mic_on":true,
     "speaker_on":true,
-    "face_beauty_on":true
+    "face_beauty_on":true,
+    "meeting_window_title":"会中窗口"
 }
 ```
 
@@ -590,6 +592,21 @@ AuthenticationCallback 需实现以下成员函数：
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：无
 
+### QuickMeetingByJson
+* 可用版本：>= 3.6.300
+* 函数形式：void QuickMeetingByJson(string json_param)
+* 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
+* 返回值类型：void
+* 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
+* 参数说明：
+  * json_param必须是json标准字符串，可以包含一下字段，其他字段会自动忽略
+  * meeting_window_title，会中窗口标题，如果不传或者为空，则以initialize接口的app_name为准
+* 参数示例：
+```
+{
+    "meeting_window_title":"会中窗口"
+}
+```
 
 ## 4.2 PreMeetingCallback 回调代理
 
