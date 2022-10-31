@@ -48,6 +48,19 @@ addon，使用里面封装的接口即可。
 | wemeetsdk_x86.dll | SDK | output/win/win32 |
 | Release文件夹 | SDK | output/win/win32 |
 - 方法二:  直接执行output/win/win32/copy_win32_release.bat(bat文件中的内容也就是做了方法1的操作，写成了脚本)
+```
+rmdir /s /q Release
+mkdir Release
+xcopy /S /E /Y /Q /H /D ..\..\..\..\SDK\Release .\Release
+copy  ..\..\..\..\SDK\api-ms-win*.dll .\
+copy ..\..\..\..\SDK\msvcp140.dll .\msvcp140.dll
+copy ..\..\..\..\SDK\concrt140.dll .\concrt140.dll
+copy ..\..\..\..\SDK\vcomp140.dll .\vcomp140.dll
+copy ..\..\..\..\SDK\vcruntime140.dll .\vcruntime140.dll
+copy ..\..\..\..\SDK\ucrtbase.dll .\ucrtbase.dll
+copy ..\..\..\..\SDK\wemeet_base.dll .\wemeet_base.dll
+copy ..\..\..\..\SDK\wemeetsdk_x86.dll .\wemeetsdk_x86.dll
+```
 
 **二、安装electron以及相关的依赖**
 
@@ -80,6 +93,18 @@ Electron_Demo目录下执行npm start
 | Release文件夹 | SDK | output/win/x64 |
 
 - 方法二:  直接执行output/win/x64/copy_win32_release.bat(bat文件中的内容也就是做了方法1的操作，写成了脚本)
+```
+rmdir /s /q Release
+mkdir Release
+xcopy /S /E /Y /Q /H /D ..\..\..\..\SDK\Release .\Release
+copy  ..\..\..\..\SDK\Release\x64\api-ms-win*.dll .\
+copy ..\..\..\..\SDK\Release\x64\msvcp140.dll .\msvcp140.dll
+copy ..\..\..\..\SDK\Release\x64\vcruntime140.dll .\vcruntime140.dll
+copy ..\..\..\..\SDK\Release\x64\vcruntime140_1.dll .\vcruntime140_1.dll
+copy ..\..\..\..\SDK\Release\x64\ucrtbase.dll .\ucrtbase.dll
+copy ..\..\..\..\SDK\wemeet_base_x64.dll .\wemeet_base_x64.dll
+copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
+```
 
 **二、安装electron以及相关的依赖**
 
