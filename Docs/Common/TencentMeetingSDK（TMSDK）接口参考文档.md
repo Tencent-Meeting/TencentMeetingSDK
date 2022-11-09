@@ -730,6 +730,27 @@ PreMeetingCallback 需实现以下成员函数：
 |isEnterPip |bool |是 |true or false | false 退出悬浮窗状态；true 进入悬浮窗状态  |
 
 
+### getCurrentMeetingInfo
+* 函数形式：string getCurrentMeetingInfo()
+* 函数说明：获取当前会议状态信息
+* 返回值类型：string
+* 返回值说明：当前会议状态信息 未初始化前不可调用，非法调用返回空字符串；初始化未登录调用时，msg返回错误信息，code返回-1006；调用成功后code返回0，data中返回is_in_meeting、meeting_id、meeting_code的信息
+* 如：
+```javascript
+{
+    "code": 0, 
+    "data": {"is_in_meeting": 1, "meeting_id": "14926328509621455953", "meeting_code": "193146629"},
+    "msg": ""
+}
+```
+|名称 |说明 |
+|:--|--|
+|code  |接口调用状态码，成功调用时返回0|
+|data  |接口正常调用时返回的当前会议状态信息，接口未成功调用时不返回data信息|
+|msg   |接口未成功调用时返回错误信息，接口成功调用时返回空字符串|
+* 参数说明：无
+
+
 ## 5.2 InMeetingCallback 回调代理
 
 InMeetingCallback 需实现以下成员函数：
