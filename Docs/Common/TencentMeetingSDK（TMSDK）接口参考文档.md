@@ -735,7 +735,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数说明：获取当前会议状态信息
 * 返回值类型：string
 * 返回值说明：
-  * 当前会议状态信息 未初始化前不可调用，非法调用返回空字符串。
+  * 未初始化前不可调用，非法调用返回空字符串。
   * 初始化未登录调用时，msg返回错误信息，code返回-1006。
   * 调用成功后code返回0，data中返回is_in_meeting、meeting_id、meeting_code的信息。
 * 如：
