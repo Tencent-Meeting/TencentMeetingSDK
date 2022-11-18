@@ -485,7 +485,7 @@ wemeet_sdk.QuickMeeting()
 ```
 wemeet_sdk.GetCurrentMeetingInfo()
 ```
-说明：>= 3.6.200版本,返回string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：>= 3.6.300版本,返回string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 
 ## 4. 回调说明
