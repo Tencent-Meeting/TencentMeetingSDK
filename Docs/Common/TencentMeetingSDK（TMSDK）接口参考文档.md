@@ -52,7 +52,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
     4. 响应登录回调`AuthenticationCallback.onLogin`，**回调结果成功表示登录成功**
 4. 入会
     1. 获取`PreMeetingService`实例
-    2. 设置回调代理`setPreMeetingCallback`
+    2. 设置回调代理`setPreMeetingCallback`xx
     3. 调用`PreMeetingService.joinMeeting`进行入会
     4. 响应入会回调`PreMeetingCallback.onJoinMeeting`，回调结果成功表示入会成功
 
