@@ -13,11 +13,11 @@
 | 2022-03-03 | 修改登出接口说明| - |
 | 2022-04-08 | 新增关于登录登出最佳实践和注意事项的说明| - |
 | 2022-05-12 | 新增接口：新增入会(joinMeetingByJSON)接口| 3.0.106 |
-| 2022-05-13 | 新增接口：新增设置代理(setProxyInfo)接口| 3.0.106 |
+| 2022-05-13 | 新增接口：桌面端新增设置代理(setProxyInfo)接口| 3.0.106 |
 | 2022-08-02 | 新增接口：新增处理Schema(handleSchema)接口，更新showPreMeetingView函数，新增可选参数| 3.6.100 |
 | 2022-08-30 | 新增接口：新增处理最小化悬浮窗(switchPipModel)接口、支持初始化设置英文、更新新版的打开会议详情页接口(showMeetingDetailView)、新增查询会议信息接口(QueryMeetingInfo)、新增快速会议接口(QuickMeeting)| 3.6.200 |
 | 2022-09-26 | 新增接口：quickMeetingByJSON；QuickMeeting和JoinMeeting接口添加meeting_window_title参数 | 3.6.203
-| 2022-11-18 | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口 | 3.6.300
+| 2022-11-18 | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口 | 3.6.300
 
 
 # 1. SDK使用说明
@@ -140,14 +140,14 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### setProxyInfo
 * 函数形式：void setProxyInfo(string proxy_info)
-* 函数说明：PC端设置代理接口，通过json串传递代理配置参数；调用结果通过`SDKCallback.onSetProxyResult`回调通知。
+* 函数说明：设置代理接口，通过json串传递代理配置参数；调用结果通过`SDKCallback.onSetProxyResult`回调通知。
 * 返回值类型：void
 * 返回值说明：无
 * 参数说明：proxy_info 是以JSON串的格式输入,JSON中字段的类型需与下面表格中保持一致:
 * 除非必填字段外，其他字段可不传
 * protocol为string类型，可设置为SOCKS5或者http两种协议
 * agent_typ为int类型，0，全局，1，仅媒体，2，除媒体外
-* 可用版本：>= 3.0.106及以上
+* 可用版本：桌面端 >= 3.0.106，移动端 >= 3.6.300
 * 注意事项：
     ①、setProxyInfo要在onSDKInitializeResult返回成功以后。
     ②、登录login要在onSetProxyResult返回成功以后。
