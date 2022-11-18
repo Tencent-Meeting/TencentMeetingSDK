@@ -42,7 +42,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ## 1.3 SDK 调用的基本时序
 1. 获取SDK实例
-2. SDK初始化
+2. SDK初始化xx
     1. 调用`TMSDK.initialize`进行SDK初始化，并在参数中设置回调代理`SDKCallback`
     2. 响应SDK初始化回调`SDKCallback.onSDKInitializeResult`，**回调结果成功才表示初始化完成**
 3. 登录
