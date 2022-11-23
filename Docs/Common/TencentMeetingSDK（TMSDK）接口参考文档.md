@@ -737,8 +737,8 @@ PreMeetingCallback 需实现以下成员函数：
 * 返回值说明：
   * 未初始化前不可调用，非法调用返回空字符串。
   * 初始化未登录调用时，msg返回错误信息，code返回-1006。
-  * 调用成功后code返回0，data中返回is_in_meeting、meeting_id、meeting_code的信息。
-* 如：
+  * 调用成功后，code返回0，data中返回当前会议的信息。
+* 示例：
 ```javascript
 {
     "code": 0, 
@@ -749,7 +749,7 @@ PreMeetingCallback 需实现以下成员函数：
 |名称 |说明 |
 |:--|--|
 |code  |接口调用状态码，成功调用时返回0|
-|data  |接口正常调用时返回的当前会议状态信息，接口未成功调用时不返回data信息|
+|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息|
 |msg   |接口未成功调用时返回错误信息，接口成功调用时返回空字符串|
 * 参数说明：无
 * 可用版本：>= 3.6.300及以上
