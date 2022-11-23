@@ -738,6 +738,7 @@ PreMeetingCallback 需实现以下成员函数：
   * 未初始化前不可调用，非法调用返回空字符串。
   * 初始化未登录调用时，msg返回错误信息，code返回-1006。
   * 调用成功后code返回0，data中返回is_in_meeting、meeting_id、meeting_code的信息。
+  * data中返回的is_in_meeting可取值1或0.其中1代表在会中，0代表不在会中。
 * 如：
 ```javascript
 {
