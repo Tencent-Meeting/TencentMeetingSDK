@@ -35,8 +35,8 @@ android {
     移除bugly  tm-bugly-sdk 
 ```groovy
     implementation "com.tencent.wemeet: ${wemeet_version}" {
-        exclude group: 'com.tencent.tbssdk', module: 'tbssdk'
-        exclude group: 'com.tencent.wemeet', module: 'imsdk'
+        exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk-dynamic'
+        exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
 	exclude group: 'com.github.bumptech.glide'
 	exclude module: 'wemeet-kapt'
 	exclude module: 'tm-bugly-sdk'
