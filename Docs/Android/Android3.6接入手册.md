@@ -365,6 +365,7 @@ android {
 	exclude module: 'wemeet-kapt'
 	exclude group:‘com.tencent.bugly’, module:‘crashreport’
 	exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk-dynamic'
+	exclude group: 'com.tencent.liteav'
     }
 ```
 - Q:javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
