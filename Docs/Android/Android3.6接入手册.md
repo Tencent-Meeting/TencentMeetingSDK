@@ -14,6 +14,21 @@
 	1. 在Android studio中点击`Refactor > Migrate to AndroidX`，依照提示进行迁移即可。(迁移过程遇到问题可以参考官方文档)
 	1. 通过反射取support包内class的代码，可以全局搜索android.support找到对应的位置手动名进行替换
 	1. 如果项目中有对support库进行混淆配置，需要针对对应的AndroidX加上相应的混淆配置
+- 如果您的应用的targetSdkVersion >= 31，请在AndroidManifest.xml中添加以下标签，如果没有添加，当您的应用运行中Android 12及以上版本系统时美颜功能可能无法正常工作
+```
+<uses-native-library
+    android:name="libOpenCL.so"
+    android:required="false"/>
+<uses-native-library
+    android:name="libGLES_mali.so"
+    android:required="false"/>
+<uses-native-library
+    android:name="libPVROCL.so"
+    android:required="false"/>
+<uses-native-library
+    android:name="libllvm-a3xx.so"
+    android:required="false"/>
+```
 - 如果需要混淆代码，为了保证sdk的正常使用，需要在proguard配置文件中加上：
 
 ```
