@@ -14,7 +14,7 @@
 	1. 在Android studio中点击`Refactor > Migrate to AndroidX`，依照提示进行迁移即可。(迁移过程遇到问题可以参考官方文档)
 	1. 通过反射取support包内class的代码，可以全局搜索android.support找到对应的位置手动名进行替换
 	1. 如果项目中有对support库进行混淆配置，需要针对对应的AndroidX加上相应的混淆配置
-- 如果您的应用的targetSdkVersion >= 31，请在AndroidManifest.xml中添加以下标签，如果没有添加，当您的应用运行中Android 12及以上版本系统时美颜功能可能无法正常工作
+- 如果您的应用的targetSdkVersion >= 31，请在AndroidManifest.xml中添加以下标签，如果没有添加，当您的应用运行在Android 12及以上版本系统时美颜功能可能无法正常工作
 ```
 <uses-native-library
     android:name="libOpenCL.so"
@@ -419,3 +419,6 @@ android {
 
 - Q:收到分享回调显示透明activity但是背景activity显示的不是会中界面
 - A:请联系技术支持
+
+- Q:在会中界面点击管理成员发生crash，错误为java.lang.ClassNotFoundException: Didn't find class "android.support.v7.widget.RecyclerView$ItemDecoration"
+- A:在gradle.properties中添加android.enableJetifier=true
