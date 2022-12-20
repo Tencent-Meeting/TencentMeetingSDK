@@ -7,7 +7,7 @@
 - 如果您还在使用android.support.*，建议您迁移到AndroidX，建议迁移前满足以下条件
 	1. Android Studio 3.2及以上
 	1. Gradle版本4.6及以上
-	1. 项目编译版本31及以上
+	1. 项目编译版本32及以上
 	1. NDK版本21及以上
 	1. JDK版本11及以上
 - 迁移到Android X步骤
