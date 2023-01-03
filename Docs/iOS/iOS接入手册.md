@@ -201,13 +201,47 @@ SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 
 ## 7.Bugly接入(2.18.2新增)
 
+> 适用于腾讯会议SDK版本不小于2.18.2
+
 ​	SDK新增bugly crash 共享上报机制，目的是为了更方便的监控SDK 内部的crash，先决条件是用户必须接入了bugly。
 
 ​	共享上报机制并不会收集宿主应用的crash信息，只是借助于接入用户的APP 中的bugly 上报机制，利用bugly 提供的一项特性，将用户bugly crash 上报中的属于SDK部分的crash 上报给SDK 开发者。便于SDK能快速获得SDK的异常问题，早介入排查，早修复问题。
 
 ​	使用流程：1.确定应用已经接入bugly 2.提供appid(指bugly qq产品上显示的appid) 给技术支持。3.提供bundle id 给技术支持。
 
-## 8.低版本配置Framework
+## 8.支持iPad分屏
+
+参考Demo中的WeMeetSceneDelegate.h和WeMeetSceneDelegate.m，依次调用appMultiWindowLayoutTypeChangedFromSize、discardSceneSession和discardSceneSessionsExcept。
+
+```
+- (void)windowScene:(UIWindowScene *)windowScene
+didUpdateCoordinateSpace:(id<UICoordinateSpace>)previousCoordinateSpace
+interfaceOrientation:(UIInterfaceOrientation)previousInterfaceOrientation
+    traitCollection:(UITraitCollection *)previousTraitCollection {
+    if (![[self class] isIpadDevice]) {
+        return;
+    }
+    
+    if (windowScene.windows.count == 0) {
+        return;
+    }
+    CGSize toSize = windowScene.coordinateSpace.bounds.size;
+    CGSize fromSize = previousCoordinateSpace.bounds.size;
+    if (CGSizeEqualToSize(toSize, fromSize)) {
+      return;
+    }
+    NSLog(@"%@", [NSString stringWithFormat:@"didUpdateCoordinateSpace from [%@] to [%@]",
+                                        NSStringFromCGSize(fromSize), NSStringFromCGSize(toSize)]);
+    
+    /// 1. viewWillTransitionToSize:withTransitionCoordinator:
+    /// 2. windowScene:didUpdateCoordinateSpace:interfaceOrientation:traitCollection:
+    /// 3. send change to vm layer
+    /// 仅App主window会发出通知。个别场景需要用到。
+    [[TencentMeetingSDK instance] appMultiWindowLayoutTypeChangedFromSize:fromSize toSize:toSize];
+}
+```
+
+## 9.低版本配置Framework
 
 > 适用于腾讯会议SDK版本低于3.6.1
 
