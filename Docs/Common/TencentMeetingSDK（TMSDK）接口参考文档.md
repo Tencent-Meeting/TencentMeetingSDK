@@ -196,7 +196,31 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ```
     示例2：testapp://page/inmeeting?meeting_code=842385127&user_code=4989455f6fd6f1e9c9083d3c5253a48d; 其中testapp为URL Scheme注册协议名称
 ```
-  
+### inviteUsersWithParams
+
+* 函数形式：inviteUsersWithParams(string)
+
+* 函数说明：通讯录选人操作，可以邀请人加入预定会议主持人、普通成员及加入会议。
+
+* 返回值类型：无
+
+* 可用版本：>= 3.6.4及以上
+
+* 参数说明：
+
+  形式上如下面所示，其中user_id 表示邀请的成员列表数据，user_type 表示是哪种场景（预定会议主持人或预定会议成员或会中邀请），TMSDKInviteType 这个类型对应。
+
+  ```
+  {"user_id":["meeting4601930","meeting4602322","meeting4629882","meeting4654896","meeting4654897"],"user_type":2}
+  ```
+
+### enableAddressBookCallback
+
+* 函数形式：enableAddressBookCallback(bool)
+* 函数说明：设置SDK支持通讯录回调，不设置或者设置为False，默认显示会议的通讯录。
+* 返回值类型：无
+* 可用版本：>= 3.6.4及以上
+* 参数说明：参数为True，在预定会议选人以及邀请会议时会调用宿主应用设置的通讯录页面。
 
 ### getAccountService
 * 函数形式：AccountService getAccountService()
@@ -266,7 +290,60 @@ SDKCallback 需实现以下成员函数：
 |---|---|---|
 | code | int | 错误码 |
 | msg | string | 错误信息 |
+### inviteType selectedUsers
+* 说明：SDK中触发通讯录的回调。
+* 可用版本：>= 3.6.4及以上
+* 详细说明：在设置enableAddressBookCallback为True的情况下，在预定会议中，邀请成员、指定主持人或者会中邀请人入会，会触发此回调，宿主在此方法中可以加载自己的通讯录，并做下一步的选人操作。
 
+|参数名 |参数类型 | 参数说明 |
+|---|---|---|
+| type | TMSDKInviteType | 查看TMSDKInviteType 的说明 |
+| users | string | 已经选择的用户user_id |
+
+- 参数TMSDKInviteType 说明
+
+  ```
+  typedef NS_ENUM (NSInteger, TMSDKInviteType) {
+      TMSDKInviteTypeUnkown = 0,
+      TMSDKInviteTypeScheduleHost,// 预定会议主持人
+      TMSDKInviteTypeScheduleNormal,// 预定会议成员
+      TMSDKInviteTypeInmeetingJoin// 会中邀请人
+  };
+  ```
+
+### OnInviteResult
+
+* 说明：在宿主中邀人进入预定会议或者加入会议的回调
+* 可用版本：>= 3.6.4及以上
+* 详细说明：在设置enableAddressBookCallback为True的情况下，在预定会议中，邀请成员、指定主持人或者会中邀请人入会，会进入到宿主的选人页面，宿主执行了inviteUsersWithParams 方法，会执行邀请的逻辑，此方法是inviteUsersWithParams执行的回调，
+
+| 参数名 | 参数类型              | 参数说明     |
+| ------ | --------------------- | ------------ |
+| code   | TMSDKInviteResultType | 执行结果枚举 |
+| msg    | string                | 执行结果文案 |
+
+- 参数TMSDKInviteResultType 说明
+
+  ```
+  typedef NS_ENUM (NSInteger, TMSDKInviteResultType) {
+      TMSDKInviteResultSuccess = 0,//成功
+      TMSDKInviteResultHostMoreThen10,//邀请主持人超过10人异常
+      TMSDKInviteResultNormalMoreThen300,//邀请成员超过300人异常
+      TMSDKInviteResultInviteUidIsEmpty,//邀请成员为空
+      TMSDKInviteResultMembersModelError//邀请成员SDK内部异常
+  };
+  ```
+
+### inviteType
+
+* 说明：代理设置接口`setProxyInfo`的回调
+* 可用版本：>= 3.0.106及以上
+* 详细说明：当code为-1024，表示无效json串，需要检测`setProxyInfo`传入的json串是否符合格式标准；当code为-1025，表示ip代理设置失败，需要检"ip+端口+用户名+密码"是否配置正确
+
+| 参数名 | 参数类型 | 参数说明 |
+| ------ | -------- | -------- |
+| code   | int      | 错误码   |
+| msg    | string   | 错误信息 |
 
 # 3. AccountService 说明
 
@@ -754,6 +831,29 @@ PreMeetingCallback 需实现以下成员函数：
 * 参数说明：无
 * 可用版本：>= 3.6.300及以上
 
+### setOrgInfo
+
+* 可用版本：>= 3.6.400
+
+* 函数形式：void setOrgInfo(string)
+
+* 函数说明：设置成员列表的组织架构信息
+
+* 返回值类型：void
+
+* 参数说明：类型为string，形式如下面示例。
+
+  ```
+  {
+  	user_id1:组织架构信息1，
+  	user_id2:组织架构信息2，
+  	user_id3:组织架构信息3，
+  	........
+  }
+  ```
+
+  
+
 
 ## 5.2 InMeetingCallback 回调代理
 
@@ -818,6 +918,17 @@ invite_info内容
 |---|---|---|
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
 |msg |string |结果信息|
+
+### onQueryOrgInfo
+
+* 说明：向宿主应用查询组织架构信息
+* 返回值：无
+* 可用 版本>=3.6.4
+* 参数说明：
+
+| 参数名  | 参数类型 | 参数说明                                                     |
+| ------- | -------- | ------------------------------------------------------------ |
+| userIds | string   | 这是一个编码的json数据，数据结构为一个字典，key 是user_id，value是一个user_id 的数组集合。 |
 
 # 6. 错误码
 
