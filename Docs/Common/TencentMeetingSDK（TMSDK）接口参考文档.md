@@ -45,17 +45,17 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ## 1.3 SDK基本调用快速入门
 1. 获取SDK实例
 2. SDK初始化
-    1. 调用`TMSDK.initialize`进行SDK初始化，并在参数中设置回调代理`SDKCallback`
+    1. 调用`TMSDK.initialize`函数进行SDK初始化，并在参数中设置回调代理`SDKCallback`
     2. 响应SDK初始化回调`SDKCallback.onSDKInitializeResult`，**回调结果成功才表示初始化完成**
 3. 登录
     1. 获取`AccountService`实例
-    2. 设置回调代理`setAuthenticationCallback`
-    3. 调用`AccountService.login`进行登录
+    2. 调用`AccountService.setAuthenticationCallback`函数设置回调代理`AuthenticationCallback`
+    3. 调用`AccountService.login`函数进行登录
     4. 响应登录回调`AuthenticationCallback.onLogin`，**回调结果成功表示登录成功**
 4. 入会
     1. 获取`PreMeetingService`实例
-    2. 设置回调代理`setPreMeetingCallback`
-    3. 调用`PreMeetingService.joinMeeting`进行入会
+    2. 调用`PreMeetingService.setPreMeetingCallback`函数设置回调代理`PreMeetingCallback`
+    3. 调用`PreMeetingService.joinMeeting`函数进行入会
     4. 响应入会回调`PreMeetingCallback.onJoinMeeting`，**回调结果成功表示入会成功**
 
 
@@ -67,7 +67,6 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### getSDKVersion
 * 函数形式：**string getSDKVersion()**
 * 函数说明：获取当前SDK版本号。
-* 返回值类型：string
 * 返回值说明：版本号信息
 * 参数说明：无
 
@@ -79,7 +78,6 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
   * 初始化成功后，重复调用无效。
   * 除`getSDKVersion`之外，在调用的所有接口函数之前，`必须第一个先调用该函数`。
   * 按照个保法要求，App需要在用户同意了隐私协议之后才可以调用该初始化函数。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：
 
@@ -104,7 +102,6 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### isInitialized
 * 函数形式：**bool isInitialized()**
 * 函数说明：判断是否已初始化SDK成功。
-* 返回值类型：bool
 * 返回值说明：是否已经初始化SDK
 * 参数说明：无
 
@@ -112,7 +109,6 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### refreshSDKToken
 * 函数形式：**int refreshSDKToken(string new_sdk_token)**
 * 函数说明：更新SDK Token，替换掉过期或快过期的SDK Token。
-* 返回值类型：int
 * 返回值说明：处理结果的错误码，0表示成功；其他值表示失败，如：**-1008**表示**无效参数**。详情参考`6. 错误码`章节。
 * 参数说明：
 
@@ -124,7 +120,6 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### getCurrentSDKToken
 * 函数形式：**string getCurrentSDKToken()**
 * 函数说明：获取当前SDK Token的值。
-* 返回值类型：string
 * 返回值说明：当前的SDK Token值
 * 参数说明：无
 
@@ -132,7 +127,6 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### showLogs
 * 函数形式：**void showLogs()**
 * 函数说明：帮助用户获取日志，移动端会对日志目录打包，并打开系统的分享；桌面端会打开日志文件夹。调用结果通过`SDKCallback.onShowLogsResult`回调通知。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
 * 各终端平台下的日志路径：
@@ -147,29 +141,29 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### setProxyInfo
 * 函数形式：**void setProxyInfo(string proxy_info)**
-* 函数说明：设置代理接口，通过json串传递代理配置参数；调用结果通过`SDKCallback.onSetProxyResult`回调通知。
-* 返回值类型：void
-* 返回值说明：无
-* 参数说明：proxy_info 是以JSON串的格式输入,JSON中字段的类型需与下面表格中保持一致:
-* 除非必填字段外，其他字段可不传
-* protocol为string类型，可设置为SOCKS5或者http两种协议
-* agent_typ为int类型，0，全局，1，仅媒体，2，除媒体外
 * 可用版本：桌面端 >= 3.0.106，移动端 >= 3.6.300
-* 注意事项：
-    ①、setProxyInfo要在onSDKInitializeResult返回成功以后。
-    ②、登录login要在onSetProxyResult返回成功以后。
+* 函数说明：设置代理接口，通过json串传递代理配置参数；调用结果通过`SDKCallback.onSetProxyResult`回调通知。
+* 返回值说明：无
+* 参数说明：
+  * proxy_info 是以JSON串的格式输入,JSON中字段的类型需与下面表格中保持一致:
+  * 除非必填字段外，其他字段可不传
+  * protocol为string类型，可设置为SOCKS5或者http两种协议
+  * agent_typ为int类型，0，全局，1，仅媒体，2，除媒体外
+  * 注意事项：
+      1. setProxyInfo要在onSDKInitializeResult返回成功以后。
+      2. 登录login要在onSetProxyResult返回成功以后。
 
-|属性 |类型 |必填 |默认值 |说明 |
-|---|---|---|---|---|
-|enable|bool |是 |SDK默认设置 |开关|
-|agent_type|int|否 |SDK默认设置 |模式 |
-|protocol |string |否 |http |协议|
-|ip |string |是 |(空) |ip |
-|port |string |是 |(空) |端口 |
-|username |string |否 |(空) |用户名 |
-|password |string |否 |(空) |密码 |
+| 属性         | 类型     | 必填  | 默认值     | 说明  |
+|------------|--------|-----|---------|-----|
+| enable     | bool   | 是   | SDK默认设置 | 开关  |
+| agent_type | int    | 否   | SDK默认设置 | 模式  |
+| protocol   | string | 否   | http    | 协议  |
+| ip         | string | 是   | (空)     | ip  |
+| port       | string | 是   | (空)     | 端口  |
+| username   | string | 否   | (空)     | 用户名 |
+| password   | string | 否   | (空)     | 密码  |
 
-设置代理参数实例:
+* 设置代理参数实例:
 ```json
   {
     "enable": true,
@@ -185,20 +179,19 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### handleSchema
 * 函数形式：**void handleSchema (string schema_url)**
+* 可用版本：>= 3.6.100
 * 函数说明：一键跳转页面，通过解析schema_url不同页面跳转指定界面。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：参数带有user_code且SDK已登录，按照已登录用户跳转；参数带有user_code且SDK未登录，按照user_code用户跳转。
-* 可用版本：>= 3.6.100及以上
-* user_code获取说明: 以企业21539303为例：SSOURL+id_token拼接访问获取，得到链接
-  https://meeting.tencent.com/open-platform/sso?redirect_uri=wemeet%3A%2F%2Fauth%2F%sso%3Fsso_auth_code%3D4989455f6fd6f1e9c9083d3c5253a48d&corp_id=215319303
-  user_code为4989455f6fd6f1e9c9083d3c5253a48d
   
 |参数名 |参数类型 |参数必填|参数默认值| 参数说明 |
 |---|---|---|---|---|
 | schema_url | string | 是 |（无）| 参数：{{protocol://}page/页面?meeting_code=&user_code=&};`{protocol://}为可选填,为URL Scheme的注册协议名称;页面目前支持inmeeting`|
 
- 入参示例：
+* user_code获取说明: 以企业21539303为例：SSOURL+id_token拼接访问获取，得到链接
+  https://meeting.tencent.com/open-platform/sso?redirect_uri=wemeet%3A%2F%2Fauth%2F%sso%3Fsso_auth_code%3D4989455f6fd6f1e9c9083d3c5253a48d&corp_id=215319303
+  user_code为4989455f6fd6f1e9c9083d3c5253a48d
+* 入参示例：
 ```
     示例1：page/inmeeting?meeting_code=842385127&user_code=4989455f6fd6f1e9c9083d3c5253a48d
 ```
@@ -209,34 +202,33 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### addUsersWithParam
 * 函数形式：**void addUsersWithParam(string json_param)**
-* 函数说明：通讯录选人操作，当接入方，可以邀请人加入预定会议主持人、普通成员及加入会议。
-* 返回值类型：无
-* 可用版本：>= 3.6.401及以上
+* 可用版本：>= 3.6.401
+* 函数说明：
+  - 添加人员操作，接入方可以邀请人加入预定会议、或邀请人员加入会议，添加的结果通过`SDKCallback.onAddUsersResult`回调通知给接入方
+  - 当使用SDK的预定会议界面时，并在`PreMeetingCallback.onShowAddressBook`回调中，可通过该函数添加主持人和成员
+  - 当会议中时，可通过该函数邀请呼叫人员入会，一般在`InMeetingCallback.onInviteUsers`回调中使用
+* 返回值说明：无
 * 参数说明：
-
-  json_param格式：
+  - json_param格式：
   ```json
   {
     "users": ["user1_id","user2_id","user3_id","user4_id"],
     "user_type":2
   }
   ```
-  users：新增的用户id列表，**不能包含已有用户id**，此用户id是客户侧账户体系的用户唯一标识
-
-  user_type：表示添加用户场景类型
-
-| user_type | 说明        |
-|-----------|-----------|
-| 1         | 预定会议添加主持人 |
-| 2         | 预定会议添加成员  |
-| 3         | 会中添加会议成员  |
-
+  - users：表示新增的用户id列表，**不能包含已有用户id**，此用户id是客户侧账户体系中的用户唯一标识
+  - user_type：表示添加用户场景类型
+  
+| user_type | 说明                                         |
+|-----------|--------------------------------------------|
+| 1         | 预定会议添加主持人（仅使用SDK的预定会议界面时有效，接入方自定义预定会议界面无效） |
+| 2         | 预定会议添加成员（仅使用SDK的预定会议界面有时效，接入方自定义预定会议界面无效）  |
+| 3         | 会中添加会议成员 （仅会议中时有效）                         |
 
 
 ### getAccountService
 * 函数形式：**AccountService getAccountService()**
 * 函数说明：获取SDK`AccountService`的对象实例。
-* 返回值类型：AccountService
 * 返回值说明：`AccountService`的对象实例
 * 参数说明：无
 
@@ -244,7 +236,6 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### getPreMeetingService
 * 函数形式：**PreMeetingService getPreMeetingService()**
 * 函数说明：获取SDK`PreMeetingService`的对象实例。
-* 返回值类型：PreMeetingService
 * 返回值说明：`PreMeetingService`的对象实例
 * 参数说明：无
 
@@ -252,7 +243,6 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### getInMeetingService
 * 函数形式：**InMeetingService getInMeetingService()**
 * 函数说明：获取SDK`InMeetingService`的对象实例。
-* 返回值类型：InMeetingService
 * 返回值说明：`InMeetingService`的对象实例
 * 参数说明：无
 
@@ -274,8 +264,8 @@ SDKCallback 需实现以下成员函数：
 
 ### onShowLogsResult
 * 函数形式：**void onShowLogsResult(int code, string msg)**
-* 说明：调用`showLogs`的结果回调
 * 可用版本：>= 2.18.2
+* 说明：调用`showLogs`的结果回调
 
 |参数名 |参数类型 | 参数说明 |
 |---|---|---|
@@ -294,8 +284,8 @@ SDKCallback 需实现以下成员函数：
 
 ### onResetSDKState
 * 函数形式：**void onResetSDKState(int code, string msg)**
-* 说明：发生错误，需要重置状态
 * 可用版本：>= 2.18.2
+* 说明：发生错误，需要重置状态
 * 详细说明：当code为-1019时，表示使用中sdktoken过期了，需要refreshSDKToken、重新登录后再继续使用；当code为-1020时，会议进程退出，需要重新走一遍初始化和登录流程
 
 |参数名 |参数类型 | 参数说明 |
@@ -306,8 +296,8 @@ SDKCallback 需实现以下成员函数：
 
 ### onSetProxyResult
 * 函数形式：**void onSetProxyResult(int code, string msg)**
+* 可用版本：>= 3.0.106
 * 说明：代理设置接口`setProxyInfo`的回调
-* 可用版本：>= 3.0.106及以上
 * 详细说明：当code为-1024，表示无效json串，需要检测`setProxyInfo`传入的json串是否符合格式标准；当code为-1025，表示ip代理设置失败，需要检"ip+端口+用户名+密码"是否配置正确
 
 |参数名 |参数类型 | 参数说明 |
@@ -317,15 +307,15 @@ SDKCallback 需实现以下成员函数：
 
 
 ### onAddUsersResult
-* 函数形式：**void onAddUsersResult(int code, string msg)**
-* 说明：在宿主中邀人进入预定会议或者加入会议的回调
-* 可用版本：>= 3.6.401及以上
-* 详细说明：在设置enableAddressBookCallback为True的情况下，在预定会议中，邀请成员、指定主持人或者会中邀请人入会，会进入到宿主的选人页面，宿主执行了inviteUsersWithParams 方法，会执行邀请的逻辑，此方法是inviteUsersWithParams执行的回调，
+* 函数形式：**void onAddUsersResult(int user_type, int code, string msg)**
+* 可用版本：>= 3.6.401
+* 说明：调用`TMSDK.addUsersWithParam`函数的回调
 
-| 参数名 | 参数类型 | 参数说明 |
-| ------ | -------- | -------- |
-| code   | int      | 错误码   |
-| msg    | string   | 错误信息 |
+| 参数名       | 参数类型   | 参数说明                                            |
+|-----------|--------|-------------------------------------------------|
+| user_type | int    | 同`TMSDK.addUsersWithParam`函数参数中的`user_type`字段含义 |
+| code      | int    | 错误码                                             |
+| msg       | string | 错误信息                                            |
 
 
 
@@ -338,7 +328,6 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ### setCallback
 * 函数形式：**void setCallback(AuthenticationCallback callback)**
 * 函数说明：设置回调代理`AuthenticationCallback`，重复调用会覆盖原有回调代理的值。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：
 
@@ -350,7 +339,6 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ### login
 * 函数形式：**void login(string sso_url)**
 * 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。
-* 返回值类型：void
 * 返回值说明：无
 * **最佳实践和注意事项**：
   - 在收到`onLogin`该回调前，调用`logout`函数会取消登录过程。
@@ -367,7 +355,6 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ### logout
 * 函数形式：**void logout()**
 * 函数说明：发起登出请求，登出结果会在回调`AuthenticationCallback.onLogout`返回。
-* 返回值类型：void
 * 返回值说明：无
 * **最佳实践和注意事项**：
   - 调用`logout`后，请不要在收到`onLogout`回调之前，调用`login`函数。
@@ -380,7 +367,6 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ### isLoggedIn
 * 函数形式：**bool isLoggedIn()**
 * 函数说明：判断是否已登录
-* 返回值类型：bool
 * 返回值说明：是否已登录
 * 参数说明：无
 
@@ -388,7 +374,6 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 ### jumpUrlWithLoginStatus
 * 函数形式：**void jumpUrlWithLoginStatus(string target_url)**
 * 函数说明：带登录态去打开目标地址，该地址必须是会议相关的、并支持登录态方式的页面，必须登录成功才可调用。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：
 
@@ -398,10 +383,9 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 
 ### getUrlWithLoginStatus
-* 可用版本：>= 2.18.1
 * 函数形式：**string getUrlWithLoginStatus(string target_url)**
+* 可用版本：>= 2.18.1
 * 函数说明：获取一个带登录态的URL链接，该地址必须是会议相关的、并支持登录态方式的页面，必须登录成功才可调用。
-* 返回值类型：string
 * 返回值说明：一个带登录态的URL链接
 * 参数说明：
 
@@ -454,7 +438,6 @@ AuthenticationCallback 需实现以下成员函数：
 ### setCallback
 * 函数形式：**void setCallback(PreMeetingCallback callback)**
 * 函数说明：设置回调代理`PreMeetingCallback`，重复调用会覆盖原有回调代理的值。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：
 
@@ -468,7 +451,6 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数说明：
   * 发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
   * 如果想使用JoinParam参数中缺省的默认值，请使用`joinMeetingByJSON`函数
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：
 
@@ -493,10 +475,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### joinMeetingByJSON
 * 函数形式：**void joinMeetingByJSON(string json_param)**
+* 可用版本：>=3.0.106
 * 函数说明：发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
-* 返回值类型：void
 * 返回值说明：无
-* 适用版本：3.0.106及以上
 * 参数说明：
   * JSON中字段与JoinParam中的参数相对应
   * JSON中字段的类型需与上面表格JoinParam中参数类型要求一致
@@ -520,15 +501,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### showPreMeetingView
 * 函数形式：**void showPreMeetingView(TMSDKMainUIStyle style = kTMSDKMainUIStyleClassic)**
-
 * 函数说明：显示SDK自带的会前界面。登录完成后，才可调用。
-
-* 返回值类型：void
-
 * 返回值说明：无
-
 * 参数说明：style默认为kTMSDKMainUIStyleClassic
-
   ```
   enum TMSDKMainUIStyle {
     kTMSDKMainUIStyleClassic,
@@ -540,25 +515,22 @@ AuthenticationCallback 需实现以下成员函数：
 ### showScreenCastView
 * 函数形式：**void showScreenCastView()**
 * 函数说明：显示SDK自带的投屏码输入界面。登录完成后，才可调用。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
 
 
 ### showHistoricalMeetingView
-* 可用版本：>= 2.18.1
 * 函数形式：**void showHistoricalMeetingView()**
+* 可用版本：>= 2.18.1
 * 函数说明：显示用户历史会议界面。登录完成后，才可调用。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
 
 
 ### showMeetingDetailView【即将移除】
-* 可用版本：>= 2.18.1
 * 函数形式：**void showMeetingDetailView(string meeting_id, string current_sub_meeting_id)**
+* 可用版本：>= 2.18.1
 * 函数说明：由下面新版的`showMeetingDetailView`替代。显示某一个具体会议的界面。登陆完成后，才可调用。如果输入错误的meeting_id或者current_sub_meeting_id有的字段会显示’-‘
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：
 
@@ -569,15 +541,14 @@ AuthenticationCallback 需实现以下成员函数：
 
 
 ### showMeetingDetailView
-- 可用版本：>= 3.6.200
 - 函数形式：**void showMeetingDetailView(string meeting_id, string current_sub_meeting_id, string start_time, bool is_history)**
+- 可用版本：>= 3.6.200
 - 函数说明：
   - 显示某一个具体会议的界面。
   - 登陆完成后，才可调用。
   - 如果输入错误的meeting_id或者current_sub_meeting_id，会议页面中有的字段则会显示’-‘；
   - 如果输入错误的start_time可能导致页面加载失败，设置准确的start_time参数接口执行效率更高；
   - 该接口回调详见4.2中onActionResult说明
-- 返回值类型：void
 - 返回值说明：无
 - 参数说明：
 
@@ -590,19 +561,17 @@ AuthenticationCallback 需实现以下成员函数：
 
 
 ### showJoinMeetingView
-* 可用版本：>= 2.18.2
 * 函数形式：**void showJoinMeetingView()**
+* 可用版本：>= 2.18.2
 * 函数说明：显示加入会议界面。登录完成后，才可调用。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
 
 
 ### showScheduleMeetingView
-* 可用版本：>= 2.18.2
 * 函数形式：**void showScheduleMeetingView(int meeting_type)**
+* 可用版本：>= 2.18.2
 * 函数说明：显示预定会议会议界面。登录完成后，才可调用。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：
 
@@ -612,19 +581,17 @@ AuthenticationCallback 需实现以下成员函数：
 
 
 ### showMeetingSettingView
-* 可用版本：>= 2.18.2
 * 函数形式：**void showMeetingSettingView()**
+* 可用版本：>= 2.18.2
 * 函数说明：显示设置管理界面。初始化后，才可调用。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
 
 
 ### queryMeetingInfo
-* 可用版本：>= 3.6.200
 * 函数形式：**void queryMeetingInfo(string param)**
+* 可用版本：>= 3.6.200
 * 函数说明：查询会议信息
-* 返回值类型：void
 * 返回值说明：无，通过回调onActionResult的QueryMeetingInfo回调结果
 * 参数说明：
 
@@ -668,19 +635,17 @@ AuthenticationCallback 需实现以下成员函数：
 
 
 ### quickMeeting
-* 可用版本：>= 3.6.200
 * 函数形式：**void quickMeeting()**
+* 可用版本：>= 3.6.200
 * 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
-* 返回值类型：void
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：无
 
 
 ### quickMeetingByJson
-* 可用版本：>= 3.6.300
 * 函数形式：**void quickMeetingByJson(string json_param)**
+* 可用版本：>= 3.6.300
 * 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
-* 返回值类型：void
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：
   * json_param必须是json标准字符串，可以包含一下字段，其他字段会自动忽略
@@ -695,10 +660,22 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### enableAddressBookCallback
 * 函数形式：**void enableAddressBookCallback(bool enable, bool show)**
-* 函数说明：设置SDK支持通讯录回调，不设置或者设置为False，默认显示会议的通讯录。
-* 返回值类型：无
-* 可用版本：>= 3.6.401及以上
+* 可用版本：>= 3.6.401
+* 函数说明：
+  * SDK预定会议界面中，开启定制化通讯录的回调。
+  * 当用户在SDK预定会议界面中，点击通讯录选人按钮来邀请成员和主持人时，发起`PreMeetingCallback.onShowAddressBook`回调。
+* 返回值说明：无
 * 参数说明：参数为True，在预定会议选人以及邀请会议时会调用宿主应用设置的通讯录页面。
+
+
+| 参数名    | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                           |
+|--------|------|------|-------|----------------------------------------------------------------|
+| enable | bool | 是    | (无)   | 是否开启回调。开启后，当用户在SDK预定会议界面中，点击通讯录选人按钮来邀请成员和主持人时，发起回调通知接入方展示定制通讯录 |
+| show   | bool | 是    | (无)   | 是否还显示SDK的通讯录。<br>如果enable为false，则show在SDK中被强制设置为true。          |
+
+* 开启回调后，点击下图红框的按钮会触发SDK回调： 
+
+<img alt="img.png" src="images/schedule_meeting_address_book.png" width="450"/>
 
 
 ## 4.2 PreMeetingCallback 回调代理
@@ -728,8 +705,8 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### onActionResult
 * 函数形式：**void onActionResult(int action_type, int code, string msg)**
-* 说明：用户调用SDK接口的各种行为操作的回调,仅通过sdk接口调用会产生。
 * 可用版本：>= 2.18.2
+* 说明：用户调用SDK接口的各种行为操作的回调,仅通过sdk接口调用会产生。
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
@@ -754,27 +731,22 @@ PreMeetingCallback 需实现以下成员函数：
 
 
 ### onShowAddressBook
-* 函数形式：**void onShowAddressBook(int code, string msg)**
-* 说明：SDK中触发通讯录的回调。
-* 可用版本：>= 3.6.401及以上
-* 详细说明：在设置enableAddressBookCallback为True的情况下，在预定会议中，邀请成员、指定主持人或者会中邀请人入会，会触发此回调，宿主在此方法中可以加载自己的通讯录，并做下一步的选人操作。
+* 函数形式：**void onShowAddressBook(int user_type, string json_data)**
+* 可用版本：>= 3.6.401
+* 说明：SDK中打开通讯录的回调，用作接入方定制通讯录。
+* 详细说明：在`PreMeetingService.enableAddressBookCallback`函数参数enable设置为true的情况下，在SDK预定会议界面中，用户点击通讯录邀请成员、指定主持人时，会收到该回调。
 
-|参数名 |参数类型 | 参数说明 |
-|---|---|---|
-| type | TMSDKInviteType | 查看TMSDKInviteType 的说明 |
-| users | string | 已经选择的用户user_id |
+| 参数名       | 参数类型   | 参数说明                                                              |
+|-----------|--------|-------------------------------------------------------------------|
+| user_type | int    | 1：SDK预定会议界面中，点击`指定主持人`下的通讯录按钮的回调<br>2：SDK预定会议界面中，点击`成员`下的通讯录按钮的回调 |
+| json_data | string | 预定会议中已经选择的用户user_id的列表，JSON格式字符串                                  |
 
-- 参数TMSDKInviteType 说明
-
-  ```
-  typedef NS_ENUM (NSInteger, TMSDKInviteType) {
-      TMSDKInviteTypeUnkown = 0,
-      TMSDKInviteTypeScheduleHost,// 预定会议主持人
-      TMSDKInviteTypeScheduleNormal,// 预定会议成员
-      TMSDKInviteTypeInmeetingJoin// 会中邀请人
-  };
-  ```
-
+* json_data示例：
+```json
+{
+    "users": ["user1_id","user2_id","user3_id","user4_id"]
+}
+```
 
 
 # 5. InMeetingService 说明
@@ -785,7 +757,6 @@ PreMeetingCallback 需实现以下成员函数：
 ### setCallback
 * 函数形式：**void setCallback(InMeetingCallback callback)**
 * 函数说明：设置回调代理`InMeetingCallback`，重复调用会覆盖原有回调代理的值。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：
 
@@ -797,7 +768,6 @@ PreMeetingCallback 需实现以下成员函数：
 ### leaveMeeting
 * 函数形式：**void leaveMeeting(bool end_meeting)**
 * 函数说明：发起离会请求，结果会在回调`InMeetingCallback.onLeaveMeeting`返回。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：
 
@@ -808,58 +778,68 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### enableInviteCallback
 * 函数形式：**void enableInviteCallback(bool enable, bool show)**
-* 函数说明：设置是否使用邀请回调，如果使用，点击会议中界面下方工具栏上的邀请按钮，会将会议信息通过onInviteMeeting回调；保证接口调用在初始化回调成功之后。
-* 返回值类型：void
+* 函数说明：设置是否使用邀请回调，如果使用，点击会议中界面下方工具栏上的邀请按钮，会触发`InMeetingCallback.onInviteMeeting`回调，并回调会议信息。
 * 返回值说明：无
 * 参数说明：
 
-|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|---|---|---|---|---|
-|enable |bool |否 |false |是否使用 |
-|show   |bool |是 |true  |是否显示邀请页面，如果为false，SDK不会展示自身邀请界面，完全由接入方实现邀请界面和内容展示；如果为true，则还是显示SDK的邀请界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
+| 参数名    | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                   |
+|--------|------|------|-------|--------------------------------------------------------|
+| enable | bool | 否    | false | 是否开启回调                                                 |
+| show   | bool | 是    | true  | 是否还显示SDK的邀请页面。<br>如果enable为false，则show在SDK中被强制设置为true。 |
+
+* 开启回调后，点击下图红框的按钮会触发SDK回调： 
+
+![img.png](images/inmeeting_invite.png)
+
 
 
 ### enableMeetingInfoCallback
 * 函数形式：**void enableMeetingInfoCallback(bool enable, bool show)**
-* 函数说明：设置是否使用会议信息回调，如果使用，点击会议title后面(i)信息按钮，会将会议信息通过onShowMeetingInfo回调；保证接口调用在初始化回调成功之后。
-* 返回值类型：void
+* 函数说明：设置是否使用会议信息回调，如果使用，点击会议title后面(i)信息按钮，会触发`InMeetingCallback.onShowMeetingInfo`回调，并回调会议信息。
 * 返回值说明：无
 * 参数说明：
 
-|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|---|---|---|---|---|
-|enable |bool |否 |false |是否使用 |
-|show   |bool |是 |true  |是否显示会议信息页面，如果为false，SDK不会展示自身会议信息界面，完全由接入方实现会议信息界面和内容展示；如果为true，则还是显示SDK的会议信息界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
+| 参数名    | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
+|--------|------|------|-------|----------------------------------------------------------|
+| enable | bool | 否    | false | 是否开启回调                                                   |
+| show   | bool | 是    | true  | 是否还显示SDK的会议信息页面。<br>如果enable为false，则show在SDK中被强制设置为true。 |
+
+* 开启回调后，鼠标移动或点击下图红框的按钮会触发SDK回调： 
+
+![img.png](images/inmeeting_meeting_info.png)
+
 
 
 ### enableInviteUsersCallback
 * 函数形式：**void enableInviteCallback(bool enable, bool show)**
-* 函数说明：设置是否使用邀请回调，如果使用，点击会议中界面下方工具栏上的邀请按钮，会将会议信息通过onInviteMeeting回调；保证接口调用在初始化回调成功之后。
-* 返回值类型：void
+* 函数说明：设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteMeeting`回调，并回调会中成员列表信息。
 * 返回值说明：无
 * 参数说明：
 
-|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|---|---|---|---|---|
-|enable |bool |否 |false |是否使用 |
-|show   |bool |是 |true  |是否显示邀请页面，如果为false，SDK不会展示自身邀请界面，完全由接入方实现邀请界面和内容展示；如果为true，则还是显示SDK的邀请界面。<br>而如果enable为false，则show在SDK中被强制设置为true。|
+| 参数名    | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                   |
+|--------|------|------|-------|--------------------------------------------------------|
+| enable | bool | 否    | false | 是否开启回调                                                 |
+| show   | bool | 是    | true  | 是否还显示SDK的邀请页面。<br>如果enable为false，则show在SDK中被强制设置为true。 |
+
+* 开启回调后，点击下图红框的按钮会触发SDK回调： 
+
+![img.png](images/inmeeting_invite_users.png)
+
 
 
 ### bringInMeetingViewTop
 * 函数形式：**void bringInMeetingViewTop()**
 * 函数说明：将会中窗口置顶，如果当前没有会中窗口，则不做任何操作。没有回调。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：无
 * 注：3.0.102加入，仅Mac、Windows、electron有该接口。
 
 
 ### switchPIPModel
+* 函数形式：**void switchPIPModel(bool isEnterPip)**
 * 可用版本：>= 3.6.200
 * 适用平台：android & ios
-* 函数形式：**void switchPIPModel(bool isEnterPip)**
 * 函数说明：进入悬浮窗或者退出悬浮窗状态，结果会在回调`InMeetingCallback.onSwitchPiPResult`返回。
-* 返回值类型：void
 * 返回值说明：无
 * 参数说明：
 
@@ -870,8 +850,8 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### getCurrentMeetingInfo
 * 函数形式：**string getCurrentMeetingInfo()**
+* 可用版本：>= 3.6.300
 * 函数说明：获取当前会议状态信息
-* 返回值类型：string
 * 返回值说明：
   * 未初始化前不可调用，非法调用返回空字符串。
   * 初始化未登录调用时，msg返回错误信息，code返回-1006。
@@ -890,23 +870,37 @@ PreMeetingCallback 需实现以下成员函数：
 |data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息|
 |msg   |接口未成功调用时返回错误信息，接口成功调用时返回空字符串|
 * 参数说明：无
-* 可用版本：>= 3.6.300及以上
 
 
-### setOrgInfo
+### enableCustomOrgInfo
+* 函数形式：**void enableCustomOrgInfo(bool enable)**
+* 函数说明：
+  * 设置是否开启自定义组织架构信息
+  * 如果开启，SDK将在需要的时候，通过回调方式向接入方查询相关用户的组织架构信息，并展示在界面上。
+  * 相应回调是`InMeetingCallback.onQueryCustomOrgInfo`
+* 返回值说明：无
+* 参数说明：enable表示是否开启该功能
+
+
+
+### setCustomOrgInfo
+* 函数形式：**void setCustomOrgInfo(string json_param)**
 * 可用版本：>= 3.6.401
-* 函数形式：**void setOrgInfo(string)**
-* 函数说明：设置成员列表的组织架构信息
-* 返回值类型：void
-* 参数说明：类型为string，形式如下面示例。
-  ```
-  {
-  	user_id1:组织架构信息1，
-  	user_id2:组织架构信息2，
-  	user_id3:组织架构信息3，
-  	........
-  }
-  ```
+* 函数说明：
+  * 对相关成员设置自定义的组织架构信息
+  * 一般在`InMeetingCallback.onQueryCustomOrgInfo`回调中获取需要设置组织架构信息的用户id列表，然后调用该函数告知SDK。
+* 返回值说明：无
+* 参数说明：JSON字符串，格式如下示例
+
+```json
+{
+    "users": {
+        "user1_id": {"org_name": "部门1"},
+        "user2_id": {"org_name": "部门2"},
+        "user3_id": {"org_name": "部门1"}
+    }
+}
+```
 
 
 ## 5.2 InMeetingCallback 回调代理
@@ -916,26 +910,24 @@ InMeetingCallback 需实现以下成员函数：
 ### onLeaveMeeting
 * 函数形式：**void onLeaveMeeting(int type, int code, string msg, string meeting_code)**
 * 说明：离会的回调。
-* 返回值：无
 * 参数说明：
 
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|type |int |离会类型，1：用户自身操作离会；2：被踢出会议；3：会议结束 |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
-|msg |string |结果信息|
-|meeting_code | string | 会议号 |
+| 参数名          | 参数类型   | 参数说明                             |
+|--------------|--------|----------------------------------|
+| type         | int    | 离会类型，1：用户自身操作离会；2：被踢出会议；3：会议结束   |
+| code         | int    | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+| msg          | string | 结果信息                             |
+| meeting_code | string | 会议号                              |
 
 
 ### onInviteMeeting
 * 函数形式：**void onInviteMeeting(string invite_info)**
 * 说明：用户在会议中界面点击下方工具栏邀请按钮后的回调。
-* 返回值：无
 * 参数说明：
 
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|invite_info |string |邀请的相关信息，JSON字符串 |
+| 参数名         | 参数类型   | 参数说明            |
+|-------------|--------|-----------------|
+| invite_info | string | 邀请的相关信息，JSON字符串 |
 
 invite_info内容
 ```json5
@@ -962,29 +954,34 @@ invite_info内容
 ### onShowMeetingInfo
 * 函数形式：**void onShowMeetingInfo(string meeting_info)**
 * 说明：用户在会议中界面点击展示会议信息的回调。
-* 返回值：无
 * 参数说明：
 
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|meeting_info |string |会议信息，JSON字符串，meeting_info目前跟invite_info内容一样 |
+| 参数名          | 参数类型   | 参数说明                                        |
+|--------------|--------|---------------------------------------------|
+| meeting_info | string | 会议信息，JSON字符串，meeting_info目前跟invite_info内容一样 |
 
 
 ### onInviteUsers
 * 函数形式：**void onInviteUsers(string json_data)**
-* 说明：用户在会议中界面点击展示会议信息的回调。
-* 返回值：无
+* 可用版本：>= 3.6.401
+* 说明：用户在会议中界面点击右侧成员列表上方的添加成员按钮的的回调。
 * 参数说明：
 
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|json_data |string |会议信息，JSON字符串，meeting_info目前跟invite_info内容一样 |
+| 参数名       | 参数类型   | 参数说明                                        |
+|-----------|--------|---------------------------------------------|
+| json_data | string | 会议信息，JSON字符串，meeting_info目前跟invite_info内容一样 |
+
+* json_data示例：
+```json
+{
+    "users": ["user1_id","user2_id","user3_id","user4_id"]
+}
+```
 
 
 ### onSwitchPiPResult
 * 函数形式：**void onSwitchPiPResult(int code, string msg)**
 * 说明：进入悬浮窗或者退出悬浮窗状态的回调。
-* 返回值：无
 * 参数说明：
 
 |参数名 |参数类型 |参数说明 |
@@ -993,16 +990,19 @@ invite_info内容
 |msg |string |结果信息|
 
 
-### onQueryOrgInfo
-* 函数形式：**void onQueryOrgInfo(string json_data)**
-* 说明：向宿主应用查询组织架构信息
-* 返回值：无
+### onQueryCustomOrgInfo
+* 函数形式：**void onQueryCustomOrgInfo(string json_data)**
 * 可用版本：>= 3.6.401
-* 参数说明：
-
-| 参数名  | 参数类型 | 参数说明                                                     |
-| ------- | -------- | ------------------------------------------------------------ |
-| userIds | string   | 这是一个编码的json数据，数据结构为一个字典，key 是user_id，value是一个user_id 的数组集合。 |
+* 说明：
+  * SDK主动向接入放查询自定义的组织架构信息
+  * 当调用`InMeetingService.enableCustomOrgInfo`函数开启了该功能，才会收到该回调
+  * 在该回调中，接入方获取到用户ID列表后，通过调用`InMeetingService.setCustomOrgInfo`函数来设置自定义的组织架构信息
+* 参数说明：JSON字符串，格式如下示例
+```json
+{
+    "users": ["user1_id","user2_id","user3_id","user4_id"]
+}
+```
 
 
 
