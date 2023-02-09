@@ -2,6 +2,19 @@
 ## 1. Android SDK 集成接入指南
 
 ### 1.1 版本环境提示
+- 您可以按照下面的方式在会议SDK集成环境中添加SDK接入问题检查插件的依赖，并执行该插件生成的名为check${ApplicationVariantName}IntegrationIssue的Gradle task，task输的日志中将包含插件检查出的一些可能出现的SDK接入问题以及修改建议
+```
+buildscript {
+    dependencies {
+        classpath 'com.tencent.wemeet.sdk:issue-checker:0.0.1'
+    }
+}
+
+plugins {
+    id 'com.tencent.wemeet.sdk.plugin.checker'
+}
+
+```
 - 支持 minsdkVersion 21
 - 使用Android Studio作为IDE
 - 如果您还在使用android.support.*，建议您迁移到AndroidX，建议迁移前满足以下条件
