@@ -811,15 +811,15 @@ PreMeetingCallback 需实现以下成员函数：
 
 
 ### enableInviteUsersCallback
-* 函数形式：**void enableInviteCallback(bool enable, bool show)**
-* 函数说明：设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteMeeting`回调，并回调会中成员列表信息。
+* 函数形式：**void enableInviteUsersCallback(bool enable, bool show)**
+* 函数说明：设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息。
 * 返回值说明：无
 * 参数说明：
 
-| 参数名    | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                   |
-|--------|------|------|-------|--------------------------------------------------------|
-| enable | bool | 否    | false | 是否开启回调                                                 |
-| show   | bool | 是    | true  | 是否还显示SDK的邀请页面。<br>如果enable为false，则show在SDK中被强制设置为true。 |
+| 参数名    | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                    |
+|--------|------|------|-------|---------------------------------------------------------|
+| enable | bool | 否    | false | 是否开启回调                                                  |
+| show   | bool | 是    | true  | 是否还显示SDK的通讯录页面。<br>如果enable为false，则show在SDK中被强制设置为true。 |
 
 * 开启回调后，点击下图红框的按钮会触发SDK回调： 
 
