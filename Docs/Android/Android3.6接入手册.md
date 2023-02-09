@@ -2,14 +2,16 @@
 ## 1. Android SDK 集成接入指南
 
 ### 1.1 版本环境提示
-- 您可以按照下面的方式在会议SDK集成环境中添加SDK接入问题检查插件的依赖，并执行该插件生成的名为check${ApplicationVariantName}IntegrationIssue的Gradle task，task输的日志中将包含插件检查出的一些可能出现的SDK接入问题以及修改建议
+- 您可以按照下面的方式在会议SDK集成环境中应用SDK接入问题检查插件，该插件将生成名为check${BuildVariantName}IntegrationIssue的task（其中${BuildVariantName}替换为构建变体的名字），在根项目目录中执行gradlew check${BuildVariantName}IntegrationIssue或在Android Studio的Gradle窗口找到该task并运行，task输的日志中将包含插件检查出的一些可能出现的SDK接入问题以及修改建议
 ```
+// root project build.gradle
 buildscript {
     dependencies {
         classpath 'com.tencent.wemeet.sdk:issue-checker:0.0.1'
     }
 }
 
+// app module build.gradle
 plugins {
     id 'com.tencent.wemeet.sdk.plugin.checker'
 }
