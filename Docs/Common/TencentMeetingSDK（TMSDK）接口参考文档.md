@@ -219,11 +219,11 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
   - users：表示新增的用户id列表，**不能包含已有用户id**，此用户id是客户侧账户体系中的用户唯一标识
   - user_type：表示添加用户场景类型
   
-| user_type | 说明                                         |
-|-----------|--------------------------------------------|
-| 1         | 预定会议添加主持人（仅使用SDK的预定会议界面时有效，接入方自定义预定会议界面无效） |
-| 2         | 预定会议添加成员（仅使用SDK的预定会议界面有时效，接入方自定义预定会议界面无效）  |
-| 3         | 会中添加会议成员 （仅会议中时有效）                         |
+| user_type | 说明                                                                                        |
+|-----------|-------------------------------------------------------------------------------------------|
+| 1         | 预定会议添加主持人，响应`PreMeetingCallback.onShowAddressBook`回调时使用。（仅使用SDK的预定会议界面时有效，接入方自定义预定会议界面无效） |
+| 2         | 预定会议添加成员，响应`PreMeetingCallback.onShowAddressBook`回调时使用。（仅使用SDK的预定会议界面有时效，接入方自定义预定会议界面无效）  |
+| 3         | 会中添加会议成员，可在响应`InMeetingCallback.onInviteUsers`回调时使用，也可独立使用。 （仅会议中时有效）                     |
 
 
 ### getAccountService
@@ -733,13 +733,17 @@ PreMeetingCallback 需实现以下成员函数：
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
 * 可用版本：>= 3.6.401
-* 说明：SDK中打开通讯录的回调，用作接入方定制通讯录。
-* 详细说明：在`PreMeetingService.enableAddressBookCallback`函数参数enable设置为true的情况下，在SDK预定会议界面中，用户点击通讯录邀请成员、指定主持人时，会收到该回调。
+* 说明：
+  * 用户在SDK界面中打开通讯录的回调，可用作接入方定制通讯录的通知。
+  * 在`PreMeetingService.enableAddressBookCallback`函数参数enable设置为true的情况下，在SDK预定会议界面中，用户点击通讯录邀请成员、指定主持人时，会收到该回调。
+  * 接入方响应回调后，可展示自定义通讯录，在自定义通讯录中添加成员要通知到SDK时，可调用`TMSDK.addUsersWithParam`函数来实现。
 
-| 参数名       | 参数类型   | 参数说明                                                              |
-|-----------|--------|-------------------------------------------------------------------|
-| user_type | int    | 1：SDK预定会议界面中，点击`指定主持人`下的通讯录按钮的回调<br>2：SDK预定会议界面中，点击`成员`下的通讯录按钮的回调 |
-| json_data | string | 预定会议中已经选择的用户user_id的列表，JSON格式字符串                                  |
+| 参数名       | 参数类型   | 参数说明                                                                         |
+|-----------|--------|------------------------------------------------------------------------------|
+| user_type | int    | 1：SDK预定会议界面中，点击`指定主持人`下的通讯录按钮的回调<br>2：SDK预定会议界面中，点击`成员`下的通讯录按钮的回调<br>对应关系如下图 |
+| json_data | string | 预定会议中已经选择的用户id的列表，JSON格式字符串                                                  |
+
+<img alt="img.png" src="images/schedule_meeting_address_book.png" width="450"/>
 
 * json_data示例：
 ```json
@@ -964,7 +968,9 @@ invite_info内容
 ### onInviteUsers
 * 函数形式：**void onInviteUsers(string json_data)**
 * 可用版本：>= 3.6.401
-* 说明：用户在会议中界面点击右侧成员列表上方的添加成员按钮的的回调。
+* 说明：
+  * 用户在会议中界面点击右侧成员列表上方的添加成员按钮的的回调。
+  * 接入方响应回调后，可展示自定义通讯录，在自定义通讯录中添加成员要通知到SDK时，可调用`TMSDK.addUsersWithParam`函数来实现。
 * 参数说明：
 
 | 参数名       | 参数类型   | 参数说明                                        |
