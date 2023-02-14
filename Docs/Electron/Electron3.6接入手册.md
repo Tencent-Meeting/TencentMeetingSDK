@@ -499,7 +499,7 @@ wemeet_sdk.AddUsersWithParam(json_param)
 ### 33、SDK预定会议界面中，开启定制化通讯录的回调
 
 ```
-wemeet_sdk.enableAddressBookCallback(enable, show)
+wemeet_sdk.EnableAddressBookCallback(enable, show)
 ```
 
 说明：\>= 3.6.401版本，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
@@ -507,7 +507,7 @@ wemeet_sdk.enableAddressBookCallback(enable, show)
 ### 34、设置是否使用添加成员的回调
 
 ```
-wemeet_sdk.enableInviteUsersCallback(enable, show)
+wemeet_sdk.EnableInviteUsersCallback(enable, show)
 ```
 
 说明：\>= 3.6.401版本，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
@@ -515,7 +515,7 @@ wemeet_sdk.enableInviteUsersCallback(enable, show)
 ### 35、设置是否开启自定义组织架构信息
 
 ```
-wemeet_sdk.enableCustomOrgInfo(enable)
+wemeet_sdk.EnableCustomOrgInfo(enable)
 ```
 
 说明：\>= 3.6.401版本，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
@@ -523,7 +523,7 @@ wemeet_sdk.enableCustomOrgInfo(enable)
 ### 36、对相关成员设置自定义的组织架构信息
 
 ```
-wemeet_sdk.setCustomOrgInfo(json_param)
+wemeet_sdk.SetCustomOrgInfo(json_param)
 ```
 
 说明：\>= 3.6.401版本，json_param为json格式字符串，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
