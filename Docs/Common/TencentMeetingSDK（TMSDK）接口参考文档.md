@@ -225,8 +225,21 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | 2         | 预定会议添加成员，响应`PreMeetingCallback.onShowAddressBook`回调时使用。（仅使用SDK的预定会议界面有时效，接入方自定义预定会议界面无效）  |
 | 3         | 会中添加会议成员，可在响应`InMeetingCallback.onInviteUsers`回调时使用，也可独立使用。 （仅会议中时有效）                     |
 
+### parseMeetingInfoUrl
+
+- 函数形式：**void parseMeetingInfoUrl(string schema_url)**
+- 可用版本：>= 3.12.1
+- 函数说明：用户通过入会短链获取对应的会议信息，调用结果通过`SDKCallback.onParseMeetingInfoUrl`回调通知。
+- 返回值类型：void
+- 返回值说明：无
+- 参数说明：
+
+| 参数名 | 参数类型 | 参数必填 | 参数默认值 | 参数说明 |
+| ------ | -------- | -------- | ---------- | -------- |
+| param  | string   | 是       | (无)       | 入会短链 |
 
 ### getAccountService
+
 * 函数形式：**AccountService getAccountService()**
 * 函数说明：获取SDK`AccountService`的对象实例。
 * 返回值说明：`AccountService`的对象实例
@@ -317,6 +330,26 @@ SDKCallback 需实现以下成员函数：
 | code      | int    | 错误码                                             |
 | msg       | string | 错误信息                                            |
 
+### onParseMeetingInfoUrl
+
+- 函数形式：**void onParseMeetingInfoUrl(int code, string msg)**
+- 可用版本：>= 3.12.1
+- 说明：通过入会短链获取对应的会议信息的回调。
+
+
+| 参数名       | 参数类型 | 参数说明                                                   |
+| ------------ | -------- | ---------------------------------------------------------- |
+| code         | int      | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+| meeting_info | string   | 入会短链对应的会议信息，JSON字符串                         |
+
+meeting_info内容
+
+{
+    "meeting_id": "", //会议标识号
+    "current_sub_meeting_id": "", //当前子会议 ID（进行中 / 即将开始）
+    "begin_time": 1629194320 // 会议开始时间戳
+    "meeting_code": "", //会议号
+}
 
 
 # 3. AccountService 说明
@@ -1046,5 +1079,4 @@ invite_info内容
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1028| 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1029| 进入悬浮窗状态失败 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1030| 没有悬浮窗权限 |onSwitchPiPResult()|
-
 
