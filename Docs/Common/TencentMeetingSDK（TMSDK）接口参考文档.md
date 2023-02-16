@@ -19,7 +19,7 @@
 | 2022-09-26 | 3.6.203 | 新增接口：quickMeetingByJSON；quickMeeting和JoinMeeting接口添加meeting_window_title参数                                                            |
 | 2022-11-18 | 3.6.300 | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口                                                                  |
 | 2023-02-06 | 3.6.401 | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
-
+| 2023-02-06 | 3.12.1 | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
 
 # 1. SDK使用说明
 
@@ -665,6 +665,56 @@ AuthenticationCallback 需实现以下成员函数：
 | kMeetingStateReadyToBeStarted | 4 | 会议开始时间到了，无人入会 |
 | kMeetingStateNone | 6| 当前时间在会议结束时间之后，并且无人在会议中 |
 | kMeetingStateRecycled | 7| 会议失效 |
+
+
+### queryLocalRecordInfo
+* 函数形式：**void queryLocalRecordInfo(string meeting_id, string sub_meeting_id)**
+* 可用版本：>= 3.12.1
+* 函数说明：查询会议本地录制信息；
+* 返回值说明：无，结果通过onActionResult回调返回结果，action_type是QueryLocalRecordInfo
+* 参数说明：
+| 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
+| ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
+| meeting_id             | string   | 是       | (无)       | 会议标识号                                                   |
+| sub_meeting_id         | string   | 是       | (无)       | 非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APis获取 |
+
+* 回调内容说明：
+|---|---|---|
+|action_type||onActionResult回调类型|
+|code|||
+|msg|返回内容|
+```
+[
+  {
+    "full_path": "11111", 
+    "title": "double_click_to_convert_01", 
+    "create_time": "1676544908",
+    "transcode_state": 3, 
+    "path_id": "14cf419233978ffa371fb3f3c6bf8c2e7e876e86a102f74079053dd165dab810"
+  }
+ ]
+```
+transcode_state 字段说明：
+| 名称 | 数值 | 说明 |
+|---  |---   |---  |
+| kTranscodeStateUnknow | 0 | 未知状态 |
+| kTranscodeStateSuccess | 1 | 转码成功 |
+| kTranscodeStateTranscoding | 2 | 转码中 |
+| kTranscodeStateFail | 3 | 转码失败 |
+
+### transcode
+* 函数形式：**void transcode(string path_id)**
+* 可用版本：>= 3.12.1
+* 函数说明：QueryLocalRecordInfo接口返回数据中的“path_id”字段
+* 返回值说明：无，可以通过调用queryLocalRecordInfo获取转码状态
+* 参数说明：无
+
+### showRecordFolder
+* 函数形式：**void showRecordFolder(string path_id)**
+* 可用版本：>= 3.12.1
+* 函数说明：QueryLocalRecordInfo接口返回数据中的“path_id”字段
+* 返回值说明：无
+* 参数说明：无
 
 
 ### quickMeeting
