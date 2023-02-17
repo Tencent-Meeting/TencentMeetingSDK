@@ -387,13 +387,12 @@ android {
 - Q:重复class报错，目前会出现此类问题的主要以x5内核和imsdk下的文件为主
 
   A:执行./gradlew app:dependencies(window下执行gradlew app:dependencies)，对照输出依赖将sdk中的依赖排除出去，例如
-    移除glide  wemeet-kapt 
+    移除glide、wemeet-kapt。（仅在某个依赖项存在重复class问题的情况下需要添加对应的exclude条件，请不要将以下内容直接全部粘贴到您的项目代码中）
 ```groovy
     implementation "com.tencent.wemeet: ${wemeet_version}" {
         exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
 	exclude group: 'com.github.bumptech.glide'
 	exclude module: 'wemeet-kapt'
-	exclude group:‘com.tencent.bugly’, module:‘crashreport’
 	exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk-dynamic'
 	exclude group: 'com.tencent.liteav'
     }
