@@ -138,6 +138,17 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | iOS | {宿主App沙盒路径}/AppData/Library/Application Support/{宿主App的BundleID}/Global/Logs |
 | Android | /Data/Data/{宿主App的PackageName}/Global/Logs |
 
+### collectLogFiles
+* 函数形式：string[] collectLogFiles(int64_t begin_time, int64_t end_time)
+* 函数说明：根据开始和结束时间，返回会议SDK的日志文件路径
+* 返回值类型：void
+* 返回值说明：日志文件绝对路径字符串数组，每个小时1个日志文件
+* 参数说明：无
+
+|参数名 |参数类型 |参数说明 |
+|:--|--|--|
+| begin_time | int64_t | 日志文件的开始时间戳，当为秒 |
+| end_time | int64_t | 日志文件的结束时间戳，单位秒|
 
 ### setProxyInfo
 * 函数形式：**void setProxyInfo(string proxy_info)**
