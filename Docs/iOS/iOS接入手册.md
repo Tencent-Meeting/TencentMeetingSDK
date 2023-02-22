@@ -20,7 +20,7 @@
 
 去苹果开发者网站，配置开发者账号，需要配置SDK Demo和SDK Demo屏幕共享扩展两个Identifiers，权限Access WiFi Infomation；
 
-注意(因为主App启动屏幕共享扩展的需要根据扩展的Bundle Id来觉得启动那个扩展)：
+注意(因为主App启动屏幕共享扩展的需要根据扩展的Bundle Id来决定启动那个扩展)：
 SDK Demo的bundle id为XXX.XXX.XXX
 SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 
@@ -194,6 +194,10 @@ SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 - 设置屏幕共享扩展依赖TencentMeetingBroadcastExtension.framework，主页Embed设置为Do Not Embed
 
 ![broadcast_integration](images/broadcast_integration.png)
+
+注意(因为主App启动屏幕共享扩展的需要根据扩展的Bundle Id来决定启动那个扩展)：
+SDK Demo的bundle id为XXX.XXX.XXX
+SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 
 - 从Demo中将SampleHandler.m和SampleHandler.h复制过来
 
