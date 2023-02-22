@@ -104,7 +104,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 
 ### uninitialize
-* 函数形式：**void uninitialize(String param)**
+* 函数形式：**void uninitialize(string param)**
 * 函数说明：
   * 反初始化结果通过**初始化函数**设置的代理回调来接收反初始化结果。
   * 只有在初始化回调结果成功之后，才可以调用反初始化函数。
@@ -384,6 +384,17 @@ SDKCallback 需实现以下成员函数：
     "meeting_code": "", //会议号
 }
 ```
+
+
+### onSDKUninitializeResult
+- 函数形式：**void onSDKUninitializeResult(int code, string msg)**
+- 可用版本：>= 3.12.100
+- 说明：调用反初始化函数之后的结果回调。
+
+| 参数名 | 参数类型 | 参数说明                                                   |
+| ------ | -------- | ---------------------------------------------------------- |
+| code   | int      | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+| msg    | string   | 反初始化结果字符串描述                      |
 
 
 
@@ -1175,4 +1186,6 @@ invite_info内容
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1028| 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1029| 进入悬浮窗状态失败 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1030| 没有悬浮窗权限 |onSwitchPiPResult()|
+| kTMSDKErrorInUninitializing|-1032|正在反初始化|onSDKUninitializeResult()|
+| kTMSDKErrorUnableUnInit|-1033|当前无法反初始化，比如正在会议中且没有使用`force`参数|onSDKUninitializeResult()|
 
