@@ -60,7 +60,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
     3. 调用`PreMeetingService.joinMeeting`函数进行入会
     4. 响应入会回调`PreMeetingCallback.onJoinMeeting`，**回调结果成功表示入会成功**
 5. SDK反初始化
-    1. 调用`TMSDK.uninitialize`函数可以完成SDK反初始化操作。**注意反初始化并非必须调用的，除非需要在当前进程生命周期中还需要重新初始化SDK**
+    1. 调用`TMSDK.uninitialize`函数可以完成SDK反初始化操作。**注意反初始化并非必须调用的，除非在当前进程生命周期中还需要重新初始化SDK**
     3. 响应SDK反初始化回调`SDKCallback.onSDKUninitializeResult`，**回调结果成功才表示反初始化完成**
 
 
@@ -114,9 +114,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 返回值：无
 * 参数说明：参数为`json`字符串，当前支持的配置有：
 
-| Key | 默认值 | 说明 |
-| --- | --- | --- |
-| force | false | 反初始化时如果在会议中是否强制离会。 |
+| Key | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| force | bool | false | 反初始化时如果在会议中是否强制离会。 |
 
 
 ### isInitialized
