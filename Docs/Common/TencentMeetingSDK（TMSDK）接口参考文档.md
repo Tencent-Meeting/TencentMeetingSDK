@@ -22,6 +22,7 @@
 | 2023-02-06 | 3.12.1 | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
 | 2023-02-22 | 3.12.1 | 新增接口：新增反初始化(uninitialize)接口 |
 
+
 # 1. SDK使用说明
 
 <font color="red">**参考前必看:**</font>
@@ -157,17 +158,19 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | iOS | {宿主App沙盒路径}/AppData/Library/Application Support/{宿主App的BundleID}/Global/Logs |
 | Android | /Data/Data/{宿主App的PackageName}/Global/Logs |
 
+
 ### collectLogFiles
-* 函数形式：string[] collectLogFiles(int64_t begin_time, int64_t end_time)
-* 函数说明：根据开始和结束时间，返回会议SDK的日志文件路径
-* 返回值类型：void
-* 返回值说明：日志文件绝对路径字符串数组，每个小时1个日志文件
-* 参数说明：无
+* 函数形式：**string[] collectLogFiles(int begin_time, int end_time)**
+* 可用版本：>= 3.12.100
+* 函数说明：根据开始和结束时间，返回会议SDK的日志文件路径的列表
+* 返回值说明：类型是字符串数组，表示日志文件绝对路径的列表，每个小时1个日志文件，所以多个日志文件
+* 参数说明：
 
 |参数名 |参数类型 |参数说明 |
 |:--|--|--|
-| begin_time | int64_t | 日志文件的开始时间戳，当为秒 |
-| end_time | int64_t | 日志文件的结束时间戳，单位秒|
+| begin_time | int | 日志文件的开始时间戳，单位：秒 |
+| end_time | int | 日志文件的结束时间戳，单位：秒|
+
 
 ### setProxyInfo
 * 函数形式：**void setProxyInfo(string proxy_info)**
@@ -255,18 +258,19 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | 2         | 预定会议添加成员，响应`PreMeetingCallback.onShowAddressBook`回调时使用。（仅使用SDK的预定会议界面有时效，接入方自定义预定会议界面无效）  |
 | 3         | 会中添加会议成员，可在响应`InMeetingCallback.onInviteUsers`回调时使用，也可独立使用。 （仅会议中时有效）                     |
 
+
 ### parseMeetingInfoUrl
 
 - 函数形式：**void parseMeetingInfoUrl(string schema_url)**
-- 可用版本：>= 3.12.1
+- 可用版本：>= 3.12.100
 - 函数说明：用户通过入会短链获取对应的会议信息，调用结果通过`SDKCallback.onParseMeetingInfoUrl`回调通知。
-- 返回值类型：void
 - 返回值说明：无
 - 参数说明：
 
 | 参数名 | 参数类型 | 参数必填 | 参数默认值 | 参数说明 |
 | ------ | -------- | -------- | ---------- | -------- |
 | param  | string   | 是       | (无)       | 入会短链 |
+
 
 ### getAccountService
 
@@ -360,26 +364,27 @@ SDKCallback 需实现以下成员函数：
 | code      | int    | 错误码                                             |
 | msg       | string | 错误信息                                            |
 
+
 ### onParseMeetingInfoUrl
-
 - 函数形式：**void onParseMeetingInfoUrl(int code, string msg)**
-- 可用版本：>= 3.12.1
+- 可用版本：>= 3.12.100
 - 说明：通过入会短链获取对应的会议信息的回调。
-
 
 | 参数名 | 参数类型 | 参数说明                                                   |
 | ------ | -------- | ---------------------------------------------------------- |
 | code   | int      | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
 | msg    | string   | 入会短链对应的会议信息，JSON字符串                         |
 
-msg会议信息内容
-
+- msg 会议信息内容
+```json
 {
     "meeting_id": "", //会议标识号
     "current_sub_meeting_id": "", //当前子会议 ID（进行中 / 即将开始）
     "begin_time": 1629194320 // 会议开始时间戳
     "meeting_code": "", //会议号
 }
+```
+
 
 
 # 3. AccountService 说明
@@ -699,24 +704,28 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### queryLocalRecordInfo
 * 函数形式：**void queryLocalRecordInfo(string meeting_id, string sub_meeting_id)**
-* 可用版本：>= 3.12.1
-* 函数说明：查询会议本地录制信息；
-* 返回值说明：无，结果通过onActionResult回调返回结果，action_type是QueryLocalRecordInfo
+* 可用版本：>= 3.12.100
+* 可用终端：Windows & MacOS
+* 函数说明：查询会议本地录制信息；结果通过`PreMeetingCallback.onActionResult`回调返回结果，`action_type`是`QueryLocalRecordInfo`
+* 返回值说明：无
 * 参数说明：
+
 | 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
 | ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
 | meeting_id             | string   | 是       | (无)       | 会议标识号                                                   |
-| sub_meeting_id         | string   | 是       | (无)       | 非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APis获取 |
+| sub_meeting_id         | string   | 是       | (无)       | 非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APIs获取 |
 
 * 回调内容说明：
 |---|---|---|
 |action_type||onActionResult回调类型|
 |code|||
-|msg|返回内容|
-```
+|msg|返回JSON格式的内容|
+
+* msg内容说明：
+```json
 [
   {
-    "full_path": "11111", 
+    "full_path": "full_path", 
     "title": "double_click_to_convert_01", 
     "create_time": "1676544908",
     "transcode_state": 3, 
@@ -724,7 +733,8 @@ AuthenticationCallback 需实现以下成员函数：
   }
  ]
 ```
-transcode_state 字段说明：
+
+* transcode_state 字段说明：
 | 名称 | 数值 | 说明 |
 |---  |---   |---  |
 | kTranscodeStateUnknow | 0 | 未知状态 |
@@ -732,19 +742,25 @@ transcode_state 字段说明：
 | kTranscodeStateTranscoding | 2 | 转码中 |
 | kTranscodeStateFail | 3 | 转码失败 |
 
+
 ### transcode
 * 函数形式：**void transcode(string path_id)**
-* 可用版本：>= 3.12.1
-* 函数说明：QueryLocalRecordInfo接口返回数据中的“path_id”字段
-* 返回值说明：无，可以通过调用queryLocalRecordInfo获取转码状态
-* 参数说明：无
+* 可用版本：>= 3.12.100
+* 可用终端：Windows & MacOS
+* 函数说明：
+  - 对本地录制文件进行转码操作
+  - 可以通过调用`queryLocalRecordInfo`获取转码状态，在JSON中的`transcode_state`字段
+* 返回值说明：无
+* 参数说明：`queryLocalRecordInfo`接口返回数据中的“path_id”字段
+
 
 ### showRecordFolder
 * 函数形式：**void showRecordFolder(string path_id)**
-* 可用版本：>= 3.12.1
-* 函数说明：QueryLocalRecordInfo接口返回数据中的“path_id”字段
+* 可用版本：>= 3.12.100
+* 可用终端：Windows & MacOS
+* 函数说明：打开会议本地录制文件所在文件夹
 * 返回值说明：无
-* 参数说明：无
+* 参数说明：`queryLocalRecordInfo`接口返回数据中的“path_id”字段
 
 
 ### quickMeeting
@@ -841,7 +857,7 @@ PreMeetingCallback 需实现以下成员函数：
 | ClosePreMeetingView | 7    | 关闭会前界面的回调 |
 | QueryMeetingInfo | 8    | 查询会议信息的回调 |
 | InviteUsers | 9   | 预定会议邀请用户的回调 |
-
+| QueryLocalRecordInfo |10 | 查询会议本地录制信息的回调 |
 
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
