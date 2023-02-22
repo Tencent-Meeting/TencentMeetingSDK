@@ -902,7 +902,8 @@ PreMeetingCallback 需实现以下成员函数：
         "user1_id": {"org_name": "部门1"},
         "user2_id": {"org_name": "部门2"},
         "user3_id": {"org_name": "部门1"}
-    }
+    },
+  	"waiting_room": 0 //onQueryCustomOrgInfo 中传递的参数
 }
 ```
 
@@ -1006,7 +1007,8 @@ invite_info内容
 * 参数说明：JSON字符串，格式如下示例
 ```json
 {
-    "users": ["user1_id","user2_id","user3_id","user4_id"]
+    "users": ["user1_id","user2_id","user3_id","user4_id"],
+  	"waiting_room":1 // 0表示是成员列表 1表示是等候室，宿主接入的时候需要记录，设置的时候(setCustomOrgInfo)需要传入。
 }
 ```
 
@@ -1046,5 +1048,9 @@ invite_info内容
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1028| 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1029| 进入悬浮窗状态失败 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1030| 没有悬浮窗权限 |onSwitchPiPResult()|
-
+| kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
+| kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
+| kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
+| kTMSDKErrorAddUsersUidIsEmpty |-2005| 通讯录回调，新增用户失败，用户数据为空 |onAddUsersResult()|
+| kTMSDKErrorAddUsersMembersModelError |-2006| 通讯录回调，新增用户失败，SDK 内部错误 |onAddUsersResult()|
 
