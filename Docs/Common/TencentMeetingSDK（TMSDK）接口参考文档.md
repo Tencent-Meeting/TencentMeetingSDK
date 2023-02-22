@@ -685,7 +685,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### queryLocalRecordInfo
 * 函数形式：**void queryLocalRecordInfo(string meeting_id, string sub_meeting_id)**
-* 可用版本：>= 3.12.1
+* 可用版本：>= 3.12.100
 * 可用终端：Windows & MacOS
 * 函数说明：查询会议本地录制信息；结果通过`PreMeetingCallback.onActionResult`回调返回结果，`action_type`是`QueryLocalRecordInfo`
 * 返回值说明：无
@@ -694,7 +694,7 @@ AuthenticationCallback 需实现以下成员函数：
 | 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
 | ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
 | meeting_id             | string   | 是       | (无)       | 会议标识号                                                   |
-| sub_meeting_id         | string   | 是       | (无)       | 非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APis获取 |
+| sub_meeting_id         | string   | 是       | (无)       | 非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APIs获取 |
 
 * 回调内容说明：
 |---|---|---|
@@ -726,7 +726,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### transcode
 * 函数形式：**void transcode(string path_id)**
-* 可用版本：>= 3.12.1
+* 可用版本：>= 3.12.100
 * 可用终端：Windows & MacOS
 * 函数说明：
   - 对本地录制文件进行转码操作
@@ -737,7 +737,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### showRecordFolder
 * 函数形式：**void showRecordFolder(string path_id)**
-* 可用版本：>= 3.12.1
+* 可用版本：>= 3.12.100
 * 可用终端：Windows & MacOS
 * 函数说明：打开会议本地录制文件所在文件夹
 * 返回值说明：无
