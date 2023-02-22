@@ -20,6 +20,7 @@
 | 2022-11-18 | 3.6.300 | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口                                                                  |
 | 2023-02-06 | 3.6.401 | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
 | 2023-02-06 | 3.12.1 | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
+| 2023-02-22 | 3.12.1 | 新增接口：新增反初始化(uninitialize)接口 |
 
 # 1. SDK使用说明
 
@@ -57,7 +58,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
     2. 调用`PreMeetingService.setPreMeetingCallback`函数设置回调代理`PreMeetingCallback`
     3. 调用`PreMeetingService.joinMeeting`函数进行入会
     4. 响应入会回调`PreMeetingCallback.onJoinMeeting`，**回调结果成功表示入会成功**
-
+5. SDK反初始化
+    1. 调用`TMSDK.uninitialize`函数可以完成SDK反初始化操作。**注意反初始化并非必须调用的，除非需要在当前进程生命周期中还需要重新初始化SDK**
+    3. 响应SDK反初始化回调`SDKCallback.onSDKUninitializeResult`，**回调结果成功才表示反初始化完成**
 
 
 # 2. TMSDK 说明
@@ -97,6 +100,22 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |通用 |data_path |string |否 |`tmsdkapp.exe`同级目录 | 仅`Windows`支持:自定义SDK数据存储路径，里面包括日志目录。 |
 |通用 |app_name |string |否 |网络会议 | 指定显示的品牌名称 |
 |公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，如传入其它值则显示为zh-cn，3.6.200及以上版本可用） |
+
+
+### uninitialize
+* 函数形式：**void uninitialize(String param)**
+* 函数说明：
+  * 反初始化结果通过**初始化函数**设置的代理回调来接收反初始化结果。
+  * 只有在初始化回调结果成功之后，才可以调用反初始化函数。
+  * 如果没有初始化或者反初始化已经调用成功，再次调用反初始化函数将直接成功返回而不做任何事情。
+  * 如果当前在会议中，将根据参数设置决定是否强制退会然后继续反初始化。如果参数设置不强制退会，将回调失败。
+  * 反初始化将会自动调用logout。
+* 返回值：无
+* 参数说明：参数为`json`字符串，当前支持的配置有：
+
+| Key | 默认值 | 说明 |
+| --- | --- | --- |
+| force | false | 反初始化时如果在会议中是否强制离会。 |
 
 
 ### isInitialized
