@@ -18,6 +18,7 @@ plugins {
 
 ```
 - 支持 minsdkVersion 21
+- Glide 4.12.0及以上
 - 使用Android Studio作为IDE
 - 如果您还在使用android.support.*，建议您迁移到AndroidX，建议迁移前满足以下条件
 	1. Android Studio 3.2及以上
