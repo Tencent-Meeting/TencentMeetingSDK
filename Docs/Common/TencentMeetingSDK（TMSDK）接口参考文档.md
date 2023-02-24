@@ -767,22 +767,24 @@ AuthenticationCallback 需实现以下成员函数：
 ### queryMeetingInfo
 * 函数形式：**void queryMeetingInfo(string param)**
 * 可用版本：>= 3.6.200
-* 函数说明：查询会议信息
-* 返回值说明：无，通过回调onActionResult的QueryMeetingInfo回调结果
+* 函数说明：查询会议信息，通过回调`PreMeetingCallback.onActionResult`的查询结果，`action_type`参数是`QueryMeetingInfo`
+* 返回值说明：无
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |param | string | 是 |(无)| json字符串，例如，{"meeting_id": ["111", "222", "333"]}，一次请求的meeting_id数组长度不大于5个 |
 
-* 回调内容说明：
+* `PreMeetingCallback.onActionResult`回调说明：
 
-| 名称 | 示例 | 说明 |
+|参数名 |参数类型 |参数说明 |
 |---|---|---|
-|action_type||onActionResult回调类型|
-|code|||
-|msg|返回内容|
-```
+|action_type |int |这处为`QueryMeetingInfo` |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |结果的JSON信息，示例如下 |
+
+msg内容示例：
+```json
 {
     "meeting_info": [
         {
@@ -796,7 +798,7 @@ AuthenticationCallback 需实现以下成员函数：
     ]
 }
 ```
-返回会议信息中，meeting_status字段说明：
+其中`meeting_status`字段说明：
 
 | 名称 | 数值 | 说明 |
 |---  |---   |---  |
@@ -814,7 +816,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void queryLocalRecordInfo(string meeting_id, string sub_meeting_id)**
 * 可用版本：>= 3.12.100
 * 可用终端：Windows & MacOS
-* 函数说明：查询会议本地录制信息；结果通过`PreMeetingCallback.onActionResult`回调返回结果，`action_type`是`QueryLocalRecordInfo`
+* 函数说明：查询会议本地录制信息；结果通过`PreMeetingCallback.onActionResult`回调返回结果，`action_type`参数是`QueryLocalRecordInfo`
 * 返回值说明：无
 * 参数说明：
 
@@ -823,13 +825,15 @@ AuthenticationCallback 需实现以下成员函数：
 | meeting_id             | string   | 是       | (无)       | 会议标识号                                                   |
 | sub_meeting_id         | string   | 是       | (无)       | 非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APIs获取 |
 
-* 回调内容说明：
-|---|---|---|
-|action_type||onActionResult回调类型|
-|code|||
-|msg|返回JSON格式的内容|
+* `PreMeetingCallback.onActionResult`回调说明：
 
-* msg内容说明：
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|action_type |int |这处为`QueryLocalRecordInfo` |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |结果的JSON信息，示例如下 |
+
+msg内容示例：
 ```json
 [
   {
@@ -842,7 +846,8 @@ AuthenticationCallback 需实现以下成员函数：
  ]
 ```
 
-* transcode_state 字段说明：
+其中`transcode_state`字段说明：
+
 | 名称 | 数值 | 说明 |
 |---  |---   |---  |
 | kTranscodeStateUnknow | 0 | 未知状态 |
@@ -947,25 +952,26 @@ PreMeetingCallback 需实现以下成员函数：
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
-|action_type |int |表示用户的何种行为操作，详情参考下表 |
+|action_type |int |表示何种行为操作，详情参考下表 |
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
 |msg |string |结果信息 |
 
 其中`action_type`值对应的含义如下：
 
-| 名称 | 行为操作的枚举值 | 说明 |
-|---|---|---|
-| ShowPreMeetingView | 0    | 打开会前界面的回调 |
-| ShowScreenCastView | 1    | 打开无线投屏界面的回调 |
-| ShowHistoricalMeetingView | 2    | 打开历史会议界面的回调|
-| ShowMeetingDetailView | 3    | 打开某一会议详情的回调 |
-| ShowJoinMeetingView | 4    | 打开加入会议界面的回调 |
-| ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 |
-| ShowMeetingSettingView | 6    | 打开会议设置界面的回调 |
-| ClosePreMeetingView | 7    | 关闭会前界面的回调 |
-| QueryMeetingInfo | 8    | 查询会议信息的回调 |
-| InviteUsers | 9   | 预定会议邀请用户的回调 |
-| QueryLocalRecordInfo |10 | 查询会议本地录制信息的回调 |
+| 名称 | 行为操作的枚举值 | 说明 | msg值说明 |
+|---|---|---|---|
+| ShowPreMeetingView | 0    | 打开会前界面的回调 | 结果的说明文字 |
+| ShowScreenCastView | 1    | 打开无线投屏界面的回调 | 结果的说明文字 |
+| ShowHistoricalMeetingView | 2    | 打开历史会议界面的回调| 结果的说明文字 |
+| ShowMeetingDetailView | 3    | 打开某一会议详情的回调 | 结果的说明文字 |
+| ShowJoinMeetingView | 4    | 打开加入会议界面的回调 | 结果的说明文字 |
+| ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 | 结果的说明文字 |
+| ShowMeetingSettingView | 6    | 打开会议设置界面的回调 | 结果的说明文字 |
+| ClosePreMeetingView | 7    | 关闭会前界面的回调 | 结果的说明文字 |
+| QueryMeetingInfo | 8    | 调用`PreMeetingService.queryMeetingInfo`查询会议信息的回调 | 回调的JSON数据，格式参考`queryMeetingInfo`函数说明|
+| InviteUsers | 9   | 预定会议邀请用户的回调(私有化专用) | -- |
+| QueryLocalRecordInfo |10 | 调用`PreMeetingService.queryLocalRecordInfo`查询会议本地录制信息的回调 | 回调的JSON数据，格式参考`queryLocalRecordInfo`函数说明 |
+
 
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
