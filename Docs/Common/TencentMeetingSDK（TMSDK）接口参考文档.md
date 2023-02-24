@@ -406,6 +406,17 @@ SDKCallback 需实现以下成员函数：
 | msg | string | SDK初始化结果信息 |
 
 
+### onSDKUninitializeResult
+- 函数形式：**void onSDKUninitializeResult(int code, string msg)**
+- 可用版本：>= 3.12.100
+- 说明：调用反初始化函数之后的结果回调。
+
+| 参数名 | 参数类型 | 参数说明                                                   |
+| ------ | -------- | ---------------------------------------------------------- |
+| code   | int      | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+| msg    | string   | 反初始化结果字符串描述                      |
+
+
 ### onShowLogsResult
 * 函数形式：**void onShowLogsResult(int code, string msg)**
 * 可用版本：>= 2.18.2
@@ -481,17 +492,6 @@ SDKCallback 需实现以下成员函数：
     "meeting_code": "", //会议号
 }
 ```
-
-
-### onSDKUninitializeResult
-- 函数形式：**void onSDKUninitializeResult(int code, string msg)**
-- 可用版本：>= 3.12.100
-- 说明：调用反初始化函数之后的结果回调。
-
-| 参数名 | 参数类型 | 参数说明                                                   |
-| ------ | -------- | ---------------------------------------------------------- |
-| code   | int      | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
-| msg    | string   | 反初始化结果字符串描述                      |
 
 
 
