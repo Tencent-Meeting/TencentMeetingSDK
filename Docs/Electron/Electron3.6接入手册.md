@@ -299,7 +299,13 @@ wemeet_sdk.Login(sso_url);
 wemeet_sdk.JoinMeeting(meeting_code, user_display_name, password, invite_url, mic_on, camera_on, speaker_on, face_beauty_on)
 ```
 
-### 4、显示home界面
+### 4、显示SDK自带的会前界面（显示home界面）
+
+``` 
+wemeet_sdk.ShowPreMeetingView();
+```
+
+### 4.1、显示home界面【即将移除】
 
 ``` 
 wemeet_sdk.GoToHomeView();
