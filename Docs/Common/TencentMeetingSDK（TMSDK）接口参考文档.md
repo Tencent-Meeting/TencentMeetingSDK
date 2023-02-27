@@ -585,7 +585,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 
 ### onLogout
-* 函数形式：**void onLogout(int code, string msg)**
+* 函数形式：**void onLogout(int type, int code, string msg)**
 * 说明：账户登出的回调。
 
 |参数名 |参数类型 |参数说明 |
