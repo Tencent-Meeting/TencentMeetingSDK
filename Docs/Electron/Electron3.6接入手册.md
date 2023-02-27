@@ -305,7 +305,7 @@ wemeet_sdk.JoinMeeting(meeting_code, user_display_name, password, invite_url, mi
 wemeet_sdk.ShowPreMeetingView();
 ```
 
-### 4.1、显示home界面【即将移除】
+显示home界面【即将移除】
 
 ``` 
 wemeet_sdk.GoToHomeView();
