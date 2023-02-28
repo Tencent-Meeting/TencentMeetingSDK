@@ -1027,7 +1027,7 @@ invite_info内容
 其中`actionType`值对应的含义如下：
 | 名称 | 行为操作的枚举值 | 说明 | msg值说明 |
 |---|---|---|---|
-| SetCustomOrgInfo | 0    | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | 内容根据错误码`code`有所区分，当`code = 0`时，msg为JSON串；`code != 0`时，msg为描述文字|
+| SetCustomOrgInfo | 100    | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | 内容根据错误码`code`有所区分，当`code = 0`时，msg为JSON串；`code != 0`时，msg为描述文字|
 
 
 
