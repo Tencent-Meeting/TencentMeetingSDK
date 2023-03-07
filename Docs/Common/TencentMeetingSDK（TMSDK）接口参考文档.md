@@ -646,7 +646,7 @@ AuthenticationCallback 需实现以下成员函数：
 |camera_on |bool |否 |SDK本地设置 |是否开启摄像头 |
 |speaker_on |bool |否 |SDK本地设置 |是否开启扬声器(仅移动端) |
 |face_beauty_on |bool |否 |SDK本地设置 |是否开启美颜 |
-|meeting_window_title |string |否 |(空) |会中窗口标题，如果是空则以initialize接口的app_name为准。3.6.300及以后支持 |
+|meeting_window_title |string |否 |(空) |会中窗口标题，如果是空则以initialize接口的app_name为准，长度限制36（标准ASCII码算1，其它算2），超过会截断。3.6.300及以后支持 |
 
 
 ### joinMeetingByJSON
@@ -891,7 +891,7 @@ msg内容示例：
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：
   * json_param必须是json标准字符串，可以包含一下字段，其他字段会自动忽略
-  * meeting_window_title，会中窗口标题，如果不传或者为空，则以initialize接口的app_name为准
+  * meeting_window_title，会中窗口标题，如果不传或者为空，则以initialize接口的app_name为准，长度限制36（标准ASCII码算1，其它算2），超过会截断
 * 参数示例：
 ```
 {
