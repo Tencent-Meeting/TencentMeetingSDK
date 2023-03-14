@@ -99,3 +99,16 @@ Q9.从会中页面进入美颜等二级页面，控制器UI层级异常。
 
 A: 请检查是否含有 **FDFullscreenPopGesture**这个第三方库。
 
+Q10.接入会议和其他三方视频会议SDK，会议中有时无法正常屏幕共享的问题。
+
+A: 确保您的App应该共用一个**Apple Broadcast UploadExtension**
+<img src="./images/tencent_meeting_broadcast_image_A.png" alt="1" style="zoom:67%;" />
+
+B:开始进入腾讯视频会议时：
+<img src="./images/tencent_meeting_broadcast_image_B.png" alt="1" style="zoom:67%;" />
+
+开始进入三方视频会议时：
+<img src="./images/tencent_meeting_broadcast_image_B1.png" alt="1" style="zoom:67%;" />
+
+C:在 **Broadcast UploadExtension** 中**SampleHandler.m**中：
+<img src="./images/tencent_meeting_broadcast_image_C.png" alt="1" style="zoom:67%;" />
