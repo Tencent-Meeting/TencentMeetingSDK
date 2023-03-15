@@ -2,7 +2,23 @@
 ## 1. Android SDK 集成接入指南
 
 ### 1.1 版本环境提示
+- 您可以按照下面的方式在会议SDK集成环境中应用SDK接入问题检查插件，该插件将生成名为check${BuildVariantName}IntegrationIssue的task（其中${BuildVariantName}替换为构建变体的名字），在根项目目录中执行gradlew check${BuildVariantName}IntegrationIssue或在Android Studio的Gradle窗口找到该task并运行，task输的日志中将包含插件检查出的一些可能出现的SDK接入问题以及修改建议
+```
+// root project build.gradle
+buildscript {
+    dependencies {
+        classpath 'com.tencent.wemeet.sdk:issue-checker:0.0.1'
+    }
+}
+
+// app module build.gradle
+plugins {
+    id 'com.tencent.wemeet.sdk.plugin.checker'
+}
+
+```
 - 支持 minsdkVersion 21
+- Glide 4.12.0及以上
 - 使用Android Studio作为IDE
 - 如果您还在使用android.support.*，建议您迁移到AndroidX，建议迁移前满足以下条件
 	1. Android Studio 3.2及以上
@@ -372,13 +388,12 @@ android {
 - Q:重复class报错，目前会出现此类问题的主要以x5内核和imsdk下的文件为主
 
   A:执行./gradlew app:dependencies(window下执行gradlew app:dependencies)，对照输出依赖将sdk中的依赖排除出去，例如
-    移除glide  wemeet-kapt 
+    移除glide、wemeet-kapt。**仅在某个依赖项存在重复class问题的情况下才添加对应的exclude条件，请不要将以下内容直接全部粘贴到您的项目代码中！**
 ```groovy
     implementation "com.tencent.wemeet: ${wemeet_version}" {
         exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
 	exclude group: 'com.github.bumptech.glide'
 	exclude module: 'wemeet-kapt'
-	exclude group:‘com.tencent.bugly’, module:‘crashreport’
 	exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk-dynamic'
 	exclude group: 'com.tencent.liteav'
     }
