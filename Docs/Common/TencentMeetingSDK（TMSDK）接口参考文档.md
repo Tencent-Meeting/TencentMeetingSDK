@@ -819,6 +819,10 @@ invite_info内容
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
 |msg |string |结果信息|
 
+目前表现：调用switchPIPModel接口将回调该方法，用户手动切换悬浮窗状态无回调
+
+期望表现：用户手动切换悬浮窗状态时也需要回调该方法，正常进入/退出悬浮窗状态时code为0，msg为json字符串，{"isInPictureInPictureMode": true}，调用switchPIPModel失败时code为错误码，msg为错误信息
+
 # 6. 错误码
 
 | 名称 | 错误码 | 说明 | 回调函数 |
