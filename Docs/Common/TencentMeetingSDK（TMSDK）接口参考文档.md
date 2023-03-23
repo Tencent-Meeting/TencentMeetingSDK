@@ -1,3 +1,93 @@
+- [文档修订记录](#文档修订记录)
+- [1. SDK使用说明](#1-sdk使用说明)
+  * [1.1 获取SDK实例方法](#11-获取sdk实例方法)
+  * [1.2 获取Service方法](#12-获取service方法)
+  * [1.3 SDK基本调用快速入门](#13-sdk基本调用快速入门)
+- [2. TMSDK 说明](#2-tmsdk-说明)
+  * [2.1 TMSDK 成员函数](#21-tmsdk-成员函数)
+    + [getSDKVersion](#getsdkversion)
+    + [initialize](#initialize)
+    + [uninitialize](#uninitialize)
+    + [isInitialized](#isinitialized)
+    + [refreshSDKToken](#refreshsdktoken)
+    + [getCurrentSDKToken](#getcurrentsdktoken)
+    + [showLogs](#showlogs)
+    + [collectLogFiles](#collectlogfiles)
+    + [setProxyInfo](#setproxyinfo)
+    + [handleSchema](#handleschema)
+    + [addUsersWithParam](#adduserswithparam)
+    + [parseMeetingInfoUrl](#parsemeetinginfourl)
+    + [getAccountService](#getaccountservice)
+    + [getPreMeetingService](#getpremeetingservice)
+    + [getInMeetingService](#getinmeetingservice)
+  * [2.2 SDKCallback 回调代理](#22-sdkcallback-回调代理)
+    + [onSDKInitializeResult](#onsdkinitializeresult)
+    + [onSDKUninitializeResult](#onsdkuninitializeresult)
+    + [onShowLogsResult](#onshowlogsresult)
+    + [onSDKError](#onsdkerror)
+    + [onResetSDKState](#onresetsdkstate)
+    + [onSetProxyResult](#onsetproxyresult)
+    + [onAddUsersResult](#onaddusersresult)
+    + [onParseMeetingInfoUrl](#onparsemeetinginfourl)
+- [3. AccountService 说明](#3-accountservice-说明)
+  * [3.1 AccountService 成员函数](#31-accountservice-成员函数)
+    + [setCallback](#setcallback)
+    + [login](#login)
+    + [logout](#logout)
+    + [isLoggedIn](#isloggedin)
+    + [jumpUrlWithLoginStatus](#jumpurlwithloginstatus)
+    + [getUrlWithLoginStatus](#geturlwithloginstatus)
+  * [3.2 AuthenticationCallback 回调代理](#32-authenticationcallback-回调代理)
+    + [onLogin](#onlogin)
+    + [onLogout](#onlogout)
+    + [onJumpUrlWithLoginStatus](#onjumpurlwithloginstatus)
+- [4. PreMeetingService 说明](#4-premeetingservice-说明)
+  * [4.1 PreMeetingService 成员函数](#41-premeetingservice-成员函数)
+    + [setCallback](#setcallback-1)
+    + [joinMeeting](#joinmeeting)
+    + [joinMeetingByJSON](#joinmeetingbyjson)
+    + [showPreMeetingView](#showpremeetingview)
+    + [showScreenCastView](#showscreencastview)
+    + [showHistoricalMeetingView](#showhistoricalmeetingview)
+    + showMeetingDetailView【即将移除】
+    + [showMeetingDetailView](#showmeetingdetailview)
+    + [showJoinMeetingView](#showjoinmeetingview)
+    + [showScheduleMeetingView](#showschedulemeetingview)
+    + [showMeetingSettingView](#showmeetingsettingview)
+    + [queryMeetingInfo](#querymeetinginfo)
+    + [queryLocalRecordInfo](#querylocalrecordinfo)
+    + [transcode](#transcode)
+    + [showRecordFolder](#showrecordfolder)
+    + [quickMeeting](#quickmeeting)
+    + [quickMeetingByJson](#quickmeetingbyjson)
+    + [enableAddressBookCallback](#enableaddressbookcallback)
+  * [4.2 PreMeetingCallback 回调代理](#42-premeetingcallback-回调代理)
+    + [onJoinMeeting](#onjoinmeeting)
+    + onShowScreenCastViewResult【即将移除】
+    + [onActionResult](#onactionresult)
+    + [onShowAddressBook](#onshowaddressbook)
+- [5. InMeetingService 说明](#5-inmeetingservice-说明)
+  * [5.1 InMeetingService 成员函数](#51-inmeetingservice-成员函数)
+    + [setCallback](#setcallback-2)
+    + [leaveMeeting](#leavemeeting)
+    + [enableInviteCallback](#enableinvitecallback)
+    + [enableMeetingInfoCallback](#enablemeetinginfocallback)
+    + [enableInviteUsersCallback](#enableinviteuserscallback)
+    + [bringInMeetingViewTop](#bringinmeetingviewtop)
+    + [switchPIPModel](#switchpipmodel)
+    + [getCurrentMeetingInfo](#getcurrentmeetinginfo)
+    + [enableCustomOrgInfo](#enablecustomorginfo)
+    + [setCustomOrgInfo](#setcustomorginfo)
+  * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
+    + [onLeaveMeeting](#onleavemeeting)
+    + [onInviteMeeting](#oninvitemeeting)
+    + [onShowMeetingInfo](#onshowmeetinginfo)
+    + [onInviteUsers](#oninviteusers)
+    + [onSwitchPiPResult](#onswitchpipresult)
+    + [onQueryCustomOrgInfo](#onquerycustomorginfo)
+- [6. 错误码](#6-错误码)
+
+
 
 # 文档修订记录
 | 日期         | SDK版本   | 修改内容                                                                                                                                  |
@@ -20,6 +110,7 @@
 | 2022-11-18 | 3.6.300 | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口                                                                  |
 | 2023-02-06 | 3.6.401 | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
 | 2023-02-24 | 3.6.401 | 新增回调：新增会中通用动作和接口回调onActionResult函数                                                                                                            |
+| 2023-02-22 | 3.12.100 | 新增接口：新增反初始化(uninitialize)接口，本地录制相关接口，解析入会短链接接口，收集日志文件的接口 |
 
 
 # 1. SDK使用说明
@@ -58,7 +149,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
     2. 调用`PreMeetingService.setPreMeetingCallback`函数设置回调代理`PreMeetingCallback`
     3. 调用`PreMeetingService.joinMeeting`函数进行入会
     4. 响应入会回调`PreMeetingCallback.onJoinMeeting`，**回调结果成功表示入会成功**
-
+5. SDK反初始化
+    1. 调用`TMSDK.uninitialize`函数可以完成SDK反初始化操作。**注意反初始化并非必须调用的，除非在当前进程生命周期中还需要重新初始化SDK**
+    3. 响应SDK反初始化回调`SDKCallback.onSDKUninitializeResult`，**回调结果成功才表示反初始化完成**
 
 
 # 2. TMSDK 说明
@@ -100,6 +193,30 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，如传入其它值则显示为zh-cn，3.6.200及以上版本可用） |
 
 
+### uninitialize
+* 函数形式：**void uninitialize(string param)**
+* 可用版本：>= 3.12.100
+* 函数说明：
+  * 反初始化结果通过调用**初始化函数**时设置的`SDKCallback`回调代理来接收反初始化结果。
+  * 只有在初始化回调结果成功之后，才可以调用反初始化函数。
+  * 如果没有初始化或者反初始化已经调用成功，再次调用反初始化函数将直接成功返回而不做任何事情。
+  * 如果当前在会议中，将根据参数设置决定是否强制退会然后继续反初始化。如果参数设置不强制退会，将回调失败。
+  * 反初始化将会自动调用logout，接入方在收到反初始化回调前，会收到logout的回调。
+* 返回值：无
+* 参数说明：参数为`json`字符串，当前支持的配置有：
+
+| Key | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| force | bool | false | 反初始化时如果在会议中是否强制离会。 |
+
+* param示例：
+```json
+{
+  "force": true
+}
+```
+
+
 ### isInitialized
 * 函数形式：**bool isInitialized()**
 * 函数说明：判断是否已初始化SDK成功。
@@ -138,6 +255,19 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | MacOS | ~/Library/Containers/{宿主App的BundleID}/Data/Library/Global/Logs |
 | iOS | {宿主App沙盒路径}/AppData/Library/Application Support/{宿主App的BundleID}/Global/Logs |
 | Android | /Data/Data/{宿主App的PackageName}/Global/Logs |
+
+
+### collectLogFiles
+* 函数形式：**string[] collectLogFiles(int begin_time, int end_time)**
+* 可用版本：>= 3.12.100
+* 函数说明：根据开始和结束时间，返回会议SDK的日志文件路径的列表
+* 返回值说明：类型是字符串数组，表示日志文件绝对路径的列表，每个小时1个日志文件，所以多个日志文件
+* 参数说明：
+
+|参数名 |参数类型 |参数说明 |
+|:--|--|--|
+| begin_time | int | 日志文件的开始时间戳，单位：秒 |
+| end_time | int | 日志文件的结束时间戳，单位：秒|
 
 
 ### setProxyInfo
@@ -227,7 +357,21 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | 3         | 会中添加会议成员，可在响应`InMeetingCallback.onInviteUsers`回调时使用，也可独立使用。 （仅会议中时有效）                     |
 
 
+### parseMeetingInfoUrl
+
+- 函数形式：**void parseMeetingInfoUrl(string schema_url)**
+- 可用版本：>= 3.12.100
+- 函数说明：用户通过入会短链获取对应的会议信息，调用结果通过`SDKCallback.onParseMeetingInfoUrl`回调通知。
+- 返回值说明：无
+- 参数说明：
+
+| 参数名 | 参数类型 | 参数必填 | 参数默认值 | 参数说明 |
+| ------ | -------- | -------- | ---------- | -------- |
+| param  | string   | 是       | (无)       | 入会短链 |
+
+
 ### getAccountService
+
 * 函数形式：**AccountService getAccountService()**
 * 函数说明：获取SDK`AccountService`的对象实例。
 * 返回值说明：`AccountService`的对象实例
@@ -261,6 +405,17 @@ SDKCallback 需实现以下成员函数：
 |---|---|---|
 | code | int | SDK初始化结果码 |
 | msg | string | SDK初始化结果信息 |
+
+
+### onSDKUninitializeResult
+- 函数形式：**void onSDKUninitializeResult(int code, string msg)**
+- 可用版本：>= 3.12.100
+- 说明：调用反初始化函数之后的结果回调。
+
+| 参数名 | 参数类型 | 参数说明                                                   |
+| ------ | -------- | ---------------------------------------------------------- |
+| code   | int      | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+| msg    | string   | 反初始化结果字符串描述                      |
 
 
 ### onShowLogsResult
@@ -317,6 +472,27 @@ SDKCallback 需实现以下成员函数：
 | user_type | int    | 同`TMSDK.addUsersWithParam`函数参数中的`user_type`字段含义 |
 | code      | int    | 错误码                                             |
 | msg       | string | 错误信息                                            |
+
+
+### onParseMeetingInfoUrl
+- 函数形式：**void onParseMeetingInfoUrl(int code, string msg)**
+- 可用版本：>= 3.12.100
+- 说明：通过入会短链获取对应的会议信息的回调。
+
+| 参数名 | 参数类型 | 参数说明                                                   |
+| ------ | -------- | ---------------------------------------------------------- |
+| code   | int      | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+| msg    | string   | 入会短链对应的会议信息，JSON字符串                         |
+
+- msg 会议信息内容
+```json
+{
+    "meeting_id": "", //会议标识号
+    "current_sub_meeting_id": "", //当前子会议 ID（进行中 / 即将开始）
+    "begin_time": 1629194320 // 会议开始时间戳
+    "meeting_code": "", //会议号
+}
+```
 
 
 
@@ -410,7 +586,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 
 ### onLogout
-* 函数形式：**void onLogout(int code, string msg)**
+* 函数形式：**void onLogout(int type, int code, string msg)**
 * 说明：账户登出的回调。
 
 |参数名 |参数类型 |参数说明 |
@@ -471,7 +647,7 @@ AuthenticationCallback 需实现以下成员函数：
 |camera_on |bool |否 |SDK本地设置 |是否开启摄像头 |
 |speaker_on |bool |否 |SDK本地设置 |是否开启扬声器(仅移动端) |
 |face_beauty_on |bool |否 |SDK本地设置 |是否开启美颜 |
-|meeting_window_title |string |否 |(空) |会中窗口标题，如果是空则以initialize接口的app_name为准。3.6.300及以后支持 |
+|meeting_window_title |string |否 |(空) |会中窗口标题，如果是空则以initialize接口的app_name为准，长度限制36（标准ASCII码算1，其它算2），超过会截断。3.6.300及以后支持 |
 
 
 ### joinMeetingByJSON
@@ -592,22 +768,24 @@ AuthenticationCallback 需实现以下成员函数：
 ### queryMeetingInfo
 * 函数形式：**void queryMeetingInfo(string param)**
 * 可用版本：>= 3.6.200
-* 函数说明：查询会议信息
-* 返回值说明：无，通过回调onActionResult的QueryMeetingInfo回调结果
+* 函数说明：查询会议信息，通过回调`PreMeetingCallback.onActionResult`的查询结果，`action_type`参数是`QueryMeetingInfo`
+* 返回值说明：无
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |param | string | 是 |(无)| json字符串，例如，{"meeting_id": ["111", "222", "333"]}，一次请求的meeting_id数组长度不大于5个 |
 
-* 回调内容说明：
+* `PreMeetingCallback.onActionResult`回调说明：
 
-| 名称 | 示例 | 说明 |
+|参数名 |参数类型 |参数说明 |
 |---|---|---|
-|action_type||onActionResult回调类型|
-|code|||
-|msg|返回内容|
-```
+|action_type |int |这处为`QueryMeetingInfo` |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |结果的JSON信息，示例如下 |
+
+msg内容示例：
+```json
 {
     "meeting_info": [
         {
@@ -621,7 +799,7 @@ AuthenticationCallback 需实现以下成员函数：
     ]
 }
 ```
-返回会议信息中，meeting_status字段说明：
+其中`meeting_status`字段说明：
 
 | 名称 | 数值 | 说明 |
 |---  |---   |---  |
@@ -633,6 +811,70 @@ AuthenticationCallback 需实现以下成员函数：
 | kMeetingStateReadyToBeStarted | 4 | 会议开始时间到了，无人入会 |
 | kMeetingStateNone | 6| 当前时间在会议结束时间之后，并且无人在会议中 |
 | kMeetingStateRecycled | 7| 会议失效 |
+
+
+### queryLocalRecordInfo
+* 函数形式：**void queryLocalRecordInfo(string meeting_id, string sub_meeting_id)**
+* 可用版本：>= 3.12.100
+* 可用终端：Windows & MacOS
+* 函数说明：查询会议本地录制信息；结果通过`PreMeetingCallback.onActionResult`回调返回结果，`action_type`参数是`QueryLocalRecordInfo`
+* 返回值说明：无
+* 参数说明：
+
+| 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
+| ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
+| meeting_id             | string   | 是       | (无)       | 会议标识号                                                   |
+| sub_meeting_id         | string   | 是       | (无)       | 非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APIs获取 |
+
+* `PreMeetingCallback.onActionResult`回调说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|action_type |int |这处为`QueryLocalRecordInfo` |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |结果的JSON信息，示例如下 |
+
+msg内容示例：
+```json
+[
+  {
+    "full_path": "full_path", 
+    "title": "double_click_to_convert_01", 
+    "create_time": "1676544908",
+    "transcode_state": 3, 
+    "path_id": "14cf419233978ffa371fb3f3c6bf8c2e7e876e86a102f74079053dd165dab810"
+  }
+ ]
+```
+
+其中`transcode_state`字段说明：
+
+| 名称 | 数值 | 说明 |
+|---  |---   |---  |
+| kTranscodeStateUnknow | 0 | 未知状态 |
+| kTranscodeStateSuccess | 1 | 转码成功 |
+| kTranscodeStateTranscoding | 2 | 转码中 |
+| kTranscodeStateFail | 3 | 转码失败 |
+
+
+### transcode
+* 函数形式：**void transcode(string path_id)**
+* 可用版本：>= 3.12.100
+* 可用终端：Windows & MacOS
+* 函数说明：
+  - 对本地录制文件进行转码操作
+  - 可以通过调用`queryLocalRecordInfo`获取转码状态，在JSON中的`transcode_state`字段
+* 返回值说明：无
+* 参数说明：`queryLocalRecordInfo`接口返回数据中的“path_id”字段
+
+
+### showRecordFolder
+* 函数形式：**void showRecordFolder(string path_id)**
+* 可用版本：>= 3.12.100
+* 可用终端：Windows & MacOS
+* 函数说明：打开会议本地录制文件所在文件夹
+* 返回值说明：无
+* 参数说明：`queryLocalRecordInfo`接口返回数据中的“path_id”字段
 
 
 ### quickMeeting
@@ -650,7 +892,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：
   * json_param必须是json标准字符串，可以包含一下字段，其他字段会自动忽略
-  * meeting_window_title，会中窗口标题，如果不传或者为空，则以initialize接口的app_name为准
+  * meeting_window_title，会中窗口标题，如果不传或者为空，则以initialize接口的app_name为准，长度限制36（标准ASCII码算1，其它算2），超过会截断
 * 参数示例：
 ```
 {
@@ -711,24 +953,25 @@ PreMeetingCallback 需实现以下成员函数：
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
-|action_type |int |表示用户的何种行为操作，详情参考下表 |
+|action_type |int |表示何种行为操作，详情参考下表 |
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
 |msg |string |结果信息 |
 
 其中`action_type`值对应的含义如下：
 
-| 名称 | 行为操作的枚举值 | 说明 |
-|---|---|---|
-| ShowPreMeetingView | 0    | 打开会前界面的回调 |
-| ShowScreenCastView | 1    | 打开无线投屏界面的回调 |
-| ShowHistoricalMeetingView | 2    | 打开历史会议界面的回调|
-| ShowMeetingDetailView | 3    | 打开某一会议详情的回调 |
-| ShowJoinMeetingView | 4    | 打开加入会议界面的回调 |
-| ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 |
-| ShowMeetingSettingView | 6    | 打开会议设置界面的回调 |
-| ClosePreMeetingView | 7    | 关闭会前界面的回调 |
-| QueryMeetingInfo | 8    | 查询会议信息的回调 |
-| InviteUsers | 9   | 预定会议邀请用户的回调 |
+| 名称 | 行为操作的枚举值 | 说明 | msg值说明 |
+|---|---|---|---|
+| ShowPreMeetingView | 0    | 打开会前界面的回调 | 结果的说明文字 |
+| ShowScreenCastView | 1    | 打开无线投屏界面的回调 | 结果的说明文字 |
+| ShowHistoricalMeetingView | 2    | 打开历史会议界面的回调| 结果的说明文字 |
+| ShowMeetingDetailView | 3    | 打开某一会议详情的回调 | 结果的说明文字 |
+| ShowJoinMeetingView | 4    | 打开加入会议界面的回调 | 结果的说明文字 |
+| ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 | 结果的说明文字 |
+| ShowMeetingSettingView | 6    | 打开会议设置界面的回调 | 结果的说明文字 |
+| ClosePreMeetingView | 7    | 关闭会前界面的回调 | 结果的说明文字 |
+| QueryMeetingInfo | 8    | 调用`PreMeetingService.queryMeetingInfo`查询会议信息的回调 | 回调的JSON数据，格式参考`queryMeetingInfo`函数说明|
+| InviteUsers | 9   | 预定会议邀请用户的回调(私有化专用) | -- |
+| QueryLocalRecordInfo |10 | 调用`PreMeetingService.queryLocalRecordInfo`查询会议本地录制信息的回调 | 回调的JSON数据，格式参考`queryLocalRecordInfo`函数说明 |
 
 
 ### onShowAddressBook
@@ -903,8 +1146,7 @@ PreMeetingCallback 需实现以下成员函数：
         "user1_id": {"org_name": "部门1"},
         "user2_id": {"org_name": "部门2"},
         "user3_id": {"org_name": "部门1"}
-    },
-  	"waiting_room": 0 //onQueryCustomOrgInfo 中传递的参数
+    }
 }
 ```
 
@@ -1008,8 +1250,7 @@ invite_info内容
 * 参数说明：JSON字符串，格式如下示例
 ```json
 {
-    "users": ["user1_id","user2_id","user3_id","user4_id"],
-  	"waiting_room":1 // 0表示是成员列表 1表示是等候室，宿主接入的时候需要记录，设置的时候(setCustomOrgInfo)需要传入。
+    "users": ["user1_id","user2_id","user3_id","user4_id"]
 }
 ```
 
@@ -1064,6 +1305,8 @@ invite_info内容
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1028| 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1029| 进入悬浮窗状态失败 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1030| 没有悬浮窗权限 |onSwitchPiPResult()|
+| kTMSDKErrorInUninitializing|-1032|正在反初始化|onSDKUninitializeResult()|
+| kTMSDKErrorUnableUnInit|-1033|当前无法反初始化，比如正在会议中且没有使用`force`参数|onSDKUninitializeResult()|
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
