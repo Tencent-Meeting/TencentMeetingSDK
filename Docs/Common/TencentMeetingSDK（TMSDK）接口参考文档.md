@@ -109,6 +109,7 @@
 | 2022-09-26 | 3.6.203 | 新增接口：quickMeetingByJSON；quickMeeting和JoinMeeting接口添加meeting_window_title参数                                                            |
 | 2022-11-18 | 3.6.300 | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口                                                                  |
 | 2023-02-06 | 3.6.401 | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
+| 2023-02-24 | 3.6.401 | 新增回调：新增会中通用动作和接口回调onActionResult函数                                                                                                            |
 | 2023-02-22 | 3.12.100 | 新增接口：新增反初始化(uninitialize)接口，本地录制相关接口，解析入会短链接接口，收集日志文件的接口 |
 
 
@@ -1253,6 +1254,21 @@ invite_info内容
 }
 ```
 
+### onActionResult
+* 函数形式：**void onActionResult(int actionType, int code, String msg)**
+* 可用版本：>= 3.6.401
+* 说明：接入方主动调用SDK会中接口的各种行为操作的回调，仅通过sdk接口调用产生
+
+|参数名 |参数类型 |参数说明 |
+|-|-|-|
+|actionType |int |表示何种行为操作，详情参考下表 |
+|code |int |结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
+|msg |string |结果信息，格式为描述文字或JSON串，详情参考下表 |
+
+其中`actionType`值对应的含义如下：
+| 名称 | 行为操作的枚举值 | 说明 | msg值说明 |
+|---|---|---|---|
+| SetCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | 内容根据错误码`code`有所区分，当`code = 0`时，msg为JSON串；`code != 0`时，msg为描述文字|
 
 
 
