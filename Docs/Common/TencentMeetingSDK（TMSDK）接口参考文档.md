@@ -895,7 +895,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数说明：
   * 对相关成员设置自定义的组织架构信息
   * 调用时机：一般在`InMeetingCallback.onQueryCustomOrgInfo`回调中获取需要设置组织架构信息的用户id列表，然后调用该函数告知SDK。
-  * 调用结果：通过回调`InMeetingCallback.onActionResult`查看结果，`action_type`参数此次是`setCustomOrgInfo`
+  * 结果：回调在`InMeetingCallback.onActionResult`中，`action_type`参数此次是`SetCustomOrgInfo`对应的枚举值1000
 * 返回值说明：无
 * 参数说明：JSON字符串，格式如下示例
 
@@ -905,30 +905,23 @@ PreMeetingCallback 需实现以下成员函数：
         "user1_id": {"org_name": "部门1"},
         "user2_id": {"org_name": "部门2"},
         "user3_id": {"org_name": "部门1"}
-    },
-  	"waiting_room": 0 //onQueryCustomOrgInfo 中传递的参数
+    }
 }
 ```
 
 - `InMeetingCallback.onActionResult`回调说明：
 
-| 参数名     | 参数类型 | 参数说明                                                |
-| ---------- | -------- | ------------------------------------------------------- |
-| actionType | int      | 此处为`setCustomOrgInfo`                                |
-| code       | int      | 结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
-| msg        | string   | 结果信息，格式为JSON串，示例如下                        |
+| 参数名      | 参数类型 | 参数说明                                                |
+| ----------- | -------- | ------------------------------------------------------- |
+| action_type | int      | 此处为`SetCustomOrgInfo`对应的枚举值1000                |
+| code        | int      | 结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
+| msg         | string   | 结果信息，格式为JSON串，示例如下                        |
 
 msg内容示例:
 
 ```json
 {
-    "data": { //接口调用的数据。当处于登录状态下，且接口调用的参数符合json格式时，有返回data字段；其他情况下不返回data字段。
-        "users": {
-            "wemeet_test21": {
-                "org_name": "department_1"
-            }
-        }
-    },
+    "data": ..., //数据。
     "description": "action success" //结果描述
 }
 ```
@@ -1040,13 +1033,13 @@ invite_info内容
 ```
 
 ### onActionResult
-* 函数形式：**void onActionResult(int actionType, int code, String msg)**
+* 函数形式：**void onActionResult(int action_type, int code, String msg)**
 * 可用版本：>= 3.6.401
 * 说明：接入方主动调用SDK会中接口的各种行为操作的回调，仅通过sdk接口调用产生
 
 |参数名 |参数类型 |参数说明 |
 |-|-|-|
-|actionType |int |表示何种行为操作，详情参考下表 |
+|action_type |int |表示何种行为操作，详情参考下表 |
 |code |int |结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
 |msg |string |结果信息，格式为JSON串，详情参考下表 |
 
@@ -1056,15 +1049,15 @@ invite_info内容
     "data": { //回调数据
         ...
     },
-    "description": "action success" //接口调用结果的描述
+    "description": "..." //接口调用结果的描述
 }
 ```
 
 
 
-其中`actionType`值对应的含义如下：
+其中`action_type`值对应的含义如下：
 
-| 接口 | actionType | 说明 | msg值说明 |
+| 接口 | action_type | 说明 | msg值说明 |
 |:-:|---|:--|---|
 | SetCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
 
