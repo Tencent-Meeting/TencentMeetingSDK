@@ -1,25 +1,26 @@
 
 # 文档修订记录
-| 日期         | SDK版本   | 修改内容                                                                                                                                  |
-|------------|---------|---------------------------------------------------------------------------------------------------------------------------------------|
-| 2021-7-18  | 2.18.0  | 第一版初稿                                                                                                                                 |
-| 2021-8-6   | 2.18.0  | 对错误码做了统一描述                                                                                                                            |
-| 2021-8-18  | 2.18.0  | 新增接口：设置会议信息和邀请信息回调接口                                                                                                                  |
-| 2021-8-26  | 2.18.0  | 接口调整：登录时如果账号已登录是否强制让对方下线                                                                                                              |
-| 2021-8-30  | 2.18.0  | 接口调整：入会和离会回调接口增加meeting_code字段                                                                                                        |
-| 2021-10-9  | 2.18.1  | 新增接口：获取登录态URL、显示历史会议列表、显示历史会议详情页                                                                                                      |
-| 2021-10-20 | 2.18.2  | 新增接口：显示加入会议界面、显示预定会议界面、显示会议设置界面、相关回调                                                                                                  |
-| 2022-02-23 | 3.0.102 | 新增接口：新增会中窗口置顶(BringInMeetingViewTop)接口                                                                                                |
-| 2022-03-03 | 3.0.102 | 修改登出接口说明                                                                                                                              |
-| 2022-04-08 | 3.0.102 | 新增关于登录登出最佳实践和注意事项的说明                                                                                                                  |
-| 2022-05-12 | 3.0.106 | 新增接口：新增入会(joinMeetingByJSON)接口                                                                                                        |
-| 2022-05-13 | 3.0.106 | 新增接口：桌面端新增设置代理(setProxyInfo)接口                                                                                                        |
-| 2022-08-02 | 3.6.100 | 新增接口：新增处理Schema(handleSchema)接口，更新showPreMeetingView函数，新增可选参数                                                                         |
-| 2022-08-30 | 3.6.200 | 新增接口：新增处理最小化悬浮窗(switchPipModel)接口、支持初始化设置英文、更新新版的打开会议详情页接口(showMeetingDetailView)、新增查询会议信息接口(QueryMeetingInfo)、新增快速会议接口(QuickMeeting) |
-| 2022-09-26 | 3.6.203 | 新增接口：quickMeetingByJSON；quickMeeting和JoinMeeting接口添加meeting_window_title参数                                                            |
-| 2022-11-18 | 3.6.300 | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口                                                                  |
-| 2023-02-06 | 3.6.401 | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
-| 2023-02-24 | 3.6.401 | 新增回调：新增会中通用动作和接口回调onActionResult函数                                                                                                            |
+| 日期       | SDK版本  | 修改内容                                                     |
+| ---------- | -------- | ------------------------------------------------------------ |
+| 2021-7-18  | 2.18.0   | 第一版初稿                                                   |
+| 2021-8-6   | 2.18.0   | 对错误码做了统一描述                                         |
+| 2021-8-18  | 2.18.0   | 新增接口：设置会议信息和邀请信息回调接口                     |
+| 2021-8-26  | 2.18.0   | 接口调整：登录时如果账号已登录是否强制让对方下线             |
+| 2021-8-30  | 2.18.0   | 接口调整：入会和离会回调接口增加meeting_code字段             |
+| 2021-10-9  | 2.18.1   | 新增接口：获取登录态URL、显示历史会议列表、显示历史会议详情页 |
+| 2021-10-20 | 2.18.2   | 新增接口：显示加入会议界面、显示预定会议界面、显示会议设置界面、相关回调 |
+| 2022-02-23 | 3.0.102  | 新增接口：新增会中窗口置顶(BringInMeetingViewTop)接口        |
+| 2022-03-03 | 3.0.102  | 修改登出接口说明                                             |
+| 2022-04-08 | 3.0.102  | 新增关于登录登出最佳实践和注意事项的说明                     |
+| 2022-05-12 | 3.0.106  | 新增接口：新增入会(joinMeetingByJSON)接口                    |
+| 2022-05-13 | 3.0.106  | 新增接口：桌面端新增设置代理(setProxyInfo)接口               |
+| 2022-08-02 | 3.6.100  | 新增接口：新增处理Schema(handleSchema)接口，更新showPreMeetingView函数，新增可选参数 |
+| 2022-08-30 | 3.6.200  | 新增接口：新增处理最小化悬浮窗(switchPipModel)接口、支持初始化设置英文、更新新版的打开会议详情页接口(showMeetingDetailView)、新增查询会议信息接口(QueryMeetingInfo)、新增快速会议接口(QuickMeeting) |
+| 2022-09-26 | 3.6.203  | 新增接口：quickMeetingByJSON；quickMeeting和JoinMeeting接口添加meeting_window_title参数 |
+| 2022-11-18 | 3.6.300  | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口 |
+| 2023-02-06 | 3.6.401  | 新增接口：新增添加选人相关接口，以及组织架构相关接口         |
+| 2023-02-24 | 3.6.401  | 新增回调：新增会中通用动作和接口回调onActionResult函数       |
+| 2023-4-10  | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串 |
 
 
 # 1. SDK使用说明
@@ -893,7 +894,8 @@ PreMeetingCallback 需实现以下成员函数：
 * 可用版本：>= 3.6.401
 * 函数说明：
   * 对相关成员设置自定义的组织架构信息
-  * 一般在`InMeetingCallback.onQueryCustomOrgInfo`回调中获取需要设置组织架构信息的用户id列表，然后调用该函数告知SDK。
+  * 调用时机：一般在`InMeetingCallback.onQueryCustomOrgInfo`回调中获取需要设置组织架构信息的用户id列表，然后调用该函数告知SDK。
+  * 调用结果：通过回调`InMeetingCallback.onActionResult`查看结果，`action_type`参数此次是`setCustomOrgInfo`
 * 返回值说明：无
 * 参数说明：JSON字符串，格式如下示例
 
@@ -907,6 +909,30 @@ PreMeetingCallback 需实现以下成员函数：
   	"waiting_room": 0 //onQueryCustomOrgInfo 中传递的参数
 }
 ```
+
+- `InMeetingCallback.onActionResult`回调说明：
+
+| 参数名     | 参数类型 | 参数说明                                                |
+| ---------- | -------- | ------------------------------------------------------- |
+| actionType | int      | 此处为`setCustomOrgInfo`                                |
+| code       | int      | 结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
+| msg        | string   | 结果信息，格式为JSON串，示例如下                        |
+
+msg内容示例:
+
+```json
+{
+    "data": { //接口调用的数据。当处于登录状态下，且接口调用的参数符合json格式时，有返回data字段；其他情况下不返回data字段。
+        "users": {
+            "wemeet_test21": {
+                "org_name": "department_1"
+            }
+        }
+    },
+    "description": "action success" //结果描述
+}
+```
+
 
 
 ## 5.2 InMeetingCallback 回调代理
@@ -1022,12 +1048,25 @@ invite_info内容
 |-|-|-|
 |actionType |int |表示何种行为操作，详情参考下表 |
 |code |int |结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
-|msg |string |结果信息，格式为描述文字或JSON串，详情参考下表 |
+|msg |string |结果信息，格式为JSON串，详情参考下表 |
+
+其中，msg的JSON串为如下格式：
+```json
+{
+    "data": { //回调数据
+        ...
+    },
+    "description": "action success" //接口调用结果的描述
+}
+```
+
+
 
 其中`actionType`值对应的含义如下：
-| 名称 | 行为操作的枚举值 | 说明 | msg值说明 |
-|---|---|---|---|
-| SetCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | 内容根据错误码`code`有所区分，当`code = 0`时，msg为JSON串；`code != 0`时，msg为描述文字|
+
+| 接口 | actionType | 说明 | msg值说明 |
+|:-:|---|:--|---|
+| SetCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
 
 
 
