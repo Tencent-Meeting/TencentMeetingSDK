@@ -919,9 +919,10 @@ PreMeetingCallback 需实现以下成员函数：
 
 msg内容示例:
 
+
+
 ```json
 {
-    "data": ..., //数据。
     "description": "action success" //结果描述
 }
 ```
@@ -1044,9 +1045,12 @@ invite_info内容
 |msg |string |结果信息，格式为JSON串，详情参考下表 |
 
 其中，msg的JSON串为如下格式：
+
+
+
 ```json
 {
-    "data": { //回调数据
+    "data": { //回调数据，该data字段为可选字段，一些场景下不存在data字段。
         ...
     },
     "description": "..." //接口调用结果的描述
