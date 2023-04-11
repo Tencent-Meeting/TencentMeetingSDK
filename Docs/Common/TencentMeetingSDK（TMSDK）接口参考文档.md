@@ -43,7 +43,7 @@
     + [onJumpUrlWithLoginStatus](#onjumpurlwithloginstatus)
 - [4. PreMeetingService 说明](#4-premeetingservice-说明)
   * [4.1 PreMeetingService 成员函数](#41-premeetingservice-成员函数)
-    + [setCallback](#premeeting-setcallback)
+    + [setCallback](#setcallback-1)
     + [joinMeeting](#joinmeeting)
     + [joinMeetingByJSON](#joinmeetingbyjson)
     + [showPreMeetingView](#showpremeetingview)
@@ -68,7 +68,7 @@
     + [onShowAddressBook](#onshowaddressbook)
 - [5. InMeetingService 说明](#5-inmeetingservice-说明)
   * [5.1 InMeetingService 成员函数](#51-inmeetingservice-成员函数)
-    + [setCallback](#inmeeting-setcallback)
+    + [setCallback](#setcallback-2)
     + [leaveMeeting](#leavemeeting)
     + [enableInviteCallback](#enableinvitecallback)
     + [enableMeetingInfoCallback](#enablemeetinginfocallback)
@@ -514,7 +514,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 ## 3.1 AccountService 成员函数
 
-### setCallback {#account-setcallback}
+### setCallback
 * 函数形式：**void setCallback(AuthenticationCallback callback)**
 * 函数说明：设置回调代理`AuthenticationCallback`，重复调用会覆盖原有回调代理的值。
 * 返回值说明：无
@@ -624,7 +624,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 ## 4.1 PreMeetingService 成员函数
 
-### setCallback {#premeeting-setcallback}
+### setCallback
 * 函数形式：**void setCallback(PreMeetingCallback callback)**
 * 函数说明：设置回调代理`PreMeetingCallback`，重复调用会覆盖原有回调代理的值。
 * 返回值说明：无
@@ -1014,7 +1014,7 @@ PreMeetingCallback 需实现以下成员函数：
 
 ## 5.1 InMeetingService 成员函数
 
-### setCallback {inmeeting-setcallback}
+### setCallback
 * 函数形式：**void setCallback(InMeetingCallback callback)**
 * 函数说明：设置回调代理`InMeetingCallback`，重复调用会覆盖原有回调代理的值。
 * 返回值说明：无
