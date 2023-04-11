@@ -110,6 +110,8 @@
 | 2022-11-18 | 3.6.300 | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口                                                                  |
 | 2023-02-06 | 3.6.401 | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
 | 2023-02-22 | 3.12.100 | 新增接口：新增反初始化(uninitialize)接口，本地录制相关接口，解析入会短链接接口，收集日志文件的接口 |
+| 2023-02-24 | 3.6.401  | 新增回调：新增会中通用动作和接口回调onActionResult函数       |
+| 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串 |
 
 
 # 1. SDK使用说明
@@ -1144,7 +1146,8 @@ PreMeetingCallback 需实现以下成员函数：
 * 可用版本：>= 3.6.401
 * 函数说明：
   * 对相关成员设置自定义的组织架构信息
-  * 一般在`InMeetingCallback.onQueryCustomOrgInfo`回调中获取需要设置组织架构信息的用户id列表，然后调用该函数告知SDK。
+  * 调用时机：一般在`InMeetingCallback.onQueryCustomOrgInfo`回调中获取需要设置组织架构信息的用户id列表，然后调用该函数告知SDK。
+  * 结果：回调在`InMeetingCallback.onActionResult`中，`action_type`参数此次是`SetCustomOrgInfo`对应的枚举值1000
 * 返回值说明：无
 * 参数说明：JSON字符串，格式如下示例
 
@@ -1157,6 +1160,25 @@ PreMeetingCallback 需实现以下成员函数：
     }
 }
 ```
+
+- `InMeetingCallback.onActionResult`回调说明：
+
+| 参数名      | 参数类型 | 参数说明                                                |
+| ----------- | -------- | ------------------------------------------------------- |
+| action_type | int      | 此处为`SetCustomOrgInfo`对应的枚举值1000                |
+| code        | int      | 结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
+| msg         | string   | 结果信息，格式为JSON串，示例如下                        |
+
+msg内容示例:
+
+
+
+```json
+{
+    "description": "action success" //结果描述
+}
+```
+
 
 
 ## 5.2 InMeetingCallback 回调代理
@@ -1262,6 +1284,37 @@ invite_info内容
 }
 ```
 
+### onActionResult
+* 函数形式：**void onActionResult(int action_type, int code, String msg)**
+* 可用版本：>= 3.6.401
+* 说明：接入方主动调用SDK会中接口的各种行为操作的回调，仅通过sdk接口调用产生
+
+|参数名 |参数类型 |参数说明 |
+|-|-|-|
+|action_type |int |表示何种行为操作，详情参考下表 |
+|code |int |结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
+|msg |string |结果信息，格式为JSON串，详情参考下表 |
+
+其中，msg的JSON串为如下格式：
+
+
+
+```json
+{
+    "data": { //回调数据，该data字段为可选字段，一些场景下不存在data字段。
+        ...
+    },
+    "description": "..." //接口调用结果的描述
+}
+```
+
+
+
+其中`action_type`值对应的含义如下：
+
+| 接口 | action_type | 说明 | msg值说明 |
+|:-:|---|:--|---|
+| SetCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
 
 
 
@@ -1300,6 +1353,7 @@ invite_info内容
 | kTMSDKErrorWaitRoomNotSupportSwitchPip|-1030| 没有悬浮窗权限 |onSwitchPiPResult()|
 | kTMSDKErrorInUninitializing|-1032|正在反初始化|onSDKUninitializeResult()|
 | kTMSDKErrorUnableUnInit|-1033|当前无法反初始化，比如正在会议中且没有使用`force`参数|onSDKUninitializeResult()|
+| kTMSDKErrorIncorrectParamWithinJson|-1038| 通讯录回调, json串参数字段校验失败 |onAddUsersResult()|
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
