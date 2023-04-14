@@ -649,17 +649,17 @@ AuthenticationCallback 需实现以下成员函数：
 
 * JoinParam格式
 
-|属性 |类型 |必填 |默认值 |说明 |
-|---|---|---|---|---|
-|meeting_code |string |是 |(无) |会议号 |
-|user_display_name |string |否 |账户的用户名 |会议中显示的名称 |
-|password |string |否 |(空) |会议密码 |
-|invite_url |string |否 |腾讯会议默认URL链接 |自定义URL链接 |
-|mic_on |bool |否 |SDK本地设置 |是否开启麦克风 |
-|camera_on |bool |否 |SDK本地设置 |是否开启摄像头 |
-|speaker_on |bool |否 |SDK本地设置 |是否开启扬声器(仅移动端) |
-|face_beauty_on |bool |否 |SDK本地设置 |是否开启美颜 |
-|meeting_window_title |string |否 |(空) |会中窗口标题，如果是空则以initialize接口的app_name为准，长度限制36（标准ASCII码算1，其它算2），超过会截断。3.6.300及以后支持 |
+|属性 |类型 |必填 |默认值 | 说明                                                                              |
+|---|---|---|---|---------------------------------------------------------------------------------|
+|meeting_code |string |是 |(无) | 会议号                                                                             |
+|user_display_name |string |否 |账户的用户名 | 用户在会议中的显示名称，不填则为默认的用户名称                                 |
+|password |string |否 |(空) | 会议密码                                                                            |
+|invite_url |string |否 |腾讯会议默认URL链接 | 自定义URL链接                                                                        |
+|mic_on |bool |否 |SDK本地设置 | 是否开启麦克风                                                                         |
+|camera_on |bool |否 |SDK本地设置 | 是否开启摄像头                                                                         |
+|speaker_on |bool |否 |SDK本地设置 | 是否开启扬声器(仅移动端)                                                                   |
+|face_beauty_on |bool |否 |SDK本地设置 | 是否开启美颜                                                                          |
+|meeting_window_title |string |否 |(空) | 会中窗口标题，如果是空则以initialize接口的app_name为准，长度限制36（标准ASCII码算1，其它算2），超过会截断。3.6.300及以后支持 |
 
 
 ### joinMeetingByJSON
@@ -1134,6 +1134,7 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### enableCustomOrgInfo
 * 函数形式：**void enableCustomOrgInfo(bool enable)**
+* 可用版本：>= 3.6.401
 * 函数说明：
   * 设置是否开启自定义组织架构信息
   * 如果开启，SDK将在需要的时候，通过回调方式向接入方查询相关用户的组织架构信息，并展示在界面上。
