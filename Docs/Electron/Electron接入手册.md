@@ -535,6 +535,54 @@ wemeet_sdk.SetCustomOrgInfo(json_param)
 说明：\>= 3.6.401版本，json_param为json格式字符串，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 
+### 37、短链入会解析
+
+```
+wemeet_sdk.ParseMeetingInfoUrl(scheme_url)
+```
+
+说明：\>= 3.12版本，scheme_url为string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 38、查询本地录制信息
+
+```
+wemeet_sdk.QueryLocalRecordInfo(meeting_id, period_id)
+```
+
+说明：\>= 3.12版本，meeting_id、period_id为int类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 39、查询本地录制信息
+
+```
+wemeet_sdk.ShowRecordFolder(path_id)
+```
+
+说明：\>= 3.12版本，path_id为int类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 40、查询本地录制信息
+
+```
+wemeet_sdk.Transcode(path_id)
+```
+
+说明：\>= 3.12版本，path_id为int类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 41、收集日志信息
+
+```
+wemeet_sdk.CollectLogFiles(begin_time, end_time)
+```
+
+说明：\>= 3.12版本，begin_time、end_time为int类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 42、反初始化SDK
+
+```
+wemeet_sdk.UninitWemeetSDK(uninit_json)
+```
+
+说明：\>= 3.12版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
 ## 4. 回调说明
 
 除GetSDKVersion、GetCurrentSDKToken、RefreshSDKToken、GetUrlWithLoginStatus外，其它所有接口的调用都是通过异步回调返回的，这里异步回调的返回值是一个标准的json字符串，格式如下：
