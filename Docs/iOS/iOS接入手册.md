@@ -195,6 +195,10 @@ SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 
 ![broadcast_integration](images/broadcast_integration.png)
 
+注意(因为主App启动屏幕共享扩展的需要根据扩展的Bundle Id来决定启动那个扩展)：
+SDK Demo的bundle id为XXX.XXX.XXX
+SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
+
 - 从Demo中将SampleHandler.m和SampleHandler.h复制过来
 
 - 运行，点击屏幕共享

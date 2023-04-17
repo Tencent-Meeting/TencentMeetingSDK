@@ -1,4 +1,4 @@
-# Electron3.6 接入手册
+# Electron 接入手册（SDK3.0）
 
 ## 1. demo环境配置说明
 ### 1.1 环境要求
@@ -17,13 +17,17 @@ addon，使用里面封装的接口即可。
 #### 1.2.2 Win64环境node文件
 ![2.png](images/2.png)
 
-#### 1.2.3 Mac x86_64 & arm64位环境node文件
+#### 1.2.3 Mac x86_64位环境node文件
 
-![10.png](images/10.png)
+![3.png](images/3.png)
 
-#### 1.2.4 Mac SDK 文件
+#### 1.2.4 Mac arm64位环境node文件
 
-![11.png](images/11.png)
+![4.png](images/4.png)
+
+#### 1.2.5 Mac SDK 文件
+
+![5.png](images/5.png)
 
 > **说明：在windows和mac上wemeet_electron_sdk.node的依赖文件是不一样的，但是我们提供的 .node 文件导出的接口是一致的，所以编码接入的时候无需平台的差异性，打包的时候将对应平台的依赖文件对应目录即可。**
 
@@ -45,22 +49,8 @@ addon，使用里面封装的接口即可。
 | vcruntime140.dll | SDK | output/win/win32 |
 | ucrtbase.dll | SDK | output/win/win32 |
 | wemeet_base.dll | SDK | output/win/win32 |
-| wemeetsdk_x86.dll | SDK | output/win/win32 |
 | Release文件夹 | SDK | output/win/win32 |
 - 方法二:  直接执行output/win/win32/copy_win32_release.bat(bat文件中的内容也就是做了方法1的操作，写成了脚本)
-```
-rmdir /s /q Release
-mkdir Release
-xcopy /S /E /Y /Q /H /D ..\..\..\..\SDK\Release .\Release
-copy  ..\..\..\..\SDK\api-ms-win*.dll .\
-copy ..\..\..\..\SDK\msvcp140.dll .\msvcp140.dll
-copy ..\..\..\..\SDK\concrt140.dll .\concrt140.dll
-copy ..\..\..\..\SDK\vcomp140.dll .\vcomp140.dll
-copy ..\..\..\..\SDK\vcruntime140.dll .\vcruntime140.dll
-copy ..\..\..\..\SDK\ucrtbase.dll .\ucrtbase.dll
-copy ..\..\..\..\SDK\wemeet_base.dll .\wemeet_base.dll
-copy ..\..\..\..\SDK\wemeetsdk_x86.dll .\wemeetsdk_x86.dll
-```
 
 **二、安装electron以及相关的依赖**
 
@@ -89,22 +79,9 @@ Electron_Demo目录下执行npm start
 | vcruntime140_1.dll | SDK/Release/x64 | output/win/x64 |
 | ucrtbase.dll | SDK/Release/x64 | output/win/x64 |
 | wemeet_base_x64.dll | SDK | output/win/x64 |
-| wemeetsdk_x64.dll | SDK | output/win/x64 |
 | Release文件夹 | SDK | output/win/x64 |
 
 - 方法二:  直接执行output/win/x64/copy_win32_release.bat(bat文件中的内容也就是做了方法1的操作，写成了脚本)
-```
-rmdir /s /q Release
-mkdir Release
-xcopy /S /E /Y /Q /H /D ..\..\..\..\SDK\Release .\Release
-copy  ..\..\..\..\SDK\Release\x64\api-ms-win*.dll .\
-copy ..\..\..\..\SDK\Release\x64\msvcp140.dll .\msvcp140.dll
-copy ..\..\..\..\SDK\Release\x64\vcruntime140.dll .\vcruntime140.dll
-copy ..\..\..\..\SDK\Release\x64\vcruntime140_1.dll .\vcruntime140_1.dll
-copy ..\..\..\..\SDK\Release\x64\ucrtbase.dll .\ucrtbase.dll
-copy ..\..\..\..\SDK\wemeet_base_x64.dll .\wemeet_base_x64.dll
-copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
-```
 
 **二、安装electron以及相关的依赖**
 
@@ -118,33 +95,14 @@ copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
 Electron_Demo目录下执行npm start
 
 
+
 #### 1.3.3 Mac 环境
 
-1. 在demo_saas_sdk文件夹下启用终端
+1. 在demo_saas_sdk文件夹下启用终端，执行start_electron.sh脚本。 x86_64环境下在终端输入，arm64环境下在终端输入bash start_electron.sh arm64。
+2. 执行完脚本后，等待即可，无报错情况下会自动打开demo。
+3. 执行成功过一次脚本后，再次运行demo可输入“npm start”指令或再次执行脚本。
 
-   方法一、执行命令（注：此时用到的framework、wemeet_electron_sdk.node默认都是双架构）
 
-   1.1、按1.2.4中操作执行文件拷贝
-
-   1.2、npm install 
-
-   1.3、npm start
-
-   方法二、执行start_electron.sh脚本（注：此时wemeet_electron_sdk.node文件会重新构建生成当前机器对应架构的。如：M1机器上生成arm64架构的，Intel机器上生成x86_64架构的）
-
-2. 执行完1中步骤后，等待即可，无报错情况下会自动打开demo。
-
-3. 执行成功过一次1中步骤后，再次运行demo可输入“npm start”指令或再次执行脚本。
-
-   注：执行start_electron.sh脚本会重新生成wemeet_electron_sdk.node默认是对应机器架构的。
-
-**Q:压缩包中`SDK/TMSDK.framework`是一个双架构的framework，可以在x86和arm64下运行，但是体积过大,如何拆分成单架构的framework?**
-
-**A:将`TMSDK.framework`和`mac_build_framework`放在同级目录，双击运行`mac_build_framework`，等待即可，无报错情况下会在`Build/Products/Release/framework`下生成x86和arm64两个平台的架构包**
-
-**Q:启动运行electron失败，提示架构不匹配，如何处理？**
-
-**A:执行方法二，可以快速解决，生成对应机器的wemeet_electron_sdk.node。可以通过lipo -info xxx命令可以查看当前库的架构，确认是否和当前机器架构对应**
 
 ## 2. SDK 接入说明
 ### 2.1 申请 SDK Id & SDK Secret
@@ -223,7 +181,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 二. 新建electron工程
 
-三. 将wemeet_electron_sdk.node拷贝到 `output/mac`目录下。
+三. 将wemeet_electron_sdk.node拷贝到 `output/mac/x86_64`目录下。
 
 四. 在package.json加配置
 
@@ -235,7 +193,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 五. 修改start.js，拷贝SDK文件，参考demo的start.js：
 
-Mac端：将SDK文件（即SDK/TMSDK.framework）拷贝至`node_modules/electron/dist/xxx.app/Contents/Frameworks`目录下(注：此时framework是一个双架构包，拆包操作请查看1.3.3)
+Mac端：将SDK文件（即SDK/x86_64/TMSDK.framework）拷贝至node_modules/electron/dist/xxx.app/Contents/Frameworks目录下
 
 六. 在js中导入 wemeet_electron_sdk.node 文件
 
@@ -251,7 +209,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 二. 新建electron工程
 
-三. 将wemeet_electron_sdk.node拷贝到 `output/mac`目录下。
+三. 将wemeet_electron_sdk.node拷贝到 `output/mac/arm64`目录下。
 
 四. 在package.json加配置
 
@@ -263,7 +221,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 五. 修改start.js，拷贝SDK文件，参考demo的start.js：
 
-Mac端：将SDK文件（即SDK/TMSDK.framework）拷贝至`node_modules/electron/dist/xxx.app/Contents/Frameworks`目录下(注：此时framework是一个双架构包，拆包操作请查看1.3.3)
+Mac端：将SDK文件（即SDK/arm64/TMSDK.framework）拷贝至node_modules/electron/dist/xxx.app/Contents/Frameworks目录下
 
 六. 在js中导入 wemeet_electron_sdk.node 文件
 
@@ -282,9 +240,8 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 ### 1、初始化 SDK
 
 ```
-windows端：wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, app_icon, language);
-mac端：wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, language);
-说明：3.6.3以上版本新增语言设置可选项，详情参考《TencentMeetingSDK（TMSDK）接口参考文档》
+windows端：wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, app_icon);
+mac端：wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name);
 ```
 
 ### 2、登录
@@ -365,10 +322,6 @@ wemeet_sdk.ShowHistoricalMeetingView();
 
 ```
 wemeet_sdk.ShowMeetingDetailView(meeting_id, current_sub_meeting_id)
-```
-版本 >=3.6.200 重载ShowMeetingDetailView接口，入参可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明：
-```
-wemeet_sdk.ShowMeetingDetailView(meeting_id, current_sub_meeting_id, start_time, is_history)
 ```
 
 ### 15、登录态跳转
@@ -468,26 +421,6 @@ wemeet_sdk.HandleSchema(schema_url)
 ```
 说明：参数schema_url为跳转链接，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 29、查询会议信息
-
-```
-wemeet_sdk.QueryMeetingInfo(meeting_info)
-```
-说明：>= 3.6.200版本，meeting_info为json格式字符串，详细可参考《TencentMeetingSDK（TMSDK）接口参考文档》说明。
-### 30、快速会议
-
-```
-wemeet_sdk.QuickMeeting()
-```
-说明：>= 3.6.200版本。
-
-### 31、获取当前会议状态信息
-
-```
-wemeet_sdk.GetCurrentMeetingInfo()
-```
-说明：>= 3.6.300版本,返回string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
-
 
 ## 4. 回调说明
 
@@ -501,3 +434,4 @@ wemeet_sdk.GetCurrentMeetingInfo()
 | param | string | 回调需要带回的数据，也是一个json object |
 
 回调的具体类别和参数在这里不作详细的罗列，可以参考《TencentMeetingSDK（TMSDK）接口参考文档》
+
