@@ -358,7 +358,7 @@ A: compileSdkVersion 31及以上
 A:implementation "javax.xml.bind:jaxb-api:2.3.1"
 ```
 - Q:接入sdk后，出现运行时异常：java.lang.UnsatisfiedLinkError
-- A:目前会议的so只支持armeabi-v7a和arm64-v8a的架构，需要检查是否做了以下配置
+- A:目前会议的so只支持armeabi-v7a和arm64-v8a的架构，3.12及以后的版本so只支持arm64-v8a的架构，需要检查是否做了以下配置
 ```
 android {
 	...
