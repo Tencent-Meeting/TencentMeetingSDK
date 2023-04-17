@@ -390,7 +390,7 @@ android {
   A:执行./gradlew app:dependencies(window下执行gradlew app:dependencies)，对照输出依赖将sdk中的依赖排除出去，例如
     移除glide、wemeet-kapt。**仅在某个依赖项存在重复class问题的情况下才添加对应的exclude条件，请不要将以下内容直接全部粘贴到您的项目代码中！**
 ```groovy
-    implementation "com.tencent.wemeet: ${wemeet_version}" {
+    implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') { //注意这里的${wemeet_version}需要替换为具体的sdk版本号
         exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
 	exclude group: 'com.github.bumptech.glide'
 	exclude module: 'wemeet-kapt'
