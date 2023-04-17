@@ -1,4 +1,4 @@
-# Electron 接入手册
+# Electron 接入手册（SDK3.0）
 
 ## 1. demo环境配置说明
 ### 1.1 环境要求
