@@ -1187,7 +1187,7 @@ msg内容示例:
 
 ### enableActionEvent
 * 函数形式： **void enableActionEvent(string json_param)**
-* 可用版本： >=3.12.200
+* 可用版本： >=3.12.300
 * 函数说明：
   * 设置会中`onActionResult`回调事件是否触发的开关。
   * 事件触发的**开关默认关闭**，调用该接口开启后才会触发对应`action_type`事件回调。
@@ -1196,10 +1196,10 @@ msg内容示例:
 ```json
     {
         "action_types":{
-            "1001":{
+            "1501":{
                 "enable":true
             },
-            "1002":{
+            "1502":{
                 "enable":false
             }
         }
@@ -1314,7 +1314,8 @@ invite_info内容
 * 函数形式：**void onActionResult(int action_type, int code, String msg)**
 * 可用版本：>= 3.6.401
 * 说明：
-  * 接入方主动调用SDK会中接口的各种行为操作的回调，仅通过sdk接口调用产生
+  * 接入方主动调用SDK会中接口的各种行为操作的回调
+  * 接入方通过`enableActionEvent`订阅事件后，相应事件触发的回调；
 
 |参数名 |参数类型 |参数说明 |
 |-|-|-|
@@ -1341,20 +1342,20 @@ invite_info内容
 
 | 类型 | action_type | 说明 | msg值说明 |
 |:-:|---|:--|---|
-| 设置组织架构 | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
-| 开关麦 | 1001 | 会中点击开关麦克风的回调信息。事件回调**默认关闭**，调用`enableActionEvent`接口可以开启该事件回调。 | JSON字符串，格式参考下例说明 |
-| 开关视频 | 1002 | 会中点击开关视频的回调信息。事件回调**默认关闭**，调用`enableActionEvent`接口可以开启该事件回调。 | JSON字符串，格式参考下例说明 |
+| 设置组织架构 | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息**接口**的回调信息。 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
+| 开关麦 | 1501 | 会中点击开关麦克风的**动作**回调信息。动作事件回调**默认关闭**，调用`enableActionEvent`接口可以开启该事件回调。 | JSON字符串，格式参考下例说明 |
+| 开关视频 | 1502 | 会中点击开关视频的**动作**回调信息。动作事件回调**默认关闭**，调用`enableActionEvent`接口可以开启该事件回调。 | JSON字符串，格式参考下例说明 |
 
 
 
-- action_type == 1001的msg示例：
+- action_type == 1501的msg示例：
 
   ```JSON
   {
           "data": {
               "state": 0,
               "meeting_id": "417331975",
-              "action_type": 1001
+              "action_type": 1501
           },
           "description": "mic not accessiable"
   }
@@ -1364,20 +1365,20 @@ invite_info内容
 
   | 字段名      | 值类型 | 释义                                                         |
   | ----------- | ------ | ------------------------------------------------------------ |
-  | action_type | int    | 事件类型，见上表`action_type`值含义，此处是1001，表示开关麦克风 |
+  | action_type | int    | 事件类型，见上表`action_type`值含义，此处是1501，表示开关麦克风 |
   | meeting_id  | string | 会议的ID                                                     |
   | state       | int    | 麦克风状态：关闭（0），开启（1），停用（2）                  |
 
   
 
-- action_type == 1002 的msg示例：
+- action_type == 1502 的msg示例：
 
   ```JSON
   {
           "data": {
               "state": 0,
               "meeting_id": "417331975",
-              "action_type": 1002
+              "action_type": 1502
           },
           "description": "camera not accessiable"
   }
@@ -1387,7 +1388,7 @@ invite_info内容
 
   | 字段名      | 值类型 | 释义                                                         |
   | ----------- | ------ | ------------------------------------------------------------ |
-  | action_type | int    | 事件类型，见上表`action_type`值含义。此处是1002，表示开关摄像头 |
+  | action_type | int    | 事件类型，见上表`action_type`值含义。此处是1502，表示开关摄像头 |
   | meeting_id  | string | 会议的ID                                                     |
   | state       | int    | 摄像头状态：关闭（0），开启（1），停用（2）                  |
 
