@@ -573,7 +573,7 @@ wemeet_sdk.Transcode(path_id)
 wemeet_sdk.CollectLogFiles(begin_time, end_time)
 ```
 
-说明：\>= 3.12版本，begin_time、end_time为int类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12版本，begin_time、end_time为string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 ### 42、反初始化SDK
 
