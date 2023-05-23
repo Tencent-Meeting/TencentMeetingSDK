@@ -7,7 +7,7 @@
   * [2.1 TMSDK 成员函数](#21-tmsdk-成员函数)
     + [getSDKVersion](#getsdkversion)
     + [initialize](#initialize)
-    + [uninitialize](#uninitialize)
+    + [uninitialize(beta)](#uninitialize)
     + [isInitialized](#isinitialized)
     + [refreshSDKToken](#refreshsdktoken)
     + [getCurrentSDKToken](#getcurrentsdktoken)
@@ -111,9 +111,10 @@
 | 2022-09-26 | 3.6.203 | 新增接口：quickMeetingByJSON；quickMeeting和JoinMeeting接口添加meeting_window_title参数                                                            |
 | 2022-11-18 | 3.6.300 | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口                                                                  |
 | 2023-02-06 | 3.6.401 | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
-| 2023-02-22 | 3.12.100 | 新增接口：新增反初始化(uninitialize)接口，本地录制相关接口，解析入会短链接接口，收集日志文件的接口 |
+| 2023-02-22 | 3.12.100 | 新增接口：新增反初始化(uninitialize)接口**beta版本**，本地录制相关接口，解析入会短链接接口，收集日志文件的接口 |
 | 2023-02-24 | 3.6.401  | 新增回调：新增会中通用动作和接口回调onActionResult函数       |
 | 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串 |
+|2023-05-19|3.12.100|由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口|
 
 
 # 1. SDK使用说明
@@ -152,7 +153,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
     2. 调用`PreMeetingService.setPreMeetingCallback`函数设置回调代理`PreMeetingCallback`
     3. 调用`PreMeetingService.joinMeeting`函数进行入会
     4. 响应入会回调`PreMeetingCallback.onJoinMeeting`，**回调结果成功表示入会成功**
-5. SDK反初始化
+5. SDK反初始化(beta版本)
     1. 调用`TMSDK.uninitialize`函数可以完成SDK反初始化操作。**注意反初始化并非必须调用的，除非在当前进程生命周期中还需要重新初始化SDK**
     3. 响应SDK反初始化回调`SDKCallback.onSDKUninitializeResult`，**回调结果成功才表示反初始化完成**
 
@@ -198,7 +199,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### uninitialize
 * 函数形式：**void uninitialize(string param)**
-* 可用版本：>= 3.12.100
+* 可用版本：>= 3.12.100（**仅支持Windows和Android平台，其他平台暂不支持**）
 * 函数说明：
   * 反初始化函数用来停止SDK功能并释放SDK资源，让SDK回到初始化之前的状态。
   * 反初始化调用的结果，通过`SDKCallback.onSDKUninitialize`回调来获取。
