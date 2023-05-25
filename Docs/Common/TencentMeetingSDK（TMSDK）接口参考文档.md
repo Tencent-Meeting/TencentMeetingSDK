@@ -712,7 +712,7 @@ AuthenticationCallback 需实现以下成员函数：
 ### DecodeUltrasoundScreenCastCode
 * 函数形式：**void DecodeUltrasoundScreenCastCode()**
 * 函数说明：
- - 获取超声波投屏码。登录完成后且不在会中才可调用
+ - 获取超声波投屏码，Mac端需要麦克风权限。登录完成后且不在会中才可调用
  - 该接口回调详见4.2中onActionResult说明
  - 注意，如果获取到投屏码，会回调两次，第一次只有rooms_code，rooms_name是空，第二次有rooms_name
 * 参数说明：无
@@ -738,7 +738,7 @@ msg内容示例：
 ### StartScreenCast
 * 函数形式：**void StartScreenCast(string json_param)**
 * 函数说明：
-  - 开始投屏，该函数会自动入会，然后然后弹出投屏选择界面。登录完成后且不在会中才可调用。
+  - 开始投屏，Mac端需要屏幕录制权限。该函数会自动入会，然后然后弹出投屏选择界面。登录完成后且不在会中才可调用。
   - 该接口回调详见4.2中onActionResult说明
 * 参数说明：
   * JSON中字段如下表
