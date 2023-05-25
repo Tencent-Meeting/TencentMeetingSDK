@@ -2,49 +2,17 @@
 ## 1. Android SDK 集成接入指南
 
 ### 1.1 版本环境提示
-- 您可以按照下面的方式在会议SDK集成环境中应用SDK接入问题检查插件，该插件将生成名为check${BuildVariantName}IntegrationIssue的task（其中${BuildVariantName}替换为构建变体的名字），在根项目目录中执行gradlew check${BuildVariantName}IntegrationIssue或在Android Studio的Gradle窗口找到该task并运行，task输的日志中将包含插件检查出的一些可能出现的SDK接入问题以及修改建议
-```
-// root project build.gradle
-buildscript {
-    dependencies {
-        classpath 'com.tencent.wemeet.sdk:issue-checker:0.0.1'
-    }
-}
-
-// app module build.gradle
-plugins {
-    id 'com.tencent.wemeet.sdk.plugin.checker'
-}
-
-```
 - 支持 minsdkVersion 21
-- Glide 4.12.0及以上
 - 使用Android Studio作为IDE
 - 如果您还在使用android.support.*，建议您迁移到AndroidX，建议迁移前满足以下条件
 	1. Android Studio 3.2及以上
 	1. Gradle版本4.6及以上
-	1. 项目编译版本32及以上
+	1. 项目编译版本30及以上
 	1. NDK版本21及以上
-	1. JDK版本11及以上
 - 迁移到Android X步骤
 	1. 在Android studio中点击`Refactor > Migrate to AndroidX`，依照提示进行迁移即可。(迁移过程遇到问题可以参考官方文档)
 	1. 通过反射取support包内class的代码，可以全局搜索android.support找到对应的位置手动名进行替换
 	1. 如果项目中有对support库进行混淆配置，需要针对对应的AndroidX加上相应的混淆配置
-- 如果您的应用的targetSdkVersion >= 31，请在AndroidManifest.xml中添加以下标签，如果没有添加，当您的应用运行在Android 12及以上版本系统时美颜功能可能无法正常工作
-```
-<uses-native-library
-    android:name="libOpenCL.so"
-    android:required="false"/>
-<uses-native-library
-    android:name="libGLES_mali.so"
-    android:required="false"/>
-<uses-native-library
-    android:name="libPVROCL.so"
-    android:required="false"/>
-<uses-native-library
-    android:name="libllvm-a3xx.so"
-    android:required="false"/>
-```
 - 如果需要混淆代码，为了保证sdk的正常使用，需要在proguard配置文件中加上：
 
 ```
@@ -216,35 +184,11 @@ plugins {
     "R.id.rpItemDetail",
     "R.raw.ring",
     "R.layout.home_menu_bar_debug_state_layout",
-    "R.id.pingDelayTitle",
+    "R.id.pingDelayTitle,",
     "R.id.pktLossProTitle",
     "R.id.routerDelayTitle",
     "R.id.tvContent",
     "R.id.guideline",
-    "R.drawable.file_icon_com",
-    "R.drawable.file_icon_excel",
-    "R.drawable.file_icon_mind",
-    "R.drawable.file_icon_pdf",
-    "R.drawable.file_icon_pic",
-    "R.drawable.file_icon_ppt",
-    "R.drawable.file_icon_txt",
-    "R.drawable.file_icon_unknown",
-    "R.drawable.file_icon_vid",
-    "R.drawable.file_icon_word",
-    // huawei hms core sdk
-    "R.string.hms*",
-    "R.string.connect_server_fail_prompt_toast",
-    "R.string.getting_message_fail_prompt_toast",
-    "R.string.no_available_network_prompt_toast",
-    "R.string.third_app_*",
-    "R.string.upsdk_*",
-    "R.layout.hms*",
-    "R.layout.upsdk_*",
-    "R.drawable.upsdk*",
-    "R.color.upsdk*",
-    "R.dimen.upsdk*",
-    "R.style.upsdk*",
-    "R.string.agc*"
 ]
 ```
 
@@ -299,39 +243,12 @@ dependencies {
 
 Android SDK初始化除在《TencentMeetingSDK（TMSDK）接口参考文档》中已有说明的 `TMSDK.initialize` 外，还需要在Application的`onCreate` 下 调用 `initOnApplicationCreate` ，这个步骤主要用于设置context以及必要的状态，不会进行真正的初始化操作（注意这个方法initOnApplicationCreate必须在所有进程初始化）
 
-**为支持隐私合规,已在3.6.200版本提供支持隐私合规的接入方式**
-- initOnApplicationCreate在原有基础上提供重载方法
-```
-    //原有方式，不支持隐私合规
-    TMSDK.initOnApplicationCreate(Application application); 
-
-    //支持隐私合规的接入方式，此时`isPrivacyNeedGrant`参数需要传true，表示开启隐私合规检查。如果此参数为false，则表示SDK不支持隐私合规
-    TMSDK.initOnApplicationCreate(Application application, boolean isPrivacyNeedGrant); 
-```
-- 增加用户同意SDK隐私授权接口
-```
-    //如果initOnApplicationCreate传入参数`isPrivacyNeedGrant`为true，必须调用notifyPrivacyGranted后方可正常初始化SDK,否则会导致SDK异常
-    TMSDK.notifyPrivacyGranted(Context context);
-```
-- 接入展示
 ```kotlin
-//DemoApplication
 @Override
 public void onCreate() {
-
   super.onCreate();
-  TMSDK.initOnApplicationCreate(this, true);
+  TMSDK.initOnApplicationCreate(this);
 }
-
-//DemoActivity
-//首次启动，在用户同意隐私授权后的适当时机调用：
-mBtnAgree.setOnClickListener(
-        v -> {
-            TMSDK.notifyPrivacyGranted(DemoActivity.this);
-            TMSDK.INSTANCE.initialize(initParams, sdkCallback)
-            ...
-        }
-);
 ```
 
 自定义通知栏样式：
@@ -347,19 +264,9 @@ mBtnAgree.setOnClickListener(
 
 ## 3. FAQ
 
-# FAQ
-
-- Q:接入sdk后，出现运行时异常：AAPT: error: style attribute 'android:attr/windowSplashScreenAnimatedIcon' not found.
-```
-A: compileSdkVersion 31及以上
-```
-- Q:接入sdk后，出现运行时异常：Execution failed for task ':baselibrary:compileDebugJavaWithJavac'. > javax/xml/bind/JAXBException
-```
-A:implementation "javax.xml.bind:jaxb-api:2.3.1"
-```
 - Q:接入sdk后，出现运行时异常：java.lang.UnsatisfiedLinkError
-- A:目前会议的so只支持armeabi-v7a和arm64-v8a的架构，需要检查是否做了以下配置
-```
+A:目前会议的so只支持armeabi-v7a和arm64-v8a的架构，需要检查是否做了以下配置
+```groovy
 android {
 	...
     defaultConfig {
@@ -388,14 +295,11 @@ android {
 - Q:重复class报错，目前会出现此类问题的主要以x5内核和imsdk下的文件为主
 
   A:执行./gradlew app:dependencies(window下执行gradlew app:dependencies)，对照输出依赖将sdk中的依赖排除出去，例如
-    移除glide、wemeet-kapt。**仅在某个依赖项存在重复class问题的情况下才添加对应的exclude条件，请不要将以下内容直接全部粘贴到您的项目代码中！**
+
 ```groovy
     implementation "com.tencent.wemeet: ${wemeet_version}" {
-        exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
-	exclude group: 'com.github.bumptech.glide'
-	exclude module: 'wemeet-kapt'
-	exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk-dynamic'
-	exclude group: 'com.tencent.liteav'
+        exclude group: 'com.tencent.tbssdk', module: 'tbssdk'
+        exclude group: 'com.tencent.wemeet', module: 'imsdk'
     }
 ```
 - Q:javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
@@ -428,12 +332,13 @@ android {
 ```
         implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
         implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+```	
+- Q:在会中收到邀请或者分享回调后显示邀请或者分享界面异常怎么处理
+- A:
 ```
+       在邀请或者分享的activity里面添加 android:taskAffinity=".meeting.inmeeting.InMeetingActivity"
+       在启动邀请或者分享界面离添加 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+```	
 - 应用异常退出后，切换账号登录异常或者登录的账号信息错误
 > 如果登录的账号发生切换，请主动调用登出接口以清空登录态，再重新尝试登录。
 
-- Q:收到分享回调显示透明activity但是背景activity显示的不是会中界面
-- A:请联系技术支持
-
-- Q:在会中界面点击管理成员发生crash，错误为java.lang.ClassNotFoundException: Didn't find class "android.support.v7.widget.RecyclerView$ItemDecoration"
-- A:在gradle.properties中添加android.enableJetifier=true
