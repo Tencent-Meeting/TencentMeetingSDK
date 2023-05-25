@@ -195,9 +195,13 @@ SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 
 ![broadcast_integration](images/broadcast_integration.png)
 
-注意(因为主App启动屏幕共享扩展的需要根据扩展的Bundle Id来决定启动那个扩展)：
+App屏幕共享扩展Bundle Id的生产规则:
+1.使用默认的Bundle id
 SDK Demo的bundle id为XXX.XXX.XXX
 SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
+2.使用自定义的Bundle id
+自定义屏幕共享拓展的bundle id为XXX.XXX.XXX
+初始化SDK时，设置TMInitParam的extensionBundleId为XXX.XXX.XXX
 
 - 从Demo中将SampleHandler.m和SampleHandler.h复制过来
 
