@@ -84,6 +84,7 @@
     + [onShowMeetingInfo](#onshowmeetinginfo)
     + [onInviteUsers](#oninviteusers)
     + [onSwitchPiPResult](#onswitchpipresult)
+    + [onPipModeChanged](#onpipmodechanged)
     + [onQueryCustomOrgInfo](#onquerycustomorginfo)
     + [onActionResult](#onactionresult-1)
 
