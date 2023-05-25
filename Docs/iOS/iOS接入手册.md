@@ -192,10 +192,7 @@ SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 ![broadcast](images/broadcast.png)
 
 - 设置屏幕共享扩展依赖TencentMeetingBroadcastExtension.framework，主页Embed设置为Do Not Embed
-
-![broadcast_integration](images/broadcast_integration.png)
-
-屏幕共享扩展Bundle Id规则:
+- 屏幕共享扩展Bundle Id规则:
 
 1.使用默认的Bundle id
 
@@ -208,6 +205,8 @@ SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 自定义屏幕共享拓展的bundle id为XXX.XXX.XXX
 
 初始化SDK时，设置TMInitParam的extensionBundleId为XXX.XXX.XXX
+
+![broadcast_integration](images/broadcast_integration.png)
 
 - 从Demo中将SampleHandler.m和SampleHandler.h复制过来
 
