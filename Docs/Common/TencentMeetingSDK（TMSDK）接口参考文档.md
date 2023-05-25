@@ -1266,13 +1266,32 @@ invite_info内容
 
 ### onSwitchPiPResult
 * 函数形式：**void onSwitchPiPResult(int code, string msg)**
-* 说明：进入悬浮窗或者退出悬浮窗状态的回调。
+* 说明：调用switchPIPModel接口的回调。
 * 参数说明：
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
 |msg |string |结果信息|
+
+
+### onPipModeChanged
+* 说明：
+  * 进入悬浮窗或者退出悬浮窗状态时回调。
+  * iOS14.0以上才支持全局小窗
+* 返回值：无
+* 参数说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|data |string |json字符串 |
+
+data内容示例
+```
+{
+    "is_in_pip_mode": true, // 是否处于悬浮窗状态
+}
+```
 
 
 ### onQueryCustomOrgInfo
