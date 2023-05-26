@@ -715,13 +715,12 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数说明：
  - 获取超声波投屏码，Mac端需要麦克风权限。登录完成后且不在会中才可调用。（仅桌面端有这个接口）
  - 该接口回调详见4.2中onActionResult说明
- - 注意，如果获取到投屏码，会回调两次，第一次只有rooms_code，rooms_name是空，第二次有rooms_name
 * 参数说明：无
 * `PreMeetingCallback.onActionResult`回调说明：
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
-|action_type |int |这处为`QueryMeetingInfo` |
+|action_type |int |这处为`DecodeUltrasoundScreenCastCode` |
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
 |msg |string |结果的JSON信息，示例如下 |
 
@@ -729,8 +728,7 @@ msg内容示例：
 ```json
 {
     "data": {
-          "rooms_code": "ABCDEF",
-          "rooms_name": "0808会议室"
+          "rooms_code": "ABCDEF"
      },
      "description": ""
 }
