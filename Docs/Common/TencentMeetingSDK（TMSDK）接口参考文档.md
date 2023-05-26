@@ -115,6 +115,7 @@
 | 2023-02-24 | 3.6.401  | 新增回调：新增会中通用动作和接口回调onActionResult函数       |
 | 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串 |
 |2023-05-19|3.12.100|由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口|
+| 2023-06-10 | 3.12.201 | 添加投屏接口 |
 
 
 # 1. SDK使用说明
@@ -712,7 +713,7 @@ AuthenticationCallback 需实现以下成员函数：
 ### DecodeUltrasoundScreenCastCode
 * 函数形式：**void DecodeUltrasoundScreenCastCode()**
 * 函数说明：
- - 获取超声波投屏码，Mac端需要麦克风权限。登录完成后且不在会中才可调用
+ - 获取超声波投屏码，Mac端需要麦克风权限。登录完成后且不在会中才可调用。（仅桌面端有这个接口）
  - 该接口回调详见4.2中onActionResult说明
  - 注意，如果获取到投屏码，会回调两次，第一次只有rooms_code，rooms_name是空，第二次有rooms_name
 * 参数说明：无
@@ -748,7 +749,7 @@ msg内容示例：
 | ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
 | rooms_code             | string   | 是       | (无)       | 投屏码（共享码）                                                   |
 | password               | string   | 否       | (无)       | 密码，如果rooms没开启密码，可以不填 |
-| enable_second_monitor  | bool     | 否       | false      | 是否使用扩展屏 |
+| enable_second_monitor  | bool     | 否       | false      | 是否使用扩展屏，仅桌面端有效 |
 * json参数示例：
 ```
 {
