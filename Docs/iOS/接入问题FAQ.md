@@ -101,7 +101,7 @@ A: 请检查是否含有 **FDFullscreenPopGesture**这个第三方库。
 
 Q10.接入会议和其他三方视频会议SDK，会议中有时无法正常屏幕共享的问题。
 
-A: 确保您的App应该共用一个**Apple Broadcast UploadExtension**
+A: 确保您的App应该共用一个**Apple Broadcast UploadExtension**（沿用APP之前Extension的bundleId，不需要改名）
 <img src="./images/tencent_meeting_broadcast_image_A.png" alt="1" style="zoom:67%;" />
 
 B: TencentMeetingSDK初始化时，设置初始化参数TMInitParam的extensionBundleId为APP已存在的拓展的Bundle Id
