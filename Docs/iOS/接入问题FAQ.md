@@ -105,6 +105,7 @@ A: 确保您的App应该共用一个**Apple Broadcast UploadExtension**
 <img src="./images/tencent_meeting_broadcast_image_A.png" alt="1" style="zoom:67%;" />
 
 B: TencentMeetingSDK初始化时，设置初始化参数TMInitParam的extensionBundleId为APP已存在的拓展的Bundle Id
+<img src="./images/extension_bundle_id.jpg" alt="1" style="zoom:67%;" />
 
 C:开始进入腾讯视频会议时：
 <img src="./images/tencent_meeting_broadcast_image_B.png" alt="1" style="zoom:67%;" />
