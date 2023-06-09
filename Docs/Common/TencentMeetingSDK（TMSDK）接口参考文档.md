@@ -1185,6 +1185,20 @@ msg内容示例:
 }
 ```
 
+### ManipulateWindow
+* 函数形式：**void ManipulateWindow(string action)**
+* 可用版本：>= 3.12.201
+* 适用平台：windows & mac
+* 函数说明：
+  * 操作会中窗口，当前版本支持【全屏】和【退出全屏】
+  * 调用时机：只能在会中调用，且处于悬浮窗和屏幕共享时不支持调用
+  * 结果：回调在`InMeetingCallback.onActionResult`中，`action_type`参数对应的枚举值1001
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|action |json串 |是 |无 | {"action":0} 进入全屏；{"action":1} 退出全屏  |
 
 
 ## 5.2 InMeetingCallback 回调代理
