@@ -713,7 +713,11 @@ AuthenticationCallback 需实现以下成员函数：
 ### DecodeUltrasoundScreenCastCode
 * 函数形式：**void DecodeUltrasoundScreenCastCode()**
 * 函数说明：
- - 获取超声波投屏码，Mac端需要麦克风权限。登录完成后且不在会中才可调用。（仅桌面端有这个接口）
+ - 获取超声波投屏码
+ - Mac端需要麦克风权限
+ - 需要登录完成，不可在会中调用
+ - 仅桌面端有这个接口
+ - 因为设备和环境等原因，可能获取不到
  - 该接口回调详见4.2中onActionResult说明
 * 参数说明：无
 * `PreMeetingCallback.onActionResult`回调说明：
@@ -737,7 +741,9 @@ msg内容示例：
 ### StartScreenCast
 * 函数形式：**void StartScreenCast(string json_param)**
 * 函数说明：
-  - 开始投屏，Mac端需要屏幕录制权限。该函数会自动入会，然后然后弹出投屏选择界面。登录完成后且不在会中才可调用。
+  - 开始投屏，如调用成功会自动入会，然后弹出投屏选择界面
+  - Mac端需要屏幕录制权限
+  - 需要登录完成，不可在会中调用
   - 该接口回调详见4.2中onActionResult说明
 * 参数说明：
   * JSON中字段如下表
