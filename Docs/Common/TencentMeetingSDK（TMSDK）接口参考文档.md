@@ -116,6 +116,7 @@
 | 2023-02-24 | 3.6.401  | 新增回调：新增会中通用动作和接口回调onActionResult函数       |
 | 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串 |
 |2023-05-19|3.12.100|由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口|
+| 2023-06-10 | 3.12.201 | 添加投屏接口 |
 
 
 # 1. SDK使用说明
@@ -710,6 +711,65 @@ AuthenticationCallback 需实现以下成员函数：
 * 返回值说明：无
 * 参数说明：无
 
+### DecodeUltrasoundScreenCastCode
+* 函数形式：**void DecodeUltrasoundScreenCastCode()**
+* 函数说明：
+ - 获取超声波投屏码
+ - Mac端需要麦克风权限
+ - 需要登录完成，不可在会中调用
+ - 仅桌面端有这个接口
+ - 因为设备和环境等原因，可能获取不到
+ - 该接口回调详见4.2中onActionResult说明
+* 参数说明：无
+* `PreMeetingCallback.onActionResult`回调说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|action_type |int |这处为`DecodeUltrasoundScreenCastCode` |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |结果的JSON信息，示例如下 |
+
+msg内容示例：
+```json
+{
+    "data": {
+          "rooms_code": "ABCDEF"
+     },
+     "description": ""
+}
+```
+
+### StartScreenCast
+* 函数形式：**void StartScreenCast(string json_param)**
+* 函数说明：
+  - 开始投屏，如调用成功会自动入会，然后弹出投屏选择界面
+  - Mac端需要屏幕录制权限
+  - 需要登录完成，不可在会中调用
+  - 该接口回调详见4.2中onActionResult说明
+* 参数说明：
+  * JSON中字段如下表
+  * 除非必填字段外，其他字段可不传，SDK将自动使用默认值
+ 
+| 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
+| ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
+| rooms_code             | string   | 是       | (无)       | 投屏码（共享码）                                                   |
+| password               | string   | 否       | (无)       | 密码，如果rooms没开启密码，可以不填 |
+| enable_second_monitor  | bool     | 否       | false      | 是否使用扩展屏，仅桌面端有效 |
+* json参数示例：
+```
+{
+    "rooms_code":"ABCDEF",
+    "password":"8888",
+    "enable_second_monitor":true
+}
+```
+* `PreMeetingCallback.onActionResult`回调说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|action_type |int |这处为`StartScreenCastCode` |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |错误说明 |
 
 ### showHistoricalMeetingView
 * 函数形式：**void showHistoricalMeetingView()**
@@ -987,7 +1047,9 @@ PreMeetingCallback 需实现以下成员函数：
 | QueryMeetingInfo | 8    | 调用`PreMeetingService.queryMeetingInfo`查询会议信息的回调 | 回调的JSON数据，格式参考`queryMeetingInfo`函数说明|
 | InviteUsers | 9   | 预定会议邀请用户的回调(私有化专用) | -- |
 | QueryLocalRecordInfo |10 | 调用`PreMeetingService.queryLocalRecordInfo`查询会议本地录制信息的回调 | 回调的JSON数据，格式参考`queryLocalRecordInfo`函数说明 |
-
+| Transcode | 11   | 转码回调 | -- |
+| DecodeUltrasoundScreenCastCode | 12   | 获取超声波投屏码回调 | -- |
+| StartScreenCastCode | 13   | 投屏回调 | -- |
 
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
@@ -1393,6 +1455,15 @@ data内容示例
 | kTMSDKErrorInUninitializing|-1032|正在反初始化|onSDKUninitializeResult()|
 | kTMSDKErrorUnableUnInit|-1033|当前无法反初始化，比如正在会议中且没有使用`force`参数|onSDKUninitializeResult()|
 | kTMSDKErrorIncorrectParamWithinJson|-1038| 通讯录回调, json串参数字段校验失败 |onAddUsersResult()|
+| kTMSDKErrorNoUltrasoundCastCode|-1039| 未发现超声波投屏码 ||
+| kTMSDKErrorNoMediaDeviceAccessible|-1040| 没有麦克风权限 ||
+| kTMSDKErrorNoUltrasoundAbility|-1041| 未开启超声波功能 ||
+| kTMSDKErrorNoCastAbility|-1042| 未开启投屏功能 ||
+| kTMSDKErrorRoomsCodeError|-1043| 投屏码（共享码）错误 ||
+| kTMSDKErrorNoScreenCapturePermission|-1044| 没有屏幕录制权限 ||
+| kTMSDKErrorPasswordError|-1045| 密码错误 ||
+| kTMSDKErrorJoinMeetingFail|-1046| 加入会议失败 ||
+| kTMSDKErrorShareFail|-1047| 共享屏幕失败 ||
 | kTMSDKErrorActionRefused | -1048  | 拒绝此操作 ||
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
