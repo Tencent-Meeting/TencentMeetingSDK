@@ -80,6 +80,7 @@
     + [getCurrentMeetingInfo](#getcurrentmeetinginfo)
     + [enableCustomOrgInfo](#enablecustomorginfo)
     + [setCustomOrgInfo](#setcustomorginfo)
+    + [manipulateWindow](#manipulateWindow)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -1250,6 +1251,35 @@ msg内容示例:
 }
 ```
 
+### manipulateWindow
+* 函数形式：**void manipulateWindow(string action)**
+* 可用版本：>= 3.12.201
+* 适用平台：windows & mac
+* 函数说明：
+  * 操作会中窗口，当前版本支持【全屏】和【退出全屏】
+  * 调用时机：只能在会中调用，且处于悬浮窗和屏幕共享时不支持调用
+  * 结果：回调在`InMeetingCallback.onActionResult`中，`action_type`参数对应的枚举值1001
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|action |string 为json串 |是 |无 | {"action":0} 进入全屏；{"action":1} 退出全屏  |
+
+* 回调说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|action_type |int |这里为1001 |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |结果的JSON信息，示例如下 |
+
+msg内容示例：
+```json
+{
+     "description": ""
+}
+```
 
 
 ## 5.2 InMeetingCallback 回调代理
@@ -1453,6 +1483,7 @@ data内容示例
 | kTMSDKErrorPasswordError|-1045| 密码错误 ||
 | kTMSDKErrorJoinMeetingFail|-1046| 加入会议失败 ||
 | kTMSDKErrorShareFail|-1047| 共享屏幕失败 ||
+| kTMSDKErrorActionRefused | -1048  | 拒绝此操作 ||
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
