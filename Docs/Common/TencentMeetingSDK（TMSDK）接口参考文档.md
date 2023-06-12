@@ -54,6 +54,8 @@
     + [showJoinMeetingView](#showjoinmeetingview)
     + [showScheduleMeetingView](#showschedulemeetingview)
     + [showMeetingSettingView](#showmeetingsettingview)
+    + [decodeUltrasoundScreenCastCode](#decodeUltrasoundScreenCastCode)
+    + [startScreenCast](#startScreenCast)
     + [queryMeetingInfo](#querymeetinginfo)
     + [queryLocalRecordInfo](#querylocalrecordinfo)
     + [transcode](#transcode)
@@ -711,13 +713,13 @@ AuthenticationCallback 需实现以下成员函数：
 * 返回值说明：无
 * 参数说明：无
 
-### DecodeUltrasoundScreenCastCode
-* 函数形式：**void DecodeUltrasoundScreenCastCode()**
+### decodeUltrasoundScreenCastCode
+* 函数形式：**void decodeUltrasoundScreenCastCode()**
+* 可用版本：>= 3.12.201（**仅支持桌面端，移动端暂不支持**）
 * 函数说明：
  - 获取超声波投屏码
  - Mac端需要麦克风权限
  - 需要登录完成，不可在会中调用
- - 仅桌面端有这个接口
  - 因为设备和环境等原因，可能获取不到
  - 该接口回调详见4.2中onActionResult说明
 * 参数说明：无
@@ -725,7 +727,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
-|action_type |int |这处为`DecodeUltrasoundScreenCastCode` |
+|action_type |int |这处为`decodeUltrasoundScreenCastCode` |
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
 |msg |string |结果的JSON信息，示例如下 |
 
@@ -739,8 +741,9 @@ msg内容示例：
 }
 ```
 
-### StartScreenCast
-* 函数形式：**void StartScreenCast(string json_param)**
+### startScreenCast
+* 函数形式：**void startScreenCast(string json_param)**
+* 可用版本：>= 3.12.201
 * 函数说明：
   - 开始投屏，如调用成功会自动入会，然后弹出投屏选择界面
   - Mac端需要屏幕录制权限
@@ -767,7 +770,7 @@ msg内容示例：
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
-|action_type |int |这处为`StartScreenCastCode` |
+|action_type |int |这处为`startScreenCast` |
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
 |msg |string |错误说明 |
 
@@ -1049,7 +1052,7 @@ PreMeetingCallback 需实现以下成员函数：
 | QueryLocalRecordInfo |10 | 调用`PreMeetingService.queryLocalRecordInfo`查询会议本地录制信息的回调 | 回调的JSON数据，格式参考`queryLocalRecordInfo`函数说明 |
 | Transcode | 11   | 转码回调 | -- |
 | DecodeUltrasoundScreenCastCode | 12   | 获取超声波投屏码回调 | -- |
-| StartScreenCastCode | 13   | 投屏回调 | -- |
+| StartScreenCast | 13   | 投屏回调 | -- |
 
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
