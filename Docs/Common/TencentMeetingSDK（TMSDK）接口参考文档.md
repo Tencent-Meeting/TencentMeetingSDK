@@ -78,6 +78,7 @@
     + [getCurrentMeetingInfo](#getcurrentmeetinginfo)
     + [enableCustomOrgInfo](#enablecustomorginfo)
     + [setCustomOrgInfo](#setcustomorginfo)
+    + [manipulateWindow](#manipulateWindow)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -1247,8 +1248,8 @@ msg内容示例:
 }
 ```
 
-### ManipulateWindow
-* 函数形式：**void ManipulateWindow(string action)**
+### manipulateWindow
+* 函数形式：**void manipulateWindow(string action)**
 * 可用版本：>= 3.12.201
 * 适用平台：windows & mac
 * 函数说明：
@@ -1261,6 +1262,20 @@ msg内容示例:
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |action |json串 |是 |无 | {"action":0} 进入全屏；{"action":1} 退出全屏  |
+
+* 回调说明
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|action_type |int |这里为1001 |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |结果的JSON信息，示例如下 |
+
+msg内容示例：
+```json
+{
+     "description": ""
+}
+```
 
 
 ## 5.2 InMeetingCallback 回调代理
