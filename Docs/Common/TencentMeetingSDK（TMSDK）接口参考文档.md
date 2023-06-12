@@ -743,7 +743,7 @@ msg内容示例：
 
 ### startScreenCast
 * 函数形式：**void startScreenCast(string json_param)**
-* * 可用版本：>= 3.12.201
+* 可用版本：>= 3.12.201
 * 函数说明：
   - 开始投屏，如调用成功会自动入会，然后弹出投屏选择界面
   - Mac端需要屏幕录制权限
