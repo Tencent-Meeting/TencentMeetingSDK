@@ -1052,7 +1052,7 @@ PreMeetingCallback 需实现以下成员函数：
 | QueryLocalRecordInfo |10 | 调用`PreMeetingService.queryLocalRecordInfo`查询会议本地录制信息的回调 | 回调的JSON数据，格式参考`queryLocalRecordInfo`函数说明 |
 | Transcode | 11   | 转码回调 | -- |
 | DecodeUltrasoundScreenCastCode | 12   | 获取超声波投屏码回调 | -- |
-| StartScreenCastCode | 13   | 投屏回调 | -- |
+| StartScreenCast | 13   | 投屏回调 | -- |
 
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
