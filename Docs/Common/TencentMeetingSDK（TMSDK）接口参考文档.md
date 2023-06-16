@@ -1474,15 +1474,15 @@ data内容示例
 | kTMSDKErrorInUninitializing|-1032|正在反初始化|onSDKUninitializeResult()|
 | kTMSDKErrorUnableUnInit|-1033|当前无法反初始化，比如正在会议中且没有使用`force`参数|onSDKUninitializeResult()|
 | kTMSDKErrorIncorrectParamWithinJson|-1038| 通讯录回调, json串参数字段校验失败 |onAddUsersResult()|
-| kTMSDKErrorNoUltrasoundCastCode|-1039| 未发现超声波投屏码 ||
-| kTMSDKErrorNoMediaDeviceAccessible|-1040| 没有麦克风权限 ||
-| kTMSDKErrorNoUltrasoundAbility|-1041| 未开启超声波功能 ||
-| kTMSDKErrorNoCastAbility|-1042| 未开启投屏功能 ||
-| kTMSDKErrorRoomsCodeError|-1043| 投屏码（共享码）错误 ||
-| kTMSDKErrorNoScreenCapturePermission|-1044| 没有屏幕录制权限 ||
-| kTMSDKErrorPasswordError|-1045| 密码错误 ||
-| kTMSDKErrorJoinMeetingFail|-1046| 加入会议失败 ||
-| kTMSDKErrorShareFail|-1047| 共享屏幕失败 ||
+| kTMSDKErrorNoUltrasoundCastCode|-1039| 未发现超声波投屏码 |onActionResult()|
+| kTMSDKErrorNoMediaDeviceAccessible|-1040| 没有麦克风权限 |onActionResult()|
+| kTMSDKErrorNoUltrasoundAbility|-1041| 未开启超声波功能 |onActionResult()|
+| kTMSDKErrorNoCastAbility|-1042| 未开启投屏功能 |onActionResult()|
+| kTMSDKErrorRoomsCodeError|-1043| 投屏码（共享码）错误 |onActionResult()|
+| kTMSDKErrorNoScreenCapturePermission|-1044| 没有屏幕录制权限 |onActionResult()|
+| kTMSDKErrorPasswordError|-1045| 密码错误 |onActionResult()|
+| kTMSDKErrorJoinMeetingFail|-1046| 加入会议失败 |onActionResult()|
+| kTMSDKErrorShareFail|-1047| 共享屏幕失败 |onActionResult()|
 | kTMSDKErrorActionRefused | -1048  | 拒绝此操作 ||
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
