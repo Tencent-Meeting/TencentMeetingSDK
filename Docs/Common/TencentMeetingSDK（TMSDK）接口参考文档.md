@@ -753,7 +753,7 @@ msg内容示例：
 * 参数说明：
   * JSON中字段如下表
   * 除非必填字段外，其他字段可不传，SDK将自动使用默认值
- 
+
 | 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
 | ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
 | rooms_code             | string   | 是       | (无)       | 投屏码（共享码）                                                   |
@@ -1455,8 +1455,8 @@ data内容示例
 | kTMSDKErrorInvalidNickname | -1010     | 无效入会的用户名称，可能长度过长导致 |onJoinMeeting()|
 | kTMSDKErrorDuplicateInitCall | -1011   | 重复调用初始化  |onSDKInitializeResult()|
 | kTMSDKErrorAccountAlreadyLogin | -1012 | 账号已登录，重复登录调用 |onLogin()|
-| kTMSDKErrorSdkNotInitialized | -1013  | SDK未初始化 ||
-| kTMSDKErrorSyncCallTimeout | -1014  | SDK同步调用超时 ||
+| kTMSDKErrorSdkNotInitialized | -1013  | SDK未初始化 |onSDKUninitialize()、SyncCallException抛出异常信息中包含（仅Android）|
+| kTMSDKErrorSyncCallTimeout | -1014  | SDK同步调用超时 |SyncCallException抛出异常信息中包含(仅Android)|
 | kTMSDKErrorNotInMeeting | -1015  | 非入会状态调用会议中接口 |onLeaveMeeting()|
 | kTMSDKErrorCancelJoin | -1016  | 用户手动取消入会 |onJoinMeeting()|
 | kTMSDKErrorIsLogining | -1017  | 正在登录过程中的重复登录调用 |onLogin()|
