@@ -46,22 +46,22 @@
     + [setCallback](#setcallback-1)
     + [joinMeeting](#joinmeeting)
     + [joinMeetingByJSON](#joinmeetingbyjson)
+    + [quickMeeting](#quickmeeting)
+    + [quickMeetingByJson](#quickmeetingbyjson)
     + [showPreMeetingView](#showpremeetingview)
-    + [showScreenCastView](#showscreencastview)
     + [showHistoricalMeetingView](#showhistoricalmeetingview)
     + showMeetingDetailView【即将移除】
     + [showMeetingDetailView](#showmeetingdetailview)
     + [showJoinMeetingView](#showjoinmeetingview)
     + [showScheduleMeetingView](#showschedulemeetingview)
     + [showMeetingSettingView](#showmeetingsettingview)
-    + [decodeUltrasoundScreenCastCode](#decodeUltrasoundScreenCastCode)
-    + [startScreenCast](#startScreenCast)
+    + [showScreenCastView](#showscreencastview)
+    + [decodeUltrasoundScreenCastCode](#decodeultrasoundscreencastcode)
+    + [startScreenCast](#startscreencast)
     + [queryMeetingInfo](#querymeetinginfo)
     + [queryLocalRecordInfo](#querylocalrecordinfo)
     + [transcode](#transcode)
     + [showRecordFolder](#showrecordfolder)
-    + [quickMeeting](#quickmeeting)
-    + [quickMeetingByJson](#quickmeetingbyjson)
     + [enableAddressBookCallback](#enableaddressbookcallback)
   * [4.2 PreMeetingCallback 回调代理](#42-premeetingcallback-回调代理)
     + [onJoinMeeting](#onjoinmeeting)
@@ -80,7 +80,7 @@
     + [getCurrentMeetingInfo](#getcurrentmeetinginfo)
     + [enableCustomOrgInfo](#enablecustomorginfo)
     + [setCustomOrgInfo](#setcustomorginfo)
-    + [manipulateWindow](#manipulateWindow)
+    + [manipulateWindow](#manipulatewindow)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -695,6 +695,30 @@ AuthenticationCallback 需实现以下成员函数：
 ```
 
 
+### quickMeeting
+* 函数形式：**void quickMeeting()**
+* 可用版本：>= 3.6.200
+* 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
+* 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
+* 参数说明：无
+
+
+### quickMeetingByJson
+* 函数形式：**void quickMeetingByJson(string json_param)**
+* 可用版本：>= 3.6.300
+* 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
+* 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
+* 参数说明：
+  * json_param必须是json标准字符串，可以包含一下字段，其他字段会自动忽略
+  * meeting_window_title，会中窗口标题，如果不传或者为空，则以initialize接口的app_name为准，长度限制36（标准ASCII码算1，其它算2），超过会截断
+* 参数示例：
+```
+{
+    "meeting_window_title":"会中窗口"
+}
+```
+
+
 ### showPreMeetingView
 * 函数形式：**void showPreMeetingView(TMSDKMainUIStyle style = kTMSDKMainUIStyleClassic)**
 * 函数说明：显示SDK自带的会前界面。登录完成后，才可调用。
@@ -707,73 +731,6 @@ AuthenticationCallback 需实现以下成员函数：
   }
   ```
 
-
-### showScreenCastView
-* 函数形式：**void showScreenCastView()**
-* 函数说明：显示SDK自带的投屏码输入界面。登录完成后，才可调用。
-* 返回值说明：无
-* 参数说明：无
-
-### decodeUltrasoundScreenCastCode
-* 函数形式：**void decodeUltrasoundScreenCastCode()**
-* 可用版本：>= 3.12.201（**仅支持桌面端，移动端暂不支持**）
-* 函数说明：
- - 获取超声波投屏码
- - Mac端需要麦克风权限
- - 需要登录完成，不可在会中调用
- - 因为设备和环境等原因，可能获取不到
- - 该接口回调详见4.2中onActionResult说明
-* 参数说明：无
-* `PreMeetingCallback.onActionResult`回调说明：
-
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|action_type |int |这处为`decodeUltrasoundScreenCastCode` |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
-|msg |string |结果的JSON信息，示例如下 |
-
-msg内容示例：
-```json
-{
-    "data": {
-          "rooms_code": "ABCDEF"
-     },
-     "description": ""
-}
-```
-
-### startScreenCast
-* 函数形式：**void startScreenCast(string json_param)**
-* 可用版本：>= 3.12.201
-* 函数说明：
-  - 开始投屏，如调用成功会自动入会，然后弹出投屏选择界面
-  - Mac端需要屏幕录制权限
-  - 需要登录完成，不可在会中调用
-  - 该接口回调详见4.2中onActionResult说明
-* 参数说明：
-  * JSON中字段如下表
-  * 除非必填字段外，其他字段可不传，SDK将自动使用默认值
-
-| 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
-| ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
-| rooms_code             | string   | 是       | (无)       | 投屏码（共享码）                                                   |
-| password               | string   | 否       | (无)       | 密码，如果rooms没开启密码，可以不填 |
-| enable_second_monitor  | bool     | 否       | false      | 是否使用扩展屏，仅桌面端有效 |
-* json参数示例：
-```
-{
-    "rooms_code":"ABCDEF",
-    "password":"8888",
-    "enable_second_monitor":true
-}
-```
-* `PreMeetingCallback.onActionResult`回调说明：
-
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|action_type |int |这处为`startScreenCast` |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
-|msg |string |错误说明 |
 
 ### showHistoricalMeetingView
 * 函数形式：**void showHistoricalMeetingView()**
@@ -842,6 +799,76 @@ msg内容示例：
 * 函数说明：显示设置管理界面。初始化后，才可调用。
 * 返回值说明：无
 * 参数说明：无
+
+
+### showScreenCastView
+* 函数形式：**void showScreenCastView()**
+* 函数说明：显示SDK自带的投屏码输入界面。登录完成后，才可调用。
+* 返回值说明：无
+* 参数说明：无
+
+
+### decodeUltrasoundScreenCastCode
+* 函数形式：**void decodeUltrasoundScreenCastCode()**
+* 可用版本：>= 3.12.201（**仅支持桌面端，移动端暂不支持**）
+* 函数说明：
+- 获取超声波投屏码
+- Mac端需要麦克风权限
+- 需要登录完成，不可在会中调用
+- 因为设备和环境等原因，可能获取不到
+- 该接口回调详见4.2中onActionResult说明
+* 参数说明：无
+* `PreMeetingCallback.onActionResult`回调说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|action_type |int |这处为`decodeUltrasoundScreenCastCode` |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |结果的JSON信息，示例如下 |
+
+msg内容示例：
+```json
+{
+    "data": {
+          "rooms_code": "ABCDEF"
+     },
+     "description": ""
+}
+```
+
+
+### startScreenCast
+* 函数形式：**void startScreenCast(string json_param)**
+* 可用版本：>= 3.12.201
+* 函数说明：
+  - 开始投屏，如调用成功会自动入会，然后弹出投屏选择界面
+  - Mac端需要屏幕录制权限
+  - 需要登录完成，不可在会中调用
+  - 该接口回调详见4.2中onActionResult说明
+* 参数说明：
+  * JSON中字段如下表
+  * 除非必填字段外，其他字段可不传，SDK将自动使用默认值
+
+| 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
+| ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
+| rooms_code             | string   | 是       | (无)       | 投屏码（共享码）                                                   |
+| password               | string   | 否       | (无)       | 密码，如果rooms没开启密码，可以不填 |
+| enable_second_monitor  | bool     | 否       | false      | 是否使用扩展屏，仅桌面端有效 |
+* json参数示例：
+```
+{
+    "rooms_code":"ABCDEF",
+    "password":"8888",
+    "enable_second_monitor":true
+}
+```
+* `PreMeetingCallback.onActionResult`回调说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|action_type |int |这处为`startScreenCast` |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |错误说明 |
 
 
 ### queryMeetingInfo
@@ -954,30 +981,6 @@ msg内容示例：
 * 函数说明：打开会议本地录制文件所在文件夹
 * 返回值说明：无
 * 参数说明：`queryLocalRecordInfo`接口返回数据中的“path_id”字段
-
-
-### quickMeeting
-* 函数形式：**void quickMeeting()**
-* 可用版本：>= 3.6.200
-* 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
-* 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
-* 参数说明：无
-
-
-### quickMeetingByJson
-* 函数形式：**void quickMeetingByJson(string json_param)**
-* 可用版本：>= 3.6.300
-* 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
-* 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
-* 参数说明：
-  * json_param必须是json标准字符串，可以包含一下字段，其他字段会自动忽略
-  * meeting_window_title，会中窗口标题，如果不传或者为空，则以initialize接口的app_name为准，长度限制36（标准ASCII码算1，其它算2），超过会截断
-* 参数示例：
-```
-{
-    "meeting_window_title":"会中窗口"
-}
-```
 
 
 ### enableAddressBookCallback
