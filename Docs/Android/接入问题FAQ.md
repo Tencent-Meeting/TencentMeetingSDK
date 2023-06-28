@@ -71,11 +71,15 @@
       }
   ```
 
+  ​		**如果集成SDK后出现mmkv组件版本冲突，原因为 mmkv库与会议SDK使用的mmkv-static不兼容导致，请使用mmkv-static，mmkv-static版本尽量使用新版**
+  
+  
+  
   - Q:javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
     A:
-
+  
     -  在src/main/res/xml下新增network_security_config.xml
-
+  
     ```xml
     <?xml version="1.0" encoding="utf-8"?>
     	<network-security-config>
@@ -85,9 +89,9 @@
     	</network-security-config>
     
     ```
-
+  
     - 然后在AndroidManifest.xml中设置networkSecurityConfig
-
+  
     ```xml
     <manifest ... >
           <application android:networkSecurityConfig="@xml/network_security_config">
@@ -99,20 +103,20 @@
     - 其他字段含义可以参考Android官网：https://developer.android.com/training/articles/security-config?hl=zh-cn
 
   - Q:Didn't find class "androidx.localbroadcastmanager.content.LocalBroadcastManager"  && java.lang.NoClassDefFoundError: Failed resolution of: Landroidx/swiperefreshlayout/widget/CircularProgressDrawable; 当出现这个两个类找不到的时候，可能是com.google.android.material:material的版本过高导致的，
-
+  
   - A:在gradle的dependencies添加下面依赖：
-
+  
   ```
           implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
           implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
   ```
 
   - 应用异常退出后，切换账号登录异常或者登录的账号信息错误
-
+  
   > 如果登录的账号发生切换，请主动调用登出接口以清空登录态，再重新尝试登录。
-
+  
   - Q:收到分享回调显示透明activity但是背景activity显示的不是会中界面
   - A:请联系技术支持
-
+  
   - Q:在会中界面点击管理成员发生crash，错误为java.lang.ClassNotFoundException: Didn't find class "android.support.v7.widget.RecyclerView$ItemDecoration"
   - A:在gradle.properties中添加android.enableJetifier=true
