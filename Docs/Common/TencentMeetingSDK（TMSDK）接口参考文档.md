@@ -47,7 +47,7 @@
     + [joinMeeting](#joinmeeting)
     + [joinMeetingByJSON](#joinmeetingbyjson)
     + [quickMeeting](#quickmeeting)
-    + [quickMeetingByJson](#quickmeetingbyjson)
+    + [quickMeetingByJSON](#quickmeetingbyjson)
     + [showPreMeetingView](#showpremeetingview)
     + [showHistoricalMeetingView](#showhistoricalmeetingview)
     + showMeetingDetailView【即将移除】
@@ -703,8 +703,8 @@ AuthenticationCallback 需实现以下成员函数：
 * 参数说明：无
 
 
-### quickMeetingByJson
-* 函数形式：**void quickMeetingByJson(string json_param)**
+### quickMeetingByJSON
+* 函数形式：**void quickMeetingByJSON(string json_param)**
 * 可用版本：>= 3.6.300
 * 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
