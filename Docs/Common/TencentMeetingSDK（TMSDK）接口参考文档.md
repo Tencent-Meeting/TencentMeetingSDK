@@ -720,16 +720,15 @@ AuthenticationCallback 需实现以下成员函数：
 
 
 ### showPreMeetingView
-* 函数形式：**void showPreMeetingView(TMSDKMainUIStyle style = kTMSDKMainUIStyleClassic)**
+* 函数形式：**void showPreMeetingView(int style)**
 * 函数说明：显示SDK自带的会前界面。登录完成后，才可调用。
 * 返回值说明：无
-* 参数说明：style默认为kTMSDKMainUIStyleClassic
-  ```
-  enum TMSDKMainUIStyle {
-    kTMSDKMainUIStyleClassic,
-    kTMSDKMainUIStyleTabs
-  }
-  ```
+* 参数说明：
+
+  |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+  |---|---|---|---|---|
+  |style |int |否 |0 |面板样式：<br>0: 经典样式<br>1: 多Tab样式 |
+
 
 
 ### showHistoricalMeetingView
