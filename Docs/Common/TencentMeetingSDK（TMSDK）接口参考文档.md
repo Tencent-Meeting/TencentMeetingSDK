@@ -14,6 +14,7 @@
     + [showLogs](#showlogs)
     + [collectLogFiles](#collectlogfiles)
     + [setProxyInfo](#setproxyinfo)
+    + [getProxyInfo](#getproxyinfo)
     + [handleSchema](#handleschema)
     + [addUsersWithParam](#adduserswithparam)
     + [parseMeetingInfoUrl](#parsemeetinginfourl)
@@ -120,6 +121,7 @@
 | 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串 |
 |2023-05-19|3.12.100|由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口|
 | 2023-06-10 | 3.12.201 | 添加投屏接口 |
+| 2023-07-10 | 3.12.301 | 添加查询代理接口 |
 
 
 # 1. SDK使用说明
@@ -326,6 +328,11 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
    }
 ```
 
+### getProxyInfo
+* 函数形式：**string getProxyInfo()**
+* 可用版本：桌面端 >= 3.12.301，移动端 >= 3.12.301
+* 函数说明：查询代理信息，返回代理信息的json串
+* 返回值说明：参见setProxyInfo接口
 
 ### handleSchema
 * 函数形式：**void handleSchema (string schema_url)**
