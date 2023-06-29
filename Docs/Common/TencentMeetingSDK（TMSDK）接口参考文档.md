@@ -331,7 +331,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### getProxyInfo
 * 函数形式：**string getProxyInfo()**
 * 可用版本：桌面端 >= 3.12.301，移动端 >= 3.12.301
-* 函数说明：查询代理信息，返回代理信息的json串
+* 函数说明：查询代理信息，返回代理信息的json串，如果未初始化会返回空字符串
 * 返回值说明：参见setProxyInfo接口
 
 ### handleSchema
