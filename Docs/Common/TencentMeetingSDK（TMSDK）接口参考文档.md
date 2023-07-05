@@ -124,6 +124,7 @@
 | 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串 |
 |2023-05-19|3.12.100|由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口|
 | 2023-06-10 | 3.12.201 | 添加投屏接口 |
+| 2023-07-05 | 3.12.300 | 添加字幕接口 |
 
 
 # 1. SDK使用说明
@@ -1639,11 +1640,11 @@ data内容示例
 | kTMSDKErrorJoinMeetingFail|-1046| 加入会议失败 |onActionResult()|
 | kTMSDKErrorShareFail|-1047| 共享屏幕失败 |onActionResult()|
 | kTMSDKErrorActionRefused | -1048  | 拒绝此操作 ||
-| kTMSDKErrorNoHostPermission |-1049| 没有主持人权限 ｜updateCaptionSettings() |
+| kTMSDKErrorNoHostPermission |-1049| 没有主持人权限 |updateCaptionSettings() |
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
 | kTMSDKErrorAddUsersUidIsEmpty |-2005| 通讯录回调，新增用户失败，用户数据为空 |onAddUsersResult()|
 | kTMSDKErrorAddUsersMembersModelError |-2006| 通讯录回调，新增用户失败，SDK 内部错误 |onAddUsersResult()|
-| kTMSDKErrorInnerCallError |-3001| 内部子调用出错 ｜ updateCaptionSettings()|
+| kTMSDKErrorInnerCallError |-3001| 内部子调用出错 | updateCaptionSettings()|
 
