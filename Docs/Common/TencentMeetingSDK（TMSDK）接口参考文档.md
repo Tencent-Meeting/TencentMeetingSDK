@@ -81,6 +81,8 @@
     + [enableCustomOrgInfo](#enablecustomorginfo)
     + [setCustomOrgInfo](#setcustomorginfo)
     + [manipulateWindow](#manipulatewindow)
+    + [switchCaption](#switchcaption)
+    + [updateCaptionSettings](#updatecaptionsettings)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -90,6 +92,8 @@
     + [onPipModeChanged](#onpipmodechanged)
     + [onQueryCustomOrgInfo](#onquerycustomorginfo)
     + [onActionResult](#onactionresult-1)
+    + [onCaptionSwitchChanged](#oncaptionswitchchanged)
+    + [onCaptionSettingChanged](#oncaptionsettingchanged)
 
 - [6. 错误码](#6-错误码)
 
@@ -1283,6 +1287,111 @@ msg内容示例：
 }
 ```
 
+### switchCaption
+* 函数形式：**void switchCaption(bool open, Callback complete)**
+* 可用版本：>= 3.12.300
+* 函数说明：
+  * 开关会议中字幕展示组件。
+  * 调用时机：只能在会中调用。
+  * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|open |bool |是 |无 |true打开字幕，false关闭字幕 |
+|complete |Callback |是 |无 |操作结束回调block，可以为nil |
+
+* 回调说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|error |Error |平台定义Error封装类型，或者通用json字符串。操作成功时值为nil或空 |
+
+通用json格式示例：
+```json
+{
+  "result": -1015,
+  "msg": "user not in meeting"
+}
+```
+
+### updateCaptionSettings
+* 函数形式：**void updateCaptionSettings(string json_setting, Callback complete)**
+* 可用版本：>= 3.12.300
+* 函数说明：
+  * 更新字幕相关设置选项。当前支持设置“源语言”、“翻译目标语言”、“是否双语展示”。
+  * 调用时机：只能在会中调用。部分设置项需要主持人才能调用修改。
+  * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
+  * 参数`json_setting`可以同时携带多种设置调用，每个设置项之间彼此独立执行调用，因此可能存在一部分设置修改成功，一部分设置修改失败的情形，具体细节见回调错误说明。
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|json_setting |string |是 |无 |json格式，见后文字幕设置项格式说明 |
+|complete |Callback |是 |无 |操作结束回调block，可以为nil |
+
+字幕设置项json格式示例：
+```json
+{
+  // 源语言设置
+  "source_language": "zh",
+  // 目标语言设置
+  "target_language": "en",
+  // 双语展示
+  "simultaneous_display": true
+}
+```
+
+如果某个设置项key不存在于输入json字符串中，那相对应的设置项不会被修改。
+
+源语言和目标语言设置值为字符串，当前后台支持相关设置：
+* 源语言：空字符串=不修改设置；`mx`=自动识别；`zh`=中文；`en`=英文；`ja`=日语。
+* 翻译目标语言：空字符串=不修改设置；`NO_TRANSLATE`=不翻译；`zh`=中文；`en`=英文；`ja`=日语。
+
+> **注意**：不是所有的源语言和目标语言设置组合都被支持，例如当源语言设置为英文时，目标语言日语当前是不受支持的。此组合支持情况由后台管理。尝试设置不受支持的语言将会返回错误。
+
+* 回调说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|error |Error |平台定义Error封装类型，或者通用json字符串。操作成功时值为nil或空 |
+
+以通用json格式示例，回调结果有三种情况：
+
+1. 调用成功，回调error对象为nil，或者json：
+```json
+{
+  "result": 0
+}
+```
+
+2. 通用失败，回调error对象中code为错误码，msg为简单字符串描述错误信息；或者json：
+```json
+{
+  "result": -1015,
+  "msg": "user not in meeting"
+}
+```
+
+3. 子设置项有部分内容（或全部）设置失败，此时回调error对象中code错误码固定为`kTMSDKErrorInnerCallError`，msg以json对象格式返回具体出错的子设置项信息；或者json：
+```json
+{
+  "result": -3001,
+  "msg": {
+    "source_language": {
+      "result": -1008,
+      "msg": "string value required"
+    },
+    "target_language": {
+      "result": 20000, /* server business code, not defined by SDK */
+      "msg": "server request error"
+    }
+  }
+}
+```
+
 
 ## 5.2 InMeetingCallback 回调代理
 
@@ -1438,6 +1547,52 @@ data内容示例
 |:-:|---|:--|---|
 | SetCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
 
+### onCaptionSwitchChanged
+* 函数形式：**void onCaptionSwitchChanged(bool is_open)**
+* 可用版本：>=3.12.300
+* 说明：当字幕开关状态变化时回调，无论该变化是由用户UI操作引起的还是调用API接口设置引起的。
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|is_open |bool |新的字幕开关状态，true为开启，false为关闭 |
+
+### onCaptionSettingChanged
+* 函数形式：**void onCaptionSettingChanged(string json_info)**
+* 可用版本：>=3.12.300
+* 说明：当字幕任意设置项被修改更新后回调，无论该变化是由用户UI操作引起的还是调用API接口设置引起的。
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|json_info |string |json格式，详情见后文说明 |
+
+参数json示例格式：
+```json
+// 源语言设置变化
+{
+  "source_language": {
+    "result": 0,
+    "is_success": true,
+    "source_lang": "zh"
+  }
+}
+
+// 目标语言设置变化
+{
+  "target_language": {
+    "result": 0,
+    "is_success": true,
+    "target_lang": "en"
+  }
+}
+
+// 双语显示设置变化
+{
+  "simultaneous_display": {
+    "is_success": true,
+    "display": true
+  }
+}
+```
 
 
 # 6. 错误码
@@ -1484,9 +1639,11 @@ data内容示例
 | kTMSDKErrorJoinMeetingFail|-1046| 加入会议失败 |onActionResult()|
 | kTMSDKErrorShareFail|-1047| 共享屏幕失败 |onActionResult()|
 | kTMSDKErrorActionRefused | -1048  | 拒绝此操作 ||
+| kTMSDKErrorNoHostPermission |-1049| 没有主持人权限 ｜updateCaptionSettings() |
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
 | kTMSDKErrorAddUsersUidIsEmpty |-2005| 通讯录回调，新增用户失败，用户数据为空 |onAddUsersResult()|
 | kTMSDKErrorAddUsersMembersModelError |-2006| 通讯录回调，新增用户失败，SDK 内部错误 |onAddUsersResult()|
+| kTMSDKErrorInnerCallError |-3001| 内部子调用出错 ｜ updateCaptionSettings()|
 
