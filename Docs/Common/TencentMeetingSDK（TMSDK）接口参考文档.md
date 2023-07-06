@@ -1305,17 +1305,12 @@ msg内容示例：
 
 * 回调说明：
 
+`Callback`签名：**void (\*)(int code, string msg)**
+
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
-|error |Error |平台定义Error封装类型，或者通用json字符串。操作成功时值为nil或空 |
-
-通用json格式示例：
-```json
-{
-  "result": -1015,
-  "msg": "user not in meeting"
-}
-```
+|code |int |操作结果错误码，0表示成功 |
+|msg |string |操作出错时包含错误信息，操作成功时值为nil或空 |
 
 ### updateCaptionSettings
 * 函数形式：**void updateCaptionSettings(string json_setting, Callback complete)**
@@ -1331,7 +1326,7 @@ msg内容示例：
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |json_setting |string |是 |无 |json格式，见后文字幕设置项格式说明 |
-|complete |Callback |是 |无 |操作结束回调block，可以为nil |
+|complete |Callback |是 |无 |操作结束回调block，可以为nil。详细说明见回调说明部分 |
 
 字幕设置项json格式示例：
 ```json
@@ -1355,40 +1350,33 @@ msg内容示例：
 
 * 回调说明：
 
+`Callback`签名：**void (\*)(int code, string msg)**
+
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
-|error |Error |平台定义Error封装类型，或者通用json字符串。操作成功时值为nil或空 |
+|code |int |操作结果错误码，0表示成功 |
+|msg |string |json格式字符串，操作出错时包含错误信息，具体格式见后文，操作成功时值为nil或空 |
 
-以通用json格式示例，回调结果有三种情况：
+当`code != 0`（即操作失败）时，`msg`格式（json）有两种情况：
 
-1. 调用成功，回调error对象为nil，或者json：
+1. 通用失败，回调函数参数`code`为错误码，`msg`对象包含一个`error`节点携带错误信息描述：
 ```json
+// 当用户未入会时，code=kTMSDKErrorNotInMeeting，此时msg为通用错误描述：
 {
-  "result": 0
+  "error": "user not in meeting"
 }
 ```
 
-2. 通用失败，回调error对象中code为错误码，msg为简单字符串描述错误信息；或者json：
+2. 子设置项有部分内容（或全部）设置失败，此时回调函数参数`code`错误码固定为`kTMSDKErrorInnerCallError`，msg以json对象格式返回具体出错的子设置项信息：
 ```json
 {
-  "result": -1015,
-  "msg": "user not in meeting"
-}
-```
-
-3. 子设置项有部分内容（或全部）设置失败，此时回调error对象中code错误码固定为`kTMSDKErrorInnerCallError`，msg以json对象格式返回具体出错的子设置项信息；或者json：
-```json
-{
-  "result": -3001,
-  "msg": {
-    "source_language": {
-      "result": -1008,
-      "msg": "string value required"
-    },
-    "target_language": {
-      "result": 20000, /* server business code, not defined by SDK */
-      "msg": "server request error"
-    }
+  "source_language": {
+    "result": -1008,
+    "msg": "string value required"
+  },
+  "target_language": {
+    "result": 20000, /* server business code, not defined by SDK */
+    "msg": "server request error"
   }
 }
 ```
