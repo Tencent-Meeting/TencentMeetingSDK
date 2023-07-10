@@ -1435,6 +1435,8 @@ data内容示例
 | 接口 | action_type | 说明 | msg值说明 |
 |:-:|---|:--|---|
 | SetCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
+| - | 1002   | InMeetingService回调，从主会场进入到分组会议中触发 | JSON字符串，包括会议码和回调描述信息 |
+| - | 1003   | InMeetingService回调，从分组会议切换到主会场中触发 | JSON字符串，包括会议码和回调描述信息 |
 
 
 
