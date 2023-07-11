@@ -1295,6 +1295,7 @@ msg内容示例：
   * 开关会议中字幕展示组件。
   * 调用时机：只能在会中调用。
   * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
+  * 当前暂不支持并发调用，当前一次调用的回调`complete`未返回时，后续调用将直接触发`kTMSDKErrorDuplicatedCall`错误回调。
 * 返回值说明：无
 * 参数说明：
 
@@ -1320,6 +1321,7 @@ msg内容示例：
   * 调用时机：只能在会中调用。部分设置项需要主持人才能调用修改。
   * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
   * 参数`json_setting`可以同时携带多种设置调用，每个设置项之间彼此独立执行调用，因此可能存在一部分设置修改成功，一部分设置修改失败的情形，具体细节见回调错误说明。
+  * 当前暂不支持并发调用，当前一次调用的回调`complete`未返回时，后续调用将直接触发`kTMSDKErrorDuplicatedCall`错误回调。
 * 返回值说明：无
 * 参数说明：
 
@@ -1635,4 +1637,5 @@ data内容示例
 | kTMSDKErrorAddUsersUidIsEmpty |-2005| 通讯录回调，新增用户失败，用户数据为空 |onAddUsersResult()|
 | kTMSDKErrorAddUsersMembersModelError |-2006| 通讯录回调，新增用户失败，SDK 内部错误 |onAddUsersResult()|
 | kTMSDKErrorInnerCallError |-3001| 内部子调用出错 | updateCaptionSettings()|
+| kTMSDKErrorDuplicatedCall |-3002| 接口正在执行中，不允许重复调用 ||
 
