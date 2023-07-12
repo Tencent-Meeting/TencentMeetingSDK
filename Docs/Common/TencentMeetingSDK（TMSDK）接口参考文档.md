@@ -83,6 +83,7 @@
     + [manipulateWindow](#manipulatewindow)
     + [switchCaption](#switchcaption)
     + [updateCaptionSettings](#updatecaptionsettings)
+    + [getScreenShareInfo](#getScreenShareInfo)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -1383,6 +1384,30 @@ msg内容示例：
 }
 ```
 
+### getScreenShareInfo
+* 函数形式：**string getScreenShareInfo()**
+* 可用版本：>= 3.12.3
+* 函数说明：获取当前屏幕共享信息
+* 返回值说明：
+  * 未初始化前不可调用，非法调用返回空字符串。
+  * 初始化未登录调用时，msg返回错误信息，code返回-1006。
+  * 不在会中调用时，msg返回错误信息，code返回-1015。
+  * 调用成功后，code返回0，data中返回当前屏幕共享的信息。
+* 示例：
+```json
+{
+    "code": 0, 
+    "data": {"share_status": 0, "share_type": 0},
+    "msg": ""
+}
+```
+|名称 |说明 |
+|:--|--|
+|code  |接口调用状态码，成功调用时返回0|
+|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前屏幕共享信息，其中包括：<br>share_status: 0代表未共享，1代表共享中，2代表暂停共享. <br>share_type: 0代表未共享，1代表共享单个应用的window，2代表共享整个屏幕，3代表共享白板，4代表共享外接视频源，5代表共享部分屏幕区域，6代表其他共享类型|
+|msg   |接口未成功调用时返回错误信息，接口成功调用时返回空字符串|
+* 参数说明：无
+
 
 ## 5.2 InMeetingCallback 回调代理
 
@@ -1509,7 +1534,7 @@ data内容示例
 ### onActionResult
 * 函数形式：**void onActionResult(int action_type, int code, String msg)**
 * 可用版本：>= 3.6.401
-* 说明：接入方主动调用SDK会中接口的各种行为操作的回调，仅通过sdk接口调用产生
+* 说明：接入方主动调用SDK会中接口的各种行为操作的回调
 
 |参数名 |参数类型 |参数说明 |
 |-|-|-|
@@ -1537,6 +1562,18 @@ data内容示例
 | 接口 | action_type | 说明 | msg值说明 |
 |:-:|---|:--|---|
 | SetCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
+| 屏幕共享回调 | 1002   | 会中屏幕共享功能开启/关闭回调 | JSON字符串，格式参考下例说明 |
+
+* 屏幕共享回调msg的JSON串为如下格式：
+```json
+{ 
+    "data": { //data中参数说明同`InMeetingService.getScreenShareInfo`
+       "share_status": 0,
+       "share_type": 0
+    },
+    "description": "..." 
+}
+```
 
 ### onCaptionSwitchChanged
 * 函数形式：**void onCaptionSwitchChanged(bool is_open)**
@@ -1631,6 +1668,9 @@ data内容示例
 | kTMSDKErrorShareFail|-1047| 共享屏幕失败 |onActionResult()|
 | kTMSDKErrorActionRefused | -1048  | 拒绝此操作 ||
 | kTMSDKErrorNoHostPermission |-1049| 没有主持人权限 |updateCaptionSettings() |
+| kTMSDKErrorUpStreamLimited |-1050| 屏幕共享上游操作受限 | onActionResult()|
+| kTMSDKErrorUpStreamNoPermission |-1051| 屏幕共享上游操作无权限 | onActionResult()|
+| kTMSDKErrorUserNoPermissionStopLive |-1052| 屏幕共享用户不允许停止直播 | onActionResult()|
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
