@@ -84,6 +84,7 @@
     + [switchCaption](#switchcaption)
     + [updateCaptionSettings](#updatecaptionsettings)
     + [getScreenShareInfo](#getScreenShareInfo)
+    + [getMeetingWindowInfo](#getMeetingWindowInfo)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -1408,6 +1409,44 @@ msg内容示例：
 |msg   |接口未成功调用时返回错误信息，接口成功调用时返回空字符串|
 * 参数说明：无
 
+### getMeetingWindowInfo
+
+* 函数形式：**string getMeetingWindowInfo()**
+* 可用版本：>= 3.12.3
+* 函数说明：
+  * 支持获取会中信息 1、窗口位置和尺寸
+* 返回值说明：
+  * 未初始化前不可调用，非法调用返回空字符串。
+  * 不在会中调用时，msg返回错误信息，code返回-1015。
+  * 调用成功后，code返回0，data中返回会中信息。
+
+| 参数名 | 参数类型 |                           参数说明                           |
+| ------ | :------: | :----------------------------------------------------------: |
+| code   |   int    | 结果码：0表示成功；其他值表示失败，详情参考 `6. 错误码` 章节 |
+| msg    |  string  |                           结果描述                           |
+| data   |  string  |                           查询结果                           |
+
+示例：
+
+```json
+{
+  "data": {
+    "in_meeting_mode": true, //处于会中状态
+	  "in_screen_share_mode": false, //处于会中屏幕共享状态
+	  "in_meeting_min_wnd_mode": false, //处于会中窗口最小化状态
+	  "window_rect": { //会中窗口位置和尺寸，仅会中且非屏幕共享状态、会中窗口最小化状态支持获取有效窗口位置和尺寸信息
+	   "height": 0, 
+	   "width": 0, 
+	   "x": 0, 
+	   "y": 0 
+	  }
+  },
+  "code": 0,
+  "msg": "",
+}
+```
+
+* 参数说明：无
 
 ## 5.2 InMeetingCallback 回调代理
 
