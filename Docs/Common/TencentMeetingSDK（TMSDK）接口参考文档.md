@@ -14,6 +14,7 @@
     + [showLogs](#showlogs)
     + [collectLogFiles](#collectlogfiles)
     + [setProxyInfo](#setproxyinfo)
+    + [getProxyInfo](#getproxyinfo)
     + [handleSchema](#handleschema)
     + [addUsersWithParam](#adduserswithparam)
     + [parseMeetingInfoUrl](#parsemeetinginfourl)
@@ -121,12 +122,12 @@
 | 2022-09-26 | 3.6.203 | 新增接口：quickMeetingByJSON；quickMeeting和JoinMeeting接口添加meeting_window_title参数                                                            |
 | 2022-11-18 | 3.6.300 | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口                                                                  |
 | 2023-02-06 | 3.6.401 | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
-| 2023-02-22 | 3.12.100 | 新增接口：新增反初始化(uninitialize)接口**beta版本**，本地录制相关接口，解析入会短链接接口，收集日志文件的接口 |
-| 2023-02-24 | 3.6.401  | 新增回调：新增会中通用动作和接口回调onActionResult函数       |
-| 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串 |
-|2023-05-19|3.12.100|由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口|
-| 2023-06-10 | 3.12.201 | 添加投屏接口 |
-| 2023-07-05 | 3.12.300 | 添加字幕接口 |
+| 2023-02-22 | 3.12.100 | 新增接口：新增反初始化(uninitialize)接口**beta版本**，本地录制相关接口，解析入会短链接接口，收集日志文件的接口                                                                    |
+| 2023-02-24 | 3.6.401  | 新增回调：新增会中通用动作和接口回调onActionResult函数                                                                                                    |
+| 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串                                                                                          |
+| 2023-05-19 |3.12.100| 由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口                                                                  |
+| 2023-06-10 | 3.12.201 | 添加投屏接口                                                                                                                                |
+| 2023-07-31 | 3.12.300 | 添加字幕接口,查询代理接口                                                                                                                               |
 
 
 # 1. SDK使用说明
@@ -333,6 +334,11 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
    }
 ```
 
+### getProxyInfo
+* 函数形式：**string getProxyInfo()**
+* 可用版本：桌面端 >= 3.12.301，移动端 >= 3.12.301
+* 函数说明：查询代理信息，返回代理信息的json串，如果未初始化会返回空字符串
+* 返回值说明：参见setProxyInfo接口
 
 ### handleSchema
 * 函数形式：**void handleSchema (string schema_url)**
