@@ -1687,6 +1687,7 @@ data内容示例
 | kTMSDKErrorChildProcessCrash | -1020  | 子进程退出 |onResetSDKState()|
 | kTMSDKErrorMultiAccountLoginConflict|-1021| A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
 | kTMSDKErrorJoinMeetingServiceFailed|-1022| 服务端拒绝入会，可能是频繁入会请求、输入无效会议号、会议已结束等情况，请用返回错误码和错误描述联系官方 | onJoinMeeting()|
+| kTMSDKErrorActionConflict|-1023| 调用操作与当前状态不匹配 | onActionResult()|
 | kTMSDKErrorInvalidJsonString|-1024| 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()|
 | kTMSDKErrorProxySetFailed|-1025| 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
 | kTMSDKErrorScreenShareOpenNotSupportSwitchPip|-1027| 正在屏幕共享&用户在等候室&app处于后台无法进入悬浮窗状态 |onSwitchPiPResult()|
