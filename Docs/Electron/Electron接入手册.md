@@ -591,6 +591,22 @@ wemeet_sdk.GetMeetingWindowInfo()
 
 说明：\>= 3.12版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
+### 44、开关会议中字幕展示组件
+
+```
+wemeet_sdk.SwitchCaption(open, callback)
+```
+
+说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 45、更新字幕相关设置选项
+
+```
+wemeet_sdk.UpdateCaptionSettings(json_setting, callbak)
+```
+
+说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
 ## 4. 回调说明
 
 除GetSDKVersion、GetCurrentSDKToken、RefreshSDKToken、GetUrlWithLoginStatus外，其它所有接口的调用都是通过异步回调返回的，这里异步回调的返回值是一个标准的json字符串，格式如下：
