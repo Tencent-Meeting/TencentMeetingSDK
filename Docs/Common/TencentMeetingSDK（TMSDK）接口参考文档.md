@@ -84,8 +84,8 @@
     + [manipulateWindow](#manipulatewindow)
     + [switchCaption](#switchcaption)
     + [updateCaptionSettings](#updatecaptionsettings)
-    + [getScreenShareInfo](#getScreenShareInfo)
-    + [getMeetingWindowInfo](#getMeetingWindowInfo)
+    + [getScreenShareInfo](#getscreenshareinfo)
+    + [getMeetingWindowInfo](#getmeetingwindowinfo)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -127,7 +127,7 @@
 | 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串                                                                                          |
 | 2023-05-19 |3.12.100| 由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口                                                                  |
 | 2023-06-10 | 3.12.201 | 添加投屏接口                                                                                                                                |
-| 2023-07-31 | 3.12.300 | 添加字幕接口,查询代理接口                                                                                                                               |
+| 2023-07-31 | 3.12.300 | 添加字幕接口，查询代理接口，查询屏幕共享接口，查询会中窗口信息接口                                                                                                     |
 
 
 # 1. SDK使用说明
@@ -300,7 +300,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### setProxyInfo
 * 函数形式：**void setProxyInfo(string proxy_info)**
 * 可用版本：桌面端 >= 3.0.106，移动端 >= 3.6.300
-* 函数说明：设置代理接口，通过json串传递代理配置参数；调用结果通过`SDKCallback.onSetProxyResult`回调通知。
+* 函数说明：设置代理接口，通过JSON字符串传递代理配置参数；调用结果通过`SDKCallback.onSetProxyResult`回调通知。
 * 返回值说明：无
 * 参数说明：
   * proxy_info 是以JSON串的格式输入,JSON中字段的类型需与下面表格中保持一致:
@@ -334,11 +334,13 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
    }
 ```
 
+
 ### getProxyInfo
 * 函数形式：**string getProxyInfo()**
-* 可用版本：桌面端 >= 3.12.301，移动端 >= 3.12.301
-* 函数说明：查询代理信息，返回代理信息的json串，如果未初始化会返回空字符串
-* 返回值说明：参见setProxyInfo接口
+* 可用版本：>= 3.12.300
+* 函数说明：查询代理信息，返回代理信息的JSON字符串，如果未初始化会返回空字符串
+* 返回值说明：参见`setProxyInfo`接口参数格式
+
 
 ### handleSchema
 * 函数形式：**void handleSchema (string schema_url)**
@@ -1267,7 +1269,7 @@ msg内容示例:
 ```
 
 ### manipulateWindow
-* 函数形式：**void manipulateWindow(string action)**
+* 函数形式：**void manipulateWindow(string action_param)**
 * 可用版本：>= 3.12.201
 * 适用平台：windows & mac
 * 函数说明：
@@ -1277,11 +1279,11 @@ msg内容示例:
 * 返回值说明：无
 * 参数说明：
 
-|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|---|---|---|---|---|
-|action |string 为json串 |是 |无 | {"action":0} 进入全屏；{"action":1} 退出全屏  |
+|参数名 |参数类型 |参数必填 |参数默认值 | 参数说明                                               |
+|---|---|---|---|----------------------------------------------------|
+|action_param |string |是 |无 | 为JSON字符串: `{"action":0}` 进入全屏；`{"action":1}` 退出全屏 |
 
-* 回调说明：
+* `InMeetingCallback.onActionResult`回调说明：
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
@@ -1296,6 +1298,7 @@ msg内容示例：
 }
 ```
 
+
 ### switchCaption
 * 函数形式：**void switchCaption(bool open, Callback complete)**
 * 可用版本：>= 3.12.300
@@ -1303,14 +1306,14 @@ msg内容示例：
   * 开关会议中字幕展示组件。
   * 调用时机：只能在会中调用。
   * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
-  * 当前暂不支持并发调用，当前一次调用的回调`complete`未返回时，后续调用将直接触发`kTMSDKErrorDuplicatedCall`错误回调。
+  * 当前暂不支持并发调用，在前一次调用的回调`complete`未返回时，后续调用将直接触发`kTMSDKErrorDuplicatedCall`错误回调。
 * 返回值说明：无
 * 参数说明：
 
-|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|---|---|---|---|---|
-|open |bool |是 |无 |true打开字幕，false关闭字幕 |
-|complete |Callback |是 |无 |操作结束回调block，可以为nil |
+|参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明               |
+|---|---|------|-------|--------------------|
+|open |bool | 是    | 无     | true打开字幕，false关闭字幕 |
+|complete |Callback | 否    | 空     | 操作结束回调block，可以为空   |
 
 * 回调说明：
 
@@ -1319,7 +1322,8 @@ msg内容示例：
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
 |code |int |操作结果错误码，0表示成功 |
-|msg |string |操作出错时包含错误信息，操作成功时值为nil或空 |
+|msg |string |操作出错时包含错误信息，操作成功时值为空 |
+
 
 ### updateCaptionSettings
 * 函数形式：**void updateCaptionSettings(string json_setting, Callback complete)**
@@ -1329,16 +1333,16 @@ msg内容示例：
   * 调用时机：只能在会中调用。部分设置项需要主持人才能调用修改。
   * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
   * 参数`json_setting`可以同时携带多种设置调用，每个设置项之间彼此独立执行调用，因此可能存在一部分设置修改成功，一部分设置修改失败的情形，具体细节见回调错误说明。
-  * 当前暂不支持并发调用，当前一次调用的回调`complete`未返回时，后续调用将直接触发`kTMSDKErrorDuplicatedCall`错误回调。
+  * 当前暂不支持并发调用，在前一次调用的回调`complete`未返回时，后续调用将直接触发`kTMSDKErrorDuplicatedCall`错误回调。
 * 返回值说明：无
 * 参数说明：
 
-|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|---|---|---|---|---|
-|json_setting |string |是 |无 |json格式，见后文字幕设置项格式说明 |
-|complete |Callback |是 |无 |操作结束回调block，可以为nil。详细说明见回调说明部分 |
+|参数名 |参数类型 | 参数必填 | 参数默认值 |参数说明 |
+|---|---|------|-------|---|
+|json_setting |string | 是    | 无     |json格式，见后文字幕设置项格式说明 |
+|complete |Callback | 否    | 空     |操作结束回调block，可以为nil。详细说明见回调说明部分 |
 
-字幕设置项json格式示例：
+`json_setting`字幕设置项json格式示例：
 ```json
 {
   // 源语言设置
@@ -1362,10 +1366,10 @@ msg内容示例：
 
 `Callback`签名：**void (\*)(int code, string msg)**
 
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|code |int |操作结果错误码，0表示成功 |
-|msg |string |json格式字符串，操作出错时包含错误信息，具体格式见后文，操作成功时值为nil或空 |
+|参数名 |参数类型 | 参数说明                                   |
+|---|---|----------------------------------------|
+|code |int | 操作结果错误码，0表示成功                          |
+|msg |string | 操作成功时值为空, 操作出错时为包含错误信息的JSON字符串，具体格式见后文 |
 
 当`code != 0`（即操作失败）时，`msg`格式（json）有两种情况：
 
@@ -1391,68 +1395,91 @@ msg内容示例：
 }
 ```
 
+
 ### getScreenShareInfo
 * 函数形式：**string getScreenShareInfo()**
-* 可用版本：>= 3.12.3
+* 可用版本：>= 3.12.300
 * 函数说明：获取当前屏幕共享信息
+* 参数说明：无
 * 返回值说明：
+  * 返回值是JSON格式的字符串
   * 未初始化前不可调用，非法调用返回空字符串。
   * 初始化未登录调用时，msg返回错误信息，code返回-1006。
   * 不在会中调用时，msg返回错误信息，code返回-1015。
   * 调用成功后，code返回0，data中返回当前屏幕共享的信息。
-* 示例：
+* 返回值示例和说明：
 ```json
 {
-    "code": 0, 
-    "data": {"share_status": 0, "share_type": 0},
-    "msg": ""
+    "code": 0,  //接口调用状态码，成功调用时返回0  
+    "data": {   //接口未成功调用时不返回data信息；正常调用时返回当前屏幕共享信息
+      "share_status": 0,  //共享状态 
+      "share_type": 0     //共享类型   
+    },  
+    "msg": ""  //接口未成功调用时返回错误信息，接口成功调用时返回空字符串
 }
 ```
-|名称 |说明 |
-|:--|--|
-|code  |接口调用状态码，成功调用时返回0|
-|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前屏幕共享信息，其中包括：<br>share_status: 0代表未共享，1代表共享中，2代表暂停共享. <br>share_type: 0代表未共享，1代表共享单个应用的window，2代表共享整个屏幕，3代表共享白板，4代表共享外接视频源，5代表共享部分屏幕区域，6代表其他共享类型|
-|msg   |接口未成功调用时返回错误信息，接口成功调用时返回空字符串|
-* 参数说明：无
+* `data`字段说明
+  - share_status: 
+
+    | share_type值 | 说明   |
+    |:------------|------|
+    | 0           | 未共享  |
+    | 1           | 共享中  |
+    | 2           | 暂停共享 |
+
+  - share_type: 
+  
+    | share_type值 | 说明            |
+    |:------------|---------------|
+    | 0           | 未共享           |
+    | 1           | 共享单个应用的window |
+    | 2           | 共享整个屏幕        |
+    | 3           | 共享白板          |
+    | 4           | 共享外接视频源       |
+    | 5           | 共享部分屏幕区域      |
+    | 6           | 其他共享类型        |
+
+
 
 ### getMeetingWindowInfo
 
 * 函数形式：**string getMeetingWindowInfo()**
-* 可用版本：>= 3.12.3
-* 函数说明：
-  * 支持获取会中信息 1、窗口位置和尺寸
+* 可用版本：>= 3.12.300
+* 适用平台：windows & mac
+* 函数说明：支持获取会中信息，例如：窗口位置和尺寸
+* 参数说明：无
 * 返回值说明：
+  * 返回值是JSON格式的字符串
   * 未初始化前不可调用，非法调用返回空字符串。
-  * 不在会中调用时，msg返回错误信息，code返回-1015。
-  * 调用成功后，code返回0，data中返回会中信息。
+  * 不在会中调用时，`msg`返回错误信息，`code`返回-1015。
+  * 调用成功后，`code`返回0，`data`中返回会中信息。
 
-| 参数名 | 参数类型 |                           参数说明                           |
-| ------ | :------: | :----------------------------------------------------------: |
-| code   |   int    | 结果码：0表示成功；其他值表示失败，详情参考 `6. 错误码` 章节 |
-| msg    |  string  |                           结果描述                           |
-| data   |  string  |                           查询结果                           |
+| 参数名  |  参数类型  |                参数说明                |
+|------|:------:|:----------------------------------:|
+| code |  int   | 结果码：0表示成功；其他值表示失败，详情参考 `6. 错误码` 章节 |
+| msg  | string |                结果描述                |
+| data | string |                查询结果                |
 
-示例：
+* 返回值示例和说明：
 
 ```json
 {
   "data": {
     "in_meeting_mode": true, //处于会中状态
-	  "in_screen_share_mode": false, //处于会中屏幕共享状态
-	  "in_meeting_min_wnd_mode": false, //处于会中窗口最小化状态
-	  "window_rect": { //会中窗口位置和尺寸，仅会中且非屏幕共享状态、会中窗口最小化状态支持获取有效窗口位置和尺寸信息
-	   "height": 0, 
-	   "width": 0, 
-	   "x": 0, 
-	   "y": 0 
-	  }
+    "in_screen_share_mode": false, //处于会中屏幕共享状态
+    "in_meeting_min_wnd_mode": false, //处于会中窗口最小化状态
+    "window_rect": { //会中窗口位置和尺寸，仅会中且非屏幕共享状态、会中窗口最小化状态支持获取有效窗口位置和尺寸信息
+      "height": 0,
+      "width": 0,
+      "x": 0,
+      "y": 0
+    }
   },
   "code": 0,
-  "msg": "",
+  "msg": ""
 }
 ```
 
-* 参数说明：无
 
 ## 5.2 InMeetingCallback 回调代理
 
@@ -1577,20 +1604,17 @@ data内容示例
 ```
 
 ### onActionResult
-* 函数形式：**void onActionResult(int action_type, int code, String msg)**
+* 函数形式：**void onActionResult(int action_type, int code, string msg)**
 * 可用版本：>= 3.6.401
 * 说明：接入方主动调用SDK会中接口的各种行为操作的回调
 
-|参数名 |参数类型 |参数说明 |
-|-|-|-|
-|action_type |int |表示何种行为操作，详情参考下表 |
-|code |int |结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
-|msg |string |结果信息，格式为JSON串，详情参考下表 |
+|参数名 |参数类型 | 参数说明                           |
+|-|-|--------------------------------|
+|action_type |int | 表示何种行为操作，详情参考下表                |
+|code |int | 结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
+|msg |string | 结果信息，格式为JSON字符串，详情参考下表         |
 
-其中，msg的JSON串为如下格式：
-
-
-
+其中，msg的JSON格式如下：
 ```json
 {
     "data": { //回调数据，该data字段为可选字段，一些场景下不存在data字段。
@@ -1600,25 +1624,27 @@ data内容示例
 }
 ```
 
-
-
-其中`action_type`值对应的含义如下：
+* `action_type`值对应的含义如下：
 
 | 接口 | action_type | 说明 | msg值说明 |
 |:-:|---|:--|---|
 | SetCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
 | 屏幕共享回调 | 1002   | 会中屏幕共享功能开启/关闭回调 | JSON字符串，格式参考下例说明 |
 
-* 屏幕共享回调msg的JSON串为如下格式：
+* `屏幕共享回调`时，msg的JSON格式：
+
+  `data`的数据格式同`InMeetingService.getScreenShareInfo`返回值中的`data`
+
 ```json
 { 
-    "data": { //data中参数说明同`InMeetingService.getScreenShareInfo`
+    "data": { // data的数据格式同InMeetingService.getScreenShareInfo返回值中的data
        "share_status": 0,
        "share_type": 0
     },
     "description": "..." 
 }
 ```
+
 
 ### onCaptionSwitchChanged
 * 函数形式：**void onCaptionSwitchChanged(bool is_open)**
@@ -1628,6 +1654,7 @@ data内容示例
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
 |is_open |bool |新的字幕开关状态，true为开启，false为关闭 |
+
 
 ### onCaptionSettingChanged
 * 函数形式：**void onCaptionSettingChanged(string json_info)**
