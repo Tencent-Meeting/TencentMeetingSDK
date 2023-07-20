@@ -1740,15 +1740,15 @@ data内容示例
 | kTMSDKErrorJoinMeetingFail|-1046| 加入会议失败 |onActionResult()|
 | kTMSDKErrorShareFail|-1047| 共享屏幕失败 |onActionResult()|
 | kTMSDKErrorActionRefused | -1048  | 拒绝此操作 ||
-| kTMSDKErrorNoHostPermission |-1049| 没有主持人权限 |updateCaptionSettings() |
 | kTMSDKErrorUpStreamLimited |-1050| 屏幕共享上游操作受限 | onActionResult()|
 | kTMSDKErrorUpStreamNoPermission |-1051| 屏幕共享上游操作无权限 | onActionResult()|
 | kTMSDKErrorUserNoPermissionStopLive |-1052| 屏幕共享用户不允许停止直播 | onActionResult()|
+| kTMSDKErrorNoHostPermission |-1053| 没有主持人权限 |updateCaptionSettings() |
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
 | kTMSDKErrorAddUsersUidIsEmpty |-2005| 通讯录回调，新增用户失败，用户数据为空 |onAddUsersResult()|
 | kTMSDKErrorAddUsersMembersModelError |-2006| 通讯录回调，新增用户失败，SDK 内部错误 |onAddUsersResult()|
 | kTMSDKErrorInnerCallError |-3001| 内部子调用出错 | updateCaptionSettings()|
-| kTMSDKErrorDuplicatedCall |-3002| 接口正在执行中，不允许重复调用 ||
+| kTMSDKErrorDuplicatedCall |-3002| 接口正在执行中，不允许重复调用 |updateCaptionSettings()|
 
