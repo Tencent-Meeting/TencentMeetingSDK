@@ -607,6 +607,14 @@ wemeet_sdk.UpdateCaptionSettings(json_setting, callbak)
 
 说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
+### 46、获取当前屏幕共享信息
+
+```
+wemeet_sdk.GetScreenShareInfo()
+```
+
+说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
 ## 4. 回调说明
 
 除GetSDKVersion、GetCurrentSDKToken、RefreshSDKToken、GetUrlWithLoginStatus外，其它所有接口的调用都是通过异步回调返回的，这里异步回调的返回值是一个标准的json字符串，格式如下：
