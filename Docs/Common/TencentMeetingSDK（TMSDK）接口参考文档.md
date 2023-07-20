@@ -1045,7 +1045,7 @@ PreMeetingCallback 需实现以下成员函数：
 ### onActionResult
 * 函数形式：**void onActionResult(int action_type, int code, string msg)**
 * 可用版本：>= 2.18.2
-* 说明：用户调用SDK接口的各种行为操作的回调,仅通过sdk接口调用会产生。
+* 说明：各种行为操作的通知回调。
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
@@ -1055,22 +1055,22 @@ PreMeetingCallback 需实现以下成员函数：
 
 其中`action_type`值对应的含义如下：
 
-| 名称 | 行为操作的枚举值 | 说明 | msg值说明 |
-|---|---|---|---|
-| ShowPreMeetingView | 0    | 打开会前界面的回调 | 结果的说明文字 |
-| ShowScreenCastView | 1    | 打开无线投屏界面的回调 | 结果的说明文字 |
-| ShowHistoricalMeetingView | 2    | 打开历史会议界面的回调| 结果的说明文字 |
-| ShowMeetingDetailView | 3    | 打开某一会议详情的回调 | 结果的说明文字 |
-| ShowJoinMeetingView | 4    | 打开加入会议界面的回调 | 结果的说明文字 |
-| ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 | 结果的说明文字 |
-| ShowMeetingSettingView | 6    | 打开会议设置界面的回调 | 结果的说明文字 |
-| ClosePreMeetingView | 7    | 关闭会前界面的回调 | 结果的说明文字 |
-| QueryMeetingInfo | 8    | 调用`PreMeetingService.queryMeetingInfo`查询会议信息的回调 | 回调的JSON数据，格式参考`queryMeetingInfo`函数说明|
-| InviteUsers | 9   | 预定会议邀请用户的回调(私有化专用) | -- |
+| 名称 | 行为操作的枚举值 | 说明 | msg值说明                                   |
+|---|---|---|------------------------------------------|
+| ShowPreMeetingView | 0    | 打开会前界面的回调 | 结果的说明文字                                  |
+| ShowScreenCastView | 1    | 打开无线投屏界面的回调 | 结果的说明文字                                  |
+| ShowHistoricalMeetingView | 2    | 打开历史会议界面的回调| 结果的说明文字                                  |
+| ShowMeetingDetailView | 3    | 打开某一会议详情的回调 | 结果的说明文字                                  |
+| ShowJoinMeetingView | 4    | 打开加入会议界面的回调 | 结果的说明文字                                  |
+| ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 | 结果的说明文字                                  |
+| ShowMeetingSettingView | 6    | 打开会议设置界面的回调 | 结果的说明文字                                  |
+| ClosePreMeetingView | 7    | 关闭会前界面的回调 | 结果的说明文字                                  |
+| QueryMeetingInfo | 8    | 调用`PreMeetingService.queryMeetingInfo`查询会议信息的回调 | 回调的JSON数据，格式参考`queryMeetingInfo`函数说明     |
+| InviteUsers | 9   | 预定会议邀请用户的回调(私有化专用) | --                                       |
 | QueryLocalRecordInfo |10 | 调用`PreMeetingService.queryLocalRecordInfo`查询会议本地录制信息的回调 | 回调的JSON数据，格式参考`queryLocalRecordInfo`函数说明 |
-| Transcode | 11   | 转码回调 | -- |
-| DecodeUltrasoundScreenCastCode | 12   | 获取超声波投屏码回调 | -- |
-| StartScreenCast | 13   | 投屏回调 | -- |
+| Transcode | 11   | 转码回调 | --                                       |
+| DecodeUltrasoundScreenCastCode | 12   | 获取超声波投屏码回调 | 回调的JSON数据，格式参考`decodeUltrasoundScreenCastCode`函数说明                     |
+| StartScreenCast | 13   | 投屏回调 | 回调的JSON数据，格式参考`startScreenCast`函数说明                                       |
 
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
@@ -1606,7 +1606,7 @@ data内容示例
 ### onActionResult
 * 函数形式：**void onActionResult(int action_type, int code, string msg)**
 * 可用版本：>= 3.6.401
-* 说明：接入方主动调用SDK会中接口的各种行为操作的回调
+* 说明：会中的各种行为操作的通知回调
 
 |参数名 |参数类型 | 参数说明                           |
 |-|-|--------------------------------|
