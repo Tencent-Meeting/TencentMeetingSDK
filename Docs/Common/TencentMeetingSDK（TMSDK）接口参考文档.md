@@ -1614,32 +1614,47 @@ data内容示例
 |code |int | 结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
 |msg |string | 结果信息，格式为JSON字符串，详情参考下表         |
 
-其中，msg的JSON格式如下：
+
+* `action_type`值对应的含义如下：
+
+|        操作        | action_type | 说明                                              | msg值说明                                              |
+|:----------------:|---|:------------------------------------------------|-----------------------------------------------------|
+| setCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
+| manipulateWindow | 1001   | 会中调用`InMeetingService.manipulateWindow`操作会中窗口   | JSON字符串，格式参考`InMeetingService.manipulateWindow`函数说明 |
+|       屏幕共享       | 1002   | 会中屏幕共享功能开启/关闭回调    | JSON字符串，格式参考下面示例说明 |
+|    主会场与分组会议切换    | 1003   | 主会场和分组会议切换触发     | JSON字符串，格式参考下面示例说明 |
+
+
+ * `msg`的JSON通用格式如下：
 ```json
 {
-    "data": { //回调数据，该data字段为可选字段，一些场景下不存在data字段。
+    "data": {  //回调核心数据，内容取决于action_type，该data字段为可选，一些场景下不存在data字段。
         ...
     },
     "description": "..." //接口调用结果的描述
 }
 ```
 
-* `action_type`值对应的含义如下：
+* `屏幕共享`时，`msg`的数据格式示例与说明：
 
-| 接口 | action_type | 说明 | msg值说明 |
-|:-:|---|:--|---|
-| SetCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
-| 屏幕共享回调 | 1002   | 会中屏幕共享功能开启/关闭回调 | JSON字符串，格式参考下例说明 |
-
-* `屏幕共享回调`时，msg的JSON格式：
-
-  `data`的数据格式同`InMeetingService.getScreenShareInfo`返回值中的`data`
-
+  JSON数据中`data`的数据格式同`InMeetingService.getScreenShareInfo`返回值中的`data`：
+    
 ```json
 { 
     "data": { // data的数据格式同InMeetingService.getScreenShareInfo返回值中的data
        "share_status": 0,
        "share_type": 0
+    },
+    "description": "..." 
+}
+```
+    
+* `主会场与分组会议切换`时，`msg`的数据格式示例与说明： 
+```json
+{ 
+    "data": { 
+       "breakout_room_status": 0, //0：进入分组，1：退出分组
+       "meeting_code": “...”
     },
     "description": "..." 
 }
