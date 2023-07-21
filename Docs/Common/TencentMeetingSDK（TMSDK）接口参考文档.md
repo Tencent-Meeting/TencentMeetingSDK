@@ -128,6 +128,7 @@
 | 2023-05-19 |3.12.100| 由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口                                                                  |
 | 2023-06-10 | 3.12.201 | 添加投屏接口                                                                                                                                |
 | 2023-07-31 | 3.12.300 | 添加字幕接口，查询代理接口，查询屏幕共享接口，查询会中窗口信息接口                                                                                                     |
+| 2023-07-31 | 3.12.300 | 添加隐私授权未授权错误码 |
 
 
 # 1. SDK使用说明
@@ -1638,7 +1639,7 @@ data内容示例
 * `屏幕共享`时，`msg`的数据格式示例与说明：
 
   JSON数据中`data`的数据格式同`InMeetingService.getScreenShareInfo`返回值中的`data`：
-    
+  
 ```json
 { 
     "data": { // data的数据格式同InMeetingService.getScreenShareInfo返回值中的data
@@ -1648,7 +1649,7 @@ data内容示例
     "description": "..." 
 }
 ```
-    
+
 * `主会场与分组会议切换`时，`msg`的数据格式示例与说明： 
 ```json
 { 
@@ -1759,6 +1760,7 @@ data内容示例
 | kTMSDKErrorUpStreamNoPermission |-1051| 屏幕共享上游操作无权限 | onActionResult()|
 | kTMSDKErrorUserNoPermissionStopLive |-1052| 屏幕共享用户不允许停止直播 | onActionResult()|
 | kTMSDKErrorNoHostPermission |-1053| 没有主持人权限 |updateCaptionSettings() |
+| kTMSDKErrorPrivacyPermissionNotGranted |-1054| 隐私授权未授权 |onSDKInitializeResult()|
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
