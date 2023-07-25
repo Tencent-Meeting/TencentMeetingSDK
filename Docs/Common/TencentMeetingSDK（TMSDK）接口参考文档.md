@@ -1657,7 +1657,7 @@ data内容示例
        "breakout_room_status": 0, //0：进入分组，1：退出分组
        "meeting_code": “...”
     },
-    "description": "..." 
+    "description": "..."
 }
 ```
 
