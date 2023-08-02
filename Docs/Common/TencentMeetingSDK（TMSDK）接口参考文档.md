@@ -1728,6 +1728,7 @@ data内容示例
 | kTMSDKErrorInvalidNickname | -1010     | 无效入会的用户名称，可能长度过长导致 |onJoinMeeting()|
 | kTMSDKErrorDuplicateInitCall | -1011   | 重复调用初始化  |onSDKInitializeResult()|
 | kTMSDKErrorAccountAlreadyLogin | -1012 | 账号已登录，重复登录调用 |onLogin()|
+| kTMSDKErrorSdkNotInitialized | -1013  | SDK未初始化 |refreshSDKToken()|
 | kTMSDKErrorNotInMeeting | -1015  | 非入会状态调用会议中接口 |onLeaveMeeting()|
 | kTMSDKErrorCancelJoin | -1016  | 用户手动取消入会 |onJoinMeeting()|
 | kTMSDKErrorIsLogining | -1017  | 正在登录过程中的重复登录调用 |onLogin()|
