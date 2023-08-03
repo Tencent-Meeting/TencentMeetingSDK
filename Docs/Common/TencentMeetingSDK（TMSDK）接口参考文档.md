@@ -1720,7 +1720,7 @@ data内容示例
 | kTMSDKErrorInvalidAuthCode | -1002     | 无效AuthCode，登录参数不正确或IDaaS登录跳转存在问题   |onLogin()|
 | kTMSDKErrorLogoutInMeeting | -1003     | 正在会议中，无法退出，需先离会 |onLogout()|
 | kTMSDKErrorLoginAborted | -1004        | ~~多次调用Login时，前次登录过程取消~~(已废弃) |onLogin()|
-| kTMSDKErrorUnknown | -1005             | 未知错误，出现该错误码，请与官方联系 |onLogin()|
+| kTMSDKErrorUnknown | -1005             | 登录场景、投屏码投屏、屏幕共享状态获取等异常抛出未知错误，出现该错误码，请与官方联系 |onLogin()、onActionResult()|
 | kTMSDKErrorUserNotAuthorized | -1006   | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
 | kTMSDKErrorUserInMeeting | -1007       | 已在会议中。在入会、投屏、显示会前界面的时候，用户在会议中，需先退出。 |onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
 | kTMSDKErrorInvalidParam | -1008        | 无效参数。在调用SDK接口时，包含无效参数。 |onSDKError()、onSDKInitializeResult()、onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onActionResult()、onSDKInitializeResult()|
