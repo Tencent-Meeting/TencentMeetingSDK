@@ -1762,6 +1762,7 @@ data内容示例
 | kTMSDKErrorUserNoPermissionStopLive |-1052| 屏幕共享用户不允许停止直播 | onActionResult()|
 | kTMSDKErrorNoHostPermission |-1053| 没有主持人权限 |updateCaptionSettings() |
 | kTMSDKErrorPrivacyPermissionNotGranted |-1054| 隐私授权未授权 |onSDKInitializeResult()|
+| kTMSDKErrorCannotEnterPipWhenDialogShowing |-1055| 无法在有弹窗状态下进入浮窗模式 |onSwitchPiPResult()|
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
