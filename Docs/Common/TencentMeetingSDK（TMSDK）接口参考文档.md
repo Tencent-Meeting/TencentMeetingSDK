@@ -14,6 +14,7 @@
     + [showLogs](#showlogs)
     + [collectLogFiles](#collectlogfiles)
     + [setProxyInfo](#setproxyinfo)
+    + [getProxyInfo](#getproxyinfo)
     + [handleSchema](#handleschema)
     + [addUsersWithParam](#adduserswithparam)
     + [parseMeetingInfoUrl](#parsemeetinginfourl)
@@ -46,22 +47,22 @@
     + [setCallback](#setcallback-1)
     + [joinMeeting](#joinmeeting)
     + [joinMeetingByJSON](#joinmeetingbyjson)
+    + [quickMeeting](#quickmeeting)
+    + [quickMeetingByJSON](#quickmeetingbyjson)
     + [showPreMeetingView](#showpremeetingview)
-    + [showScreenCastView](#showscreencastview)
     + [showHistoricalMeetingView](#showhistoricalmeetingview)
     + showMeetingDetailView【即将移除】
     + [showMeetingDetailView](#showmeetingdetailview)
     + [showJoinMeetingView](#showjoinmeetingview)
     + [showScheduleMeetingView](#showschedulemeetingview)
     + [showMeetingSettingView](#showmeetingsettingview)
-    + [decodeUltrasoundScreenCastCode](#decodeUltrasoundScreenCastCode)
-    + [startScreenCast](#startScreenCast)
+    + [showScreenCastView](#showscreencastview)
+    + [decodeUltrasoundScreenCastCode](#decodeultrasoundscreencastcode)
+    + [startScreenCast](#startscreencast)
     + [queryMeetingInfo](#querymeetinginfo)
     + [queryLocalRecordInfo](#querylocalrecordinfo)
     + [transcode](#transcode)
     + [showRecordFolder](#showrecordfolder)
-    + [quickMeeting](#quickmeeting)
-    + [quickMeetingByJson](#quickmeetingbyjson)
     + [enableAddressBookCallback](#enableaddressbookcallback)
   * [4.2 PreMeetingCallback 回调代理](#42-premeetingcallback-回调代理)
     + [onJoinMeeting](#onjoinmeeting)
@@ -80,7 +81,11 @@
     + [getCurrentMeetingInfo](#getcurrentmeetinginfo)
     + [enableCustomOrgInfo](#enablecustomorginfo)
     + [setCustomOrgInfo](#setcustomorginfo)
-    + [manipulateWindow](#manipulateWindow)
+    + [manipulateWindow](#manipulatewindow)
+    + [switchCaption](#switchcaption)
+    + [updateCaptionSettings](#updatecaptionsettings)
+    + [getScreenShareInfo](#getscreenshareinfo)
+    + [getMeetingWindowInfo](#getmeetingwindowinfo)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -90,6 +95,8 @@
     + [onPipModeChanged](#onpipmodechanged)
     + [onQueryCustomOrgInfo](#onquerycustomorginfo)
     + [onActionResult](#onactionresult-1)
+    + [onCaptionSwitchChanged](#oncaptionswitchchanged)
+    + [onCaptionSettingChanged](#oncaptionsettingchanged)
 
 - [6. 错误码](#6-错误码)
 
@@ -115,11 +122,13 @@
 | 2022-09-26 | 3.6.203 | 新增接口：quickMeetingByJSON；quickMeeting和JoinMeeting接口添加meeting_window_title参数                                                            |
 | 2022-11-18 | 3.6.300 | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口                                                                  |
 | 2023-02-06 | 3.6.401 | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
-| 2023-02-22 | 3.12.100 | 新增接口：新增反初始化(uninitialize)接口**beta版本**，本地录制相关接口，解析入会短链接接口，收集日志文件的接口 |
-| 2023-02-24 | 3.6.401  | 新增回调：新增会中通用动作和接口回调onActionResult函数       |
-| 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串 |
-|2023-05-19|3.12.100|由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口|
-| 2023-06-10 | 3.12.201 | 添加投屏接口 |
+| 2023-02-22 | 3.12.100 | 新增接口：新增反初始化(uninitialize)接口**beta版本**，本地录制相关接口，解析入会短链接接口，收集日志文件的接口                                                                    |
+| 2023-02-24 | 3.6.401  | 新增回调：新增会中通用动作和接口回调onActionResult函数                                                                                                    |
+| 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串                                                                                          |
+| 2023-05-19 |3.12.100| 由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口                                                                  |
+| 2023-06-10 | 3.12.201 | 添加投屏接口                                                                                                                                |
+| 2023-07-31 | 3.12.300 | 添加字幕接口，查询代理接口，查询屏幕共享接口，查询会中窗口信息接口                                                                                                     |
+| 2023-07-31 | 3.12.300 | 添加隐私授权未授权错误码 |
 
 
 # 1. SDK使用说明
@@ -292,7 +301,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### setProxyInfo
 * 函数形式：**void setProxyInfo(string proxy_info)**
 * 可用版本：桌面端 >= 3.0.106，移动端 >= 3.6.300
-* 函数说明：设置代理接口，通过json串传递代理配置参数；调用结果通过`SDKCallback.onSetProxyResult`回调通知。
+* 函数说明：设置代理接口，通过JSON字符串传递代理配置参数；调用结果通过`SDKCallback.onSetProxyResult`回调通知。
 * 返回值说明：无
 * 参数说明：
   * proxy_info 是以JSON串的格式输入,JSON中字段的类型需与下面表格中保持一致:
@@ -325,6 +334,13 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
     "password" : ""
    }
 ```
+
+
+### getProxyInfo
+* 函数形式：**string getProxyInfo()**
+* 可用版本：>= 3.12.300
+* 函数说明：查询代理信息，返回代理信息的JSON字符串，如果未初始化会返回空字符串
+* 返回值说明：参见`setProxyInfo`接口参数格式
 
 
 ### handleSchema
@@ -695,85 +711,41 @@ AuthenticationCallback 需实现以下成员函数：
 ```
 
 
+### quickMeeting
+* 函数形式：**void quickMeeting()**
+* 可用版本：>= 3.6.200
+* 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
+* 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
+* 参数说明：无
+
+
+### quickMeetingByJSON
+* 函数形式：**void quickMeetingByJSON(string json_param)**
+* 可用版本：>= 3.6.300
+* 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
+* 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
+* 参数说明：
+  * json_param必须是json标准字符串，可以包含一下字段，其他字段会自动忽略
+  * meeting_window_title，会中窗口标题，如果不传或者为空，则以initialize接口的app_name为准，长度限制36（标准ASCII码算1，其它算2），超过会截断
+* 参数示例：
+```
+{
+    "meeting_window_title":"会中窗口"
+}
+```
+
+
 ### showPreMeetingView
-* 函数形式：**void showPreMeetingView(TMSDKMainUIStyle style = kTMSDKMainUIStyleClassic)**
+* 函数形式：**void showPreMeetingView(int style)**
 * 函数说明：显示SDK自带的会前界面。登录完成后，才可调用。
 * 返回值说明：无
-* 参数说明：style默认为kTMSDKMainUIStyleClassic
-  ```
-  enum TMSDKMainUIStyle {
-    kTMSDKMainUIStyleClassic,
-    kTMSDKMainUIStyleTabs
-  }
-  ```
-
-
-### showScreenCastView
-* 函数形式：**void showScreenCastView()**
-* 函数说明：显示SDK自带的投屏码输入界面。登录完成后，才可调用。
-* 返回值说明：无
-* 参数说明：无
-
-### decodeUltrasoundScreenCastCode
-* 函数形式：**void decodeUltrasoundScreenCastCode()**
-* 可用版本：>= 3.12.201（**仅支持桌面端，移动端暂不支持**）
-* 函数说明：
- - 获取超声波投屏码
- - Mac端需要麦克风权限
- - 需要登录完成，不可在会中调用
- - 因为设备和环境等原因，可能获取不到
- - 该接口回调详见4.2中onActionResult说明
-* 参数说明：无
-* `PreMeetingCallback.onActionResult`回调说明：
-
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|action_type |int |这处为`decodeUltrasoundScreenCastCode` |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
-|msg |string |结果的JSON信息，示例如下 |
-
-msg内容示例：
-```json
-{
-    "data": {
-          "rooms_code": "ABCDEF"
-     },
-     "description": ""
-}
-```
-
-### startScreenCast
-* 函数形式：**void startScreenCast(string json_param)**
-* 可用版本：>= 3.12.201
-* 函数说明：
-  - 开始投屏，如调用成功会自动入会，然后弹出投屏选择界面
-  - Mac端需要屏幕录制权限
-  - 需要登录完成，不可在会中调用
-  - 该接口回调详见4.2中onActionResult说明
 * 参数说明：
-  * JSON中字段如下表
-  * 除非必填字段外，其他字段可不传，SDK将自动使用默认值
 
-| 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
-| ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
-| rooms_code             | string   | 是       | (无)       | 投屏码（共享码）                                                   |
-| password               | string   | 否       | (无)       | 密码，如果rooms没开启密码，可以不填 |
-| enable_second_monitor  | bool     | 否       | false      | 是否使用扩展屏，仅桌面端有效 |
-* json参数示例：
-```
-{
-    "rooms_code":"ABCDEF",
-    "password":"8888",
-    "enable_second_monitor":true
-}
-```
-* `PreMeetingCallback.onActionResult`回调说明：
+  |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+  |---|---|---|---|---|
+  |style |int |否 |0 |面板样式：<br>0: 经典样式<br>1: 多Tab样式 |
 
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|action_type |int |这处为`startScreenCast` |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
-|msg |string |错误说明 |
+
 
 ### showHistoricalMeetingView
 * 函数形式：**void showHistoricalMeetingView()**
@@ -842,6 +814,76 @@ msg内容示例：
 * 函数说明：显示设置管理界面。初始化后，才可调用。
 * 返回值说明：无
 * 参数说明：无
+
+
+### showScreenCastView
+* 函数形式：**void showScreenCastView()**
+* 函数说明：显示SDK自带的投屏码输入界面。登录完成后，才可调用。
+* 返回值说明：无
+* 参数说明：无
+
+
+### decodeUltrasoundScreenCastCode
+* 函数形式：**void decodeUltrasoundScreenCastCode()**
+* 可用版本：>= 3.12.201（**仅支持桌面端，移动端暂不支持**）
+* 函数说明：
+- 获取超声波投屏码
+- Mac端需要麦克风权限
+- 需要登录完成，不可在会中调用
+- 因为设备和环境等原因，可能获取不到
+- 该接口回调详见4.2中onActionResult说明
+* 参数说明：无
+* `PreMeetingCallback.onActionResult`回调说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|action_type |int |这处为`decodeUltrasoundScreenCastCode` |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |结果的JSON信息，示例如下 |
+
+msg内容示例：
+```json
+{
+    "data": {
+          "rooms_code": "ABCDEF"
+     },
+     "description": ""
+}
+```
+
+
+### startScreenCast
+* 函数形式：**void startScreenCast(string json_param)**
+* 可用版本：>= 3.12.201
+* 函数说明：
+  - 开始投屏，如调用成功会自动入会，然后弹出投屏选择界面
+  - Mac端需要屏幕录制权限
+  - 需要登录完成，不可在会中调用
+  - 该接口回调详见4.2中onActionResult说明
+* 参数说明：
+  * JSON中字段如下表
+  * 除非必填字段外，其他字段可不传，SDK将自动使用默认值
+
+| 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
+| ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
+| rooms_code             | string   | 是       | (无)       | 投屏码（共享码）                                                   |
+| password               | string   | 否       | (无)       | 密码，如果rooms没开启密码，可以不填 |
+| enable_second_monitor  | bool     | 否       | false      | 是否使用扩展屏，仅桌面端有效 |
+* json参数示例：
+```
+{
+    "rooms_code":"ABCDEF",
+    "password":"8888",
+    "enable_second_monitor":true
+}
+```
+* `PreMeetingCallback.onActionResult`回调说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|action_type |int |这处为`startScreenCast` |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |错误说明 |
 
 
 ### queryMeetingInfo
@@ -956,30 +998,6 @@ msg内容示例：
 * 参数说明：`queryLocalRecordInfo`接口返回数据中的“path_id”字段
 
 
-### quickMeeting
-* 函数形式：**void quickMeeting()**
-* 可用版本：>= 3.6.200
-* 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
-* 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
-* 参数说明：无
-
-
-### quickMeetingByJson
-* 函数形式：**void quickMeetingByJson(string json_param)**
-* 可用版本：>= 3.6.300
-* 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
-* 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
-* 参数说明：
-  * json_param必须是json标准字符串，可以包含一下字段，其他字段会自动忽略
-  * meeting_window_title，会中窗口标题，如果不传或者为空，则以initialize接口的app_name为准，长度限制36（标准ASCII码算1，其它算2），超过会截断
-* 参数示例：
-```
-{
-    "meeting_window_title":"会中窗口"
-}
-```
-
-
 ### enableAddressBookCallback
 * 函数形式：**void enableAddressBookCallback(bool enable, bool show)**
 * 可用版本：>= 3.6.401
@@ -1028,7 +1046,7 @@ PreMeetingCallback 需实现以下成员函数：
 ### onActionResult
 * 函数形式：**void onActionResult(int action_type, int code, string msg)**
 * 可用版本：>= 2.18.2
-* 说明：用户调用SDK接口的各种行为操作的回调,仅通过sdk接口调用会产生。
+* 说明：各种行为操作的通知回调。
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
@@ -1038,22 +1056,22 @@ PreMeetingCallback 需实现以下成员函数：
 
 其中`action_type`值对应的含义如下：
 
-| 名称 | 行为操作的枚举值 | 说明 | msg值说明 |
-|---|---|---|---|
-| ShowPreMeetingView | 0    | 打开会前界面的回调 | 结果的说明文字 |
-| ShowScreenCastView | 1    | 打开无线投屏界面的回调 | 结果的说明文字 |
-| ShowHistoricalMeetingView | 2    | 打开历史会议界面的回调| 结果的说明文字 |
-| ShowMeetingDetailView | 3    | 打开某一会议详情的回调 | 结果的说明文字 |
-| ShowJoinMeetingView | 4    | 打开加入会议界面的回调 | 结果的说明文字 |
-| ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 | 结果的说明文字 |
-| ShowMeetingSettingView | 6    | 打开会议设置界面的回调 | 结果的说明文字 |
-| ClosePreMeetingView | 7    | 关闭会前界面的回调 | 结果的说明文字 |
-| QueryMeetingInfo | 8    | 调用`PreMeetingService.queryMeetingInfo`查询会议信息的回调 | 回调的JSON数据，格式参考`queryMeetingInfo`函数说明|
-| InviteUsers | 9   | 预定会议邀请用户的回调(私有化专用) | -- |
+| 名称 | 行为操作的枚举值 | 说明 | msg值说明                                   |
+|---|---|---|------------------------------------------|
+| ShowPreMeetingView | 0    | 打开会前界面的回调 | 结果的说明文字                                  |
+| ShowScreenCastView | 1    | 打开无线投屏界面的回调 | 结果的说明文字                                  |
+| ShowHistoricalMeetingView | 2    | 打开历史会议界面的回调| 结果的说明文字                                  |
+| ShowMeetingDetailView | 3    | 打开某一会议详情的回调 | 结果的说明文字                                  |
+| ShowJoinMeetingView | 4    | 打开加入会议界面的回调 | 结果的说明文字                                  |
+| ShowScheduleMeetingView | 5    | 打开预定会议界面的回调 | 结果的说明文字                                  |
+| ShowMeetingSettingView | 6    | 打开会议设置界面的回调 | 结果的说明文字                                  |
+| ClosePreMeetingView | 7    | 关闭会前界面的回调 | 结果的说明文字                                  |
+| QueryMeetingInfo | 8    | 调用`PreMeetingService.queryMeetingInfo`查询会议信息的回调 | 回调的JSON数据，格式参考`queryMeetingInfo`函数说明     |
+| InviteUsers | 9   | 预定会议邀请用户的回调(私有化专用) | --                                       |
 | QueryLocalRecordInfo |10 | 调用`PreMeetingService.queryLocalRecordInfo`查询会议本地录制信息的回调 | 回调的JSON数据，格式参考`queryLocalRecordInfo`函数说明 |
-| Transcode | 11   | 转码回调 | -- |
-| DecodeUltrasoundScreenCastCode | 12   | 获取超声波投屏码回调 | -- |
-| StartScreenCast | 13   | 投屏回调 | -- |
+| Transcode | 11   | 转码回调 | --                                       |
+| DecodeUltrasoundScreenCastCode | 12   | 获取超声波投屏码回调 | 回调的JSON数据，格式参考`decodeUltrasoundScreenCastCode`函数说明                     |
+| StartScreenCast | 13   | 投屏回调 | 回调的JSON数据，格式参考`startScreenCast`函数说明                                       |
 
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
@@ -1252,7 +1270,7 @@ msg内容示例:
 ```
 
 ### manipulateWindow
-* 函数形式：**void manipulateWindow(string action)**
+* 函数形式：**void manipulateWindow(string action_param)**
 * 可用版本：>= 3.12.201
 * 适用平台：windows & mac
 * 函数说明：
@@ -1262,11 +1280,11 @@ msg内容示例:
 * 返回值说明：无
 * 参数说明：
 
-|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|---|---|---|---|---|
-|action |string 为json串 |是 |无 | {"action":0} 进入全屏；{"action":1} 退出全屏  |
+|参数名 |参数类型 |参数必填 |参数默认值 | 参数说明                                               |
+|---|---|---|---|----------------------------------------------------|
+|action_param |string |是 |无 | 为JSON字符串: `{"action":0}` 进入全屏；`{"action":1}` 退出全屏 |
 
-* 回调说明：
+* `InMeetingCallback.onActionResult`回调说明：
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
@@ -1278,6 +1296,188 @@ msg内容示例：
 ```json
 {
      "description": ""
+}
+```
+
+
+### switchCaption
+* 函数形式：**void switchCaption(bool open, Callback complete)**
+* 可用版本：>= 3.12.300
+* 函数说明：
+  * 开关会议中字幕展示组件。
+  * 调用时机：只能在会中调用。
+  * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
+  * 当前暂不支持并发调用，在前一次调用的回调`complete`未返回时，后续调用将直接触发`kTMSDKErrorDuplicatedCall`错误回调。
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明               |
+|---|---|------|-------|--------------------|
+|open |bool | 是    | 无     | true打开字幕，false关闭字幕 |
+|complete |Callback | 否    | 空     | 操作结束回调block，可以为空   |
+
+* 回调说明：
+
+`Callback`签名：**void (\*)(int code, string msg)**
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|code |int |操作结果错误码，0表示成功 |
+|msg |string |操作出错时包含错误信息，操作成功时值为空 |
+
+
+### updateCaptionSettings
+* 函数形式：**void updateCaptionSettings(string json_setting, Callback complete)**
+* 可用版本：>= 3.12.300
+* 函数说明：
+  * 更新字幕相关设置选项。当前支持设置“源语言”、“翻译目标语言”、“是否双语展示”。
+  * 调用时机：只能在会中调用。部分设置项需要主持人才能调用修改。
+  * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
+  * 参数`json_setting`可以同时携带多种设置调用，每个设置项之间彼此独立执行调用，因此可能存在一部分设置修改成功，一部分设置修改失败的情形，具体细节见回调错误说明。
+  * 当前暂不支持并发调用，在前一次调用的回调`complete`未返回时，后续调用将直接触发`kTMSDKErrorDuplicatedCall`错误回调。
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 | 参数必填 | 参数默认值 |参数说明 |
+|---|---|------|-------|---|
+|json_setting |string | 是    | 无     |json格式，见后文字幕设置项格式说明 |
+|complete |Callback | 否    | 空     |操作结束回调block，可以为nil。详细说明见回调说明部分 |
+
+`json_setting`字幕设置项json格式示例：
+```json
+{
+  // 源语言设置
+  "source_language": "zh",
+  // 目标语言设置
+  "target_language": "en",
+  // 双语展示
+  "simultaneous_display": true
+}
+```
+
+如果某个设置项key不存在于输入json字符串中，那相对应的设置项不会被修改。
+
+源语言和目标语言设置值为字符串，当前后台支持相关设置：
+* 源语言：空字符串=不修改设置；`mx`=自动识别；`zh`=中文；`en`=英文；`ja`=日语。
+* 翻译目标语言：空字符串=不修改设置；`NO_TRANSLATE`=不翻译；`zh`=中文；`en`=英文；`ja`=日语。
+
+> **注意**：不是所有的源语言和目标语言设置组合都被支持，例如当源语言设置为英文时，目标语言日语当前是不受支持的。此组合支持情况由后台管理。尝试设置不受支持的语言将会返回错误。
+
+* 回调说明：
+
+`Callback`签名：**void (\*)(int code, string msg)**
+
+|参数名 |参数类型 | 参数说明                                   |
+|---|---|----------------------------------------|
+|code |int | 操作结果错误码，0表示成功                          |
+|msg |string | 操作成功时值为空, 操作出错时为包含错误信息的JSON字符串，具体格式见后文 |
+
+当`code != 0`（即操作失败）时，`msg`格式（json）有两种情况：
+
+1. 通用失败，回调函数参数`code`为错误码，`msg`对象包含一个`error`节点携带错误信息描述：
+```json
+// 当用户未入会时，code=kTMSDKErrorNotInMeeting，此时msg为通用错误描述：
+{
+  "error": "user not in meeting"
+}
+```
+
+2. 子设置项有部分内容（或全部）设置失败，此时回调函数参数`code`错误码固定为`kTMSDKErrorInnerCallError`，msg以json对象格式返回具体出错的子设置项信息：
+```json
+{
+  "source_language": {
+    "result": -1008,
+    "msg": "string value required"
+  },
+  "target_language": {
+    "result": 20000, /* server business code, not defined by SDK */
+    "msg": "server request error"
+  }
+}
+```
+
+
+### getScreenShareInfo
+* 函数形式：**string getScreenShareInfo()**
+* 可用版本：>= 3.12.300
+* 函数说明：获取当前屏幕共享信息
+* 参数说明：无
+* 返回值说明：
+  * 返回值是JSON格式的字符串
+  * 未初始化前不可调用，非法调用返回空字符串。
+  * 初始化未登录调用时，msg返回错误信息，code返回-1006。
+  * 不在会中调用时，msg返回错误信息，code返回-1015。
+  * 调用成功后，code返回0，data中返回当前屏幕共享的信息。
+* 返回值示例和说明：
+```json
+{
+    "code": 0,  //接口调用状态码，成功调用时返回0  
+    "data": {   //接口未成功调用时不返回data信息；正常调用时返回当前屏幕共享信息
+      "share_status": 0,  //共享状态 
+      "share_type": 0     //共享类型   
+    },  
+    "msg": ""  //接口未成功调用时返回错误信息，接口成功调用时返回空字符串
+}
+```
+* `data`字段说明
+  - share_status: 
+
+    | share_type值 | 说明   |
+    |:------------|------|
+    | 0           | 未共享  |
+    | 1           | 共享中  |
+    | 2           | 暂停共享 |
+
+  - share_type: 
+  
+    | share_type值 | 说明            |
+    |:------------|---------------|
+    | 0           | 未共享           |
+    | 1           | 共享单个应用的window |
+    | 2           | 共享整个屏幕        |
+    | 3           | 共享白板          |
+    | 4           | 共享外接视频源       |
+    | 5           | 共享部分屏幕区域      |
+    | 6           | 其他共享类型        |
+
+
+
+### getMeetingWindowInfo
+
+* 函数形式：**string getMeetingWindowInfo()**
+* 可用版本：>= 3.12.300
+* 适用平台：windows & mac
+* 函数说明：支持获取会中信息，例如：窗口位置和尺寸
+* 参数说明：无
+* 返回值说明：
+  * 返回值是JSON格式的字符串
+  * 未初始化前不可调用，非法调用返回空字符串。
+  * 不在会中调用时，`msg`返回错误信息，`code`返回-1015。
+  * 调用成功后，`code`返回0，`data`中返回会中信息。
+
+| 参数名  |  参数类型  |                参数说明                |
+|------|:------:|:----------------------------------:|
+| code |  int   | 结果码：0表示成功；其他值表示失败，详情参考 `6. 错误码` 章节 |
+| msg  | string |                结果描述                |
+| data | string |                查询结果                |
+
+* 返回值示例和说明：
+
+```json
+{
+  "data": {
+    "in_meeting_mode": true, //处于会中状态
+    "in_screen_share_mode": false, //处于会中屏幕共享状态
+    "in_meeting_min_wnd_mode": false, //处于会中窗口最小化状态
+    "window_rect": { //会中窗口位置和尺寸，仅会中且非屏幕共享状态、会中窗口最小化状态支持获取有效窗口位置和尺寸信息
+      "height": 0,
+      "width": 0,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "code": 0,
+  "msg": ""
 }
 ```
 
@@ -1405,37 +1605,110 @@ data内容示例
 ```
 
 ### onActionResult
-* 函数形式：**void onActionResult(int action_type, int code, String msg)**
+* 函数形式：**void onActionResult(int action_type, int code, string msg)**
 * 可用版本：>= 3.6.401
-* 说明：接入方主动调用SDK会中接口的各种行为操作的回调，仅通过sdk接口调用产生
+* 说明：会中的各种行为操作的通知回调
 
-|参数名 |参数类型 |参数说明 |
-|-|-|-|
-|action_type |int |表示何种行为操作，详情参考下表 |
-|code |int |结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
-|msg |string |结果信息，格式为JSON串，详情参考下表 |
-
-其中，msg的JSON串为如下格式：
+|参数名 |参数类型 | 参数说明                           |
+|-|-|--------------------------------|
+|action_type |int | 表示何种行为操作，详情参考下表                |
+|code |int | 结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
+|msg |string | 结果信息，格式为JSON字符串，详情参考下表         |
 
 
+* `action_type`值对应的含义如下：
 
+|        操作        | action_type | 说明                                              | msg值说明                                              |
+|:----------------:|---|:------------------------------------------------|-----------------------------------------------------|
+| setCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
+| manipulateWindow | 1001   | 会中调用`InMeetingService.manipulateWindow`操作会中窗口   | JSON字符串，格式参考`InMeetingService.manipulateWindow`函数说明 |
+|       屏幕共享       | 1002   | 会中屏幕共享功能开启/关闭回调    | JSON字符串，格式参考下面示例说明 |
+|    主会场与分组会议切换    | 1003   | 主会场和分组会议切换触发     | JSON字符串，格式参考下面示例说明 |
+
+
+ * `msg`的JSON通用格式如下：
 ```json
 {
-    "data": { //回调数据，该data字段为可选字段，一些场景下不存在data字段。
+    "data": {  //回调核心数据，内容取决于action_type，该data字段为可选，一些场景下不存在data字段。
         ...
     },
     "description": "..." //接口调用结果的描述
 }
 ```
 
+* `屏幕共享`时，`msg`的数据格式示例与说明：
+
+  JSON数据中`data`的数据格式同`InMeetingService.getScreenShareInfo`返回值中的`data`：
+  
+```json
+{ 
+    "data": { // data的数据格式同InMeetingService.getScreenShareInfo返回值中的data
+       "share_status": 0,
+       "share_type": 0
+    },
+    "description": "..." 
+}
+```
+
+* `主会场与分组会议切换`时，`msg`的数据格式示例与说明： 
+```json
+{ 
+    "data": { 
+       "breakout_room_status": 0, //0：进入分组，1：退出分组
+       "meeting_code": "..."
+    },
+    "description": "..."
+}
+```
 
 
-其中`action_type`值对应的含义如下：
+### onCaptionSwitchChanged
+* 函数形式：**void onCaptionSwitchChanged(bool is_open)**
+* 可用版本：>=3.12.300
+* 说明：当字幕开关状态变化时回调，无论该变化是由用户UI操作引起的还是调用API接口设置引起的。
 
-| 接口 | action_type | 说明 | msg值说明 |
-|:-:|---|:--|---|
-| SetCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|is_open |bool |新的字幕开关状态，true为开启，false为关闭 |
 
+
+### onCaptionSettingChanged
+* 函数形式：**void onCaptionSettingChanged(string json_info)**
+* 可用版本：>=3.12.300
+* 说明：当字幕任意设置项被修改更新后回调，无论该变化是由用户UI操作引起的还是调用API接口设置引起的。
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|json_info |string |json格式，详情见后文说明 |
+
+参数json示例格式：
+```json
+// 源语言设置变化
+{
+  "source_language": {
+    "result": 0,
+    "is_success": true,
+    "source_lang": "zh"
+  }
+}
+
+// 目标语言设置变化
+{
+  "target_language": {
+    "result": 0,
+    "is_success": true,
+    "target_lang": "en"
+  }
+}
+
+// 双语显示设置变化
+{
+  "simultaneous_display": {
+    "is_success": true,
+    "display": true
+  }
+}
+```
 
 
 # 6. 错误码
@@ -1447,7 +1720,7 @@ data内容示例
 | kTMSDKErrorInvalidAuthCode | -1002     | 无效AuthCode，登录参数不正确或IDaaS登录跳转存在问题   |onLogin()|
 | kTMSDKErrorLogoutInMeeting | -1003     | 正在会议中，无法退出，需先离会 |onLogout()|
 | kTMSDKErrorLoginAborted | -1004        | ~~多次调用Login时，前次登录过程取消~~(已废弃) |onLogin()|
-| kTMSDKErrorUnknown | -1005             | 未知错误，出现该错误码，请与官方联系 |onLogin()|
+| kTMSDKErrorUnknown | -1005             | 登录场景、投屏码投屏、屏幕共享状态获取等异常抛出未知错误，出现该错误码，请与官方联系 |onLogin()、onActionResult()|
 | kTMSDKErrorUserNotAuthorized | -1006   | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
 | kTMSDKErrorUserInMeeting | -1007       | 已在会议中。在入会、投屏、显示会前界面的时候，用户在会议中，需先退出。 |onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
 | kTMSDKErrorInvalidParam | -1008        | 无效参数。在调用SDK接口时，包含无效参数。 |onSDKError()、onSDKInitializeResult()、onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onActionResult()、onSDKInitializeResult()|
@@ -1455,6 +1728,7 @@ data内容示例
 | kTMSDKErrorInvalidNickname | -1010     | 无效入会的用户名称，可能长度过长导致 |onJoinMeeting()|
 | kTMSDKErrorDuplicateInitCall | -1011   | 重复调用初始化  |onSDKInitializeResult()|
 | kTMSDKErrorAccountAlreadyLogin | -1012 | 账号已登录，重复登录调用 |onLogin()|
+| kTMSDKErrorSdkNotInitialized | -1013  | SDK未初始化 |refreshSDKToken()|
 | kTMSDKErrorNotInMeeting | -1015  | 非入会状态调用会议中接口 |onLeaveMeeting()|
 | kTMSDKErrorCancelJoin | -1016  | 用户手动取消入会 |onJoinMeeting()|
 | kTMSDKErrorIsLogining | -1017  | 正在登录过程中的重复登录调用 |onLogin()|
@@ -1483,9 +1757,17 @@ data内容示例
 | kTMSDKErrorJoinMeetingFail|-1046| 加入会议失败 |onActionResult()|
 | kTMSDKErrorShareFail|-1047| 共享屏幕失败 |onActionResult()|
 | kTMSDKErrorActionRefused | -1048  | 拒绝此操作 ||
+| kTMSDKErrorUpStreamLimited |-1050| 屏幕共享上游操作受限 | onActionResult()|
+| kTMSDKErrorUpStreamNoPermission |-1051| 屏幕共享上游操作无权限 | onActionResult()|
+| kTMSDKErrorUserNoPermissionStopLive |-1052| 屏幕共享用户不允许停止直播 | onActionResult()|
+| kTMSDKErrorNoHostPermission |-1053| 没有主持人权限 |updateCaptionSettings() |
+| kTMSDKErrorPrivacyPermissionNotGranted |-1054| 隐私授权未授权 |onSDKInitializeResult()|
+| kTMSDKErrorCannotEnterPipWhenDialogShowing |-1055| 无法在有弹窗状态下进入浮窗模式 |onSwitchPiPResult()|
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
 | kTMSDKErrorAddUsersUidIsEmpty |-2005| 通讯录回调，新增用户失败，用户数据为空 |onAddUsersResult()|
 | kTMSDKErrorAddUsersMembersModelError |-2006| 通讯录回调，新增用户失败，SDK 内部错误 |onAddUsersResult()|
+| kTMSDKErrorInnerCallError |-3001| 内部子调用出错 | updateCaptionSettings()|
+| kTMSDKErrorDuplicatedCall |-3002| 接口正在执行中，不允许重复调用 |updateCaptionSettings()|
 
