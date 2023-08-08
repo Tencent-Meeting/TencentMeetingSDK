@@ -51,9 +51,8 @@
 
   ```groovy
       implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') { //注意：这里的${wemeet_version}需要替换为具体的sdk版本号
-          exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
+        exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
   	    exclude group: 'com.github.bumptech.glide'
-  	    exclude module: 'wemeet-kapt'
   	    exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk' //注意： (版本 >= 3.12.100)用这个
   	    exclude group: 'com.tencent.liteav'
         exclude group: 'com.tencent.bugly', module: 'crashreport'
@@ -64,9 +63,8 @@
 
   ```groovy
       implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') { //注意：这里的${wemeet_version}需要替换为具体的sdk版本号
-          exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
+        exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
   	    exclude group: 'com.github.bumptech.glide'
-  	    exclude module: 'wemeet-kapt'
   	    exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk-dynamic' //注意：（版本 < 3.12.100）用这个
   	    exclude group: 'com.tencent.liteav'
         exclude group: 'com.tencent.bugly', module: 'crashreport'
