@@ -50,25 +50,25 @@
       移除glide、wemeet-kapt。**仅在某个依赖项存在重复class问题的情况下才添加对应的exclude条件，请不要将以下内容直接全部粘贴到您的项目代码中！**
 
   ```groovy
-      implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') { //注意：这里的${wemeet_version}需要替换为具体的sdk版本号
-        exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
-  	    exclude group: 'com.github.bumptech.glide'
-  	    exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk' //注意： (版本 >= 3.12.100)用这个
-  	    exclude group: 'com.tencent.liteav'
-        exclude group: 'com.tencent.bugly', module: 'crashreport'
-      }
+  implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') { //注意：这里的${wemeet_version}需要替换为具体的sdk版本号
+    exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
+    exclude group: 'com.github.bumptech.glide'
+    exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk' //注意： (版本 >= 3.12.100)用这个
+    exclude group: 'com.tencent.liteav'
+    exclude group: 'com.tencent.bugly', module: 'crashreport'
+  }
   ```
 
   为兼容3.12.100之前的版本，请使用如下的方法排除重复的依赖。**仅在某个依赖项存在重复class问题的情况下才添加对应的exclude条件，请不要将以下内容直接全部粘贴到您的项目代码中！**
 
   ```groovy
-      implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') { //注意：这里的${wemeet_version}需要替换为具体的sdk版本号
-        exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
-  	    exclude group: 'com.github.bumptech.glide'
-  	    exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk-dynamic' //注意：（版本 < 3.12.100）用这个
-  	    exclude group: 'com.tencent.liteav'
-        exclude group: 'com.tencent.bugly', module: 'crashreport'
-      }
+  implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') { //注意：这里的${wemeet_version}需要替换为具体的sdk版本号
+    exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
+    exclude group: 'com.github.bumptech.glide'
+    exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk-dynamic' //注意：（版本 < 3.12.100）用这个
+    exclude group: 'com.tencent.liteav'
+    exclude group: 'com.tencent.bugly', module: 'crashreport'
+  }
   ```
 
   - Q:javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
