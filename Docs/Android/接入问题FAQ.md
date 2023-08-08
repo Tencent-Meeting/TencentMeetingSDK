@@ -56,6 +56,7 @@
   	    exclude module: 'wemeet-kapt'
   	    exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk' //注意： (版本 >= 3.12.100)用这个
   	    exclude group: 'com.tencent.liteav'
+        exclude group: 'com.tencent.bugly', module: 'crashreport'
       }
   ```
 
@@ -68,6 +69,7 @@
   	    exclude module: 'wemeet-kapt'
   	    exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk-dynamic' //注意：（版本 < 3.12.100）用这个
   	    exclude group: 'com.tencent.liteav'
+        exclude group: 'com.tencent.bugly', module: 'crashreport'
       }
   ```
 
