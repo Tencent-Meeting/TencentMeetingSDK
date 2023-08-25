@@ -338,8 +338,9 @@ wemeet_sdk.SetNeedShareCallback(invite_on, invite_show)
 ### 9、无线投屏
 
 ```
-wemeet_sdk.ScreenCasting()
+wemeet_sdk.StartScreenCast(cast_param)
 ```
+说明：cast_param为json格式字符串，详细可参考《TencentMeetingSDK（TMSDK）接口参考文档》说明。。
 
 ### 10、打开日志目录
 
@@ -622,7 +623,31 @@ wemeet_sdk.GetScreenShareInfo()
 
 说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 48、设置是否显示SDK响铃邀请界面
+### 48、超声波解码
+
+```
+wemeet_sdk.DecodeUltrasoundScreenCastCode()
+```
+
+说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 49、会中开启字幕
+
+```
+wemeet_sdk.SwitchCaption(bool open)
+```
+
+说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 50、会中字幕设置
+
+```
+wemeet_sdk.UpdateCaptionSettings(settings_json)
+```
+
+说明：\>= 3.12.3版本, settings_json为string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 51、设置是否显示SDK响铃邀请界面
 
 ```
 wemeet_sdk.EnableRingInvitationView(enable)
@@ -630,7 +655,7 @@ wemeet_sdk.EnableRingInvitationView(enable)
 
 说明：\>= 3.12.4版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 49、处理响铃邀请
+### 52、处理响铃邀请
 
 ```
 wemeet_sdk.HandleRingInvitation(accept, invite_id, callback)
