@@ -64,11 +64,14 @@
     + [transcode](#transcode)
     + [showRecordFolder](#showrecordfolder)
     + [enableAddressBookCallback](#enableaddressbookcallback)
+    + [enableRingInvitationView](#enableringinvitationview)
+    + [handleRingInvitation](#handleringinvitation)
   * [4.2 PreMeetingCallback 回调代理](#42-premeetingcallback-回调代理)
     + [onJoinMeeting](#onjoinmeeting)
     + onShowScreenCastViewResult【即将移除】
     + [onActionResult](#onactionresult)
     + [onShowAddressBook](#onshowaddressbook)
+    + [onRingInvitationEvent](#onringinvitationevent)
 - [5. InMeetingService 说明](#5-inmeetingservice-说明)
   * [5.1 InMeetingService 成员函数](#51-inmeetingservice-成员函数)
     + [setCallback](#setcallback-2)
@@ -128,7 +131,8 @@
 | 2023-05-19 |3.12.100| 由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口                                                                  |
 | 2023-06-10 | 3.12.201 | 添加投屏接口                                                                                                                                |
 | 2023-07-31 | 3.12.300 | 添加字幕接口，查询代理接口，查询屏幕共享接口，查询会中窗口信息接口                                                                                                     |
-| 2023-07-31 | 3.12.300 | 添加隐私授权未授权错误码 |
+| 2023-07-31 | 3.12.300 | 添加隐私授权未授权错误码 |                                                                                                |
+| 2023-09-01 | 3.12.400 | 添加自定义响铃邀请相关接口：EnableRingInvitationView，OnRingInvitationEvent，HandleRingInvitation |
 
 
 # 1. SDK使用说明
@@ -1017,6 +1021,45 @@ msg内容示例：
 
 <img alt="img.png" src="images/schedule_meeting_address_book.png" width="450"/>
 
+### enableRingInvitationView
+* 函数形式：**void enableRingInvitationView(bool enable)**
+* 可用版本：>= 3.12.400
+* 函数说明：设置是否显示SDK的响铃邀请界面
+* 返回值说明：无
+* 参数说明：
+
+| 参数名    | 参数类型 | 参数必填 | 参数默认值 | 参数说明 |
+|--------|------|------|-------|------------------------|
+| enable | bool | 是    | (无)   | 是否显示SDK的响铃邀请界面 |
+
+* 设置不展示SDK的响铃邀请界面后，下图的响铃邀请界面将不再展示：
+
+<img alt="img.png" src="images/ring_invitation.png" width="450"/>
+
+### handleRingInvitation
+* 函数形式：**void handleRingInvitation(bool accept, string invite_id, Callback complete)**
+* 可用版本：>= 3.12.400
+* 函数说明：
+  * 处理响铃邀请
+  * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
+  * 当前暂不支持并发调用，在前一次调用的回调`complete`未返回时，后续调用将直接触发`kTMSDKErrorDuplicatedCall`错误回调。
+* 返回值说明： 无
+* 参数说明
+
+|参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明               |
+|---|---|------|-------|--------------------|
+|accept |bool | 是    | 无     | true接受响铃邀请，false拒绝响铃邀请 |
+|invite_id |string | 是    | 无     | 响铃邀请的唯一标识 |
+|complete |Callback | 否    | 空     | 操作结束回调block，可以为空   |
+
+* 回调说明：
+
+`Callback`签名：**void (\*)(int code, string msg)**
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|code |int |操作结果错误码，0表示成功 |
+|msg |string |操作出错时包含错误信息，操作成功时值为空 |
 
 ## 4.2 PreMeetingCallback 回调代理
 
@@ -1095,6 +1138,40 @@ PreMeetingCallback 需实现以下成员函数：
 }
 ```
 
+### onRingInvitationEvent
+* 函数形式：**void onRingInvitationEvent(int ring_state, string ring_info)**
+* 可用版本：>= 3.12.400
+* 说明：
+  * 用户在收到响铃邀请时的回调，可用作接入方定制响铃邀请界面的通知。
+  * 接入方响应回调后，可展示自定义响铃邀请界面，在处理响铃邀请要通知到SDK时，可调用`PreMeetingService.handleRingInvitation`函数来实现。
+* 参数说明： 
+| 参数名       | 参数类型   | 参数说明 |
+|-----------|--------|------------|
+| ring_state | int    | 当前响铃状态 |
+| ring_info | string | 当前响铃信息 |
+
+其中`ring_state`值对应的含义如下：
+
+| 枚举值 | 说明 |
+|---|---|
+| 1    | 开始响铃 |
+| 2    | 邀请人取消响铃 |
+| 3    | 响铃超时|
+| 4    | 响铃被当前端同意 |
+| 5    | 响铃被当前端拒绝 |
+| 6    | 响铃被其他端同意 |
+| 7    | 响铃被其他端拒绝 |
+
+`ring_info`响铃信息json格式示例：
+```json
+{
+  "headline": "headline",  //会议标题
+  "user_id": "000",  //会议邀请人的user_id
+  "meeting_code": "111",  //会议号
+  "meeting_id": "222",  //会议id
+  "invite_id": "333",  //本次邀请的唯一标识
+}
+```
 
 # 5. InMeetingService 说明
 用来管理会议中的操作和界面的控制。该实例是通过`TMSDK.getInMeetingService()`获得。
@@ -1763,11 +1840,12 @@ data内容示例
 | kTMSDKErrorNoHostPermission |-1053| 没有主持人权限 |updateCaptionSettings() |
 | kTMSDKErrorPrivacyPermissionNotGranted |-1054| 隐私授权未授权 |onSDKInitializeResult()|
 | kTMSDKErrorCannotEnterPipWhenDialogShowing |-1055| 无法在有弹窗状态下进入浮窗模式 |onSwitchPiPResult()|
+| kTMSDKErrorInvalidInviteId |-1056| 无效的invite_id |handleRingInvitation()|
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
 | kTMSDKErrorAddUsersUidIsEmpty |-2005| 通讯录回调，新增用户失败，用户数据为空 |onAddUsersResult()|
 | kTMSDKErrorAddUsersMembersModelError |-2006| 通讯录回调，新增用户失败，SDK 内部错误 |onAddUsersResult()|
 | kTMSDKErrorInnerCallError |-3001| 内部子调用出错 | updateCaptionSettings()|
-| kTMSDKErrorDuplicatedCall |-3002| 接口正在执行中，不允许重复调用 |updateCaptionSettings()|
+| kTMSDKErrorDuplicatedCall |-3002| 接口正在执行中，不允许重复调用 |updateCaptionSettings()、handleRingInvitation()|
 

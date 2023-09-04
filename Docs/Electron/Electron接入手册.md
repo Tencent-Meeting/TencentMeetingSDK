@@ -647,6 +647,22 @@ wemeet_sdk.UpdateCaptionSettings(settings_json)
 
 说明：\>= 3.12.3版本, settings_json为string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
+### 51、设置是否显示SDK响铃邀请界面
+
+```
+wemeet_sdk.EnableRingInvitationView(enable)
+```
+
+说明：\>= 3.12.4版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 52、处理响铃邀请
+
+```
+wemeet_sdk.HandleRingInvitation(accept, invite_id, callback)
+```
+
+说明：\>= 3.12.4版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
 ## 4. 回调说明
 
 除GetSDKVersion、GetCurrentSDKToken、RefreshSDKToken、GetUrlWithLoginStatus外，其它所有接口的调用都是通过异步回调返回的，这里异步回调的返回值是一个标准的json字符串，格式如下：
