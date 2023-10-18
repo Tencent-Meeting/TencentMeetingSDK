@@ -850,6 +850,7 @@ msg内容示例：
 {
     "data": {
           "rooms_code": "ABCDEF"
+          "rooms_name": "RoomsName"
      },
      "description": ""
 }
