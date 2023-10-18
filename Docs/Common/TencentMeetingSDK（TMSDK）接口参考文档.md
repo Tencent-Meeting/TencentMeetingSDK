@@ -1627,7 +1627,7 @@ invite_info内容
 
 | 参数名       | 参数类型   | 参数说明                                        |
 |-----------|--------|---------------------------------------------|
-| json_data | string | 会议信息，JSON字符串，meeting_info目前跟invite_info内容一样 |
+| json_data | string | 会议信息，JSON字符串，内容如下示例 |
 
 * json_data示例：
 ```json
