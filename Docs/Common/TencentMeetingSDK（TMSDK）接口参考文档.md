@@ -865,21 +865,26 @@ msg内容示例：
   - Mac端需要屏幕录制权限
   - 需要登录完成，不可在会中调用
   - 该接口回调详见4.2中onActionResult说明
+  - user_display_name和meeting_window_title这两个参数是3.12.402新增，不传值或者值为空字符就展示默认值
 * 参数说明：
   * JSON中字段如下表
   * 除非必填字段外，其他字段可不传，SDK将自动使用默认值
 
-| 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                                                     |
-| ---------------------- | -------- | -------- | ---------- | ------------------------------------------------------------ |
-| rooms_code             | string   | 是       | (无)       | 投屏码（共享码）                                                   |
+| 参数名                 | 参数类型 | 参数必填 | 参数默认值 | 参数说明                |
+| ---------------------- | -------- | -------- | ---------- |---------------------|
+| rooms_code             | string   | 是       | (无)       | 投屏码（共享码）            |
 | password               | string   | 否       | (无)       | 密码，如果rooms没开启密码，可以不填 |
-| enable_second_monitor  | bool     | 否       | false      | 是否使用扩展屏，仅桌面端有效 |
+| enable_second_monitor  | bool     | 否       | false      | 是否使用扩展屏，仅桌面端有效      |
+| user_display_name      | string   | 否       | (无)       | 设置投屏入会参会者昵称         |
+| meeting_window_title   | string   | 否       | (无)       |  设置投屏入会会议窗口标题  |
 * json参数示例：
 ```
 {
     "rooms_code":"ABCDEF",
     "password":"8888",
-    "enable_second_monitor":true
+    "enable_second_monitor":true,
+    "user_display_name":"nick_name",
+    "meeting_window_title":"网络会议"
 }
 ```
 * `PreMeetingCallback.onActionResult`回调说明：
