@@ -133,6 +133,7 @@
 | 2023-07-31 | 3.12.300 | 添加字幕接口，查询代理接口，查询屏幕共享接口，查询会中窗口信息接口                                                                                                     |
 | 2023-07-31 | 3.12.300 | 添加隐私授权未授权错误码 |                                                                                                |
 | 2023-09-01 | 3.12.400 | 添加自定义响铃邀请相关接口：EnableRingInvitationView，OnRingInvitationEvent，HandleRingInvitation |
+| 2023-10-23 | 3.12.402 | 接口调整：1.超声波投屏支持获取rooms_name; 2.startScreenCast接口新增支持设置user_display_name和meeting_window_title |
 
 
 # 1. SDK使用说明
