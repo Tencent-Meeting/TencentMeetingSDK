@@ -344,3 +344,17 @@ mBtnAgree.setOnClickListener(
             .build()
  TMSDK.setMeetingNotificationConfig(notificationConfig)
 ```
+
+如果您的应用开启了邀请(enableInviteCallback)、会议信息(enableMeetingInfoCallback)、添加成员(enableInviteUsersCallback)等回调，并打算在收到这些回调时展示一个新的Activity，您需要给这个Activity设置如下所示的'taskAffinity'属性，并给启动该Activity的intent中添加FLAG_ACTIVITY_NEW_TASK，以保证该Activity跟会中Activity处于同一个任务栈，在关闭该Activity时才能正常返回会中界面，如果没有正确地设置'taskAffinity'属性和flag，该Activity将启动在应用默认的任务栈，关闭Activity时将显示默认任务栈中最顶层的Activity，不会自动回到会中。
+```
+ // AndroidManifest.xml
+ ...
+ android:taskAffinity=".meeting.inmeeting.InMeetingActivity" // SDK Version < 3.12.3
+ android:taskAffinity="com.tencent.wemeet.tmsdk.meeting.inmeeting.InMeetingActivity" // SDK Version >= 3.12.3
+ ...
+
+ // 邀请、会议信息、添加成员等回调
+ ...
+ intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+ ...
+```
