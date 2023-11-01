@@ -111,8 +111,12 @@
 
   > 如果登录的账号发生切换，请主动调用登出接口以清空登录态，再重新尝试登录。
 
-  - Q:收到分享回调显示透明activity但是背景activity显示的不是会中界面
-  - A:请联系技术支持
-
+  - Q:收到邀请或分享回调后显示透明activity但是背景activity显示的不是会中界面，或者关闭activity后没有回到会中界面
+  - A:请确保activity设置了如下所示的taskAffinity属性，并在启动activity时调用intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)，如果仍然无法解决问题，请联系技术支持
+  ```
+          android:taskAffinity=".meeting.inmeeting.InMeetingActivity" // SDK Version < 3.12.3
+          android:taskAffinity="com.tencent.wemeet.tmsdk.meeting.inmeeting.InMeetingActivity" // SDK Version >= 3.12.3
+  ```
+  
   - Q:在会中界面点击管理成员发生crash，错误为java.lang.ClassNotFoundException: Didn't find class "android.support.v7.widget.RecyclerView$ItemDecoration"
   - A:在gradle.properties中添加android.enableJetifier=true
