@@ -663,7 +663,7 @@ wemeet_sdk.HandleRingInvitation(accept, invite_id, callback)
 
 说明：\>= 3.12.4版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 53、设置共享屏幕入会后，结束共享时是否展示‘留在会中‘弹窗
+### 53、用来设置共享屏幕入会后，结束共享时是否展示‘留在会中‘弹窗
 
 ```
 wemeet_sdk.SetLeaveCastRoomActionType(int actionType)
