@@ -89,6 +89,7 @@
     + [updateCaptionSettings](#updatecaptionsettings)
     + [getScreenShareInfo](#getscreenshareinfo)
     + [getMeetingWindowInfo](#getmeetingwindowinfo)
+    + [setLeaveCastRoomActionType](#setLeaveCastRoomActionType)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -1572,6 +1573,17 @@ msg内容示例：
   "msg": ""
 }
 ```
+
+### setLeaveCastRoomActionType
+
+* 函数形式：**void setLeaveCastRoomActionType(int actionType)**
+* 可用版本：>= 3.12.403
+* 函数说明：用来设置共享屏幕入会后，结束共享时是否展示留着会中弹窗。
+* 参数说明：
+
+| 参数名          | 参数类型   | 参数说明                                         |
+|--------------|--------|----------------------------------------------|
+| actionType   | int    | 是否弹出留在会中弹窗，0：弹出对话框；1：不弹对话框，离开会议；2：不弹对话框，留在会中 |
 
 
 ## 5.2 InMeetingCallback 回调代理
