@@ -135,7 +135,7 @@
 | 2023-07-31 | 3.12.300 | 添加隐私授权未授权错误码                                                                                                                        |                                                                                                |
 | 2023-09-01 | 3.12.400 | 添加自定义响铃邀请相关接口：EnableRingInvitationView，OnRingInvitationEvent，HandleRingInvitation                                                   |
 | 2023-10-23 | 3.12.402 | 接口调整：decodeUltrasoundScreenCastCode接口支持返回rooms_name；startScreenCast接口支持设置user_display_name和meeting_window_title                     |
-
+| 2023-11-14 | 3.12.423 | 新增接口：setLeaveCastRoomActionType可设置共享屏幕入会结束共享是否展示对话框
 
 # 1. SDK使用说明
 
@@ -1584,6 +1584,7 @@ msg内容示例：
 | 参数名          | 参数类型   | 参数说明                                     |
 |--------------|--------|------------------------------------------|
 | actionType   | int    | 是否弹出"结束共享"弹窗，0：弹出对话框；1：不弹对话框，离开会议；2：不弹对话框，留在会中 |
+![img.png](images/finish_share_dialog.png)
 
 
 ## 5.2 InMeetingCallback 回调代理
