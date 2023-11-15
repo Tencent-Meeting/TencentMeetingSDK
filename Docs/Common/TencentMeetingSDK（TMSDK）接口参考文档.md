@@ -13,6 +13,7 @@
     + [getCurrentSDKToken](#getcurrentsdktoken)
     + [showLogs](#showlogs)
     + [collectLogFiles](#collectlogfiles)
+    + [activeUploadLogs](#activeuploadlogs)
     + [setProxyInfo](#setproxyinfo)
     + [getProxyInfo](#getproxyinfo)
     + [handleSchema](#handleschema)
@@ -30,6 +31,7 @@
     + [onSetProxyResult](#onsetproxyresult)
     + [onAddUsersResult](#onaddusersresult)
     + [onParseMeetingInfoUrl](#onparsemeetinginfourl)
+    + [onActiveUploadLogsResult](#onactiveuploadlogsresult)
 - [3. AccountService 说明](#3-accountservice-说明)
   * [3.1 AccountService 成员函数](#31-accountservice-成员函数)
     + [setCallback](#setcallback)
@@ -51,6 +53,7 @@
     + [quickMeetingByJSON](#quickmeetingbyjson)
     + [showPreMeetingView](#showpremeetingview)
     + [showHistoricalMeetingView](#showhistoricalmeetingview)
+    + [showUploadLogsView](#showuploadlogsview)
     + showMeetingDetailView【即将移除】
     + [showMeetingDetailView](#showmeetingdetailview)
     + [showJoinMeetingView](#showjoinmeetingview)
@@ -136,6 +139,8 @@
 | 2023-09-01 | 3.12.400 | 添加自定义响铃邀请相关接口：EnableRingInvitationView，OnRingInvitationEvent，HandleRingInvitation                                                   |
 | 2023-10-23 | 3.12.402 | 接口调整：decodeUltrasoundScreenCastCode接口支持返回rooms_name；startScreenCast接口支持设置user_display_name和meeting_window_title                     |
 | 2023-11-14 | 3.12.403 | 新增接口：setLeaveCastRoomActionType可设置共享屏幕入会结束共享是否展示对话框
+| 2023-11-15 | 3.20.1 | 新增接口：showUploadLogsView 显示上传日志页面
+| 2023-11-15 | 3.20.1 | 新增接口：activeUploadLogs 上传日志接口
 
 # 1. SDK使用说明
 
@@ -302,6 +307,19 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |:--|--|--|
 | begin_time | int | 日志文件的开始时间戳，单位：秒 |
 | end_time | int | 日志文件的结束时间戳，单位：秒|
+
+### activeuploadlogs
+* 函数形式：** activeuploadlogs(int begin_time, int end_time, string description)**
+* 可用版本：>= 3.20.1
+* 函数说明：根据开始和结束时间和描述信息上传日志，通过接口SDKCallback.onActiveUploadLogsResult回调
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 |参数说明 |
+|:--|--|--|
+| begin_time | int | 日志文件的开始时间戳，单位：秒 |
+| end_time | int | 日志文件的结束时间戳，单位：秒|
+| description | string | 上传的描述信息|
 
 
 ### setProxyInfo
@@ -521,6 +539,15 @@ SDKCallback 需实现以下成员函数：
 | code      | int    | 错误码                                             |
 | msg       | string | 错误信息                                            |
 
+### onActiveUploadLogsResult
+* 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
+* 可用版本：>= 3.20.1
+* 说明：调用`TMSDK.activeuploadlogs`函数的回调
+
+| 参数名       | 参数类型   | 参数说明                                            |
+|-----------|--------|-------------------------------------------------|
+| code      | int    | 错误码                                             |
+| msg       | string | 错误信息       
 
 ### onParseMeetingInfoUrl
 - 函数形式：**void onParseMeetingInfoUrl(int code, string msg)**
@@ -820,6 +847,12 @@ AuthenticationCallback 需实现以下成员函数：
 |---|---|---|---|---|
 |meeting_type | int | 是 |(无)| 会议类型，0:普通会议；1:在线大会 |
 
+### showuploadlogsview
+* 函数形式：**void showUploadLogsView()**
+* 可用版本：>= 3.20.1
+* 函数说明：显示上传日志界面。初始化完成后，才可调用。通过回调`PreMeetingCallback.onActionResult`的查询结果，`action_type`参数是`ShowUploadLogsView`
+* 返回值说明：无
+* 参数说明：
 
 ### showMeetingSettingView
 * 函数形式：**void showMeetingSettingView()**
@@ -1131,6 +1164,7 @@ PreMeetingCallback 需实现以下成员函数：
 | Transcode | 11   | 转码回调 | --                                       |
 | DecodeUltrasoundScreenCastCode | 12   | 获取超声波投屏码回调 | 回调的JSON数据，格式参考`decodeUltrasoundScreenCastCode`函数说明                     |
 | StartScreenCast | 13   | 投屏回调 | 回调的JSON数据，格式参考`startScreenCast`函数说明                                       |
+| ShowUploadLogsView | 14   | 打开日志上传页面 |结果的说明文字                                       |
 
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
