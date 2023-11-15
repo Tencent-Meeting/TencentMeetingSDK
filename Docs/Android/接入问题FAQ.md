@@ -47,15 +47,14 @@
   - Q:重复class报错，目前会出现此类问题的主要以x5内核和imsdk下的文件为主
 
     A:执行./gradlew app:dependencies(window下执行gradlew app:dependencies)，对照输出依赖将sdk中的依赖排除出去，例如
-      移除glide、wemeet-kapt。**仅在某个依赖项存在重复class问题的情况下才添加对应的exclude条件，请不要将以下内容直接全部粘贴到您的项目代码中！**
+      移除glide。**仅在某个依赖项存在重复class问题的情况下才添加对应的exclude条件，请不要将以下内容直接全部粘贴到您的项目代码中！**
 
   ```groovy
       implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') { //注意：这里的${wemeet_version}需要替换为具体的sdk版本号
           exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
-  	    exclude group: 'com.github.bumptech.glide'
-  	    exclude module: 'wemeet-kapt'
-  	    exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk' //注意： (版本 >= 3.12.100)用这个
-  	    exclude group: 'com.tencent.liteav'
+          exclude group: 'com.github.bumptech.glide'
+          exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk' //注意： (版本 >= 3.12.100)用这个
+          exclude group: 'com.tencent.liteav'
       }
   ```
 
@@ -64,10 +63,9 @@
   ```groovy
       implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') { //注意：这里的${wemeet_version}需要替换为具体的sdk版本号
           exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
-  	    exclude group: 'com.github.bumptech.glide'
-  	    exclude module: 'wemeet-kapt'
-  	    exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk-dynamic' //注意：（版本 < 3.12.100）用这个
-  	    exclude group: 'com.tencent.liteav'
+          exclude group: 'com.github.bumptech.glide'
+          exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk-dynamic' //注意：（版本 < 3.12.100）用这个
+          exclude group: 'com.tencent.liteav'
       }
   ```
 
