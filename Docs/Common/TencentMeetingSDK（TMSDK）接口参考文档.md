@@ -311,7 +311,8 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### activeuploadlogs
 * 函数形式：** activeuploadlogs(int begin_time, int end_time, string description)**
 * 可用版本：>= 3.20.1
-* 函数说明：根据开始和结束时间和描述信息上传日志，通过接口SDKCallback.onActiveUploadLogsResult回调
+* 函数说明：根据开始和结束时间和描述信息上传日志，通过接口SDKCallback.onActiveUploadLogsResult回调；
+           限制最大传输压缩后的文件1G，30min上传不成功返回失败回调
 * 返回值说明：无
 * 参数说明：
 
