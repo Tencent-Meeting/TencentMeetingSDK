@@ -139,8 +139,8 @@
 | 2023-09-01 | 3.12.400 | 添加自定义响铃邀请相关接口：EnableRingInvitationView，OnRingInvitationEvent，HandleRingInvitation                                                   |
 | 2023-10-23 | 3.12.402 | 接口调整：decodeUltrasoundScreenCastCode接口支持返回rooms_name；startScreenCast接口支持设置user_display_name和meeting_window_title                     |
 | 2023-11-14 | 3.12.403 | 新增接口：setLeaveCastRoomActionType可设置共享屏幕入会结束共享是否展示对话框
-| 2023-11-15 | 3.20.1 | 新增接口：showUploadLogsView 显示上传日志页面
-| 2023-11-15 | 3.20.1 | 新增接口：activeUploadLogs 上传日志接口
+| 2023-11-15 | 3.20.1 | 新增接口：showUploadLogsView 显示上传日志页面；新增接口：activeUploadLogs 主动上传日志接口 |
+
 
 # 1. SDK使用说明
 
@@ -308,19 +308,22 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | begin_time | int | 日志文件的开始时间戳，单位：秒 |
 | end_time | int | 日志文件的结束时间戳，单位：秒|
 
-### activeuploadlogs
-* 函数形式：** activeuploadlogs(int begin_time, int end_time, string description)**
-* 可用版本：>= 3.20.1
-* 函数说明：根据开始和结束时间和描述信息上传日志，通过接口SDKCallback.onActiveUploadLogsResult回调；
-           限制最大传输压缩后的文件1G，30min上传不成功返回失败回调
+
+### activeUploadLogs
+* 函数形式：** activeUploadLogs(int begin_time, int end_time, string description)**
+* 可用版本：>= 3.21.100
+* 函数说明：
+  * 主动上传日志，通过接口`SDKCallback.onActiveUploadLogsResult`回调返回结果；
+  * 只上传开始和结束时间期间的日志，开始时间和结束时间的最大间隔为24h
+  * 限制最大传输压缩后的文件1G，30min上传不成功返回失败回调
 * 返回值说明：无
 * 参数说明：
 
-|参数名 |参数类型 |参数说明 |
-|:--|--|--|
-| begin_time | int | 日志文件的开始时间戳，单位：秒 向上取整点时间戳，结束时间和开始时间最大间隔为24h |
-| end_time | int | 日志文件的结束时间戳，单位：秒 向下取整点时间戳，结束时间和开始时间最大间隔为24h|
-| description | string | 上传的描述信息, 最大支持100个中文字符长度，两个英文字符等于一个中文字符，非必填|
+|参数名 |参数类型 | 参数说明                      |
+|:--|--|---------------------------|
+| begin_time | int | 日志文件的开始时间戳（单位秒）向上取整点时间戳 |
+| end_time | int | 日志文件的结束时间戳（单位秒）向下取整点时间戳 |
+| description | string | 上传的描述信息, 最大支持100个中文字符长度，两个英文字符等于一个中文字符，非必填 |
 
 
 ### setProxyInfo
@@ -489,6 +492,27 @@ SDKCallback 需实现以下成员函数：
 | msg | string | 打开日志文件夹结果信息 |
 
 
+### onActiveUploadLogsResult
+* 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
+* 可用版本：>= 3.21.100
+* 说明：调用`TMSDK.activeUploadLogs`函数的回调
+
+| 参数名  | 参数类型   | 参数说明        |
+|------|--------|-------------|
+| code | int    | 错误码         |
+| msg  | string | json格式的错误信息 |
+
+* msg详细示例： 
+```json
+{
+    "unique_id":"2023.10.23-W999999999-4ae4dd4c3a5c6ae4b2e45844755f0d02-meeting",
+    "description": "upload log success"
+}
+```
+ 
+其中`unique_id`是日志上传结果返回的唯一索引，用于后台进行唯一检索； `description`用来描述上传结果成功或者失败原因
+
+
 ### onSDKError
 * 函数形式：**void onSDKError(int code, string msg)**
 
@@ -540,17 +564,6 @@ SDKCallback 需实现以下成员函数：
 | code      | int    | 错误码                                             |
 | msg       | string | 错误信息                                            |
 
-### onActiveUploadLogsResult
-* 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
-* 可用版本：>= 3.20.1
-* 说明：调用`TMSDK.activeuploadlogs`函数的回调
- 回调详细示例： {code:0, "msg":"{"data":{"unique_id":"2023.10.23-W999999999-4ae4dd4c3a5c6ae4b2e45844755f0d02-meeting"}", "description": "upload log success"}"}
-
- data字段中的 unique_id是日志上传结果返回的唯一索引，用于后台进行唯一检索； description用来描述上传结果成功或者失败
-| 参数名       | 参数类型   | 参数说明                                            |
-|-----------|--------|-------------------------------------------------|
-| code      | int    | 错误码                                             |
-| msg       | string | json格式的错误信息       
 
 ### onParseMeetingInfoUrl
 - 函数形式：**void onParseMeetingInfoUrl(int code, string msg)**
@@ -850,12 +863,16 @@ AuthenticationCallback 需实现以下成员函数：
 |---|---|---|---|---|
 |meeting_type | int | 是 |(无)| 会议类型，0:普通会议；1:在线大会 |
 
-### showuploadlogsview
+### showUploadLogsView
 * 函数形式：**void showUploadLogsView()**
-* 可用版本：>= 3.20.1
-* 函数说明：显示上传日志界面。初始化完成后，才可调用。通过回调`PreMeetingCallback.onActionResult`的查询结果，`action_type`参数是`ShowUploadLogsView`
+* 可用版本：>= 3.21.100
+* 函数说明：
+  * 显示上传日志界面。
+  * 初始化完成后，才可调用。
+  * 通过`PreMeetingCallback.onActionResult`回调操作结果，`action_type`参数是`ShowUploadLogsView`
 * 返回值说明：无
 * 参数说明：
+
 
 ### showMeetingSettingView
 * 函数形式：**void showMeetingSettingView()**
@@ -1728,7 +1745,7 @@ invite_info内容
 data内容示例
 ```
 {
-    "is_in_pip_mode": true, // 是否处于悬浮窗状态
+    "is_in_pip_mode": true // 是否处于悬浮窗状态
 }
 ```
 
@@ -1916,10 +1933,10 @@ data内容示例
 | kTMSDKErrorAddUsersMembersModelError |-2006| 通讯录回调，新增用户失败，SDK 内部错误 |onAddUsersResult()|
 | kTMSDKErrorInnerCallError |-3001| 内部子调用出错 | updateCaptionSettings()|
 | kTMSDKErrorDuplicatedCall |-3002| 接口正在执行中，不允许重复调用 |updateCaptionSettings()、handleRingInvitation()|
-| kTMSDKErrorCUpLoadLogsCancel |-3003| 取消日志上传 |activeuploadlogs|
-| kTMSDKErrorCosMultiUploadAborting |-3004| 启用分片上传异常中断 |activeuploadlogs|
-| kTMSDKErrorCosReadFileSizeZero |-3005| 上传压缩包大小为空 |activeuploadlogs|
-| kTMSDKErrorCosAuthCodeEmpty |-3006| app_id&app_uid校验失败 |activeuploadlogs|
-| kTMSDKErrorCosHttpStatusNotOk |-3007| 网络连接异常 |activeuploadlogs|
-| kTMSDKErrorHttpResponseParseError |-3008| 上传请求返回数据解析错误 |activeuploadlogs|
-| kTMSDKErrorZipFileError |-3009| 压缩日志文件失败 |activeuploadlogs|
+| kTMSDKErrorCUpLoadLogsCancel |-3003| 取消日志上传 |onActiveUploadLogsResult()|
+| kTMSDKErrorCosMultiUploadAborting |-3004| 启用分片上传异常中断 |onActiveUploadLogsResult()|
+| kTMSDKErrorCosReadFileSizeZero |-3005| 上传压缩包大小为空 |onActiveUploadLogsResult()|
+| kTMSDKErrorCosAuthCodeEmpty |-3006| app_id&app_uid校验失败 |onActiveUploadLogsResult()|
+| kTMSDKErrorCosHttpStatusNotOk |-3007| 网络连接异常 |onActiveUploadLogsResult()|
+| kTMSDKErrorHttpResponseParseError |-3008| 上传请求返回数据解析错误 |onActiveUploadLogsResult()|
+| kTMSDKErrorZipFileError |-3009| 压缩日志文件失败 |onActiveUploadLogsResult()|
