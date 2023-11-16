@@ -54,7 +54,6 @@
     + [showPreMeetingView](#showpremeetingview)
     + [showHistoricalMeetingView](#showhistoricalmeetingview)
     + [showUploadLogsView](#showuploadlogsview)
-    + showMeetingDetailView【即将移除】
     + [showMeetingDetailView](#showmeetingdetailview)
     + [showJoinMeetingView](#showjoinmeetingview)
     + [showScheduleMeetingView](#showschedulemeetingview)
@@ -71,7 +70,6 @@
     + [handleRingInvitation](#handleringinvitation)
   * [4.2 PreMeetingCallback 回调代理](#42-premeetingcallback-回调代理)
     + [onJoinMeeting](#onjoinmeeting)
-    + onShowScreenCastViewResult【即将移除】
     + [onActionResult](#onactionresult)
     + [onShowAddressBook](#onshowaddressbook)
     + [onRingInvitationEvent](#onringinvitationevent)
@@ -149,6 +147,7 @@
 1. 以下接口方法格式为`伪代码`，起示意作用，为了表示各端统一的接口形式。
 2. 因为代码风格各端各不相同，具体接口命名风格可参考各端SDK接口代码定义和SDK包中的Demo代码工程样例源代码。
 3. 必须在主线程调用SDK的各个函数
+4. 对于废弃的函数，会在本文档中标注：【废弃】，并在程序中保持一年以上，之后会在合适时间从程序中移除废弃已久的函数，并在[废弃接口列表](./DeprecatedList.md)文档中记录。
 
 
 ## 1.1 获取SDK实例方法
@@ -811,19 +810,6 @@ AuthenticationCallback 需实现以下成员函数：
 * 参数说明：无
 
 
-### showMeetingDetailView【即将移除】
-* 函数形式：**void showMeetingDetailView(string meeting_id, string current_sub_meeting_id)**
-* 可用版本：>= 2.18.1
-* 函数说明：由下面新版的`showMeetingDetailView`替代。显示某一个具体会议的界面。登陆完成后，才可调用。如果输入错误的meeting_id或者current_sub_meeting_id有的字段会显示’-‘
-* 返回值说明：无
-* 参数说明：
-
-|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|---|---|---|---|---|
-|meeting_id |string |是 |(无) |会议标识号 |
-|current_sub_meeting_id |string |是|(无)|非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APis获取 |
-
-
 ### showMeetingDetailView
 - 函数形式：**void showMeetingDetailView(string meeting_id, string current_sub_meeting_id, string start_time, bool is_history)**
 - 可用版本：>= 3.6.200
@@ -1143,16 +1129,6 @@ PreMeetingCallback 需实现以下成员函数：
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
 |msg |string |结果信息 |
 | meeting_code | string | 会议号 |
-
-
-### onShowScreenCastViewResult【即将移除】
-* 函数形式：**void onShowScreenCastViewResult(int code, string msg)**
-* 说明：打开无线投屏界面的回调。由`onActionResult`替代。
-
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
-|msg |string |结果信息 |
 
 
 ### onActionResult
