@@ -487,7 +487,7 @@ SDKCallback 需实现以下成员函数：
 
 |code | 说明 |
 |---|---|
-| -1019 | 使用中sdktoken过期了，需要refreshSDKToken、重新登录后再继续使用 |
+| -1019 | 登录时sdktoken过期或使用时sdktoken失效，需要refreshSDKToken、重新登录后再继续使用 |
 | -1020 | 会议进程退出，需要重新走一遍初始化和登录流程 |
 | -1057 | Mac 进程通信管道启动超时，一般是是程序存在卡顿导致的， 出现后可以尝试重新走一遍初始化和登录流程|
 | -1058 | Mac 进程通信管道建立连接失败 ，出现后需要排查本地是否已存在相同 BundleID 的程序正在运行 SDK ，如不存在，请上传日志并反馈 |
@@ -1872,6 +1872,7 @@ data内容示例
 | kTMSDKErrorInvalidInviteId |-1056| 无效的invite_id |handleRingInvitation()|
 | kTMSDKErrorMacCreateIPCTimeout |-1057| Mac 进程通信管道启动超时 |onResetSDKState()|
 | kTMSDKErrorMacConnectIPCFailed |-1058| Mac 进程通信管道建立连接失败 |onResetSDKState()|
+| kTMSDKErrorAccountAbnormal |-1060| 账号异常 |onLogin()|
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
