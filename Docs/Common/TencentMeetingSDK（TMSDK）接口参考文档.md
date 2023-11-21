@@ -1024,6 +1024,7 @@ msg内容示例：
 * 函数说明：
   * SDK预定会议界面中，开启定制化通讯录的回调。
   * 当用户在SDK预定会议界面中，点击通讯录选人按钮来邀请成员和主持人时，发起`PreMeetingCallback.onShowAddressBook`回调。
+  * 需在界面显示之前设置，在初始化后登录之前设置最优；
 * 返回值说明：无
 * 参数说明：参数为True，在预定会议选人以及邀请会议时会调用宿主应用设置的通讯录页面。
 
@@ -1219,6 +1220,7 @@ PreMeetingCallback 需实现以下成员函数：
 ### enableInviteCallback
 * 函数形式：**void enableInviteCallback(bool enable, bool show)**
 * 函数说明：设置是否使用邀请回调，如果使用，点击会议中界面下方工具栏上的邀请按钮，会触发`InMeetingCallback.onInviteMeeting`回调，并回调会议信息。
+           该接口入会之前设置有效，建议初始化回调之后，登录之前设置。
 * 返回值说明：无
 * 参数说明：
 
@@ -1252,7 +1254,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### enableInviteUsersCallback
 * 函数形式：**void enableInviteUsersCallback(bool enable, bool show)**
-* 函数说明：设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息。
+* 函数说明：
+   *设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息。
+   *设置接口要早于点击会中界面成员列表添加按钮，建议初始化回调之后登录之前设置。
 * 返回值说明：无
 * 参数说明：
 
