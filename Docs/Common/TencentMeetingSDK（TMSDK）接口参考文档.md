@@ -1602,7 +1602,7 @@ msg内容示例：
   * 切换会议的默认布局。
   * 调用时机：只能在会中调用。
   * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
-  * 参数`layout_json`可以同时携带多种设置调用，设置项要么都设置成功，要么都设置失败，不会出现部分成功的场景，具体细节见回调错误说明。
+  * 参数`layout_json`可以同时携带多个设置项，设置项要么都设置成功，要么都设置失败，不会出现部分成功的情况。
   * 当前暂不支持并发调用，在前一次调用的回调`complete`未返回时，后续调用将直接触发`kTMSDKErrorDuplicatedCall`错误回调。
 * 返回值说明：无
 * 参数说明：
@@ -1637,7 +1637,7 @@ layout_id枚举值如下
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
-|code |int |操作结果错误码，0表示成功 |
+|code |int |操作结果错误码，0表示成功，其他值表示失败。详情参考`6. 错误码`章节 |
 |msg |string |操作出错时包含错误信息，操作成功时值为空 |
 
 
@@ -1656,7 +1656,7 @@ layout_id枚举值如下
 |subscribe |bool | 是    | 无     |为true时表示订阅，false时表示退订 |
 |subscription_json |string | 是    | 无     |订阅信息，格式为JSON字符串，与action_type相关，见后文说明 |
 
-> **注意**：订阅会中事件后。结果会在**InMeetingCallback.onActionResult**中回调，其中订阅的action_type与回调的action_type保持一致
+> **注意**：订阅会中事件后，回调结果在**InMeetingCallback.onActionResult**中，其中订阅的action_type与回调的action_type保持一致
 
 当前支持订阅/退订的action_type如下：
 
@@ -1667,7 +1667,7 @@ layout_id枚举值如下
 * 当action_type为OpenAppStatusChange时
   * 表示订阅/退订开放平台的第三方应用状态变化事件
   * 订阅开放平台的第三方应用最大数量为5
-  * 同时满足一下三个条件才能触发回调：
+  * 同时满足以下三个条件才能触发回调：
     * 1.应用被订阅（通过subscribeInMeetingActionEvent函数订阅）
     * 2.应用被绑定（通过API等方式将应用与会议绑定起来）
     * 3.应用状态发生变化，比如打开，关闭
