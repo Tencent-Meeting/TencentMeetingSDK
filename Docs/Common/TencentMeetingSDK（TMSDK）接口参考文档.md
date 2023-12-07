@@ -1230,7 +1230,7 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### onOpenQRCodeUrlResult
 
-- 函数形式：**void onOpenQRCodeUrlResult(int code)**
+- 函数形式：**void onOpenQRCodeUrlResult(int code，string url)**
 - 可用版本：>= 3.21.100
 - 说明：客户调用了openQRCodeUrl 接口后的回调
 - 参数说明
