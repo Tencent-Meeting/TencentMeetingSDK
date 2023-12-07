@@ -133,11 +133,12 @@
 | 2023-05-19 | 3.12.100 | 由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口                                                                |
 | 2023-06-10 | 3.12.201 | 添加投屏接口                                                                                                                              |
 | 2023-07-31 | 3.12.300 | 添加字幕接口，查询代理接口，查询屏幕共享接口，查询会中窗口信息接口                                                                                                   |
-| 2023-07-31 | 3.12.300 | 添加隐私授权未授权错误码                                                                                                                        |                                                                                                |
+| 2023-07-31 | 3.12.300 | 添加隐私授权未授权错误码                                                                                                                        |
 | 2023-09-01 | 3.12.400 | 添加自定义响铃邀请相关接口：EnableRingInvitationView，OnRingInvitationEvent，HandleRingInvitation                                                   |
 | 2023-10-23 | 3.12.402 | 接口调整：decodeUltrasoundScreenCastCode接口支持返回rooms_name；startScreenCast接口支持设置user_display_name和meeting_window_title                     |
-| 2023-11-14 | 3.12.403 | 新增接口：setLeaveCastRoomActionType可设置共享屏幕入会结束共享是否展示对话框
+| 2023-11-14 | 3.12.403 | 新增接口：setLeaveCastRoomActionType可设置共享屏幕入会结束共享是否展示对话框|
 | 2023-11-15 | 3.20.1 | 新增接口：showUploadLogsView 显示上传日志页面；新增接口：activeUploadLogs 主动上传日志接口 |
+| 2023-12-7 | 3.21.100 | 会中动作回调onActionResult()新增云录制状态变更事件类型 |
 
 
 # 1. SDK使用说明
@@ -1790,6 +1791,7 @@ data内容示例
 | manipulateWindow | 1001   | 会中调用`InMeetingService.manipulateWindow`操作会中窗口   | JSON字符串，格式参考`InMeetingService.manipulateWindow`函数说明 |
 |       屏幕共享       | 1002   | 会中屏幕共享功能开启/关闭回调    | JSON字符串，格式参考下面示例说明 |
 |    主会场与分组会议切换    | 1003   | 主会场和分组会议切换触发     | JSON字符串，格式参考下面示例说明 |
+| 云录制状态 | 1004 | 会中云录制状态变更触发 | JSON字符串，格式参考下面示例说明 |
 
 
  * `msg`的JSON通用格式如下：
@@ -1827,8 +1829,29 @@ data内容示例
 }
 ```
 
+- `云录制状态变更`时，`msg`的JSON数据格式如下：
+
+```json
+{
+    "data": {
+        "cloud_record_state": 1, //云录制状态：0关闭，1启动中，2开启，3暂停
+        "meeting_id": ..., //会议id
+        "host_user_id": "...", //主持人的userId
+      	"has_mail_box_origin": true //本次会议是否存在邮箱弹窗逻辑
+    },
+    "description": "..."
+}
+```
+
+| 字段名              | 值类型 | 字段说明                                 |
+| ------------------- | ------ | ---------------------------------------- |
+| cloud_record_state  | int    | 云录制状态：0关闭，1启动中，2开启，3暂停 |
+| meeting_id          | int    | 会议id                                   |
+| host_user_id        | String | 主持人的userId                           |
+| has_mail_box_origin | bool   | 本次会议是否存在邮箱弹窗逻辑             |
 
 ### onCaptionSwitchChanged
+
 * 函数形式：**void onCaptionSwitchChanged(bool is_open)**
 * 可用版本：>=3.12.300
 * 说明：当字幕开关状态变化时回调，无论该变化是由用户UI操作引起的还是调用API接口设置引起的。
