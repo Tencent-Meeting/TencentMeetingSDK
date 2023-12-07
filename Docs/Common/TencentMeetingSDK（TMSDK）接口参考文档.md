@@ -508,7 +508,7 @@ SDKCallback 需实现以下成员函数：
     "description": "upload log success"
 }
 ```
- 
+
 其中`unique_id`是日志上传结果返回的唯一索引，用于后台进行唯一检索； `description`用来描述上传结果成功或者失败原因
 
 
@@ -1117,6 +1117,14 @@ msg内容示例：
 |code |int |操作结果错误码，0表示成功 |
 |msg |string |操作出错时包含错误信息，操作成功时值为空 |
 
+### openQRCodeUrl
+
+- 函数形式：**void openQRCodeUrl( string url_string)**
+
+- 可用版本：>= 3.21.100
+- 函数说明：打开会议的二维码的Url功能
+- 参数说明：要被打开的二维码的Url
+
 ## 4.2 PreMeetingCallback 回调代理
 
 PreMeetingCallback 需实现以下成员函数：
@@ -1220,7 +1228,25 @@ PreMeetingCallback 需实现以下成员函数：
 }
 ```
 
+### onOpenQRCodeUrlResult
+
+- 函数形式：**void onOpenQRCodeUrlResult(int code)**
+- 可用版本：>= 3.21.100
+- 说明：客户调用了openQRCodeUrl 接口后的回调
+- 参数说明
+| 参数名       | 参数类型   | 参数说明 |
+|-----------|--------|------------|
+| code | int    | 当前打开二维码URL的枚举状态 |
+| url | string | 当前需要被打开的Url |
+
+| code 枚举值 | 说明 |
+|---|---|
+| 0   | 成功 |
+|  1057   | Url 不在白名单中，无法打开 |
+| 1058    | 当前在会中，不能打开Url|
+
 # 5. InMeetingService 说明
+
 用来管理会议中的操作和界面的控制。该实例是通过`TMSDK.getInMeetingService()`获得。
 
 ## 5.1 InMeetingService 成员函数
@@ -1853,71 +1879,73 @@ data内容示例
 
 # 6. 错误码
 
-| 名称 | 错误码 | 说明 | 回调函数 |
+| 名称 | 错误码 | 回调函数 | 说明 |
 |---|---|---|---|
-| kTMSDKErrorSuccess | 0                 | 成功。|				 |
-| kTMSDKErrorServerConfigFail | -1001    | 私有云SDK设置服务地址错误或获取服务配置失败     |onSDKInitializeResult()|
-| kTMSDKErrorInvalidAuthCode | -1002     | 无效AuthCode，登录参数不正确或IDaaS登录跳转存在问题   |onLogin()|
-| kTMSDKErrorLogoutInMeeting | -1003     | 正在会议中，无法退出，需先离会 |onLogout()|
-| kTMSDKErrorLoginAborted | -1004        | ~~多次调用Login时，前次登录过程取消~~(已废弃) |onLogin()|
-| kTMSDKErrorUnknown | -1005             | 登录场景、投屏码投屏、屏幕共享状态获取等异常抛出未知错误，出现该错误码，请与官方联系 |onLogin()、onActionResult()|
-| kTMSDKErrorUserNotAuthorized | -1006   | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
-| kTMSDKErrorUserInMeeting | -1007       | 已在会议中。在入会、投屏、显示会前界面的时候，用户在会议中，需先退出。 |onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
-| kTMSDKErrorInvalidParam | -1008        | 无效参数。在调用SDK接口时，包含无效参数。 |onSDKError()、onSDKInitializeResult()、onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onActionResult()、onSDKInitializeResult()|
-| kTMSDKErrorInvalidMeetingCode | -1009  | 无效会议号 |onJoinMeeting()|
-| kTMSDKErrorInvalidNickname | -1010     | 无效入会的用户名称，可能长度过长导致 |onJoinMeeting()|
-| kTMSDKErrorDuplicateInitCall | -1011   | 重复调用初始化  |onSDKInitializeResult()|
-| kTMSDKErrorAccountAlreadyLogin | -1012 | 账号已登录，重复登录调用 |onLogin()|
-| kTMSDKErrorSdkNotInitialized | -1013  | SDK未初始化 |refreshSDKToken()|
-| kTMSDKErrorNotInMeeting | -1015  | 非入会状态调用会议中接口 |onLeaveMeeting()|
-| kTMSDKErrorCancelJoin | -1016  | 用户手动取消入会 |onJoinMeeting()|
-| kTMSDKErrorIsLogining | -1017  | 正在登录过程中的重复登录调用 |onLogin()|
-| kTMSDKErrorLoginNetError | -1018  | 登录过程出现网络错误 |onLogin()|
-| kTMSDKErrorTokenVerifyFailed | -1019  | sdktoken校验失败，可能是登录时sdktoken过期或使用时sdktoken失效，需要refreshSDKToken后再登录 |onResetSDKState()、onLogin()|
-| kTMSDKErrorChildProcessCrash | -1020  | 子进程退出 |onResetSDKState()|
-| kTMSDKErrorMultiAccountLoginConflict|-1021| A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
-| kTMSDKErrorJoinMeetingServiceFailed|-1022| 服务端拒绝入会，可能是频繁入会请求、输入无效会议号、会议已结束等情况，请用返回错误码和错误描述联系官方 | onJoinMeeting()|
-| kTMSDKErrorActionConflict|-1023| 调用操作与当前状态不匹配 | onActionResult()|
-| kTMSDKErrorInvalidJsonString|-1024| 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()|
-| kTMSDKErrorProxySetFailed|-1025| 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
-| kTMSDKErrorScreenShareOpenNotSupportSwitchPip|-1027| 正在屏幕共享&用户在等候室&app处于后台无法进入悬浮窗状态 |onSwitchPiPResult()|
-| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1028| 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
-| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1029| 进入悬浮窗状态失败 |onSwitchPiPResult()|
-| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1030| 没有悬浮窗权限 |onSwitchPiPResult()|
-| kTMSDKErrorInUninitializing|-1032|正在反初始化|onSDKUninitializeResult()|
-| kTMSDKErrorUnableUnInit|-1033|当前无法反初始化，比如正在会议中且没有使用`force`参数|onSDKUninitializeResult()|
-| kTMSDKErrorIncorrectParamWithinJson|-1038| 通讯录回调, json串参数字段校验失败 |onAddUsersResult()|
-| kTMSDKErrorNoUltrasoundCastCode|-1039| 未发现超声波投屏码 |onActionResult()|
-| kTMSDKErrorNoMediaDeviceAccessible|-1040| 没有麦克风权限 |onActionResult()|
-| kTMSDKErrorNoUltrasoundAbility|-1041| 未开启超声波功能 |onActionResult()|
-| kTMSDKErrorNoCastAbility|-1042| 未开启投屏功能 |onActionResult()|
-| kTMSDKErrorRoomsCodeError|-1043| 投屏码（共享码）错误 |onActionResult()|
-| kTMSDKErrorNoScreenCapturePermission|-1044| 没有屏幕录制权限 |onActionResult()|
-| kTMSDKErrorPasswordError|-1045| 密码错误 |onActionResult()|
-| kTMSDKErrorJoinMeetingFail|-1046| 加入会议失败 |onActionResult()|
-| kTMSDKErrorShareFail|-1047| 共享屏幕失败 |onActionResult()|
-| kTMSDKErrorActionRefused | -1048  | 拒绝此操作 ||
-| kTMSDKErrorUpStreamLimited |-1050| 屏幕共享上游操作受限 | onActionResult()|
-| kTMSDKErrorUpStreamNoPermission |-1051| 屏幕共享上游操作无权限 | onActionResult()|
-| kTMSDKErrorUserNoPermissionStopLive |-1052| 屏幕共享用户不允许停止直播 | onActionResult()|
-| kTMSDKErrorNoHostPermission |-1053| 没有主持人权限 |updateCaptionSettings() |
-| kTMSDKErrorPrivacyPermissionNotGranted |-1054| 隐私授权未授权 |onSDKInitializeResult()|
-| kTMSDKErrorCannotEnterPipWhenDialogShowing |-1055| 无法在有弹窗状态下进入浮窗模式 |onSwitchPiPResult()|
-| kTMSDKErrorInvalidInviteId |-1056| 无效的invite_id |handleRingInvitation()|
-| kTMSDKErrorMacCreateIPCTimeout |-1057| Mac 进程通信管道启动超时 |onResetSDKState()|
-| kTMSDKErrorMacConnectIPCFailed |-1058| Mac 进程通信管道建立连接失败 |onResetSDKState()|
-| kTMSDKErrorAccountAbnormal |-1060| 账号异常 |onLogin()|
-| kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
-| kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
-| kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
-| kTMSDKErrorAddUsersUidIsEmpty |-2005| 通讯录回调，新增用户失败，用户数据为空 |onAddUsersResult()|
-| kTMSDKErrorAddUsersMembersModelError |-2006| 通讯录回调，新增用户失败，SDK 内部错误 |onAddUsersResult()|
-| kTMSDKErrorInnerCallError |-3001| 内部子调用出错 | updateCaptionSettings()|
-| kTMSDKErrorDuplicatedCall |-3002| 接口正在执行中，不允许重复调用 |updateCaptionSettings()、handleRingInvitation()|
-| kTMSDKErrorCUpLoadLogsCancel |-3003| 取消日志上传 |onActiveUploadLogsResult()|
-| kTMSDKErrorCosMultiUploadAborting |-3004| 启用分片上传异常中断 |onActiveUploadLogsResult()|
-| kTMSDKErrorCosReadFileSizeZero |-3005| 上传压缩包大小为空 |onActiveUploadLogsResult()|
-| kTMSDKErrorCosAuthCodeEmpty |-3006| app_id&app_uid校验失败 |onActiveUploadLogsResult()|
-| kTMSDKErrorCosHttpStatusNotOk |-3007| 网络连接异常 |onActiveUploadLogsResult()|
-| kTMSDKErrorHttpResponseParseError |-3008| 上传请求返回数据解析错误 |onActiveUploadLogsResult()|
-| kTMSDKErrorZipFileError |-3009| 压缩日志文件失败 |onActiveUploadLogsResult()|
+| kTMSDKErrorSuccess | 0                 |				 | 成功。|
+| kTMSDKErrorServerConfigFail | -1001    |onSDKInitializeResult()| 私有云SDK设置服务地址错误或获取服务配置失败     |
+| kTMSDKErrorInvalidAuthCode | -1002     |onLogin()| 无效AuthCode，登录参数不正确或IDaaS登录跳转存在问题   |
+| kTMSDKErrorLogoutInMeeting | -1003     |onLogout()| 正在会议中，无法退出，需先离会 |
+| kTMSDKErrorLoginAborted | -1004        |onLogin()| ~~多次调用Login时，前次登录过程取消~~(已废弃) |
+| kTMSDKErrorUnknown | -1005             |onLogin()、onActionResult()| 登录场景、投屏码投屏、屏幕共享状态获取等异常抛出未知错误，出现该错误码，请与官方联系 |
+| kTMSDKErrorUserNotAuthorized | -1006   |onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onShowScreenCastResult()、onActionResult()| 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |
+| kTMSDKErrorUserInMeeting | -1007       |onJoinMeeting()、onShowScreenCastResult()、onActionResult()| 已在会议中。在入会、投屏、显示会前界面的时候，用户在会议中，需先退出。 |
+| kTMSDKErrorInvalidParam | -1008        |onSDKError()、onSDKInitializeResult()、onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onActionResult()、onSDKInitializeResult()| 无效参数。在调用SDK接口时，包含无效参数。 |
+| kTMSDKErrorInvalidMeetingCode | -1009  |onJoinMeeting()| 无效会议号 |
+| kTMSDKErrorInvalidNickname | -1010     |onJoinMeeting()| 无效入会的用户名称，可能长度过长导致 |
+| kTMSDKErrorDuplicateInitCall | -1011   |onSDKInitializeResult()| 重复调用初始化  |
+| kTMSDKErrorAccountAlreadyLogin | -1012 |onLogin()| 账号已登录，重复登录调用 |
+| kTMSDKErrorSdkNotInitialized | -1013  |refreshSDKToken()| SDK未初始化 |
+| kTMSDKErrorNotInMeeting | -1015  |onLeaveMeeting()| 非入会状态调用会议中接口 |
+| kTMSDKErrorCancelJoin | -1016  |onJoinMeeting()| 用户手动取消入会 |
+| kTMSDKErrorIsLogining | -1017  |onLogin()| 正在登录过程中的重复登录调用 |
+| kTMSDKErrorLoginNetError | -1018  |onLogin()| 登录过程出现网络错误 |
+| kTMSDKErrorTokenVerifyFailed | -1019  |onResetSDKState()、onLogin()| sdktoken校验失败，可能是登录时sdktoken过期或使用时sdktoken失效，需要refreshSDKToken后再登录 |
+| kTMSDKErrorChildProcessCrash | -1020  |onResetSDKState()| 子进程退出 |
+| kTMSDKErrorMultiAccountLoginConflict|-1021| onLogin()| A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() |
+| kTMSDKErrorJoinMeetingServiceFailed|-1022| onJoinMeeting()| 服务端拒绝入会，可能是频繁入会请求、输入无效会议号、会议已结束等情况，请用返回错误码和错误描述联系官方 |
+| kTMSDKErrorActionConflict|-1023| onActionResult()| 调用操作与当前状态不匹配 |
+| kTMSDKErrorInvalidJsonString|-1024| onJoinMeeting()、onSetProxyResult()| 无效json串，请用返回错误码和错误描述联系官方 |
+| kTMSDKErrorProxySetFailed|-1025|onSetProxyResult()| 设置代理失败，请用返回错误码和错误描述联系官方 |
+| kTMSDKErrorScreenShareOpenNotSupportSwitchPip|-1027|onSwitchPiPResult()| 正在屏幕共享&用户在等候室&app处于后台无法进入悬浮窗状态 |
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1028|onSwitchPiPResult()| 会中界面不在前台无法进入悬浮窗状态 |
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1029|onSwitchPiPResult()| 进入悬浮窗状态失败 |
+| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1030|onSwitchPiPResult()| 没有悬浮窗权限 |
+| kTMSDKErrorInUninitializing|-1032|onSDKUninitializeResult()|正在反初始化|
+| kTMSDKErrorUnableUnInit|-1033|onSDKUninitializeResult()|当前无法反初始化，比如正在会议中且没有使用`force`参数|
+| kTMSDKErrorIncorrectParamWithinJson|-1038|onAddUsersResult()| 通讯录回调, json串参数字段校验失败 |
+| kTMSDKErrorNoUltrasoundCastCode|-1039|onActionResult()| 未发现超声波投屏码 |
+| kTMSDKErrorNoMediaDeviceAccessible|-1040|onActionResult()| 没有麦克风权限 |
+| kTMSDKErrorNoUltrasoundAbility|-1041|onActionResult()| 未开启超声波功能 |
+| kTMSDKErrorNoCastAbility|-1042|onActionResult()| 未开启投屏功能 |
+| kTMSDKErrorRoomsCodeError|-1043|onActionResult()| 投屏码（共享码）错误 |
+| kTMSDKErrorNoScreenCapturePermission|-1044|onActionResult()| 没有屏幕录制权限 |
+| kTMSDKErrorPasswordError|-1045|onActionResult()| 密码错误 |
+| kTMSDKErrorJoinMeetingFail|-1046|onActionResult()| 加入会议失败 |
+| kTMSDKErrorShareFail|-1047|onActionResult()| 共享屏幕失败 |
+| kTMSDKErrorActionRefused | -1048  || 拒绝此操作 |
+| kTMSDKErrorUpStreamLimited |-1050| onActionResult()| 屏幕共享上游操作受限 |
+| kTMSDKErrorUpStreamNoPermission |-1051| onActionResult()| 屏幕共享上游操作无权限 |
+| kTMSDKErrorUserNoPermissionStopLive |-1052| onActionResult()| 屏幕共享用户不允许停止直播 |
+| kTMSDKErrorNoHostPermission |-1053|updateCaptionSettings() | 没有主持人权限 |
+| kTMSDKErrorPrivacyPermissionNotGranted |-1054|onSDKInitializeResult()| 隐私授权未授权 |
+| kTMSDKErrorCannotEnterPipWhenDialogShowing |-1055|onSwitchPiPResult()| 无法在有弹窗状态下进入浮窗模式 |
+| kTMSDKErrorInvalidInviteId |-1056|handleRingInvitation()| 无效的invite_id |
+| kTMSDKErrorMacCreateIPCTimeout |-1057|onResetSDKState()| Mac 进程通信管道启动超时 |
+| kTMSDKErrorMacConnectIPCFailed |-1058|onResetSDKState()| Mac 进程通信管道建立连接失败 |
+| kTMSDKErrorAccountAbnormal |-1060|onLogin()| 账号异常 |
+| kTMSDKErrorOpenQRCodeUrlNotInWhiteList |-1061|onOpenQRCodeUrlResult()| 当前Url不在白名单内 |
+| kTMSDKErrorOpenQRCodeUrlInMeeing |-1062|onOpenQRCodeUrlResult()| 当前在会中，不能打开扫码Url |
+| kTMSDKErrorAddUsersSuccess |-2002|onAddUsersResult()| 通讯录回调,新增用户成功 |
+| kTMSDKErrorAddHostMoreThen10 |-2003|onAddUsersResult()| 通讯录回调，新增用户失败，主持人超过10人 |
+| kTMSDKErrorAddNormalMoreThen300 |-2004|onAddUsersResult()| 通讯录回调，新增用户失败，新增成员超过300人 |
+| kTMSDKErrorAddUsersUidIsEmpty |-2005|onAddUsersResult()| 通讯录回调，新增用户失败，用户数据为空 |
+| kTMSDKErrorAddUsersMembersModelError |-2006|onAddUsersResult()| 通讯录回调，新增用户失败，SDK 内部错误 |
+| kTMSDKErrorInnerCallError |-3001| updateCaptionSettings()| 内部子调用出错 |
+| kTMSDKErrorDuplicatedCall |-3002|updateCaptionSettings()、handleRingInvitation()| 接口正在执行中，不允许重复调用 |
+| kTMSDKErrorCUpLoadLogsCancel |-3003|onActiveUploadLogsResult()| 取消日志上传 |
+| kTMSDKErrorCosMultiUploadAborting |-3004|onActiveUploadLogsResult()| 启用分片上传异常中断 |
+| kTMSDKErrorCosReadFileSizeZero |-3005|onActiveUploadLogsResult()| 上传压缩包大小为空 |
+| kTMSDKErrorCosAuthCodeEmpty |-3006|onActiveUploadLogsResult()| app_id&app_uid校验失败 |
+| kTMSDKErrorCosHttpStatusNotOk |-3007|onActiveUploadLogsResult()| 网络连接异常 |
+| kTMSDKErrorHttpResponseParseError |-3008|onActiveUploadLogsResult()| 上传请求返回数据解析错误 |
+| kTMSDKErrorZipFileError |-3009|onActiveUploadLogsResult()| 压缩日志文件失败 |
