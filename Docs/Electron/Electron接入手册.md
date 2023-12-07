@@ -671,6 +671,22 @@ wemeet_sdk.SetLeaveCastRoomActionType(int actionType)
 
 说明：\>= 3.12.403版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
+### 54、切换为会议的默认布局
+
+```
+wemeet_sdk.SwitchLayout(layout_json, callback)
+```
+
+说明：\>= 3.12.404版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
+### 55、订阅/退订会中事件
+
+```
+wemeet_sdk.SubscribeInMeetingActionEvent(action_type, subscribe, subscription_json)
+```
+
+说明：\>= 3.12.404版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
 ## 4. 回调说明
 
 除GetSDKVersion、GetCurrentSDKToken、RefreshSDKToken、GetUrlWithLoginStatus外，其它所有接口的调用都是通过异步回调返回的，这里异步回调的返回值是一个标准的json字符串，格式如下：
