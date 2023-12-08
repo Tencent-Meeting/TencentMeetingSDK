@@ -1121,7 +1121,7 @@ msg内容示例：
 ### openQRCodeUrl
 
 - 函数形式：**void openQRCodeUrl( string url_string)**
-
+- 回调为:**onOpenQRCodeUrlResult**
 - 可用版本：>= 3.21.100
 - 函数说明：打开会议的二维码的Url功能
 - 参数说明：要被打开的二维码的Url
@@ -1231,7 +1231,7 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### onOpenQRCodeUrlResult
 
-- 函数形式：**void onOpenQRCodeUrlResult(int code，string url)**
+- 函数形式：**void onOpenQRCodeUrlResult(int code,string url,string msg)**
 
 - 可用版本：>= 3.21.100
 
@@ -1243,13 +1243,14 @@ PreMeetingCallback 需实现以下成员函数：
 |-----------|--------|------------|
 | code | int    | 当前打开二维码URL的枚举状态 |
 | url | string | 当前需要被打开的Url |
+| msg | string | 返回结果说明 |
 
 code 字段说明：
 | code 枚举值 | 说明 |
 |---|---|
 | 0   | 成功 |
-|  1057   | Url 不在白名单中，无法打开 |
-| 1058    | 当前在会中，不能打开Url|
+|  -1061  | Url 不在白名单中，无法打开 |
+| -1062 | 当前在会中，不能打开Url|
 
 # 5. InMeetingService 说明
 
