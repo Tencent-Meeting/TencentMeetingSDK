@@ -139,6 +139,7 @@
 | 2023-11-14 | 3.12.403 | 新增接口：setLeaveCastRoomActionType可设置共享屏幕入会结束共享是否展示对话框|
 | 2023-11-15 | 3.20.1 | 新增接口：showUploadLogsView 显示上传日志页面；新增接口：activeUploadLogs 主动上传日志接口 |
 | 2023-12-7 | 3.21.100 | 会中动作回调onActionResult()新增云录制状态变更事件类型 |
+| 2023-12-8 | 3.21.100 | getCurrentMeetingInfo接口增加字段host_user_id，表示主持人的user_id |
 
 
 # 1. SDK使用说明
@@ -1366,14 +1367,14 @@ code 字段说明：
 ```json
 {
     "code": 0, 
-    "data": {"is_in_meeting": 1, "meeting_id": "14926328509621455953", "meeting_code": "193146629"},
+    "data": {"is_in_meeting": 1, "meeting_id": "14926328509621455953", "meeting_code": "193146629", "host_user_id": "..."},
     "msg": ""
 }
 ```
 |名称 |说明 |
 |:--|--|
 |code  |接口调用状态码，成功调用时返回0|
-|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息|
+|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息;<br>host_user_id表示主持人的user_id;|
 |msg   |接口未成功调用时返回错误信息，接口成功调用时返回空字符串|
 * 参数说明：无
 
@@ -1796,7 +1797,7 @@ data内容示例
 | manipulateWindow | 1001   | 会中调用`InMeetingService.manipulateWindow`操作会中窗口   | JSON字符串，格式参考`InMeetingService.manipulateWindow`函数说明 |
 |       屏幕共享       | 1002   | 会中屏幕共享功能开启/关闭回调    | JSON字符串，格式参考下面示例说明 |
 |    主会场与分组会议切换    | 1003   | 主会场和分组会议切换触发     | JSON字符串，格式参考下面示例说明 |
-| 云录制状态 | 1004 | 会中云录制状态变更触发 | JSON字符串，格式参考下面示例说明 |
+| 云录制状态<br>sdk版本>= 3.21.100 | 1004 | 会中云录制状态变更触发 | JSON字符串，格式参考下面示例说明 |
 
 
  * `msg`的JSON通用格式如下：
@@ -1841,7 +1842,6 @@ data内容示例
     "data": {
         "cloud_record_state": 1, //云录制状态：0关闭，1启动中，2开启，3暂停
         "meeting_id": ..., //会议id
-        "host_user_id": "...", //主持人的userId
       	"has_mail_box_origin": true //本次会议是否存在邮箱弹窗逻辑
     },
     "description": "..."
@@ -1852,7 +1852,6 @@ data内容示例
 | ------------------- | ------ | ---------------------------------------- |
 | cloud_record_state  | int    | 云录制状态：0关闭，1启动中，2开启，3暂停 |
 | meeting_id          | int    | 会议id                                   |
-| host_user_id        | String | 主持人的userId                           |
 | has_mail_box_origin | bool   | 本次会议是否存在邮箱弹窗逻辑             |
 
 ### onCaptionSwitchChanged
