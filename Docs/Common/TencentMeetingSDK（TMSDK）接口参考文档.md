@@ -1597,7 +1597,7 @@ msg内容示例：
 ### switchLayout
 
 * 函数形式：**void switchLayout(string layout_json, Callback complete)**
-* 可用版本：>= 3.12.404
+* 可用版本：>= 3.12.404（**仅支持桌面端，移动端暂不支持**）
 * 函数说明：
   * 切换会议的默认布局。
   * 调用时机：只能在会中调用。
@@ -1643,7 +1643,7 @@ layout_id枚举值如下
 
 ### subscribeInMeetingActionEvent
 * 函数形式：**void subscribeInMeetingActionEvent(int action_type, bool subscribe, string subscription_json)**
-* 可用版本：>= 3.12.404
+* 可用版本：>= 3.12.404（**仅支持桌面端，移动端暂不支持**）
 * 函数说明：
   * 订阅/退订会中事件。
   * 调用时机：初始化后可调用。
