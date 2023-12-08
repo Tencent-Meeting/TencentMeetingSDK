@@ -138,7 +138,7 @@
 | 2023-09-01 | 3.12.400 | 添加自定义响铃邀请相关接口：EnableRingInvitationView，OnRingInvitationEvent，HandleRingInvitation                                                   |
 | 2023-10-23 | 3.12.402 | 接口调整：decodeUltrasoundScreenCastCode接口支持返回rooms_name；startScreenCast接口支持设置user_display_name和meeting_window_title                     |
 | 2023-11-14 | 3.12.403 | 新增接口：setLeaveCastRoomActionType可设置共享屏幕入会结束共享是否展示对话框
-| 2023-12-20 | 3.12.404 | 新增接口：switchLayout(切换布局），subscribeInMeetingActionEvent（订阅/退订会中事件）
+| 2023-12-20 | 3.12.404 | 新增接口：switchLayout(切换布局），subscribeInMeetingActionEvent（订阅/退订会中事件）, bringInMeetingViewTop函数支持移动端
 
 # 1. SDK使用说明
 
@@ -1276,10 +1276,12 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### bringInMeetingViewTop
 * 函数形式：**void bringInMeetingViewTop()**
-* 函数说明：将会中窗口置顶，如果当前没有会中窗口，则不做任何操作。没有回调。
+* 可用版本：桌面端：>= 3.0.102; 移动端：>= 3.12.404
+* 函数说明：
+  * 桌面端: 将会中窗口置顶，如果当前没有会中窗口，则不做任何操作。没有回调。
+  * 移动端: 会切到会中界面，如果不在会议中，则不做任何操作。没有回调。
 * 返回值说明：无
 * 参数说明：无
-* 注：3.0.102加入，仅Mac、Windows、electron有该接口。
 
 
 ### switchPIPModel
@@ -1376,7 +1378,7 @@ msg内容示例:
 * 函数说明：
   * 操作会中窗口，当前版本支持【全屏】和【退出全屏】
   * 调用时机：只能在会中调用，且处于悬浮窗和屏幕共享时不支持调用
-  * 结果：回调在`InMeetingCallback.onActionResult`中，`action_type`参数对应的枚举值1001
+  * 结果：操作结果通过`InMeetingCallback.onActionResult`事件回调，`action_type`参数对应的枚举值1001
 * 返回值说明：无
 * 参数说明：
 
@@ -1384,20 +1386,6 @@ msg内容示例:
 |---|---|---|---|----------------------------------------------------|
 |action_param |string |是 |无 | 为JSON字符串: `{"action":0}` 进入全屏；`{"action":1}` 退出全屏 |
 
-* `InMeetingCallback.onActionResult`回调说明：
-
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|action_type |int |这里为1001 |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
-|msg |string |结果的JSON信息，示例如下 |
-
-msg内容示例：
-```json
-{
-     "description": ""
-}
-```
 
 
 ### switchCaption
@@ -1597,20 +1585,19 @@ msg内容示例：
 ### switchLayout
 
 * 函数形式：**void switchLayout(string layout_json, Callback complete)**
-* 可用版本：>= 3.12.404（**仅支持桌面端，移动端暂不支持**）
+* 可用版本：>= 3.12.404（**仅支持桌面端**）
 * 函数说明：
   * 切换会议的默认布局。
   * 调用时机：只能在会中调用。
   * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
-  * 参数`layout_json`可以同时携带多个设置项，设置项要么都设置成功，要么都设置失败，不会出现部分成功的情况。
   * 当前暂不支持并发调用，在前一次调用的回调`complete`未返回时，后续调用将直接触发`kTMSDKErrorDuplicatedCall`错误回调。
 * 返回值说明：无
 * 参数说明：
   
-|参数名 |参数类型 | 参数必填 | 参数默认值 |参数说明 |
-|---|---|------|-------|---|
-|layout_json |string | 是    | 无     |json格式，见后文布局设置项格式说明 |
-|complete |Callback | 否    | 空     |操作结束回调block，可以为nil。详细说明见回调说明部分 |
+|参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明                           |
+|---|---|------|-------|--------------------------------|
+|layout_json |string | 是    | 无     | json格式，见后文布局设置项格式说明,可以同时携带多个设置项，设置项要么都设置成功，要么都设置失败，不会出现部分成功的情况           |
+|complete |Callback | 否    | 空     | 操作结束回调block，可以为nil。详细说明见回调说明部分 |
 
 `layout_json`布局设置项json格式示例：
 ```json
@@ -1622,63 +1609,63 @@ msg内容示例：
 }
 ```
 
-layout_id枚举值如下
-|名称 |key | 值 |
-|---|---|------|
-|一屏9/25等分（取决于布局设置项） |DefaultLayoutIdTile | 0    |
-|右侧成员列表 |DefaultLayoutIdGalleryRight | 1    |
-|顶部成员列表 |DefaultLayoutIdGalleryTop | 2    |
-|悬浮列表 |DefaultLayoutIdFloat | 3    |
-|上L型布局 |DefaultLayoutIdTopRight | 4    |
+layout_id枚举值如下:
+
+| 名称                 | key                         | 值 |
+|--------------------|-----------------------------|---|
+| 一屏9/25等分（取决于布局设置项） | DefaultLayoutIdTile         | 0 |
+| 右侧成员列表             | DefaultLayoutIdGalleryRight | 1 |
+| 顶部成员列表             | DefaultLayoutIdGalleryTop   | 2 |
+| 悬浮列表               | DefaultLayoutIdFloat        | 3 |
+| 上L型布局              | DefaultLayoutIdTopRight     | 4 |
 
 * 回调说明：
 
 `Callback`签名：**void (\*)(int code, string msg)**
 
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|code |int |操作结果错误码，0表示成功，其他值表示失败。详情参考`6. 错误码`章节 |
-|msg |string |操作出错时包含错误信息，操作成功时值为空 |
+| 参数名  | 参数类型   | 参数说明                                 |
+|------|--------|--------------------------------------|
+| code | int    | 操作结果错误码，0表示成功，其他值表示失败。详情参考`6. 错误码`章节 |
+| msg  | string | 操作出错时包含错误信息，操作成功时值为空                 |
 
 
 ### subscribeInMeetingActionEvent
 * 函数形式：**void subscribeInMeetingActionEvent(int action_type, bool subscribe, string subscription_json)**
-* 可用版本：>= 3.12.404（**仅支持桌面端，移动端暂不支持**）
+* 可用版本：>= 3.12.404（**仅支持桌面端**）
 * 函数说明：
   * 订阅/退订会中事件。
   * 调用时机：初始化后可调用。
 * 返回值说明：订阅/退订会中事件的结果，0表示成功；其他值表示失败，如：**-1061**表示**无效action_type**。详情参考`6. 错误码`章节。
 * 参数说明：
   
-|参数名 |参数类型 | 参数必填 | 参数默认值 |参数说明 |
-|---|---|------|-------|---|
-|action_type |int | 是    | 无     |表示何种行为事件，见后文枚举值说明 |
-|subscribe |bool | 是    | 无     |为true时表示订阅，false时表示退订 |
-|subscription_json |string | 是    | 无     |订阅信息，格式为JSON字符串，与action_type相关，见后文说明 |
+| 参数名               | 参数类型   | 参数必填 | 参数默认值 | 参数说明                                   |
+|-------------------|--------|------|-------|----------------------------------------|
+| action_type       | int    | 是    | 无     | 表示何种行为事件，见后文枚举值说明                      |
+| subscribe         | bool   | 是    | 无     | 为true时表示订阅，false时表示退订                  |
+| subscription_json | string | 是    | 无     | 订阅信息，格式为JSON字符串，与具体action_type相关，见后文说明 |
 
-> **注意**：订阅会中事件后，回调结果在**InMeetingCallback.onActionResult**中，其中订阅的action_type与回调的action_type保持一致
+> **注意**：订阅会中事件后，回调结果在**InMeetingCallback.onActionResult**中，其中本函数的action_type参数与回调的action_type参数一致
 
-当前支持订阅/退订的action_type如下：
+当前支持的订阅/退订的action_type如下，未来会扩展：
 
-|        操作        | action_type | 说明                                              |
-|:----------------:|---|:------------------------------------------------|
-| OpenAppStatusChange | 1004   | 开放平台的第三方应用状态变化事件 |
+| action_type | 说明               |
+|-------------|:-----------------|
+| 1004        | 开放平台的第三方应用状态变化事件 |
 
-* 当action_type为OpenAppStatusChange时
+
+* 当action_type为`1004`时
   * 表示订阅/退订开放平台的第三方应用状态变化事件
   * 订阅开放平台的第三方应用最大数量为5
   * 同时满足以下三个条件才能触发回调：
-    * 1.应用被订阅（通过subscribeInMeetingActionEvent函数订阅）
-    * 2.应用被绑定（通过API等方式将应用与会议绑定起来）
-    * 3.应用状态发生变化，比如打开，关闭
-  * 回调说明：详情见**InMeetingCallback.onActionResult**中**OpenAppStatusChange**描述
-  * subscription_json订阅信息格式示例：
-```json
-{
-  //open app的标识符
-  "open_app_id":"12345
-}
-```  
+    1. 应用被订阅（通过subscribeInMeetingActionEvent函数订阅）
+    2. 应用被绑定（通过API等方式将应用与会议绑定起来）
+    3. 应用状态发生变化，比如打开，关闭
+  * subscription_json参数格式示例：
+  ```json
+  { 
+    "open_app_id":"12345"   //open app的标识符
+  }
+  ```  
 
 
 ## 5.2 InMeetingCallback 回调代理
@@ -1820,10 +1807,10 @@ data内容示例
 |        操作        | action_type | 说明                                              | msg值说明                                              |
 |:----------------:|---|:------------------------------------------------|-----------------------------------------------------|
 | setCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
-| manipulateWindow | 1001   | 会中调用`InMeetingService.manipulateWindow`操作会中窗口   | JSON字符串，格式参考`InMeetingService.manipulateWindow`函数说明 |
-|       屏幕共享       | 1002   | 会中屏幕共享功能开启/关闭回调    | JSON字符串，格式参考下面示例说明 |
-|    主会场与分组会议切换    | 1003   | 主会场和分组会议切换触发     | JSON字符串，格式参考下面示例说明 |
-|    OpenAppStatusChange    | 1004   | 开放平台的第三方应用状态变化事件     | JSON字符串，格式参考下面示例说明 |
+| 切换会中窗口全屏    | 1001   | 用户操作切换全屏，或调用SDK`InMeetingService.manipulateWindow`操作会中窗口   | JSON字符串，格式参考下面示例说明 |
+| 屏幕共享           | 1002   | 会中屏幕共享功能开启/关闭回调    | JSON字符串，格式参考下面示例说明 |
+| 主会场与分组会议切换 | 1003   | 主会场和分组会议切换触发     | JSON字符串，格式参考下面示例说明 |
+| 第三方应用状态变化   | 1004   | 开放平台的第三方应用状态变化事件     | JSON字符串，格式参考下面示例说明 |
 
 
  * `msg`的JSON通用格式如下：
@@ -1833,6 +1820,16 @@ data内容示例
         ...
     },
     "description": "..." //接口调用结果的描述
+}
+```
+
+* `切换会中窗口全屏`时，`msg`的数据格式示例与说明：
+```json
+{ 
+    "data": { 
+       "full_screen": true  // 是否为全屏
+    },
+    "description": "..." 
 }
 ```
 
@@ -1861,12 +1858,12 @@ data内容示例
 }
 ```
 
-* `OpenAppStatusChange`时，`msg`的数据格式示例与说明： 
+* `第三方应用状态变化`时，`msg`的数据格式示例与说明： 
 ```json
 { 
     "data": { 
        "open_app_id": "12345",
-       "open_app_status": 1 //0：初始状态，1：将要打开，2：关闭
+       "open_app_status": 1  // 0：初始状态，1：将要打开，2：已关闭
     },
     "description": "..."
 }
@@ -1977,9 +1974,9 @@ data内容示例
 | kTMSDKErrorInvalidInviteId |-1056| 无效的invite_id |handleRingInvitation()|
 | kTMSDKErrorMacCreateIPCTimeout |-1057| Mac 进程通信管道启动超时 |onResetSDKState()|
 | kTMSDKErrorMacConnectIPCFailed |-1058| Mac 进程通信管道建立连接失败 |onResetSDKState()|
-| kTMSDKErrorAccountAbnormal |-1060| 账号异常 |subscribeInMeetingActionEvent()|
+| kTMSDKErrorAccountAbnormal |-1060| 账号异常 |onLogin()|
 | kTMSDKErrorSubscribeActionTypeError |-1061| 订阅的action_type错误 |subscribeInMeetingActionEvent()|
-| kTMSDKErrorOpenAppSubscriptionLimited |-1062| 订阅的第三方应用达到上限 |onLogin()|
+| kTMSDKErrorOpenAppSubscriptionLimited |-1062| 订阅的第三方应用达到上限 |subscribeInMeetingActionEvent()|
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
