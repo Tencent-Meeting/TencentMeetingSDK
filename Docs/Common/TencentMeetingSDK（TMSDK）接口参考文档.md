@@ -1842,7 +1842,7 @@ data内容示例
 {
     "data": {
         "cloud_record_state": 1, //云录制状态：0关闭，1启动中，2开启，3暂停
-        "meeting_id": ..., //会议id
+        "meeting_id": "...", //会议id
       	"has_mail_box_origin": true //本次会议是否存在邮箱弹窗逻辑
     },
     "description": "..."
@@ -1852,7 +1852,7 @@ data内容示例
 | 字段名              | 值类型 | 字段说明                                 |
 | ------------------- | ------ | ---------------------------------------- |
 | cloud_record_state  | int    | 云录制状态：0关闭，1启动中，2开启，3暂停 |
-| meeting_id          | int    | 会议id                                   |
+| meeting_id          | String | 会议id                                   |
 | has_mail_box_origin | bool   | 本次会议是否存在邮箱弹窗逻辑             |
 
 ### onCaptionSwitchChanged
