@@ -106,6 +106,9 @@
     + [onActionResult](#onactionresult-1)
     + [onCaptionSwitchChanged](#oncaptionswitchchanged)
     + [onCaptionSettingChanged](#oncaptionsettingchanged)
+    + [onAudioStatusChanged](#onAudioStatusChanged)
+    + [onVideoStatusChanged](#onVideoStatusChanged)
+    + [onAudioOutputDeviceChanged](#onAudioOutputDeviceChanged)
 
 - [6. 错误码](#6-错误码)
 
@@ -144,7 +147,7 @@
 | 2023-11-20 | 3.12.404 | 新增接口：switchLayout(切换布局），subscribeInMeetingActionEvent（订阅/退订会中事件）。bringInMeetingViewTop函数支持移动端                                         |
 | 2023-12-12 | 3.21.100 | 新增接口：showUploadLogsView 显示上传日志页面；activeUploadLogs 主动上传日志接口；openQRCodeUrl接受扫码信息接口                                                      |
 | 2023-12-12 | 3.21.100 | 接口调整：会中动作回调onActionResult()新增云录制状态变更事件类型; getCurrentMeetingInfo接口增加字段host_user_id，表示主持人的user_id                                       |
-
+| 2023-12-12 | 3.21.100 | 新增接口：onAudioStatusChanged（麦克风状态回调）；onVideoStatusChanged（摄像头状态回调）；onAudioOutputDeviceChanged（音频输出设备变化回调，仅支持移动端）
 
 # 1. SDK使用说明
 
@@ -2007,6 +2010,46 @@ data内容示例
 }
 ```
 
+### onAudioStatusChanged
+* 函数形式：**void onAudioStatusChanged(int audioStatus)**
+* 可用版本：>=3.21.100
+* 说明：当前用户麦克风状态改变会收到此回调，具体的状态值如下
+
+| 名称 | key | 值 |
+|---|---|---|
+|断开音频|AudioNone|0|
+|自主关麦|AudioMuted|1|
+|被主持人单独静音|AudioMutedByHost|2|
+|被主持人全体静音|AudioMutedAllByHost|3|
+|自主开麦|AudioUnMuted|4|
+|被主持人请求单独开麦|AudioUnMutedByHost|5|
+|被主持人请求全体开麦|AudioUnMutedAllByHost|6|
+
+### onVideoStatusChanged
+* 函数形式：**void onVideoStatusChanged(int videoStatus)**
+* 可用版本：>=3.21.100
+* 说明：当前用户摄像头开关状态变化时，收到此回调，具体状态如下
+
+| 名称 | key | 值 |
+|---|---|---|
+|初始状态|VideoNone|0|
+|自主关摄像头|VideoMute|1|
+|被主持人关摄像头|VideoMuteByHost|2|
+|自主开摄像头|VideoUnMute|3|
+|被主持人请求开摄像头|VideoUnMuteByHost|4|
+
+### onAudioOutputDeviceChanged
+* 函数形式：**void onAudioOutputDeviceChanged(int type)**
+* 可用版本：>=3.21.100
+* 说明：当前用户切换音频播放设备会收到此回调，只支持移动端，具体状态如下
+
+| 名称 | key | 值 |
+|---|---|---|
+|初始状态|AudioOutputModeNone|0|
+|听筒|AudioOutputModeEarPhone|1|
+|扬声器|AudioOutputModeSpeaker|2|
+|有线耳机|AudioOutputModeHeadset|3|
+|蓝牙|AudioOutputModeBluetooth|4|
 
 # 6. 错误码
 
