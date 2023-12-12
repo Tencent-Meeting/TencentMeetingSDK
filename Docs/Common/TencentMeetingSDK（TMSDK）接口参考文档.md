@@ -1736,7 +1736,7 @@ layout_id枚举值如下:
   { 
     "open_app_id":"12345"   //open app的标识符
   }
-  ```  
+  ```
 
 
 ## 5.2 InMeetingCallback 回调代理
@@ -2112,6 +2112,7 @@ data内容示例
 | kTMSDKErrorOpenAppSubscriptionLimited | -1062 | 订阅的第三方应用达到上限 |subscribeInMeetingActionEvent()|
 | kTMSDKErrorOpenQRCodeUrlNotInWhiteList | -1063 | 当前Url不在白名单内 |onOpenQRCodeUrlResult()|
 | kTMSDKErrorOpenQRCodeUrlInMeeing | -1064 | 当前在会中，不能打开扫码Url |onOpenQRCodeUrlResult()|
+| kTMSDKErrorOpenQRCodeNotLogin | -1065 | 当前未登录，不能打开扫码Url |onOpenQRCodeUrlResult()|
 | kTMSDKErrorAddUsersSuccess | -2002 | 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 | -2003 | 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 | -2004 | 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
@@ -2124,7 +2125,7 @@ data内容示例
 | kTMSDKErrorCosReadFileSizeZero | -3005 | 上传压缩包大小为空 |onActiveUploadLogsResult()|
 | kTMSDKErrorCosAuthCodeEmpty | -3006 | app_id&app_uid校验失败 |onActiveUploadLogsResult()|
 | kTMSDKErrorCosHttpStatusNotOk | -3007 | 网络连接异常 |onActiveUploadLogsResult()|
-| kTMSDKErrorHttpResponseParseError | -3008 |上传请求返回数据解析错误 |onActiveUploadLogsResult()| 
+| kTMSDKErrorHttpResponseParseError | -3008 |上传请求返回数据解析错误 |onActiveUploadLogsResult()|
 | kTMSDKErrorZipFileError | -3009 | 压缩日志文件失败 |onActiveUploadLogsResult()|
 | kTMSDKErrorInvalidLayoutId | -4001 | 无效的layout id |switchLayout()|
 | kTMSDKErrorSwitchLayoutDefaultInMultiMonitorMode | -4002 | 多显示器模式下禁止切换布局 |switchLayout()|
