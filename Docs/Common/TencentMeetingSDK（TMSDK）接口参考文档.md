@@ -318,20 +318,20 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 
 ### activeUploadLogs
-* 函数形式：** activeUploadLogs(int begin_time, int end_time, string description)**
+* 函数形式：**activeUploadLogs(int begin_time, int end_time, string description)**
 * 可用版本：>= 3.21.100
 * 函数说明：
-  * 主动上传日志，通过接口`SDKCallback.onActiveUploadLogsResult`回调返回结果；
+  * 主动上传日志，通过接口`SDKCallback.onActiveUploadLogsResult`回调通知返回结果；
   * 只上传开始和结束时间期间的日志，开始时间和结束时间的最大间隔为24h
-  * 限制最大传输压缩后的文件1G，30min上传不成功返回失败回调
+  * 限制最大传输压缩后的文件1G，30min上传不成功则返回失败回调通知
 * 返回值说明：无
 * 参数说明：
 
-|参数名 |参数类型 | 参数说明                      |
-|:--|--|---------------------------|
-| begin_time | int | 日志文件的开始时间戳（单位秒）向上取整点时间戳 |
-| end_time | int | 日志文件的结束时间戳（单位秒）向下取整点时间戳 |
-| description | string | 上传的描述信息, 最大支持100个中文字符长度，两个英文字符等于一个中文字符，非必填 |
+| 参数名         | 参数类型   | 参数必填 | 参数默认值 | 参数说明                                       |
+|:------------|--------|------|-------|--------------------------------------------|
+| begin_time  | int    | Y    | --    | 日志文件的开始时间戳（单位秒）向上取整点时间戳                    |
+| end_time    | int    | Y    | --    | 日志文件的结束时间戳（单位秒）向下取整点时间戳                    |
+| description | string | N    | 空     | 上传的描述信息, 最大支持100个中文字符长度，两个英文字符等于一个中文字符，非必填 |
 
 
 ### setProxyInfo
@@ -511,7 +511,7 @@ SDKCallback 需实现以下成员函数：
 | msg  | string | json格式的错误信息 |
 
 * msg详细示例： 
-```json
+```json5
 {
     "unique_id":"2023.10.23-W999999999-4ae4dd4c3a5c6ae4b2e45844755f0d02-meeting",
     "description": "upload log success"
@@ -1131,10 +1131,9 @@ msg内容示例：
 ### openQRCodeUrl
 
 - 函数形式：**void openQRCodeUrl( string url_string)**
-- 回调为:**onOpenQRCodeUrlResult**
 - 可用版本：>= 3.21.100
-- 函数说明：打开会议的二维码的Url功能
-- 参数说明：要被打开的二维码的Url
+- 函数说明：集成方App上层实现打开摄像头扫描二维码功能，将扫描到的会议二维码内容（一般为URL），通过该函数打开。执行结果通过`PreMeetingCallback.onOpenQRCodeUrlResult`回调通知。
+- 参数说明：扫描二维码后要被打开的URL
 
 
 ## 4.2 PreMeetingCallback 回调代理
@@ -1245,22 +1244,23 @@ PreMeetingCallback 需实现以下成员函数：
 
 - 函数形式：**void onOpenQRCodeUrlResult(int code,string url,string msg)**
 - 可用版本：>= 3.21.100
-- 说明：客户调用了openQRCodeUrl 接口后的回调
+- 说明：客户调用了`openQRCodeUrl`接口后的回调
 - 参数说明
 
-| 参数名       | 参数类型   | 参数说明 |
-|-----------|--------|------------|
+| 参数名  | 参数类型   | 参数说明            |
+|------|--------|-----------------|
 | code | int    | 当前打开二维码URL的枚举状态 |
-| url | string | 当前需要被打开的Url |
-| msg | string | 返回结果说明 |
+| url  | string | 当前需要被打开的Url     |
+| msg  | string | 返回结果说明          |
 
-code 字段说明：
-| code 枚举值 | 说明 |
-|---|---|
-| 0   | 成功 |
-|  -1063  | Url 不在白名单中，无法打开 |
-| -1064 | 当前在会中，不能打开Url|
-| -1065 | 当前未登录，不能打开Url |
+`code`字段在错误码章节可见，具体：
+
+| code 枚举值 | 说明              |
+|----------|-----------------|
+| 0        | 成功              |
+| -1063    | Url 不在白名单中，无法打开 |
+| -1064    | 当前在会中，不能打开Url   |
+| -1065    | 当前未登录，不能打开Url   |
 
 
 # 5. InMeetingService 说明
@@ -1945,7 +1945,7 @@ data内容示例
 ```json5
 {
     "data": {
-        "cloud_record_state": 1, //云录制状态：0关闭，1启动中，2开启，3暂停
+        "cloud_record_state": 1, //云录制状态：0关闭，1启动中，2已开启，3暂停
         "meeting_id": "...", //会议id
       	"has_mail_box_origin": true //本次会议是否存在邮箱弹窗逻辑
     },
@@ -1953,11 +1953,6 @@ data内容示例
 }
 ```
 
-| 字段名              | 值类型 | 字段说明                                 |
-| ------------------- | ------ | ---------------------------------------- |
-| cloud_record_state  | int    | 云录制状态：0关闭，1启动中，2开启，3暂停 |
-| meeting_id          | String | 会议id                                   |
-| has_mail_box_origin | bool   | 本次会议是否存在邮箱弹窗逻辑             |
 
 ### onCaptionSwitchChanged
 * 函数形式：**void onCaptionSwitchChanged(bool is_open)**
@@ -2014,7 +2009,7 @@ data内容示例
 ### onAudioStatusChanged
 * 函数形式：**void onAudioStatusChanged(int audioStatus)**
 * 可用版本：>=3.21.100
-* 说明：当前用户麦克风状态改变会收到此回调，具体的状态值如下
+* 说明：当前用户麦克风状态改变会收到此事件回调，具体的状态值如下
 
 | 名称 | key | 值 |
 |---|---|---|
@@ -2026,10 +2021,11 @@ data内容示例
 |被主持人请求单独开麦|AudioUnMutedByHost|5|
 |被主持人请求全体开麦|AudioUnMutedAllByHost|6|
 
+
 ### onVideoStatusChanged
 * 函数形式：**void onVideoStatusChanged(int videoStatus)**
 * 可用版本：>=3.21.100
-* 说明：当前用户摄像头开关状态变化时，收到此回调，具体状态如下
+* 说明：当前用户摄像头开关状态变化时，收到此事件回调，具体状态如下
 
 | 名称 | key | 值 |
 |---|---|---|
@@ -2042,7 +2038,7 @@ data内容示例
 ### onAudioOutputDeviceChanged
 * 函数形式：**void onAudioOutputDeviceChanged(int type)**
 * 可用版本：>=3.21.100
-* 说明：当前用户切换音频播放设备会收到此回调，只支持移动端，具体状态如下
+* 说明：当前用户切换音频播放设备会收到此事件回调，只支持移动端，具体状态如下
 
 | 名称 | key | 值 |
 |---|---|---|
