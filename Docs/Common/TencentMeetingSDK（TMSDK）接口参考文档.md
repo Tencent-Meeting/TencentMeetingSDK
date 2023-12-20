@@ -90,6 +90,8 @@
     + [getScreenShareInfo](#getscreenshareinfo)
     + [getMeetingWindowInfo](#getmeetingwindowinfo)
     + [setLeaveCastRoomActionType](#setLeaveCastRoomActionType)
+    + [switchLayout](#switchLayout)
+    + [subscribeInMeetingActionEvent](#subscribeInMeetingActionEvent)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -107,35 +109,36 @@
 
 
 # 文档修订记录
-| 日期         | SDK版本    | 修改内容                                                                                                                                |
-|------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|
-| 2021-7-18  | 2.18.0   | 第一版初稿                                                                                                                               |
-| 2021-8-6   | 2.18.0   | 对错误码做了统一描述                                                                                                                          |
-| 2021-8-18  | 2.18.0   | 新增接口：设置会议信息和邀请信息回调接口                                                                                                                |
-| 2021-8-26  | 2.18.0   | 接口调整：登录时如果账号已登录是否强制让对方下线                                                                                                            |
-| 2021-8-30  | 2.18.0   | 接口调整：入会和离会回调接口增加meeting_code字段                                                                                                      |
-| 2021-10-9  | 2.18.1   | 新增接口：获取登录态URL、显示历史会议列表、显示历史会议详情页                                                                                                    |
-| 2021-10-20 | 2.18.2   | 新增接口：显示加入会议界面、显示预定会议界面、显示会议设置界面、相关回调                                                                                                |
-| 2022-02-23 | 3.0.102  | 新增接口：新增会中窗口置顶(BringInMeetingViewTop)接口                                                                                              |
-| 2022-03-03 | 3.0.102  | 修改登出接口说明                                                                                                                            |
-| 2022-04-08 | 3.0.102  | 新增关于登录登出最佳实践和注意事项的说明                                                                                                                |
-| 2022-05-12 | 3.0.106  | 新增接口：新增入会(joinMeetingByJSON)接口                                                                                                      |
-| 2022-05-13 | 3.0.106  | 新增接口：桌面端新增设置代理(setProxyInfo)接口                                                                                                      |
-| 2022-08-02 | 3.6.100  | 新增接口：新增处理Schema(handleSchema)接口，更新showPreMeetingView函数，新增可选参数                                                                       |
+| 日期         | SDK版本    | 修改内容                                                                                                                                  |
+|------------|----------|---------------------------------------------------------------------------------------------------------------------------------------|
+| 2021-7-18  | 2.18.0   | 第一版初稿                                                                                                                                 |
+| 2021-8-6   | 2.18.0   | 对错误码做了统一描述                                                                                                                            |
+| 2021-8-18  | 2.18.0   | 新增接口：设置会议信息和邀请信息回调接口                                                                                                                  |
+| 2021-8-26  | 2.18.0   | 接口调整：登录时如果账号已登录是否强制让对方下线                                                                                                              |
+| 2021-8-30  | 2.18.0   | 接口调整：入会和离会回调接口增加meeting_code字段                                                                                                        |
+| 2021-10-9  | 2.18.1   | 新增接口：获取登录态URL、显示历史会议列表、显示历史会议详情页                                                                                                      |
+| 2021-10-20 | 2.18.2   | 新增接口：显示加入会议界面、显示预定会议界面、显示会议设置界面、相关回调                                                                                                  |
+| 2022-02-23 | 3.0.102  | 新增接口：新增会中窗口置顶(BringInMeetingViewTop)接口                                                                                                |
+| 2022-03-03 | 3.0.102  | 修改登出接口说明                                                                                                                              |
+| 2022-04-08 | 3.0.102  | 新增关于登录登出最佳实践和注意事项的说明                                                                                                                  |
+| 2022-05-12 | 3.0.106  | 新增接口：新增入会(joinMeetingByJSON)接口                                                                                                        |
+| 2022-05-13 | 3.0.106  | 新增接口：桌面端新增设置代理(setProxyInfo)接口                                                                                                        |
+| 2022-08-02 | 3.6.100  | 新增接口：新增处理Schema(handleSchema)接口，更新showPreMeetingView函数，新增可选参数                                                                         |
 | 2022-08-30 | 3.6.200  | 新增接口：新增处理最小化悬浮窗(switchPipModel)接口、支持初始化设置英文、更新新版的打开会议详情页接口(showMeetingDetailView)、新增查询会议信息接口(QueryMeetingInfo)、新增快速会议接口(QuickMeeting) |
-| 2022-09-26 | 3.6.203  | 新增接口：quickMeetingByJSON；quickMeeting和JoinMeeting接口添加meeting_window_title参数                                                          |
-| 2022-11-18 | 3.6.300  | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口                                                                |
-| 2023-02-06 | 3.6.401  | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                          |
-| 2023-02-22 | 3.12.100 | 新增接口：新增反初始化(uninitialize)接口**beta版本**，本地录制相关接口，解析入会短链接接口，收集日志文件的接口                                                                  |
-| 2023-02-24 | 3.6.401  | 新增回调：新增会中通用动作和接口回调onActionResult函数                                                                                                  |
-| 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串                                                                                        |
-| 2023-05-19 | 3.12.100 | 由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口                                                                |
-| 2023-06-10 | 3.12.201 | 添加投屏接口                                                                                                                              |
-| 2023-07-31 | 3.12.300 | 添加字幕接口，查询代理接口，查询屏幕共享接口，查询会中窗口信息接口                                                                                                   |
-| 2023-07-31 | 3.12.300 | 添加隐私授权未授权错误码                                                                                                                        |                                                                                                |
-| 2023-09-01 | 3.12.400 | 添加自定义响铃邀请相关接口：EnableRingInvitationView，OnRingInvitationEvent，HandleRingInvitation                                                   |
-| 2023-10-23 | 3.12.402 | 接口调整：decodeUltrasoundScreenCastCode接口支持返回rooms_name；startScreenCast接口支持设置user_display_name和meeting_window_title                     |
-| 2023-11-14 | 3.12.403 | 新增接口：setLeaveCastRoomActionType可设置共享屏幕入会结束共享是否展示对话框
+| 2022-09-26 | 3.6.203  | 新增接口：quickMeetingByJSON；quickMeeting和JoinMeeting接口添加meeting_window_title参数                                                            |
+| 2022-11-18 | 3.6.300  | 新增接口：新增获取当前会议状态信息(getCurrentMeetingInfo)接口，移动端新增设置代理(setProxyInfo)接口                                                                  |
+| 2023-02-06 | 3.6.401  | 新增接口：新增添加选人相关接口，以及组织架构相关接口                                                                                                            |
+| 2023-02-22 | 3.12.100 | 新增接口：新增反初始化(uninitialize)接口**beta版本**，本地录制相关接口，解析入会短链接接口，收集日志文件的接口                                                                    |
+| 2023-02-24 | 3.6.401  | 新增回调：新增会中通用动作和接口回调onActionResult函数                                                                                                    |
+| 2023-04-10 | 3.12.100 | 修改会中通用动作和接口回调onActionResult函数，返回值msg统一为JSON串                                                                                          |
+| 2023-05-19 | 3.12.100 | 由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口                                                                  |
+| 2023-06-10 | 3.12.201 | 添加投屏接口                                                                                                                                |
+| 2023-07-31 | 3.12.300 | 添加字幕接口，查询代理接口，查询屏幕共享接口，查询会中窗口信息接口                                                                                                     |
+| 2023-07-31 | 3.12.300 | 添加隐私授权未授权错误码                                                                                                                          |                                                                                                |
+| 2023-09-01 | 3.12.400 | 添加自定义响铃邀请相关接口：EnableRingInvitationView，OnRingInvitationEvent，HandleRingInvitation                                                     |
+| 2023-10-23 | 3.12.402 | 接口调整：decodeUltrasoundScreenCastCode接口支持返回rooms_name；startScreenCast接口支持设置user_display_name和meeting_window_title                       |
+| 2023-11-14 | 3.12.403 | 新增接口：setLeaveCastRoomActionType可设置共享屏幕入会结束共享是否展示对话框                                                                                   |
+| 2023-12-20 | 3.12.404 | 新增接口：switchLayout(切换布局），subscribeInMeetingActionEvent（订阅/退订会中事件）, bringInMeetingViewTop函数支持移动端                                        |
 
 # 1. SDK使用说明
 
@@ -175,7 +178,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
     4. 响应入会回调`PreMeetingCallback.onJoinMeeting`，**回调结果成功表示入会成功**
 5. SDK反初始化(beta版本)
     1. 调用`TMSDK.uninitialize`函数可以完成SDK反初始化操作。**注意反初始化并非必须调用的，除非在当前进程生命周期中还需要重新初始化SDK**
-    3. 响应SDK反初始化回调`SDKCallback.onSDKUninitializeResult`，**回调结果成功才表示反初始化完成**
+    2. 响应SDK反初始化回调`SDKCallback.onSDKUninitializeResult`，**回调结果成功才表示反初始化完成**
 
 
 # 2. TMSDK 说明
@@ -244,7 +247,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | force | bool | false | 是否强制反初始化，如果在会议中是否强制离会。 |
 
 * param示例：
-```json
+```json5
 {
   "force": true
 }
@@ -298,10 +301,10 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 返回值说明：类型是字符串数组，表示日志文件绝对路径的列表，每个小时1个日志文件，所以多个日志文件
 * 参数说明：
 
-|参数名 |参数类型 |参数说明 |
-|:--|--|--|
-| begin_time | int | 日志文件的开始时间戳，单位：秒 |
-| end_time | int | 日志文件的结束时间戳，单位：秒|
+| 参数名        | 参数类型 | 参数说明            |
+|:-----------|------|-----------------|
+| begin_time | int  | 日志文件的开始时间戳，单位：秒 |
+| end_time   | int  | 日志文件的结束时间戳，单位：秒 |
 
 
 ### setProxyInfo
@@ -329,7 +332,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | password   | string | 否   | (空)     | 密码  |
 
 * 设置代理参数实例:
-```json
+```json5
   {
     "enable": true,
     "agent_type": 0, 
@@ -382,7 +385,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 返回值说明：无
 * 参数说明：
   - json_param格式：
-  ```json
+  ```json5
   {
     "users": ["user1_id","user2_id","user3_id","user4_id"],
     "user_type":2
@@ -533,12 +536,12 @@ SDKCallback 需实现以下成员函数：
 | msg    | string   | 入会短链对应的会议信息，JSON字符串                         |
 
 - msg 会议信息内容
-```json
+```json5
 {
-    "meeting_id": "", //会议标识号
-    "current_sub_meeting_id": "", //当前子会议 ID（进行中 / 即将开始）
-    "begin_time": 1629194320 // 会议开始时间戳
-    "meeting_code": "", //会议号
+    "meeting_id": "...", //会议标识号
+    "current_sub_meeting_id": "...", //当前子会议 ID（进行中 / 即将开始）
+    "begin_time": 1629194320, // 会议开始时间戳
+    "meeting_code": "..." //会议号
 }
 ```
 
@@ -855,10 +858,10 @@ AuthenticationCallback 需实现以下成员函数：
 |msg |string |结果的JSON信息，示例如下 |
 
 msg内容示例：
-```json
+```json5
 {
     "data": {
-          "rooms_code": "ABCDEF"
+          "rooms_code": "ABCDEF",
           "rooms_name": "RoomsName"
      },
      "description": ""
@@ -926,7 +929,7 @@ msg内容示例：
 |msg |string |结果的JSON信息，示例如下 |
 
 msg内容示例：
-```json
+```json5
 {
     "meeting_info": [
         {
@@ -976,7 +979,7 @@ msg内容示例：
 |msg |string |结果的JSON信息，示例如下 |
 
 msg内容示例：
-```json
+```json5
 [
   {
     "full_path": "full_path", 
@@ -1149,7 +1152,7 @@ PreMeetingCallback 需实现以下成员函数：
 <img alt="img.png" src="images/schedule_meeting_address_book.png" width="450"/>
 
 * json_data示例：
-```json
+```json5
 {
     "users": ["user1_id","user2_id","user3_id","user4_id"]
 }
@@ -1180,13 +1183,13 @@ PreMeetingCallback 需实现以下成员函数：
 | 7    | 响铃被其他端拒绝 |
 
 `ring_info`响铃信息json格式示例：
-```json
+```json5
 {
   "headline": "headline",  //会议标题
   "user_id": "000",  //会议邀请人的user_id
   "meeting_code": "111",  //会议号
   "meeting_id": "222",  //会议id
-  "invite_id": "333",  //本次邀请的唯一标识
+  "invite_id": "333"  //本次邀请的唯一标识
 }
 ```
 
@@ -1273,10 +1276,12 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### bringInMeetingViewTop
 * 函数形式：**void bringInMeetingViewTop()**
-* 函数说明：将会中窗口置顶，如果当前没有会中窗口，则不做任何操作。没有回调。
+* 可用版本：桌面端：>= 3.0.102; 移动端：>= 3.12.404
+* 函数说明：
+  * 桌面端: 将会中窗口置顶，如果当前没有会中窗口，则不做任何操作。没有回调。
+  * 移动端: 会切到会中界面，如果不在会议中，则不做任何操作。没有回调。
 * 返回值说明：无
 * 参数说明：无
-* 注：3.0.102加入，仅Mac、Windows、electron有该接口。
 
 
 ### switchPIPModel
@@ -1301,7 +1306,7 @@ PreMeetingCallback 需实现以下成员函数：
   * 初始化未登录调用时，msg返回错误信息，code返回-1006。
   * 调用成功后，code返回0，data中返回当前会议的信息。
 * 示例：
-```json
+```json5
 {
     "code": 0, 
     "data": {"is_in_meeting": 1, "meeting_id": "14926328509621455953", "meeting_code": "193146629"},
@@ -1338,7 +1343,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 返回值说明：无
 * 参数说明：JSON字符串，格式如下示例
 
-```json
+```json5
 {
     "users": {
         "user1_id": {"org_name": "部门1"},
@@ -1360,7 +1365,7 @@ msg内容示例:
 
 
 
-```json
+```json5
 {
     "description": "action success" //结果描述
 }
@@ -1373,7 +1378,7 @@ msg内容示例:
 * 函数说明：
   * 操作会中窗口，当前版本支持【全屏】和【退出全屏】
   * 调用时机：只能在会中调用，且处于悬浮窗和屏幕共享时不支持调用
-  * 结果：回调在`InMeetingCallback.onActionResult`中，`action_type`参数对应的枚举值1001
+  * 结果：操作结果通过`InMeetingCallback.onActionResult`事件回调，`action_type`参数对应的枚举值1001
 * 返回值说明：无
 * 参数说明：
 
@@ -1381,20 +1386,6 @@ msg内容示例:
 |---|---|---|---|----------------------------------------------------|
 |action_param |string |是 |无 | 为JSON字符串: `{"action":0}` 进入全屏；`{"action":1}` 退出全屏 |
 
-* `InMeetingCallback.onActionResult`回调说明：
-
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|action_type |int |这里为1001 |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
-|msg |string |结果的JSON信息，示例如下 |
-
-msg内容示例：
-```json
-{
-     "description": ""
-}
-```
 
 
 ### switchCaption
@@ -1441,7 +1432,7 @@ msg内容示例：
 |complete |Callback | 否    | 空     |操作结束回调block，可以为nil。详细说明见回调说明部分 |
 
 `json_setting`字幕设置项json格式示例：
-```json
+```json5
 {
   // 源语言设置
   "source_language": "zh",
@@ -1472,7 +1463,7 @@ msg内容示例：
 当`code != 0`（即操作失败）时，`msg`格式（json）有两种情况：
 
 1. 通用失败，回调函数参数`code`为错误码，`msg`对象包含一个`error`节点携带错误信息描述：
-```json
+```json5
 // 当用户未入会时，code=kTMSDKErrorNotInMeeting，此时msg为通用错误描述：
 {
   "error": "user not in meeting"
@@ -1480,7 +1471,7 @@ msg内容示例：
 ```
 
 2. 子设置项有部分内容（或全部）设置失败，此时回调函数参数`code`错误码固定为`kTMSDKErrorInnerCallError`，msg以json对象格式返回具体出错的子设置项信息：
-```json
+```json5
 {
   "source_language": {
     "result": -1008,
@@ -1506,7 +1497,7 @@ msg内容示例：
   * 不在会中调用时，msg返回错误信息，code返回-1015。
   * 调用成功后，code返回0，data中返回当前屏幕共享的信息。
 * 返回值示例和说明：
-```json
+```json5
 {
     "code": 0,  //接口调用状态码，成功调用时返回0  
     "data": {   //接口未成功调用时不返回data信息；正常调用时返回当前屏幕共享信息
@@ -1560,7 +1551,7 @@ msg内容示例：
 
 * 返回值示例和说明：
 
-```json
+```json5
 {
   "data": {
     "in_meeting_mode": true, //处于会中状态
@@ -1591,6 +1582,91 @@ msg内容示例：
 
 ![img.png](images/finish_share_dialog.png)
 
+### switchLayout
+
+* 函数形式：**void switchLayout(string layout_json, Callback complete)**
+* 可用版本：>= 3.12.404（**仅支持桌面端**）
+* 函数说明：
+  * 切换会议的默认布局。
+  * 调用时机：只能在会中调用。
+  * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
+  * 当前暂不支持并发调用，在前一次调用的回调`complete`未返回时，后续调用将直接触发`kTMSDKErrorDuplicatedCall`错误回调。
+* 返回值说明：无
+* 参数说明：
+  
+|参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明                           |
+|---|---|------|-------|--------------------------------|
+|layout_json |string | 是    | 无     | json格式，见后文布局设置项格式说明,可以同时携带多个设置项，设置项要么都设置成功，要么都设置失败，不会出现部分成功的情况           |
+|complete |Callback | 否    | 空     | 操作结束回调block，可以为nil。详细说明见回调说明部分 |
+
+`layout_json`布局设置项json格式示例：
+```json5
+{
+  // 布局id
+  "layout_id":2,
+  //仅展示正在说话的人
+  "only_show_speaking":true
+}
+```
+
+layout_id枚举值如下:
+
+| 名称                 | key                         | 值 |
+|--------------------|-----------------------------|---|
+| 一屏9/25等分（取决于布局设置项） | DefaultLayoutIdTile         | 0 |
+| 右侧成员列表             | DefaultLayoutIdGalleryRight | 1 |
+| 顶部成员列表             | DefaultLayoutIdGalleryTop   | 2 |
+| 悬浮列表               | DefaultLayoutIdFloat        | 3 |
+| 上L型布局              | DefaultLayoutIdTopRight     | 4 |
+
+* 回调说明：
+
+`Callback`签名：**void (\*)(int code, string msg)**
+
+| 参数名  | 参数类型   | 参数说明                                 |
+|------|--------|--------------------------------------|
+| code | int    | 操作结果错误码，0表示成功，其他值表示失败。详情参考`6. 错误码`章节 |
+| msg  | string | 操作出错时包含错误信息，操作成功时值为空                 |
+
+
+### subscribeInMeetingActionEvent
+* 函数形式：**void subscribeInMeetingActionEvent(int action_type, bool subscribe, string subscription_json)**
+* 可用版本：>= 3.12.404（**仅支持桌面端**）
+* 函数说明：
+  * 订阅/退订会中事件。
+  * 调用时机：初始化后可调用。
+* 返回值说明：订阅/退订会中事件的结果，0表示成功；其他值表示失败，如：**-1061**表示**无效action_type**。详情参考`6. 错误码`章节。
+* 参数说明：
+  
+| 参数名               | 参数类型   | 参数必填 | 参数默认值 | 参数说明                                   |
+|-------------------|--------|------|-------|----------------------------------------|
+| action_type       | int    | 是    | 无     | 表示何种行为事件，见后文枚举值说明                      |
+| subscribe         | bool   | 是    | 无     | 为true时表示订阅，false时表示退订                  |
+| subscription_json | string | 是    | 无     | 订阅信息，格式为JSON字符串，与具体action_type相关，见后文说明 |
+
+> **注意**：订阅会中事件后，回调结果在**InMeetingCallback.onActionResult**中，其中本函数的action_type参数与回调的action_type参数一致
+
+当前支持的订阅/退订的action_type如下，未来会扩展：
+
+| action_type | 说明               |
+|-------------|:-----------------|
+| 1004        | 开放平台的第三方应用状态变化事件 |
+
+
+* 当action_type为`1004`时
+  * 表示订阅/退订开放平台的第三方应用状态变化事件
+  * 订阅开放平台的第三方应用最大数量为5
+  * 同时满足以下三个条件才能触发回调：
+    1. 应用被订阅（通过subscribeInMeetingActionEvent函数订阅）
+    2. 应用被绑定（通过API等方式将应用与会议绑定起来）
+    3. 应用状态发生变化，比如打开，关闭
+  * subscription_json参数格式示例：
+  ```json5
+  { 
+    "open_app_id":"12345"   //open app的标识符
+  }
+  ```  
+
 
 ## 5.2 InMeetingCallback 回调代理
 
@@ -1619,7 +1695,7 @@ InMeetingCallback 需实现以下成员函数：
 | invite_info | string | 邀请的相关信息，JSON字符串 |
 
 invite_info内容
-```json5
+```json55
 {
     "begin_time": 1629194320, // 会议开始时间戳
     "end_time": 1629197920, // 会议结束时间戳
@@ -1663,7 +1739,7 @@ invite_info内容
 | json_data | string | 会议信息，JSON字符串，内容如下示例 |
 
 * json_data示例：
-```json
+```json5
 {
     "users": ["user1_id","user2_id","user3_id","user4_id"]
 }
@@ -1708,7 +1784,7 @@ data内容示例
   * 当调用`InMeetingService.enableCustomOrgInfo`函数开启了该功能，才会收到该回调
   * 在该回调中，接入方获取到用户ID列表后，通过调用`InMeetingService.setCustomOrgInfo`函数来设置自定义的组织架构信息
 * 参数说明：JSON字符串，格式如下示例
-```json
+```json5
 {
     "users": ["user1_id","user2_id","user3_id","user4_id"]
 }
@@ -1731,18 +1807,29 @@ data内容示例
 |        操作        | action_type | 说明                                              | msg值说明                                              |
 |:----------------:|---|:------------------------------------------------|-----------------------------------------------------|
 | setCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
-| manipulateWindow | 1001   | 会中调用`InMeetingService.manipulateWindow`操作会中窗口   | JSON字符串，格式参考`InMeetingService.manipulateWindow`函数说明 |
-|       屏幕共享       | 1002   | 会中屏幕共享功能开启/关闭回调    | JSON字符串，格式参考下面示例说明 |
-|    主会场与分组会议切换    | 1003   | 主会场和分组会议切换触发     | JSON字符串，格式参考下面示例说明 |
+| 切换会中窗口全屏    | 1001   | 用户操作切换全屏，或调用SDK`InMeetingService.manipulateWindow`操作会中窗口   | JSON字符串，格式参考下面示例说明 |
+| 屏幕共享           | 1002   | 会中屏幕共享功能开启/关闭回调    | JSON字符串，格式参考下面示例说明 |
+| 主会场与分组会议切换 | 1003   | 主会场和分组会议切换触发     | JSON字符串，格式参考下面示例说明 |
+| 第三方应用状态变化   | 1004   | 开放平台的第三方应用状态变化事件     | JSON字符串，格式参考下面示例说明 |
 
 
  * `msg`的JSON通用格式如下：
-```json
+```json5
 {
     "data": {  //回调核心数据，内容取决于action_type，该data字段为可选，一些场景下不存在data字段。
-        ...
+        "...": "..."
     },
     "description": "..." //接口调用结果的描述
+}
+```
+
+* `切换会中窗口全屏`时，`msg`的数据格式示例与说明：
+```json5
+{ 
+    "data": { 
+       "full_screen": true  // 是否为全屏
+    },
+    "description": "..." 
 }
 ```
 
@@ -1750,7 +1837,7 @@ data内容示例
 
   JSON数据中`data`的数据格式同`InMeetingService.getScreenShareInfo`返回值中的`data`：
   
-```json
+```json5
 { 
     "data": { // data的数据格式同InMeetingService.getScreenShareInfo返回值中的data
        "share_status": 0,
@@ -1761,11 +1848,22 @@ data内容示例
 ```
 
 * `主会场与分组会议切换`时，`msg`的数据格式示例与说明： 
-```json
+```json5
 { 
     "data": { 
        "breakout_room_status": 0, //0：进入分组，1：退出分组
        "meeting_code": "..."
+    },
+    "description": "..."
+}
+```
+
+* `第三方应用状态变化`时，`msg`的数据格式示例与说明： 
+```json5
+{ 
+    "data": { 
+       "open_app_id": "12345",
+       "open_app_status": 1  // 0：初始状态，1：将要打开，2：已关闭
     },
     "description": "..."
 }
@@ -1792,7 +1890,7 @@ data内容示例
 |json_info |string |json格式，详情见后文说明 |
 
 参数json示例格式：
-```json
+```json5
 // 源语言设置变化
 {
   "source_language": {
@@ -1801,7 +1899,9 @@ data内容示例
     "source_lang": "zh"
   }
 }
+```
 
+```json5
 // 目标语言设置变化
 {
   "target_language": {
@@ -1810,7 +1910,9 @@ data内容示例
     "target_lang": "en"
   }
 }
+```
 
+```json55
 // 双语显示设置变化
 {
   "simultaneous_display": {
@@ -1877,6 +1979,8 @@ data内容示例
 | kTMSDKErrorMacCreateIPCTimeout |-1057| Mac 进程通信管道启动超时 |onResetSDKState()|
 | kTMSDKErrorMacConnectIPCFailed |-1058| Mac 进程通信管道建立连接失败 |onResetSDKState()|
 | kTMSDKErrorAccountAbnormal |-1060| 账号异常 |onLogin()|
+| kTMSDKErrorSubscribeActionTypeError |-1061| 订阅的action_type错误 |subscribeInMeetingActionEvent()|
+| kTMSDKErrorOpenAppSubscriptionLimited |-1062| 订阅的第三方应用达到上限 |subscribeInMeetingActionEvent()|
 | kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
@@ -1884,4 +1988,14 @@ data内容示例
 | kTMSDKErrorAddUsersMembersModelError |-2006| 通讯录回调，新增用户失败，SDK 内部错误 |onAddUsersResult()|
 | kTMSDKErrorInnerCallError |-3001| 内部子调用出错 | updateCaptionSettings()|
 | kTMSDKErrorDuplicatedCall |-3002| 接口正在执行中，不允许重复调用 |updateCaptionSettings()、handleRingInvitation()|
+| kTMSDKErrorInvalidLayoutId |-4001| 无效的layout id |switchLayout()|
+| kTMSDKErrorSwitchLayoutDefaultInMultiMonitorMode |-4002| 多显示器模式下禁止切换布局 |switchLayout()|
+| kTMSDKErrorSwitchLayoutDefaultLayoutNoStream |-4003| 需要开启视频或者应用在主画面 |switchLayout()|
+| kTMSDKErrorSwitchLayoutDefaultLayoutNotHost |-4004| 非主持人无法在自定义布局、汇聚模式下切换 |switchLayout()|
+| kTMSDKErrorSwitchLayoutGridItemInSpotlightVideoMode |-4005| 焦点视频模式下无法切换为宫格视图 |switchLayout()|
+| kTMSDKErrorSwitchLayoutItemWhenCollaboration |-4006| 一起用环节不支持使用宫格视图 |switchLayout()|
+| kTMSDKErrorswitchLayoutItemWhenScreenShare |-4007| 屏幕共享时无法切换成宫格视图 |switchLayout()|
+| kTMSDKErrorSwitchLayoutLShapeItemUnableSwitch |-4008| 此布局需在7人及以上成员时使用 |switchLayout()|
+| kTMSDKErrorSwitchLayoutFloatItemNotFullScreen |-4009| 非全屏时暂不支持「悬浮列表」视图 |switchLayout()|
+
 
