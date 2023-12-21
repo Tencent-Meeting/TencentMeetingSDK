@@ -51,9 +51,11 @@
 
   ```groovy
       implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') { //注意：这里的${wemeet_version}需要替换为具体的sdk版本号
-          exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
+          // 如果宿主工程同时集成了glide，编译时报重复class错，可以尝试加上如下exclude
           exclude group: 'com.github.bumptech.glide'
+          // 如果宿主工程同时集成了x5内核，编译时报重复class错，可以尝试加上如下exclude
           exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk' //注意： (版本 >= 3.12.100)用这个
+          // 如果宿主工程同时集成了腾讯liteav sdk，编译时报重复class错，可以尝试加上如下exclude
           exclude group: 'com.tencent.liteav'
       }
   ```
@@ -62,6 +64,7 @@
 
   ```groovy
       implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') { //注意：这里的${wemeet_version}需要替换为具体的sdk版本号
+          // 如果宿主工程同时集成了腾讯imsdk，编译时报重复class错，可以尝试加上如下exclude
           exclude group: 'com.tencent.wemeet.third-party', module: 'imsdk'
           exclude group: 'com.github.bumptech.glide'
           exclude group: 'com.tencent.wemeet.third-party', module: 'tbssdk-dynamic' //注意：（版本 < 3.12.100）用这个

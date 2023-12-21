@@ -262,7 +262,20 @@ public void onCreate() {
  TMSDK.setMeetingNotificationConfig(notificationConfig)
 ```
 
-## 3. FAQ
+## 3. 腾讯会议sdk自带部分第三方sdk版本对应表
+|版本|SDK 3.12.xxx|
+|--|--|
+|glide(图片加载sdk)|4.12.0|
+|tbssdk(x5浏览器内核sdk)|4.3.0.103_44183|
+|liteav(腾讯音视频sdk)|9.5.29040|
+对于宿主工程，如果要使用以上列表中第三方sdk，建议使用版本大于等于SDK内部集成的版本，如果版本不对应可能出现编译或者运行时异常。
+在宿主工程根目录可以执行 
+```
+./gradlew app:dependencies 
+```
+然后查看输出具体的版本依赖关系。
+
+## 4. FAQ
 
 - Q:接入sdk后，出现运行时异常：java.lang.UnsatisfiedLinkError
 A:目前会议的so只支持armeabi-v7a和arm64-v8a的架构，需要检查是否做了以下配置
@@ -298,8 +311,8 @@ android {
 
 ```groovy
     implementation "com.tencent.wemeet: ${wemeet_version}" {
+        // 如果宿主工程同时集成了x5内核，编译时报重复class错，可以尝试加上如下exclude
         exclude group: 'com.tencent.tbssdk', module: 'tbssdk'
-        exclude group: 'com.tencent.wemeet', module: 'imsdk'
     }
 ```
 - Q:javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
