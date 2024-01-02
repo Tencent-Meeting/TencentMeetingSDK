@@ -1,6 +1,6 @@
 # Linux SDK接入手册
 
-本文档适用于Linux SaaS SDK v3.19.1及以上版本。
+本文档适用于Linux SaaS SDK v3.19.0及以上版本。
 
 ## 1. 环境需求
 Linux SaaS SDK支持以下CPU架构和Linux发行版：
