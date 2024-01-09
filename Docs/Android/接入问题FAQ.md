@@ -117,4 +117,18 @@
   ```
   
   - Q:在会中界面点击管理成员发生crash，错误为java.lang.ClassNotFoundException: Didn't find class "android.support.v7.widget.RecyclerView$ItemDecoration"
+  
   - A:在gradle.properties中添加android.enableJetifier=true
+  
+    
+  
+  - Q: 在Android 11以上设备中，无法使用蓝牙设备怎么处理
+  
+  - A: 蓝牙权限配置问题，一般是蓝牙权限声明的AndroidManifest.xml文件中，多加了maxSdkVersion的限制。需要去除该限制。
+  
+    ```
+    <uses-permission android:name="android.permission.BLUETOOTH"/>  //去除android:maxSdkVersion="30"
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>  //去除android:maxSdkVersion="30"
+    ```
+  
+    
