@@ -2070,7 +2070,7 @@ data内容示例
 | kTMSDKErrorCancelJoin | -1016 | 用户手动取消入会 |onJoinMeeting()|
 | kTMSDKErrorIsLogining | -1017 | 正在登录过程中的重复登录调用 |onLogin()|
 | kTMSDKErrorLoginNetError | -1018 | 登录过程出现网络错误 |onLogin()|
-| kTMSDKErrorTokenVerifyFailed | -1019 | sdktoken校验失败，可能是登录时sdktoken过期或使用时sdktoken失效，需要refreshSDKToken后再登录 |onResetSDKState()、onLogin()|
+| kTMSDKErrorTokenVerifyFailed | -1019 | 身份校验失败，请检查`SDK ID`或`SDK Token`是否正确。可能是登录时`SDK Token`过期或使用时`SDK Token`失效，需要refreshSDKToken后再登录 |onResetSDKState()、onLogin()|
 | kTMSDKErrorChildProcessCrash | -1020 | 子进程退出 |onResetSDKState()|
 | kTMSDKErrorMultiAccountLoginConflict| -1021 | A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
 | kTMSDKErrorJoinMeetingServiceFailed| -1022 | 服务端拒绝入会，可能是频繁入会请求、输入无效会议号、会议已结束等情况，请用返回错误码和错误描述联系官方 | onJoinMeeting()|
@@ -2132,5 +2132,4 @@ data内容示例
 | kTMSDKErrorswitchLayoutItemWhenScreenShare | -4007 | 屏幕共享时无法切换成宫格视图 |switchLayout()|
 | kTMSDKErrorSwitchLayoutLShapeItemUnableSwitch | -4008 | 此布局需在7人及以上成员时使用 |switchLayout()|
 | kTMSDKErrorSwitchLayoutFloatItemNotFullScreen | -4009 | 非全屏时暂不支持「悬浮列表」视图 |switchLayout()|
-
 
