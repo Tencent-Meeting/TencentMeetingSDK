@@ -30,8 +30,9 @@
 | iOS      | [接入手册](Docs/iOS/iOS接入手册.md) <br>[接入问题FAQ](Docs/iOS/接入问题FAQ.md)                                                                       | 集成说明、常见问题说明      |
 | MacOS    | [接入手册 ](Docs/MacOS/MacOS接入手册.md)<br>[接入问题FAQ](Docs/MacOS/接入问题FAQ.md)                                                                 | 集成说明、常见问题说明      |
 | Windows  | [接入手册](Docs/Windows/Windows接入手册.md) <br>[接入问题FAQ](Docs/Windows/接入问题FAQ.md)                                                           | 集成说明、常见问题说明      |
- | Electron | [接入手册](Docs/Electron/Electron接入手册.md) <br>[接入问题FAQ](Docs/Electron/接入问题FAQ.md) <br>[3.0旧版接入手册](Docs/Electron/Electron接入手册(SDK3.0).md) | 集成说明、常见问题说明      |
- | QT       | [QT接入手册](Docs/Qt/QT接入手册.md)                                                                                                          | 集成说明、常见问题说明      |
+| Linux | [接入手册](./Docs/Linux/Linux接入手册.md) | 集成说明、常见问题说明      |
+| Electron | [接入手册](Docs/Electron/Electron接入手册.md) <br>[接入问题FAQ](Docs/Electron/接入问题FAQ.md) <br>[3.0旧版接入手册](Docs/Electron/Electron接入手册(SDK3.0).md) | 集成说明、常见问题说明      |
+| QT       | [QT接入手册](Docs/Qt/QT接入手册.md)                                                                                                          | 集成说明、常见问题说明      |
 
 # 腾讯会议SDK隐私政策
 [腾讯会议SDK个人信息保护规则](https://privacy.qq.com/document/preview/67043f4d1b5848e49251e5e228511eba)

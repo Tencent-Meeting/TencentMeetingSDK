@@ -193,6 +193,8 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 # 2. TMSDK 说明
 
+> 如无特殊说明，以下API默认为全平台（`Windows`/`macOS`/`Linux`/`Android`/`iOS`）可用。有平台限制的接口将会单独标注。
+
 ## 2.1 TMSDK 成员函数
 
 ### getSDKVersion
@@ -225,7 +227,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |公有云SDK专用|sdk_token |string |必填 |(无) |SDK Token |
 |私有化SDK专用 |server_host |string |必填，二选一 |(无) |私有化服务器地址，格式为：{protocol}://{domain}:{port}，protocol默认为http；port默认为29666; 如需配置两个域名，请用';'分隔 |
 |私有化SDK专用|org_domain |string |必填，二选一 |(无) |组织机构域，如填写，SDK则会通过`org_domain`从公有云服务上获取私有化服务器地址，并覆盖`server_host`的值 |
-|通用 |data_path |string |否 |`tmsdkapp.exe`同级目录 | 仅`Windows`支持:自定义SDK数据存储路径，里面包括日志目录。 |
+|通用 |data_path |string |否 |`tmsdkapp.exe`同级目录 | 仅`Windows`/`Linux`支持:自定义SDK数据存储路径，里面包括日志目录。 |
 |通用 |app_name |string |否 |网络会议 | 指定显示的品牌名称 |
 |公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，如传入其它值则显示为zh-cn，3.6.200及以上版本可用） |
 |通用 |proxy_info |string |否 |(无) | 用于初始化时设置网络代理，内容为json串，格式可参考setProxyInfo接口。如果使用了此参数，则必须拿到设置代理的回调后再调用登录接口（3.12.200以及以上版本可用） |
@@ -233,7 +235,8 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### uninitialize
 * 函数形式：**void uninitialize(string param)**
-* 可用版本：>= 3.12.100（**仅支持Windows和Android平台，其他平台暂不支持**）
+* 可用版本：>= 3.12.100
+* 可用平台：`Windows`/`Android`/`Linux`
 * 函数说明：
   * 反初始化函数用来停止SDK功能并释放SDK资源，让SDK回到初始化之前的状态。
   * 反初始化调用的结果，通过`SDKCallback.onSDKUninitialize`回调来获取。
@@ -299,6 +302,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | 终端 | 日志路径 |
 | ------ | ------ |
 | Windows |`tmsdkapp.exe`同级目录或者是接入方设置的自定义数据目录下 |
+| Linux | 接入方设置的自定义数据目录下 |
 | MacOS | ~/Library/Containers/{宿主App的BundleID}/Data/Library/Global/Logs |
 | iOS | {宿主App沙盒路径}/AppData/Library/Application Support/{宿主App的BundleID}/Global/Logs |
 | Android | /Data/Data/{宿主App的PackageName}/Global/Logs |
@@ -405,6 +409,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### addUsersWithParam
 * 函数形式：**void addUsersWithParam(string json_param)**
 * 可用版本：>= 3.6.401
+* 可用平台：**Linux暂不支持**
 * 函数说明：
   - 添加人员操作，接入方可以邀请人加入预定会议、或邀请人员加入会议，添加的结果通过`SDKCallback.onAddUsersResult`回调通知给接入方
   - 当使用SDK的预定会议界面时，并在`PreMeetingCallback.onShowAddressBook`回调中，可通过该函数添加主持人和成员
@@ -564,6 +569,7 @@ SDKCallback 需实现以下成员函数：
 ### onAddUsersResult
 * 函数形式：**void onAddUsersResult(int user_type, int code, string msg)**
 * 可用版本：>= 3.6.401
+* 可用平台：**Linux暂不支持**
 * 说明：调用`TMSDK.addUsersWithParam`函数的回调
 
 | 参数名       | 参数类型   | 参数说明                                            |
@@ -881,13 +887,15 @@ AuthenticationCallback 需实现以下成员函数：
 ### showScreenCastView
 * 函数形式：**void showScreenCastView()**
 * 函数说明：显示SDK自带的投屏码输入界面。登录完成后，才可调用。
+* 可用平台：**Linux暂不支持**
 * 返回值说明：无
 * 参数说明：无
 
 
 ### decodeUltrasoundScreenCastCode
 * 函数形式：**void decodeUltrasoundScreenCastCode()**
-* 可用版本：>= 3.12.201（**仅支持桌面端，移动端暂不支持**）
+* 可用版本：>= 3.12.201
+* 可用平台：`Windows`/`macOS`，其他平台暂不支持
 * 函数说明：
 - 获取超声波投屏码
 - Mac端需要麦克风权限
@@ -918,6 +926,7 @@ msg内容示例：
 ### startScreenCast
 * 函数形式：**void startScreenCast(string json_param)**
 * 可用版本：>= 3.12.201
+* 可用平台：**Linux暂不支持**
 * 函数说明：
   - 开始投屏，如调用成功会自动入会，然后弹出投屏选择界面
   - Mac端需要屏幕录制权限
@@ -1070,6 +1079,7 @@ msg内容示例：
 ### enableAddressBookCallback
 * 函数形式：**void enableAddressBookCallback(bool enable, bool show)**
 * 可用版本：>= 3.6.401
+* 可用平台：**Linux暂不支持**
 * 函数说明：
   * SDK预定会议界面中，开启定制化通讯录的回调。
   * 当用户在SDK预定会议界面中，点击通讯录选人按钮来邀请成员和主持人时，发起`PreMeetingCallback.onShowAddressBook`回调。
@@ -1090,6 +1100,7 @@ msg内容示例：
 ### enableRingInvitationView
 * 函数形式：**void enableRingInvitationView(bool enable)**
 * 可用版本：>= 3.12.400
+* 可用平台：**Linux暂不支持**
 * 函数说明：设置是否显示SDK的响铃邀请界面
 * 返回值说明：无
 * 参数说明：
@@ -1105,6 +1116,7 @@ msg内容示例：
 ### handleRingInvitation
 * 函数形式：**void handleRingInvitation(bool accept, string invite_id, Callback complete)**
 * 可用版本：>= 3.12.400
+* 可用平台：**Linux暂不支持**
 * 函数说明：
   * 处理响铃邀请
   * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
@@ -1186,6 +1198,7 @@ PreMeetingCallback 需实现以下成员函数：
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
 * 可用版本：>= 3.6.401
+* 可用平台：**Linux暂不支持**
 * 说明：
   * 用户在SDK界面中打开通讯录的回调，可用作接入方定制通讯录的通知。
   * 在`PreMeetingService.enableAddressBookCallback`函数参数enable设置为true的情况下，在SDK预定会议界面中，用户点击通讯录邀请成员、指定主持人时，会收到该回调。
@@ -1208,6 +1221,7 @@ PreMeetingCallback 需实现以下成员函数：
 ### onRingInvitationEvent
 * 函数形式：**void onRingInvitationEvent(int ring_state, string ring_info)**
 * 可用版本：>= 3.12.400
+* 可用平台：**Linux暂不支持**
 * 说明：
   * 用户在收到响铃邀请时的回调，可用作接入方定制响铃邀请界面的通知。
   * 接入方响应回调后，可展示自定义响铃邀请界面，在处理响铃邀请要通知到SDK时，可调用`PreMeetingService.handleRingInvitation`函数来实现。
@@ -1328,6 +1342,7 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### enableInviteUsersCallback
 * 函数形式：**void enableInviteUsersCallback(bool enable, bool show)**
+* 可用平台：**Linux暂不支持**
 * 函数说明：
    *设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息。
    *设置接口要早于点击会中界面成员列表添加按钮，建议初始化回调之后登录之前设置。
@@ -1445,7 +1460,7 @@ msg内容示例:
 ### manipulateWindow
 * 函数形式：**void manipulateWindow(string action_param)**
 * 可用版本：>= 3.12.201
-* 适用平台：windows & mac
+* 适用平台：Windows & macOS & Linux
 * 函数说明：
   * 操作会中窗口，当前版本支持【全屏】和【退出全屏】
   * 调用时机：只能在会中调用，且处于悬浮窗和屏幕共享时不支持调用
@@ -1462,6 +1477,7 @@ msg内容示例:
 ### switchCaption
 * 函数形式：**void switchCaption(bool open, Callback complete)**
 * 可用版本：>= 3.12.300
+* 可用平台：**Linux暂不支持**
 * 函数说明：
   * 开关会议中字幕展示组件。
   * 调用时机：只能在会中调用。
@@ -1488,6 +1504,7 @@ msg内容示例:
 ### updateCaptionSettings
 * 函数形式：**void updateCaptionSettings(string json_setting, Callback complete)**
 * 可用版本：>= 3.12.300
+* 可用平台：**Linux暂不支持**
 * 函数说明：
   * 更新字幕相关设置选项。当前支持设置“源语言”、“翻译目标语言”、“是否双语展示”。
   * 调用时机：只能在会中调用。部分设置项需要主持人才能调用修改。
@@ -1605,7 +1622,7 @@ msg内容示例:
 
 * 函数形式：**string getMeetingWindowInfo()**
 * 可用版本：>= 3.12.300
-* 适用平台：windows & mac
+* 适用平台：Windows & macOS & Linux
 * 函数说明：支持获取会中信息，例如：窗口位置和尺寸
 * 参数说明：无
 * 返回值说明：
@@ -1644,6 +1661,7 @@ msg内容示例:
 
 * 函数形式：**void setLeaveCastRoomActionType(int actionType)**
 * 可用版本：>= 3.12.403
+* 可用平台：**Linux暂不支持**
 * 函数说明：用来设置共享屏幕入会后，结束共享时是否展示"结束共享"弹窗。
 * 参数说明：
 
@@ -1656,7 +1674,7 @@ msg内容示例:
 ### switchLayout
 
 * 函数形式：**void switchLayout(string layout_json, Callback complete)**
-* 可用版本：>= 3.12.404（**仅支持桌面端**）
+* 可用版本：>= 3.12.404（**仅支持桌面端，Linux暂不支持**）
 * 函数说明：
   * 切换会议的默认布局。
   * 调用时机：只能在会中调用。
@@ -1703,7 +1721,7 @@ layout_id枚举值如下:
 
 ### subscribeInMeetingActionEvent
 * 函数形式：**void subscribeInMeetingActionEvent(int action_type, bool subscribe, string subscription_json)**
-* 可用版本：>= 3.12.404（**仅支持桌面端**）
+* 可用版本：>= 3.12.404（**仅支持桌面端，Linux暂不支持**）
 * 函数说明：
   * 订阅/退订会中事件。
   * 调用时机：初始化后可调用。
@@ -1801,6 +1819,7 @@ invite_info内容
 ### onInviteUsers
 * 函数形式：**void onInviteUsers(string json_data)**
 * 可用版本：>= 3.6.401
+* 可用平台：**Linux暂不支持**
 * 说明：
   * 用户在会议中界面点击右侧成员列表上方的添加成员按钮的的回调。
   * 接入方响应回调后，可展示自定义通讯录，在自定义通讯录中添加成员要通知到SDK时，可调用`TMSDK.addUsersWithParam`函数来实现。
@@ -1958,6 +1977,7 @@ data内容示例
 ### onCaptionSwitchChanged
 * 函数形式：**void onCaptionSwitchChanged(bool is_open)**
 * 可用版本：>=3.12.300
+* 可用平台：**Linux暂不支持**
 * 说明：当字幕开关状态变化时回调，无论该变化是由用户UI操作引起的还是调用API接口设置引起的。
 
 |参数名 |参数类型 |参数说明 |
@@ -1968,6 +1988,7 @@ data内容示例
 ### onCaptionSettingChanged
 * 函数形式：**void onCaptionSettingChanged(string json_info)**
 * 可用版本：>=3.12.300
+* 可用平台：**Linux暂不支持**
 * 说明：当字幕任意设置项被修改更新后回调，无论该变化是由用户UI操作引起的还是调用API接口设置引起的。
 
 |参数名 |参数类型 |参数说明 |
