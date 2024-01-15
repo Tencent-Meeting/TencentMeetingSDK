@@ -13,6 +13,7 @@
     + [getCurrentSDKToken](#getcurrentsdktoken)
     + [showLogs](#showlogs)
     + [collectLogFiles](#collectlogfiles)
+    + [activeUploadLogs](#activeuploadlogs)
     + [setProxyInfo](#setproxyinfo)
     + [getProxyInfo](#getproxyinfo)
     + [handleSchema](#handleschema)
@@ -30,6 +31,7 @@
     + [onSetProxyResult](#onsetproxyresult)
     + [onAddUsersResult](#onaddusersresult)
     + [onParseMeetingInfoUrl](#onparsemeetinginfourl)
+    + [onActiveUploadLogsResult](#onactiveuploadlogsresult)
 - [3. AccountService 说明](#3-accountservice-说明)
   * [3.1 AccountService 成员函数](#31-accountservice-成员函数)
     + [setCallback](#setcallback)
@@ -51,7 +53,7 @@
     + [quickMeetingByJSON](#quickmeetingbyjson)
     + [showPreMeetingView](#showpremeetingview)
     + [showHistoricalMeetingView](#showhistoricalmeetingview)
-    + showMeetingDetailView【即将移除】
+    + [showUploadLogsView](#showuploadlogsview)
     + [showMeetingDetailView](#showmeetingdetailview)
     + [showJoinMeetingView](#showjoinmeetingview)
     + [showScheduleMeetingView](#showschedulemeetingview)
@@ -66,12 +68,13 @@
     + [enableAddressBookCallback](#enableaddressbookcallback)
     + [enableRingInvitationView](#enableringinvitationview)
     + [handleRingInvitation](#handleringinvitation)
+    + [openQRCodeUrl](#openqrcodeurl)
   * [4.2 PreMeetingCallback 回调代理](#42-premeetingcallback-回调代理)
     + [onJoinMeeting](#onjoinmeeting)
-    + onShowScreenCastViewResult【即将移除】
     + [onActionResult](#onactionresult)
     + [onShowAddressBook](#onshowaddressbook)
     + [onRingInvitationEvent](#onringinvitationevent)
+    + [onOpenQRCodeUrlResult](#onopenqrcodeurlresult)
 - [5. InMeetingService 说明](#5-inmeetingservice-说明)
   * [5.1 InMeetingService 成员函数](#51-inmeetingservice-成员函数)
     + [setCallback](#setcallback-2)
@@ -103,6 +106,9 @@
     + [onActionResult](#onactionresult-1)
     + [onCaptionSwitchChanged](#oncaptionswitchchanged)
     + [onCaptionSettingChanged](#oncaptionsettingchanged)
+    + [onAudioStatusChanged](#onAudioStatusChanged)
+    + [onVideoStatusChanged](#onVideoStatusChanged)
+    + [onAudioOutputDeviceChanged](#onAudioOutputDeviceChanged)
 
 - [6. 错误码](#6-错误码)
 
@@ -138,7 +144,10 @@
 | 2023-09-01 | 3.12.400 | 添加自定义响铃邀请相关接口：EnableRingInvitationView，OnRingInvitationEvent，HandleRingInvitation                                                     |
 | 2023-10-23 | 3.12.402 | 接口调整：decodeUltrasoundScreenCastCode接口支持返回rooms_name；startScreenCast接口支持设置user_display_name和meeting_window_title                       |
 | 2023-11-14 | 3.12.403 | 新增接口：setLeaveCastRoomActionType可设置共享屏幕入会结束共享是否展示对话框                                                                                   |
-| 2023-12-20 | 3.12.404 | 新增接口：switchLayout(切换布局），subscribeInMeetingActionEvent（订阅/退订会中事件）, bringInMeetingViewTop函数支持移动端                                        |
+| 2023-11-20 | 3.12.404 | 新增接口：switchLayout(切换布局），subscribeInMeetingActionEvent（订阅/退订会中事件）。bringInMeetingViewTop函数支持移动端                                         |
+| 2023-12-12 | 3.21.100 | 新增接口：showUploadLogsView 显示上传日志页面；activeUploadLogs 主动上传日志接口；openQRCodeUrl接受扫码信息接口                                                      |
+| 2023-12-12 | 3.21.100 | 接口调整：会中动作回调onActionResult()新增云录制状态变更事件类型; getCurrentMeetingInfo接口增加字段host_user_id，表示主持人的user_id                                       |
+| 2023-12-12 | 3.21.100 | 新增接口：onAudioStatusChanged（麦克风状态回调）；onVideoStatusChanged（摄像头状态回调）；onAudioOutputDeviceChanged（音频输出设备变化回调，仅支持移动端）
 
 # 1. SDK使用说明
 
@@ -147,6 +156,7 @@
 1. 以下接口方法格式为`伪代码`，起示意作用，为了表示各端统一的接口形式。
 2. 因为代码风格各端各不相同，具体接口命名风格可参考各端SDK接口代码定义和SDK包中的Demo代码工程样例源代码。
 3. 必须在主线程调用SDK的各个函数
+4. 对于废弃的函数，会在本文档中标注：【废弃】，并在程序中保持一年以上，之后会在合适时间从程序中移除废弃已久的函数，并在[废弃接口列表](./DeprecatedList.md)文档中记录。
 
 
 ## 1.1 获取SDK实例方法
@@ -309,6 +319,23 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |:-----------|------|-----------------|
 | begin_time | int  | 日志文件的开始时间戳，单位：秒 |
 | end_time   | int  | 日志文件的结束时间戳，单位：秒 |
+
+
+### activeUploadLogs
+* 函数形式：**activeUploadLogs(int begin_time, int end_time, string description)**
+* 可用版本：>= 3.21.100
+* 函数说明：
+  * 主动上传日志，通过接口`SDKCallback.onActiveUploadLogsResult`回调通知返回结果；
+  * 只上传开始和结束时间期间的日志，开始时间和结束时间的最大间隔为24h
+  * 限制最大传输压缩后的文件1G，30min上传不成功则返回失败回调通知
+* 返回值说明：无
+* 参数说明：
+
+| 参数名         | 参数类型   | 参数必填 | 参数默认值 | 参数说明                                       |
+|:------------|--------|------|-------|--------------------------------------------|
+| begin_time  | int    | Y    | --    | 日志文件的开始时间戳（单位秒）向上取整点时间戳                    |
+| end_time    | int    | Y    | --    | 日志文件的结束时间戳（单位秒）向下取整点时间戳                    |
+| description | string | N    | 空     | 上传的描述信息, 最大支持100个中文字符长度，两个英文字符等于一个中文字符，非必填 |
 
 
 ### setProxyInfo
@@ -476,6 +503,27 @@ SDKCallback 需实现以下成员函数：
 |---|---|---|
 | code | int | 打开日志文件夹结果码 |
 | msg | string | 打开日志文件夹结果信息 |
+
+
+### onActiveUploadLogsResult
+* 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
+* 可用版本：>= 3.21.100
+* 说明：调用`TMSDK.activeUploadLogs`函数的回调
+
+| 参数名  | 参数类型   | 参数说明        |
+|------|--------|-------------|
+| code | int    | 错误码         |
+| msg  | string | json格式的错误信息 |
+
+* msg详细示例： 
+```json5
+{
+    "unique_id":"2023.10.23-W999999999-4ae4dd4c3a5c6ae4b2e45844755f0d02-meeting",
+    "description": "upload log success"
+}
+```
+
+其中`unique_id`是日志上传结果返回的唯一索引，用于后台进行唯一检索； `description`用来描述上传结果成功或者失败原因
 
 
 ### onSDKError
@@ -777,19 +825,6 @@ AuthenticationCallback 需实现以下成员函数：
 * 参数说明：无
 
 
-### showMeetingDetailView【即将移除】
-* 函数形式：**void showMeetingDetailView(string meeting_id, string current_sub_meeting_id)**
-* 可用版本：>= 2.18.1
-* 函数说明：由下面新版的`showMeetingDetailView`替代。显示某一个具体会议的界面。登陆完成后，才可调用。如果输入错误的meeting_id或者current_sub_meeting_id有的字段会显示’-‘
-* 返回值说明：无
-* 参数说明：
-
-|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
-|---|---|---|---|---|
-|meeting_id |string |是 |(无) |会议标识号 |
-|current_sub_meeting_id |string |是|(无)|非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APis获取 |
-
-
 ### showMeetingDetailView
 - 函数形式：**void showMeetingDetailView(string meeting_id, string current_sub_meeting_id, string start_time, bool is_history)**
 - 可用版本：>= 3.6.200
@@ -828,6 +863,17 @@ AuthenticationCallback 需实现以下成员函数：
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |meeting_type | int | 是 |(无)| 会议类型，0:普通会议；1:在线大会 |
+
+
+### showUploadLogsView
+* 函数形式：**void showUploadLogsView()**
+* 可用版本：>= 3.21.100
+* 函数说明：
+  * 显示上传日志界面。
+  * 初始化完成后，才可调用。
+  * 通过`PreMeetingCallback.onActionResult`回调操作结果，`action_type`参数是`ShowUploadLogsView`
+* 返回值说明：无
+* 参数说明：
 
 
 ### showMeetingSettingView
@@ -1093,6 +1139,15 @@ msg内容示例：
 |code |int |操作结果错误码，0表示成功 |
 |msg |string |操作出错时包含错误信息，操作成功时值为空 |
 
+
+### openQRCodeUrl
+
+- 函数形式：**void openQRCodeUrl( string url_string)**
+- 可用版本：>= 3.21.100
+- 函数说明：集成方App上层实现打开摄像头扫描二维码功能，将扫描到的会议二维码内容（一般为URL），通过该函数打开。执行结果通过`PreMeetingCallback.onOpenQRCodeUrlResult`回调通知。
+- 参数说明：扫描二维码后要被打开的URL
+
+
 ## 4.2 PreMeetingCallback 回调代理
 
 PreMeetingCallback 需实现以下成员函数：
@@ -1106,17 +1161,6 @@ PreMeetingCallback 需实现以下成员函数：
 |code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
 |msg |string |结果信息 |
 | meeting_code | string | 会议号 |
-
-
-### onShowScreenCastViewResult【即将移除】
-* 函数形式：**void onShowScreenCastViewResult(int code, string msg)**
-* 可用平台：**Linux暂不支持**
-* 说明：打开无线投屏界面的回调。由`onActionResult`替代。
-
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
-|msg |string |结果信息 |
 
 
 ### onActionResult
@@ -1148,6 +1192,8 @@ PreMeetingCallback 需实现以下成员函数：
 | Transcode | 11   | 转码回调 | --                                       |
 | DecodeUltrasoundScreenCastCode | 12   | 获取超声波投屏码回调 | 回调的JSON数据，格式参考`decodeUltrasoundScreenCastCode`函数说明                     |
 | StartScreenCast | 13   | 投屏回调 | 回调的JSON数据，格式参考`startScreenCast`函数说明                                       |
+| ShowUploadLogsView | 14   | 打开日志上传页面 |结果的说明文字                                       |
+
 
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
@@ -1208,7 +1254,31 @@ PreMeetingCallback 需实现以下成员函数：
 }
 ```
 
+### onOpenQRCodeUrlResult
+
+- 函数形式：**void onOpenQRCodeUrlResult(int code,string url,string msg)**
+- 可用版本：>= 3.21.100
+- 说明：客户调用了`openQRCodeUrl`接口后的回调
+- 参数说明
+
+| 参数名  | 参数类型   | 参数说明            |
+|------|--------|-----------------|
+| code | int    | 当前打开二维码URL的枚举状态 |
+| url  | string | 当前需要被打开的Url     |
+| msg  | string | 返回结果说明          |
+
+`code`字段在错误码章节可见，具体：
+
+| code 枚举值 | 说明              |
+|----------|-----------------|
+| 0        | 成功              |
+| -1063    | Url 不在白名单中，无法打开 |
+| -1064    | 当前在会中，不能打开Url   |
+| -1065    | 当前未登录，不能打开Url   |
+
+
 # 5. InMeetingService 说明
+
 用来管理会议中的操作和界面的控制。该实例是通过`TMSDK.getInMeetingService()`获得。
 
 ## 5.1 InMeetingService 成员函数
@@ -1325,14 +1395,14 @@ PreMeetingCallback 需实现以下成员函数：
 ```json5
 {
     "code": 0, 
-    "data": {"is_in_meeting": 1, "meeting_id": "14926328509621455953", "meeting_code": "193146629"},
+    "data": {"is_in_meeting": 1, "meeting_id": "14926328509621455953", "meeting_code": "193146629", "host_user_id": "..."},
     "msg": ""
 }
 ```
 |名称 |说明 |
 |:--|--|
 |code  |接口调用状态码，成功调用时返回0|
-|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息|
+|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息;<br>host_user_id表示主持人的user_id;|
 |msg   |接口未成功调用时返回错误信息，接口成功调用时返回空字符串|
 * 参数说明：无
 
@@ -1637,6 +1707,7 @@ layout_id枚举值如下:
 | 顶部成员列表             | DefaultLayoutIdGalleryTop   | 2 |
 | 悬浮列表               | DefaultLayoutIdFloat        | 3 |
 | 上L型布局              | DefaultLayoutIdTopRight     | 4 |
+| 下L型布局              | DefaultLayoutIdBottomRight     | 5 |
 
 * 回调说明：
 
@@ -1684,7 +1755,7 @@ layout_id枚举值如下:
   { 
     "open_app_id":"12345"   //open app的标识符
   }
-  ```  
+  ```
 
 
 ## 5.2 InMeetingCallback 回调代理
@@ -1789,9 +1860,9 @@ invite_info内容
 |data |string |json字符串 |
 
 data内容示例
-```
+```json5
 {
-    "is_in_pip_mode": true, // 是否处于悬浮窗状态
+    "is_in_pip_mode": true // 是否处于悬浮窗状态
 }
 ```
 
@@ -1824,13 +1895,14 @@ data内容示例
 
 * `action_type`值对应的含义如下：
 
-|        操作        | action_type | 说明                                              | msg值说明                                              |
-|:----------------:|---|:------------------------------------------------|-----------------------------------------------------|
-| setCustomOrgInfo | 1000   | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息 | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
-| 切换会中窗口全屏    | 1001   | 用户操作切换全屏，或调用SDK`InMeetingService.manipulateWindow`操作会中窗口   | JSON字符串，格式参考下面示例说明 |
-| 屏幕共享           | 1002   | 会中屏幕共享功能开启/关闭回调    | JSON字符串，格式参考下面示例说明 |
-| 主会场与分组会议切换 | 1003   | 主会场和分组会议切换触发     | JSON字符串，格式参考下面示例说明 |
-| 第三方应用状态变化   | 1004   | 开放平台的第三方应用状态变化事件     | JSON字符串，格式参考下面示例说明 |
+|        操作        | action_type | 说明                                                       | msg值说明                                              |
+|:----------------:|-------------|:---------------------------------------------------------|-----------------------------------------------------|
+| setCustomOrgInfo | 1000        | 会中调用`InMeetingService.setCustomOrgInfo`设置组织架构信息          | JSON字符串，格式参考`InMeetingService.setCustomOrgInfo`函数说明 |
+|     切换会中窗口全屏     | 1001        | 用户操作切换全屏，或调用SDK`InMeetingService.manipulateWindow`操作会中窗口 | JSON字符串，格式参考下面示例说明                                  |
+|       屏幕共享       | 1002        | 会中屏幕共享功能开启/关闭回调                                          | JSON字符串，格式参考下面示例说明                                  |
+|    主会场与分组会议切换    | 1003        | 主会场和分组会议切换触发                                             | JSON字符串，格式参考下面示例说明                                  |
+|    第三方应用状态变化     | 1004        | 开放平台的第三方应用状态变化事件(版本>= 3.12.404)                          | JSON字符串，格式参考下面示例说明                                  |
+|      云录制状态       | 1005        | 会中云录制状态变更触发(版本>= 3.21.100)                               | JSON字符串，格式参考下面示例说明                                  |
 
 
  * `msg`的JSON通用格式如下：
@@ -1884,6 +1956,18 @@ data内容示例
     "data": { 
        "open_app_id": "12345",
        "open_app_status": 1  // 0：初始状态，1：将要打开，2：已关闭
+    },
+    "description": "..."
+}
+```
+
+- `云录制状态变更`时，`msg`的JSON数据格式如下：
+```json5
+{
+    "data": {
+        "cloud_record_state": 1, //云录制状态：0关闭，1启动中，2已开启，3暂停
+        "meeting_id": "...", //会议id
+      	"has_mail_box_origin": true //本次会议是否存在邮箱弹窗逻辑
     },
     "description": "..."
 }
@@ -1944,80 +2028,130 @@ data内容示例
 }
 ```
 
+### onAudioStatusChanged
+* 函数形式：**void onAudioStatusChanged(int audioStatus)**
+* 可用版本：>=3.21.100
+* 说明：当前用户麦克风状态改变会收到此事件回调，具体的状态值如下
+
+| 名称 | key | 值 |
+|---|---|---|
+|断开音频|AudioNone|0|
+|自主关麦|AudioMuted|1|
+|被主持人单独静音|AudioMutedByHost|2|
+|被主持人全体静音|AudioMutedAllByHost|3|
+|自主开麦|AudioUnMuted|4|
+|被主持人请求单独开麦|AudioUnMutedByHost|5|
+|被主持人请求全体开麦|AudioUnMutedAllByHost|6|
+
+
+### onVideoStatusChanged
+* 函数形式：**void onVideoStatusChanged(int videoStatus)**
+* 可用版本：>=3.21.100
+* 说明：当前用户摄像头开关状态变化时，收到此事件回调，具体状态如下
+
+| 名称 | key | 值 |
+|---|---|---|
+|初始状态|VideoNone|0|
+|自主关摄像头|VideoMute|1|
+|被主持人关摄像头|VideoMuteByHost|2|
+|自主开摄像头|VideoUnMute|3|
+|被主持人请求开摄像头|VideoUnMuteByHost|4|
+
+### onAudioOutputDeviceChanged
+* 函数形式：**void onAudioOutputDeviceChanged(int type)**
+* 可用版本：>=3.21.100
+* 说明：当前用户切换音频播放设备会收到此事件回调，只支持移动端，具体状态如下
+
+| 名称 | key | 值 |
+|---|---|---|
+|初始状态|AudioOutputModeNone|0|
+|听筒|AudioOutputModeEarPhone|1|
+|扬声器|AudioOutputModeSpeaker|2|
+|有线耳机|AudioOutputModeHeadset|3|
+|蓝牙|AudioOutputModeBluetooth|4|
 
 # 6. 错误码
 
-| 名称 | 错误码 | 说明 | 回调函数 |
-|---|---|---|---|
-| kTMSDKErrorSuccess | 0                 | 成功。|				 |
-| kTMSDKErrorServerConfigFail | -1001    | 私有云SDK设置服务地址错误或获取服务配置失败     |onSDKInitializeResult()|
-| kTMSDKErrorInvalidAuthCode | -1002     | 无效AuthCode，登录参数不正确或IDaaS登录跳转存在问题   |onLogin()|
-| kTMSDKErrorLogoutInMeeting | -1003     | 正在会议中，无法退出，需先离会 |onLogout()|
-| kTMSDKErrorLoginAborted | -1004        | ~~多次调用Login时，前次登录过程取消~~(已废弃) |onLogin()|
-| kTMSDKErrorUnknown | -1005             | 登录场景、投屏码投屏、屏幕共享状态获取等异常抛出未知错误，出现该错误码，请与官方联系 |onLogin()、onActionResult()|
-| kTMSDKErrorUserNotAuthorized | -1006   | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
-| kTMSDKErrorUserInMeeting | -1007       | 已在会议中。在入会、投屏、显示会前界面的时候，用户在会议中，需先退出。 |onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
-| kTMSDKErrorInvalidParam | -1008        | 无效参数。在调用SDK接口时，包含无效参数。 |onSDKError()、onSDKInitializeResult()、onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onActionResult()、onSDKInitializeResult()|
-| kTMSDKErrorInvalidMeetingCode | -1009  | 无效会议号 |onJoinMeeting()|
-| kTMSDKErrorInvalidNickname | -1010     | 无效入会的用户名称，可能长度过长导致 |onJoinMeeting()|
-| kTMSDKErrorDuplicateInitCall | -1011   | 重复调用初始化  |onSDKInitializeResult()|
+| 名称 | 错误码   | 说明 | 回调函数 |
+|---|-------|---|---|
+| kTMSDKErrorSuccess | 0     | 成功。|				 |
+| kTMSDKErrorServerConfigFail | -1001 | 私有云SDK设置服务地址错误或获取服务配置失败     |onSDKInitializeResult()|
+| kTMSDKErrorInvalidAuthCode | -1002 | 无效AuthCode，登录参数不正确或IDaaS登录跳转存在问题   |onLogin()|
+| kTMSDKErrorLogoutInMeeting | -1003 | 正在会议中，无法退出，需先离会 |onLogout()|
+| kTMSDKErrorLoginAborted | -1004 | ~~多次调用Login时，前次登录过程取消~~(已废弃) |onLogin()|
+| kTMSDKErrorUnknown | -1005 | 登录场景、投屏码投屏、屏幕共享状态获取等异常抛出未知错误，出现该错误码，请与官方联系 |onLogin()、onActionResult()|
+| kTMSDKErrorUserNotAuthorized | -1006 | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
+| kTMSDKErrorUserInMeeting | -1007 | 已在会议中。在入会、投屏、显示会前界面的时候，用户在会议中，需先退出。 |onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
+| kTMSDKErrorInvalidParam | -1008 | 无效参数。在调用SDK接口时，包含无效参数。 |onSDKError()、onSDKInitializeResult()、onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onActionResult()、onSDKInitializeResult()|
+| kTMSDKErrorInvalidMeetingCode | -1009 | 无效会议号 |onJoinMeeting()|
+| kTMSDKErrorInvalidNickname | -1010 | 无效入会的用户名称，可能长度过长导致 |onJoinMeeting()|
+| kTMSDKErrorDuplicateInitCall | -1011 | 重复调用初始化  |onSDKInitializeResult()|
 | kTMSDKErrorAccountAlreadyLogin | -1012 | 账号已登录，重复登录调用 |onLogin()|
-| kTMSDKErrorSdkNotInitialized | -1013  | SDK未初始化 |refreshSDKToken()|
-| kTMSDKErrorNotInMeeting | -1015  | 非入会状态调用会议中接口 |onLeaveMeeting()|
-| kTMSDKErrorCancelJoin | -1016  | 用户手动取消入会 |onJoinMeeting()|
-| kTMSDKErrorIsLogining | -1017  | 正在登录过程中的重复登录调用 |onLogin()|
-| kTMSDKErrorLoginNetError | -1018  | 登录过程出现网络错误 |onLogin()|
-| kTMSDKErrorTokenVerifyFailed | -1019  | sdktoken校验失败，可能是登录时sdktoken过期或使用时sdktoken失效，需要refreshSDKToken后再登录 |onResetSDKState()、onLogin()|
-| kTMSDKErrorChildProcessCrash | -1020  | 子进程退出 |onResetSDKState()|
-| kTMSDKErrorMultiAccountLoginConflict|-1021| A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
-| kTMSDKErrorJoinMeetingServiceFailed|-1022| 服务端拒绝入会，可能是频繁入会请求、输入无效会议号、会议已结束等情况，请用返回错误码和错误描述联系官方 | onJoinMeeting()|
-| kTMSDKErrorActionConflict|-1023| 调用操作与当前状态不匹配 | onActionResult()|
-| kTMSDKErrorInvalidJsonString|-1024| 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()|
-| kTMSDKErrorProxySetFailed|-1025| 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
-| kTMSDKErrorScreenShareOpenNotSupportSwitchPip|-1027| 正在屏幕共享&用户在等候室&app处于后台无法进入悬浮窗状态 |onSwitchPiPResult()|
-| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1028| 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
-| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1029| 进入悬浮窗状态失败 |onSwitchPiPResult()|
-| kTMSDKErrorWaitRoomNotSupportSwitchPip|-1030| 没有悬浮窗权限 |onSwitchPiPResult()|
-| kTMSDKErrorInUninitializing|-1032|正在反初始化|onSDKUninitializeResult()|
-| kTMSDKErrorUnableUnInit|-1033|当前无法反初始化，比如正在会议中且没有使用`force`参数|onSDKUninitializeResult()|
-| kTMSDKErrorIncorrectParamWithinJson|-1038| 通讯录回调, json串参数字段校验失败 |onAddUsersResult()|
-| kTMSDKErrorNoUltrasoundCastCode|-1039| 未发现超声波投屏码 |onActionResult()|
-| kTMSDKErrorNoMediaDeviceAccessible|-1040| 没有麦克风权限 |onActionResult()|
-| kTMSDKErrorNoUltrasoundAbility|-1041| 未开启超声波功能 |onActionResult()|
-| kTMSDKErrorNoCastAbility|-1042| 未开启投屏功能 |onActionResult()|
-| kTMSDKErrorRoomsCodeError|-1043| 投屏码（共享码）错误 |onActionResult()|
-| kTMSDKErrorNoScreenCapturePermission|-1044| 没有屏幕录制权限 |onActionResult()|
-| kTMSDKErrorPasswordError|-1045| 密码错误 |onActionResult()|
-| kTMSDKErrorJoinMeetingFail|-1046| 加入会议失败 |onActionResult()|
-| kTMSDKErrorShareFail|-1047| 共享屏幕失败 |onActionResult()|
-| kTMSDKErrorActionRefused | -1048  | 拒绝此操作 ||
-| kTMSDKErrorUpStreamLimited |-1050| 屏幕共享上游操作受限 | onActionResult()|
-| kTMSDKErrorUpStreamNoPermission |-1051| 屏幕共享上游操作无权限 | onActionResult()|
-| kTMSDKErrorUserNoPermissionStopLive |-1052| 屏幕共享用户不允许停止直播 | onActionResult()|
-| kTMSDKErrorNoHostPermission |-1053| 没有主持人权限 |updateCaptionSettings() |
-| kTMSDKErrorPrivacyPermissionNotGranted |-1054| 隐私授权未授权 |onSDKInitializeResult()|
-| kTMSDKErrorCannotEnterPipWhenDialogShowing |-1055| 无法在有弹窗状态下进入浮窗模式 |onSwitchPiPResult()|
-| kTMSDKErrorInvalidInviteId |-1056| 无效的invite_id |handleRingInvitation()|
-| kTMSDKErrorMacCreateIPCTimeout |-1057| Mac 进程通信管道启动超时 |onResetSDKState()|
-| kTMSDKErrorMacConnectIPCFailed |-1058| Mac 进程通信管道建立连接失败 |onResetSDKState()|
-| kTMSDKErrorAccountAbnormal |-1060| 账号异常 |onLogin()|
-| kTMSDKErrorSubscribeActionTypeError |-1061| 订阅的action_type错误 |subscribeInMeetingActionEvent()|
-| kTMSDKErrorOpenAppSubscriptionLimited |-1062| 订阅的第三方应用达到上限 |subscribeInMeetingActionEvent()|
-| kTMSDKErrorAddUsersSuccess |-2002| 通讯录回调,新增用户成功 |onAddUsersResult()|
-| kTMSDKErrorAddHostMoreThen10 |-2003| 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
-| kTMSDKErrorAddNormalMoreThen300 |-2004| 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
-| kTMSDKErrorAddUsersUidIsEmpty |-2005| 通讯录回调，新增用户失败，用户数据为空 |onAddUsersResult()|
-| kTMSDKErrorAddUsersMembersModelError |-2006| 通讯录回调，新增用户失败，SDK 内部错误 |onAddUsersResult()|
-| kTMSDKErrorInnerCallError |-3001| 内部子调用出错 | updateCaptionSettings()|
-| kTMSDKErrorDuplicatedCall |-3002| 接口正在执行中，不允许重复调用 |updateCaptionSettings()、handleRingInvitation()|
-| kTMSDKErrorInvalidLayoutId |-4001| 无效的layout id |switchLayout()|
-| kTMSDKErrorSwitchLayoutDefaultInMultiMonitorMode |-4002| 多显示器模式下禁止切换布局 |switchLayout()|
-| kTMSDKErrorSwitchLayoutDefaultLayoutNoStream |-4003| 需要开启视频或者应用在主画面 |switchLayout()|
-| kTMSDKErrorSwitchLayoutDefaultLayoutNotHost |-4004| 非主持人无法在自定义布局、汇聚模式下切换 |switchLayout()|
-| kTMSDKErrorSwitchLayoutGridItemInSpotlightVideoMode |-4005| 焦点视频模式下无法切换为宫格视图 |switchLayout()|
-| kTMSDKErrorSwitchLayoutItemWhenCollaboration |-4006| 一起用环节不支持使用宫格视图 |switchLayout()|
-| kTMSDKErrorswitchLayoutItemWhenScreenShare |-4007| 屏幕共享时无法切换成宫格视图 |switchLayout()|
-| kTMSDKErrorSwitchLayoutLShapeItemUnableSwitch |-4008| 此布局需在7人及以上成员时使用 |switchLayout()|
-| kTMSDKErrorSwitchLayoutFloatItemNotFullScreen |-4009| 非全屏时暂不支持「悬浮列表」视图 |switchLayout()|
-
+| kTMSDKErrorSdkNotInitialized | -1013 | SDK未初始化 |refreshSDKToken()|
+| kTMSDKErrorNotInMeeting | -1015 | 非入会状态调用会议中接口 |onLeaveMeeting()|
+| kTMSDKErrorCancelJoin | -1016 | 用户手动取消入会 |onJoinMeeting()|
+| kTMSDKErrorIsLogining | -1017 | 正在登录过程中的重复登录调用 |onLogin()|
+| kTMSDKErrorLoginNetError | -1018 | 登录过程出现网络错误 |onLogin()|
+| kTMSDKErrorTokenVerifyFailed | -1019 | 身份校验失败，请检查`SDK ID`或`SDK Token`是否正确。可能是登录时`SDK Token`过期或使用时`SDK Token`失效，需要refreshSDKToken后再登录 |onResetSDKState()、onLogin()|
+| kTMSDKErrorChildProcessCrash | -1020 | 子进程退出 |onResetSDKState()|
+| kTMSDKErrorMultiAccountLoginConflict| -1021 | A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
+| kTMSDKErrorJoinMeetingServiceFailed| -1022 | 服务端拒绝入会，可能是频繁入会请求、输入无效会议号、会议已结束等情况，请用返回错误码和错误描述联系官方 | onJoinMeeting()|
+| kTMSDKErrorActionConflict| -1023 | 调用操作与当前状态不匹配 | onActionResult()|
+| kTMSDKErrorInvalidJsonString| -1024 | 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()|
+| kTMSDKErrorProxySetFailed| -1025 | 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
+| kTMSDKErrorScreenShareOpenNotSupportSwitchPip| -1027 | 正在屏幕共享&用户在等候室&app处于后台无法进入悬浮窗状态 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip| -1028 | 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip| -1029 | 进入悬浮窗状态失败 |onSwitchPiPResult()|
+| kTMSDKErrorWaitRoomNotSupportSwitchPip| -1030 | 没有悬浮窗权限 |onSwitchPiPResult()|
+| kTMSDKErrorInUninitializing| -1032 |正在反初始化|onSDKUninitializeResult()|
+| kTMSDKErrorUnableUnInit| -1033 |当前无法反初始化，比如正在会议中且没有使用`force`参数|onSDKUninitializeResult()|
+| kTMSDKErrorIncorrectParamWithinJson| -1038 | 通讯录回调, json串参数字段校验失败 |onAddUsersResult()|
+| kTMSDKErrorNoUltrasoundCastCode| -1039 | 未发现超声波投屏码 |onActionResult()|
+| kTMSDKErrorNoMediaDeviceAccessible| -1040 | 没有麦克风权限 |onActionResult()|
+| kTMSDKErrorNoUltrasoundAbility| -1041 | 未开启超声波功能 |onActionResult()|
+| kTMSDKErrorNoCastAbility| -1042 | 未开启投屏功能 |onActionResult()|
+| kTMSDKErrorRoomsCodeError| -1043 | 投屏码（共享码）错误 |onActionResult()|
+| kTMSDKErrorNoScreenCapturePermission| -1044 | 没有屏幕录制权限 |onActionResult()|
+| kTMSDKErrorPasswordError| -1045 | 密码错误 |onActionResult()|
+| kTMSDKErrorJoinMeetingFail| -1046 | 加入会议失败 |onActionResult()|
+| kTMSDKErrorShareFail| -1047 | 共享屏幕失败 |onActionResult()|
+| kTMSDKErrorActionRefused | -1048 | 拒绝此操作 ||
+| kTMSDKErrorUpStreamLimited | -1050 | 屏幕共享上游操作受限 | onActionResult()|
+| kTMSDKErrorUpStreamNoPermission | -1051 | 屏幕共享上游操作无权限 | onActionResult()|
+| kTMSDKErrorUserNoPermissionStopLive | -1052 | 屏幕共享用户不允许停止直播 | onActionResult()|
+| kTMSDKErrorNoHostPermission | -1053 | 没有主持人权限 |updateCaptionSettings() |
+| kTMSDKErrorPrivacyPermissionNotGranted | -1054 | 隐私授权未授权 |onSDKInitializeResult()|
+| kTMSDKErrorCannotEnterPipWhenDialogShowing | -1055 | 无法在有弹窗状态下进入浮窗模式 |onSwitchPiPResult()|
+| kTMSDKErrorInvalidInviteId | -1056 | 无效的invite_id |handleRingInvitation()|
+| kTMSDKErrorMacCreateIPCTimeout | -1057 | Mac 进程通信管道启动超时 |onResetSDKState()|
+| kTMSDKErrorMacConnectIPCFailed | -1058 | Mac 进程通信管道建立连接失败 |onResetSDKState()|
+| kTMSDKErrorAccountAbnormal | -1060 | 账号异常 |onLogin()|
+| kTMSDKErrorSubscribeActionTypeError | -1061 | 订阅的action_type错误 |subscribeInMeetingActionEvent()|
+| kTMSDKErrorOpenAppSubscriptionLimited | -1062 | 订阅的第三方应用达到上限 |subscribeInMeetingActionEvent()|
+| kTMSDKErrorOpenQRCodeUrlNotInWhiteList | -1063 | 当前Url不在白名单内 |onOpenQRCodeUrlResult()|
+| kTMSDKErrorOpenQRCodeUrlInMeeing | -1064 | 当前在会中，不能打开扫码Url |onOpenQRCodeUrlResult()|
+| kTMSDKErrorOpenQRCodeNotLogin | -1065 | 当前未登录，不能打开扫码Url |onOpenQRCodeUrlResult()|
+| kTMSDKErrorAddUsersSuccess | -2002 | 通讯录回调,新增用户成功 |onAddUsersResult()|
+| kTMSDKErrorAddHostMoreThen10 | -2003 | 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
+| kTMSDKErrorAddNormalMoreThen300 | -2004 | 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
+| kTMSDKErrorAddUsersUidIsEmpty | -2005 | 通讯录回调，新增用户失败，用户数据为空 |onAddUsersResult()|
+| kTMSDKErrorAddUsersMembersModelError | -2006 | 通讯录回调，新增用户失败，SDK 内部错误 |onAddUsersResult()|
+| kTMSDKErrorInnerCallError | -3001 | 内部子调用出错 | updateCaptionSettings()|
+| kTMSDKErrorDuplicatedCall | -3002 | 接口正在执行中，不允许重复调用 |updateCaptionSettings()、handleRingInvitation()|
+| kTMSDKErrorCUpLoadLogsCancel | -3003 | 取消日志上传 |onActiveUploadLogsResult()|
+| kTMSDKErrorCosMultiUploadAborting | -3004 | 启用分片上传异常中断 |onActiveUploadLogsResult()|
+| kTMSDKErrorCosReadFileSizeZero | -3005 | 上传压缩包大小为空 |onActiveUploadLogsResult()|
+| kTMSDKErrorCosAuthCodeEmpty | -3006 | app_id&app_uid校验失败 |onActiveUploadLogsResult()|
+| kTMSDKErrorCosHttpStatusNotOk | -3007 | 网络连接异常 |onActiveUploadLogsResult()|
+| kTMSDKErrorHttpResponseParseError | -3008 |上传请求返回数据解析错误 |onActiveUploadLogsResult()|
+| kTMSDKErrorZipFileError | -3009 | 压缩日志文件失败 |onActiveUploadLogsResult()|
+| kTMSDKErrorInvalidLayoutId | -4001 | 无效的layout id |switchLayout()|
+| kTMSDKErrorSwitchLayoutDefaultInMultiMonitorMode | -4002 | 多显示器模式下禁止切换布局 |switchLayout()|
+| kTMSDKErrorSwitchLayoutDefaultLayoutNoStream | -4003 | 需要开启视频或者应用在主画面 |switchLayout()|
+| kTMSDKErrorSwitchLayoutDefaultLayoutNotHost | -4004 | 非主持人无法在自定义布局、汇聚模式下切换 |switchLayout()|
+| kTMSDKErrorSwitchLayoutGridItemInSpotlightVideoMode | -4005 | 焦点视频模式下无法切换为宫格视图 |switchLayout()|
+| kTMSDKErrorSwitchLayoutItemWhenCollaboration | -4006 | 一起用环节不支持使用宫格视图 |switchLayout()|
+| kTMSDKErrorswitchLayoutItemWhenScreenShare | -4007 | 屏幕共享时无法切换成宫格视图 |switchLayout()|
+| kTMSDKErrorSwitchLayoutLShapeItemUnableSwitch | -4008 | 此布局需在7人及以上成员时使用 |switchLayout()|
+| kTMSDKErrorSwitchLayoutFloatItemNotFullScreen | -4009 | 非全屏时暂不支持「悬浮列表」视图 |switchLayout()|
 
