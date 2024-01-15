@@ -1,5 +1,3 @@
-![image](https://github.com/Tencent-Meeting/TencentMeetingSDK/assets/74903769/321ae7e6-d7dd-4eff-bf17-e4d87b7f7a88)# QT 接入手册
-
 ## 1. demo环境配置说明
 ### 1.1 环境要求
 1. 操作系统：win7与win10的32位和64位，MacOS x86_64和arm64
@@ -44,8 +42,6 @@ Demo使用qtcreator集成开发环境作为示例，根据使用习惯也可选�
 执行qmake->执行构建，构建成功后拷贝相关依赖至生成目录中后可运行程序
 - 文件说明中的windows SDK目录下Release所有文件
 - wemeetsdk_x86.dll、wemeet_base.dll
-<img width="788" alt="企业微信截图_1705285402275" src="https://github.com/Tencent-Meeting/TencentMeetingSDK/assets/74903769/7d3c8bb2-f3a1-4ff9-a30a-7430756eb939">
-
 
 
 #### 1.3.2 64位 Windows
