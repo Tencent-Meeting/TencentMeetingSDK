@@ -1689,6 +1689,7 @@ layout_id枚举值如下:
 | 顶部成员列表             | DefaultLayoutIdGalleryTop   | 2 |
 | 悬浮列表               | DefaultLayoutIdFloat        | 3 |
 | 上L型布局              | DefaultLayoutIdTopRight     | 4 |
+| 下L型布局              | DefaultLayoutIdBottomRight     | 5 |
 
 * 回调说明：
 
