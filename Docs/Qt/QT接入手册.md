@@ -46,7 +46,6 @@ Demo使用qtcreator集成开发环境作为示例，根据使用习惯也可选�
 - wemeetsdk_x86.dll、wemeet_base.dll
 
 
-
 #### 1.3.2 64位 Windows
 
 **一、拷贝SDK**
@@ -60,8 +59,8 @@ Demo使用qtcreator集成开发环境作为示例，根据使用习惯也可选�
 **三、运行demo**
 
 执行qmake->执行构建，构建成功后拷贝相关依赖至生成目录中后可运行程序
-- 文件说明中的windows SDK目录下Release所有文件
-- wemeetsdk_x64.dll、wemeet_base_x64.dll
+- 文件说明中的windows SDK目录下的Release和plugins目录
+- wemeetsdk_x64.dll、wemeet_base_x64.dll两个文件
 
 
 #### 1.3.3 Mac 
