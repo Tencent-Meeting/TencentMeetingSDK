@@ -1296,14 +1296,14 @@ PreMeetingCallback 需实现以下成员函数：
 
 
 ### leaveMeeting
-* 函数形式：**void leaveMeeting(bool end_meeting)**
+* 函数形式：**void leaveMeeting(int end_meeting)**
 * 函数说明：发起离会请求，结果会在回调`InMeetingCallback.onLeaveMeeting`返回。
 * 返回值说明：无
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
-|leave_meeting_type |int |否 |0 | 0、所有设备离开会议<br>1、仅当前设备离开会议 （当非多端入会场景时，调用仅当前设备离开会议等同于离开会议<br>2、结束会议（结束会议，仅当前账户是会议主持人时，该参数才有效。当非主持人时，调用结束会议等同于所有设备离开会议） |
+|leave_meeting_type |int |否 |0 | 0、所有设备离开会议<br>1、结束会议（结束会议，仅当前账户是会议主持人时，该参数才有效。当非主持人时，调用结束会议等同于所有设备离开会议）<br>2、仅当前设备离开会议 （当非多端入会场景时，调用仅当前设备离开会议等同于离开会议 |
 
 
 ### enableInviteCallback
@@ -1396,14 +1396,15 @@ PreMeetingCallback 需实现以下成员函数：
 ```json5
 {
     "code": 0, 
-    "data": {"is_in_meeting": 1, "meeting_id": "14926328509621455953", "meeting_code": "193146629", "host_user_id": "..."},
+    "data": {"is_in_meeting": 1, "meeting_id": "14926328509621455953", "meeting_code": "193146629", "host_user_id": "...",
+    "is_multi_device_in_meeting": 1},
     "msg": ""
 }
 ```
 |名称 |说明 |
 |:--|--|
 |code  |接口调用状态码，成功调用时返回0|
-|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息;<br>host_user_id表示主持人的user_id;|
+|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息;<br>host_user_id表示主持人的user_id;<br>is_multi_device_in_meeting: 1代表在有多个设备在会中，0代表只有当前设备在会中|
 |msg   |接口未成功调用时返回错误信息，接口成功调用时返回空字符串|
 * 参数说明：无
 
