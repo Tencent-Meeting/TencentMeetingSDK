@@ -808,6 +808,7 @@ AuthenticationCallback 需实现以下成员函数：
 ### showPreMeetingView
 * 函数形式：**void showPreMeetingView(int style)**
 * 函数说明：显示SDK自带的会前界面。登录完成后，才可调用。
+* 版本说明：3.21.200及以后版本仅支持展示多Tab样式的会前界面，与style参数无关。
 * 返回值说明：无
 * 参数说明：
 
