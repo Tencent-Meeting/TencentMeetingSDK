@@ -320,7 +320,7 @@ wemeet_sdk.Logout();
 ### 6、退出会议
 
 ```  
-wemeet_sdk.LeaveMeeting(end_meeting)
+wemeet_sdk.LeaveMeeting(leave_meeting_type)
 ```
 
 ### 7、会议信息回调开关
