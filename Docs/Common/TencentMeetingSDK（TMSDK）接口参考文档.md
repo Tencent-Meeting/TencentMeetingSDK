@@ -1296,7 +1296,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 
 ### leaveMeeting
-* 函数形式：**void leaveMeeting(int leave_meeting_type)**
+* 函数形式：
+  - **void leaveMeeting(int leave_meeting_type) [>= 3.21.200]**
+  - **void leaveMeeting(bool end_meeting) [< 3.21.200]**  
 * 函数说明：发起离会请求，结果会在回调`InMeetingCallback.onLeaveMeeting`返回。
 * 返回值说明：无
 * 参数说明：
