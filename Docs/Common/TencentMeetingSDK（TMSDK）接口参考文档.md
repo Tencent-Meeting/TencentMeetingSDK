@@ -148,6 +148,7 @@
 | 2023-12-12 | 3.21.100 | 新增接口：showUploadLogsView 显示上传日志页面；activeUploadLogs 主动上传日志接口；openQRCodeUrl接受扫码信息接口                                                      |
 | 2023-12-12 | 3.21.100 | 接口调整：会中动作回调onActionResult()新增云录制状态变更事件类型; getCurrentMeetingInfo接口增加字段host_user_id，表示主持人的user_id                                       |
 | 2023-12-12 | 3.21.100 | 新增接口：onAudioStatusChanged（麦克风状态回调）；onVideoStatusChanged（摄像头状态回调）；onAudioOutputDeviceChanged（音频输出设备变化回调，仅支持移动端）
+| 2024-02-01 | 3.21.200 | -1018 错误码从"登录网络错误" 改为 "通用网络错误"
 
 # 1. SDK使用说明
 
@@ -2092,7 +2093,7 @@ data内容示例
 | kTMSDKErrorNotInMeeting | -1015 | 非入会状态调用会议中接口 |onLeaveMeeting()|
 | kTMSDKErrorCancelJoin | -1016 | 用户手动取消入会 |onJoinMeeting()|
 | kTMSDKErrorIsLogining | -1017 | 正在登录过程中的重复登录调用 |onLogin()|
-| kTMSDKErrorLoginNetError | -1018 | 登录过程出现网络错误 |onLogin()|
+| kTMSDKErrorLoginNetError | -1018 | 接口调用过程中发生网络错误 |onLogin()、onLeaveMeeting()、onJoinMeeting()、onActionResult()|
 | kTMSDKErrorTokenVerifyFailed | -1019 | 身份校验失败，请检查`SDK ID`或`SDK Token`是否正确。可能是登录时`SDK Token`过期或使用时`SDK Token`失效，需要refreshSDKToken后再登录 |onResetSDKState()、onLogin()|
 | kTMSDKErrorChildProcessCrash | -1020 | 子进程退出 |onResetSDKState()|
 | kTMSDKErrorMultiAccountLoginConflict| -1021 | A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
