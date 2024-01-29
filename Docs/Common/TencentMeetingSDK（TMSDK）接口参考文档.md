@@ -204,6 +204,17 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 参数说明：无
 
 
+### setCallback
+* 函数形式：**void setCallback(SDKCallback callback)**
+* 函数说明：设置回调代理`SDKCallback`，重复调用会覆盖原有回调代理的值。
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|callback |SDKCallback |是 |(无) |接入方实现的回调代理实例 |
+
+
 ### initialize
 * 函数形式：**void initialize(InitParam init_param, SDKCallback callback)**
 * 函数说明：
