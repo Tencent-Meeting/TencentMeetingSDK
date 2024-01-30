@@ -2093,7 +2093,7 @@ data内容示例
 | kTMSDKErrorNotInMeeting | -1015 | 非入会状态调用会议中接口 |onLeaveMeeting()|
 | kTMSDKErrorCancelJoin | -1016 | 用户手动取消入会 |onJoinMeeting()|
 | kTMSDKErrorIsLogining | -1017 | 正在登录过程中的重复登录调用 |onLogin()|
-| kTMSDKErrorLoginNetError | -1018 | 接口调用过程中发生网络错误 |onLogin()、onLeaveMeeting()、onJoinMeeting()、onActionResult()|
+| kTMSDKErrorNetError | -1018 | 接口调用过程中发生网络错误 |onLogin()、onLeaveMeeting()、onJoinMeeting()、onActionResult()|
 | kTMSDKErrorTokenVerifyFailed | -1019 | 身份校验失败，请检查`SDK ID`或`SDK Token`是否正确。可能是登录时`SDK Token`过期或使用时`SDK Token`失效，需要refreshSDKToken后再登录 |onResetSDKState()、onLogin()|
 | kTMSDKErrorChildProcessCrash | -1020 | 子进程退出 |onResetSDKState()|
 | kTMSDKErrorMultiAccountLoginConflict| -1021 | A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
