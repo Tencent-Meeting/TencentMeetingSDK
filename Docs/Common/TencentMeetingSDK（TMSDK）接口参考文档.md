@@ -516,7 +516,7 @@ SDKCallback 需实现以下成员函数：
 | 参数名  | 参数类型   | 参数说明        |
 |------|--------|-------------|
 | code | int    | 错误码         |
-| msg  | string | 解析schema_url的接口信息 |
+| msg  | string | 解析参数schema_url结果回调 |
 
 ### onActiveUploadLogsResult
 * 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
