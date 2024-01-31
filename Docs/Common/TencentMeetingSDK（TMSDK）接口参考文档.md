@@ -30,6 +30,7 @@
     + [onResetSDKState](#onresetsdkstate)
     + [onSetProxyResult](#onsetproxyresult)
     + [onAddUsersResult](#onaddusersresult)
+    + [OnHandleSchemaResult](#onhandleschemaresult)
     + [onParseMeetingInfoUrl](#onparsemeetinginfourl)
     + [onActiveUploadLogsResult](#onactiveuploadlogsresult)
 - [3. AccountService 说明](#3-accountservice-说明)
@@ -386,7 +387,11 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### handleSchema
 * 函数形式：**void handleSchema (string schema_url)**
 * 可用版本：>= 3.6.100
-* 函数说明：一键跳转页面，通过解析schema_url不同页面跳转指定界面。
+* 函数说明：带有复合功能接口(一键跳转包含登录、入会能力)，
+           schema_url格式是否符合格式标准通过`SDKCallback.OnHandleSchemaResult`回调，
+           user_code登录通过`AuthenticationCallback.onLogin`回调一键跳转页面，
+           meeting_code入会通过`PreMeetingCallback.onJoinMeeting`返回
+           通过解析schema_url不同页面跳转指定界面。
 * 返回值说明：无
 * 参数说明：参数带有user_code且SDK已登录，按照已登录用户跳转；参数带有user_code且SDK未登录，按照user_code用户跳转。
   
@@ -504,6 +509,15 @@ SDKCallback 需实现以下成员函数：
 | code | int | 打开日志文件夹结果码 |
 | msg | string | 打开日志文件夹结果信息 |
 
+### onHandleSchemaResult
+* 函数形式：**void onHandleSchemaResult(int code, string msg)**
+* 可用版本：>= 3.6.100
+* 说明：调用`TMSDK.handleSchema`函数的回调
+
+| 参数名  | 参数类型   | 参数说明        |
+|------|--------|-------------|
+| code | int    | 错误码         |
+| msg  | string | 解析schema_url的接口信息 |
 
 ### onActiveUploadLogsResult
 * 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
@@ -2100,6 +2114,7 @@ data内容示例
 | kTMSDKErrorActionConflict| -1023 | 调用操作与当前状态不匹配 | onActionResult()|
 | kTMSDKErrorInvalidJsonString| -1024 | 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()|
 | kTMSDKErrorProxySetFailed| -1025 | 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
+| kTMSDKErrorInvalidSchemaString| -1026 | 解析schema_url失败的错误码 |OnHandleSchemaResult()、OnParseMeetingInfoUrl|
 | kTMSDKErrorScreenShareOpenNotSupportSwitchPip| -1027 | 正在屏幕共享&用户在等候室&app处于后台无法进入悬浮窗状态 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip| -1028 | 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip| -1029 | 进入悬浮窗状态失败 |onSwitchPiPResult()|
