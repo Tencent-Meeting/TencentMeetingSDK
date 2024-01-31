@@ -387,11 +387,10 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### handleSchema
 * 函数形式：**void handleSchema (string schema_url)**
 * 可用版本：>= 3.6.100
-* 函数说明：带有复合功能接口(一键跳转包含登录、入会能力)，
+* 函数说明：带有复合功能接口(一键跳转包含登录、入会能力)，通过解析schema_url不同页面跳转指定界面，
            schema_url格式是否符合格式标准通过`SDKCallback.OnHandleSchemaResult`回调，
-           user_code登录通过`AuthenticationCallback.onLogin`回调一键跳转页面，
-           meeting_code入会通过`PreMeetingCallback.onJoinMeeting`返回
-           通过解析schema_url不同页面跳转指定界面。
+           user_code登录结果通过`AuthenticationCallback.onLogin`回调，
+           meeting_code入会结果通过`PreMeetingCallback.onJoinMeeting`回调。
 * 返回值说明：无
 * 参数说明：参数带有user_code且SDK已登录，按照已登录用户跳转；参数带有user_code且SDK未登录，按照user_code用户跳转。
   
