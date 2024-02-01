@@ -149,6 +149,7 @@
 | 2023-12-12 | 3.21.100 | 新增接口：showUploadLogsView 显示上传日志页面；activeUploadLogs 主动上传日志接口；openQRCodeUrl接受扫码信息接口                                                      |
 | 2023-12-12 | 3.21.100 | 接口调整：会中动作回调onActionResult()新增云录制状态变更事件类型; getCurrentMeetingInfo接口增加字段host_user_id，表示主持人的user_id                                       |
 | 2023-12-12 | 3.21.100 | 新增接口：onAudioStatusChanged（麦克风状态回调）；onVideoStatusChanged（摄像头状态回调）；onAudioOutputDeviceChanged（音频输出设备变化回调，仅支持移动端）
+| 2023-1-31 | 3.21.200 | 接口调整：leaveMeeting 参数调整，废弃 end_meeting 参数，改为 leave_meeting_type 参数，支持多端离会
 
 # 1. SDK使用说明
 
@@ -1309,14 +1310,16 @@ PreMeetingCallback 需实现以下成员函数：
 
 
 ### leaveMeeting
-* 函数形式：**void leaveMeeting(bool end_meeting)**
+* 函数形式：
+  - **void leaveMeeting(int leave_meeting_type) [>= 3.21.200]**
+  - **void leaveMeeting(bool end_meeting) [< 3.21.200]**  
 * 函数说明：发起离会请求，结果会在回调`InMeetingCallback.onLeaveMeeting`返回。
 * 返回值说明：无
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
-|end_meeting |bool |否 |false |是否结束会议，仅当前账户是会议主持人时，该参数才有效 |
+|leave_meeting_type |int |否 |0 | 0、所有设备离开会议<br>1、结束会议（结束会议，仅当前账户是会议主持人时，该参数才有效。当非主持人时，调用结束会议等同于所有设备离开会议）<br>2、仅当前设备离开会议 （当非多端入会场景时，调用仅当前设备离开会议等同于离开会议 |
 
 
 ### enableInviteCallback
@@ -1409,14 +1412,15 @@ PreMeetingCallback 需实现以下成员函数：
 ```json5
 {
     "code": 0, 
-    "data": {"is_in_meeting": 1, "meeting_id": "14926328509621455953", "meeting_code": "193146629", "host_user_id": "..."},
+    "data": {"is_in_meeting": 1, "meeting_id": "14926328509621455953", "meeting_code": "193146629", "host_user_id": "...",
+    "is_multi_device_in_meeting": 1},
     "msg": ""
 }
 ```
 |名称 |说明 |
 |:--|--|
 |code  |接口调用状态码，成功调用时返回0|
-|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息;<br>host_user_id表示主持人的user_id;|
+|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息;<br>host_user_id表示主持人的user_id;<br>is_multi_device_in_meeting: 1代表在有多个设备在会中，0代表只有当前设备在会中|
 |msg   |接口未成功调用时返回错误信息，接口成功调用时返回空字符串|
 * 参数说明：无
 
