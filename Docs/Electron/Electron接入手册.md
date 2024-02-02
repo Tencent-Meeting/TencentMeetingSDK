@@ -47,6 +47,8 @@ addon，使用里面封装的接口即可。
 | wemeet_base.dll | SDK | output/win/win32 |
 | wemeetsdk_x86.dll | SDK | output/win/win32 |
 | Release文件夹 | SDK | output/win/win32 |
+
+注意：大版本升级sdk需要删除原来sdk所有目录文件重新拷贝，避免旧包文件残留导致包校验失败
 - 方法二:  直接执行output/win/win32/copy_win32_release.bat(bat文件中的内容也就是做了方法1的操作，写成了脚本)
 ```
 rmdir /s /q Release
@@ -92,6 +94,7 @@ Electron_Demo目录下执行npm start
 | wemeetsdk_x64.dll | SDK | output/win/x64 |
 | Release文件夹 | SDK | output/win/x64 |
 
+注意：大版本升级sdk需要删除原来sdk所有目录文件重新拷贝，避免旧包文件残留导致包校验失败
 - 方法二:  直接执行output/win/x64/copy_win32_release.bat(bat文件中的内容也就是做了方法1的操作，写成了脚本)
 ```
 rmdir /s /q Release
