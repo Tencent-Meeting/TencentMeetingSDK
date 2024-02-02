@@ -30,6 +30,7 @@
     + [onResetSDKState](#onresetsdkstate)
     + [onSetProxyResult](#onsetproxyresult)
     + [onAddUsersResult](#onaddusersresult)
+    + [OnHandleSchemaResult](#onhandleschemaresult)
     + [onParseMeetingInfoUrl](#onparsemeetinginfourl)
     + [onActiveUploadLogsResult](#onactiveuploadlogsresult)
 - [3. AccountService 说明](#3-accountservice-说明)
@@ -149,6 +150,7 @@
 | 2023-12-12 | 3.21.100 | 接口调整：会中动作回调onActionResult()新增云录制状态变更事件类型; getCurrentMeetingInfo接口增加字段host_user_id，表示主持人的user_id                                       |
 | 2023-12-12 | 3.21.100 | 新增接口：onAudioStatusChanged（麦克风状态回调）；onVideoStatusChanged（摄像头状态回调）；onAudioOutputDeviceChanged（音频输出设备变化回调，仅支持移动端）
 | 2024-02-01 | 3.21.200 | -1018 错误码从"登录网络错误" 改为 "通用网络错误"
+| 2023-02-01 | 3.21.200 | 接口调整：leaveMeeting 参数调整，废弃 end_meeting 参数，改为 leave_meeting_type 参数，支持多端离会
 
 # 1. SDK使用说明
 
@@ -387,7 +389,10 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### handleSchema
 * 函数形式：**void handleSchema (string schema_url)**
 * 可用版本：>= 3.6.100
-* 函数说明：一键跳转页面，通过解析schema_url不同页面跳转指定界面。
+* 函数说明：带有复合功能接口(一键跳转包含登录、入会能力)，通过解析schema_url不同页面跳转指定界面，
+           schema_url格式是否符合格式标准通过`SDKCallback.OnHandleSchemaResult`回调，
+           user_code登录结果通过`AuthenticationCallback.onLogin`回调，
+           meeting_code入会结果通过`PreMeetingCallback.onJoinMeeting`回调。
 * 返回值说明：无
 * 参数说明：参数带有user_code且SDK已登录，按照已登录用户跳转；参数带有user_code且SDK未登录，按照user_code用户跳转。
   
@@ -505,6 +510,15 @@ SDKCallback 需实现以下成员函数：
 | code | int | 打开日志文件夹结果码 |
 | msg | string | 打开日志文件夹结果信息 |
 
+### onHandleSchemaResult
+* 函数形式：**void onHandleSchemaResult(int code, string msg)**
+* 可用版本：>= 3.6.100
+* 说明：调用`TMSDK.handleSchema`函数的回调
+
+| 参数名  | 参数类型   | 参数说明        |
+|------|--------|-------------|
+| code | int    | 错误码         |
+| msg  | string | 解析参数schema_url结果回调 |
 
 ### onActiveUploadLogsResult
 * 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
@@ -1297,14 +1311,16 @@ PreMeetingCallback 需实现以下成员函数：
 
 
 ### leaveMeeting
-* 函数形式：**void leaveMeeting(bool end_meeting)**
+* 函数形式：
+  - **void leaveMeeting(int leave_meeting_type) [>= 3.21.200]**
+  - **void leaveMeeting(bool end_meeting) [< 3.21.200]**  
 * 函数说明：发起离会请求，结果会在回调`InMeetingCallback.onLeaveMeeting`返回。
 * 返回值说明：无
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
-|end_meeting |bool |否 |false |是否结束会议，仅当前账户是会议主持人时，该参数才有效 |
+|leave_meeting_type |int |否 |0 | 0、所有设备离开会议<br>1、结束会议（结束会议，仅当前账户是会议主持人时，该参数才有效。当非主持人时，调用结束会议等同于所有设备离开会议）<br>2、仅当前设备离开会议 （当非多端入会场景时，调用仅当前设备离开会议等同于离开会议 |
 
 
 ### enableInviteCallback
@@ -1397,14 +1413,15 @@ PreMeetingCallback 需实现以下成员函数：
 ```json5
 {
     "code": 0, 
-    "data": {"is_in_meeting": 1, "meeting_id": "14926328509621455953", "meeting_code": "193146629", "host_user_id": "..."},
+    "data": {"is_in_meeting": 1, "meeting_id": "14926328509621455953", "meeting_code": "193146629", "host_user_id": "...",
+    "is_multi_device_in_meeting": 1},
     "msg": ""
 }
 ```
 |名称 |说明 |
 |:--|--|
 |code  |接口调用状态码，成功调用时返回0|
-|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息;<br>host_user_id表示主持人的user_id;|
+|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息;<br>host_user_id表示主持人的user_id;<br>is_multi_device_in_meeting: 1代表在有多个设备在会中，0代表只有当前设备在会中|
 |msg   |接口未成功调用时返回错误信息，接口成功调用时返回空字符串|
 * 参数说明：无
 
@@ -2101,6 +2118,7 @@ data内容示例
 | kTMSDKErrorActionConflict| -1023 | 调用操作与当前状态不匹配 | onActionResult()|
 | kTMSDKErrorInvalidJsonString| -1024 | 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()|
 | kTMSDKErrorProxySetFailed| -1025 | 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
+| kTMSDKErrorInvalidSchemaString| -1026 | 解析schema_url失败的错误码 |OnHandleSchemaResult()、OnParseMeetingInfoUrl|
 | kTMSDKErrorScreenShareOpenNotSupportSwitchPip| -1027 | 正在屏幕共享&用户在等候室&app处于后台无法进入悬浮窗状态 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip| -1028 | 会中界面不在前台无法进入悬浮窗状态 |onSwitchPiPResult()|
 | kTMSDKErrorWaitRoomNotSupportSwitchPip| -1029 | 进入悬浮窗状态失败 |onSwitchPiPResult()|
