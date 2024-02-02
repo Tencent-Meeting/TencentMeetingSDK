@@ -6,6 +6,7 @@
 - [2. TMSDK 说明](#2-tmsdk-说明)
   * [2.1 TMSDK 成员函数](#21-tmsdk-成员函数)
     + [getSDKVersion](#getsdkversion)
+    + [setCallback](#setcallback)
     + [initialize](#initialize)
     + [uninitialize(beta)](#uninitialize)
     + [isInitialized](#isinitialized)
@@ -35,7 +36,7 @@
     + [onActiveUploadLogsResult](#onactiveuploadlogsresult)
 - [3. AccountService 说明](#3-accountservice-说明)
   * [3.1 AccountService 成员函数](#31-accountservice-成员函数)
-    + [setCallback](#setcallback)
+    + [setCallback](#setcallback-1)
     + [login](#login)
     + [logout](#logout)
     + [isLoggedIn](#isloggedin)
@@ -47,7 +48,7 @@
     + [onJumpUrlWithLoginStatus](#onjumpurlwithloginstatus)
 - [4. PreMeetingService 说明](#4-premeetingservice-说明)
   * [4.1 PreMeetingService 成员函数](#41-premeetingservice-成员函数)
-    + [setCallback](#setcallback-1)
+    + [setCallback](#setcallback-2)
     + [joinMeeting](#joinmeeting)
     + [joinMeetingByJSON](#joinmeetingbyjson)
     + [quickMeeting](#quickmeeting)
@@ -78,7 +79,7 @@
     + [onOpenQRCodeUrlResult](#onopenqrcodeurlresult)
 - [5. InMeetingService 说明](#5-inmeetingservice-说明)
   * [5.1 InMeetingService 成员函数](#51-inmeetingservice-成员函数)
-    + [setCallback](#setcallback-2)
+    + [setCallback](#setcallback-3)
     + [leaveMeeting](#leavemeeting)
     + [enableInviteCallback](#enableinvitecallback)
     + [enableMeetingInfoCallback](#enablemeetinginfocallback)
@@ -151,7 +152,7 @@
 | 2023-12-12 | 3.21.100 | 新增接口：onAudioStatusChanged（麦克风状态回调）；onVideoStatusChanged（摄像头状态回调）；onAudioOutputDeviceChanged（音频输出设备变化回调，仅支持移动端）
 | 2024-02-01 | 3.21.200 | -1018 错误码从"登录网络错误" 改为 "通用网络错误"
 | 2023-02-01 | 3.21.200 | 接口调整：leaveMeeting 参数调整，废弃 end_meeting 参数，改为 leave_meeting_type 参数，支持多端离会
-
+| 2023-02-02 | 3.21.200 | 新增接口：新增设置SDK回调代理(TMSDK.setCallback)接口
 # 1. SDK使用说明
 
 <font color="red">**参考前必看:**</font>
@@ -205,6 +206,19 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 函数说明：获取当前SDK版本号。
 * 返回值说明：版本号信息
 * 参数说明：无
+
+
+### setCallback
+* 函数形式：**void setCallback(SDKCallback callback)**
+* 可用版本：>= 3.21.200
+* 函数说明：设置回调代理`SDKCallback`，通过该接口设置的回调代理与通过initialize设置的回调代理相同，重复调用会覆盖原有回调代理的值。
+* 注意：会议SDK在Android平台上为多进程架构，会议功能运行在独立进程上，当接入应用的主进程发生崩溃时，会议进程将保持存活，依然处于已初始化完成状态，主进程重启后无需要调用initialize方法初始化，此时需要调用setCallback设置回调，否则调用与该回调相关的接口（如showLogs）将收不到回调。
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+| callback   | **SDKCallback** | 是    | (无)   | SDK回调代理，接入方实现该代理，用来响应SDK回调，具体描述`见下文` |
 
 
 ### initialize
