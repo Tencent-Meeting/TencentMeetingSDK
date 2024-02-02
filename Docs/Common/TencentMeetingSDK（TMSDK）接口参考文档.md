@@ -210,6 +210,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### setCallback
 * 函数形式：**void setCallback(SDKCallback callback)**
+* 可用版本：>= 3.21.200
 * 函数说明：设置回调代理`SDKCallback`，通过该接口设置的回调代理与通过initialize设置的回调代理相同，重复调用会覆盖原有回调代理的值。
 * 注意：会议SDK在Android平台上为多进程架构，会议功能运行在独立进程上，当接入应用的主进程发生崩溃时，会议进程将保持存活，依然处于已初始化完成状态，主进程重启后无需要调用initialize方法初始化，此时需要调用setCallback设置回调，否则调用与该回调相关的接口（如showLogs）将收不到回调。
 * 返回值说明：无
