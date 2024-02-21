@@ -64,7 +64,7 @@ copy ..\..\..\..\SDK\wemeet_base.dll .\wemeet_base.dll
 copy ..\..\..\..\SDK\wemeetsdk_x86.dll .\wemeetsdk_x86.dll
 ```
 
-减包注意（包大小优化）： 打包可选择对Release\webview和Release\resources\webview目录删除，删除不影响接口调用，使用过程中会触发内置浏览器动态下载(首次初始化触发)。
+减包注意（3.21.200包大小优化）： 打包可选择对Release\webview和Release\resources\webview目录删除，删除不影响接口调用，使用过程中会触发内置浏览器动态下载(首次初始化触发)。
 
 **二、安装electron以及相关的依赖**
 
@@ -110,7 +110,7 @@ copy ..\..\..\..\SDK\Release\x64\ucrtbase.dll .\ucrtbase.dll
 copy ..\..\..\..\SDK\wemeet_base_x64.dll .\wemeet_base_x64.dll
 copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
 ```
-减包注意（包大小优化）： 打包可选择对Release\webview和Release\resources\webview目录删除，删除不影响接口调用，使用过程中会触发内置浏览器动态下载(首次初始化触发)。
+减包注意（3.21.200包大小优化）： 打包可选择对Release\webview和Release\resources\webview目录删除，删除不影响接口调用，使用过程中会触发内置浏览器动态下载(首次初始化触发)。
 
 **二、安装electron以及相关的依赖**
 
