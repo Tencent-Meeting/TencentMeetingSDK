@@ -262,7 +262,26 @@ public void onCreate() {
  TMSDK.setMeetingNotificationConfig(notificationConfig)
 ```
 
-## 3. FAQ
+## 3. 减包说明
+
+Android TencentMeetingSDK默认包含armeabi-v7a和arm64-v8a这两种架构so，对于绝大多数android机型，现在已经支持运行64位应用，
+因此我们可以根据自身情况，通过gradle脚本来配置构建出只包含64位架构so的apk来减小apk的体积，具体配置如下：
+```groovy
+android {
+    ...
+    defaultConfig {
+        ...
+        ndk {
+            //可以根据需求减少armeabi-v7a，只保留arm64-v8a，但是不能增加其他abi
+            setAbiFilters(['arm64-v8a'])
+        }
+        ...
+    }
+    ...
+}
+```
+
+## 4. FAQ
 
 - Q:接入sdk后，出现运行时异常：java.lang.UnsatisfiedLinkError
 A:目前会议的so只支持armeabi-v7a和arm64-v8a的架构，需要检查是否做了以下配置
