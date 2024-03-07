@@ -266,12 +266,17 @@ public void onCreate() {
 Android TencentMeetingSDK默认包含armeabi-v7a和arm64-v8a这两种架构so，对于绝大多数android机型，现在已经支持运行64位应用，
 因此我们可以根据自身情况，通过编译的时候配置gradle脚本来编译出只包含64位架构so的apk来减小apk的体积，具体配置如下：
 ```groovy
-defaultConfig {
-    //...
-    ndk {
-        //也可以根据自己情况来配置支持多种架构cpu
-        setAbiFilters(['arm64-v8a'])
+android {
+    ...
+    defaultConfig {
+        ...
+        ndk {
+            //可以根据需求减少armeabi-v7a，只保留arm64-v8a，但是不能增加其他abi
+            setAbiFilters(['arm64-v8a'])
+        }
+        ...
     }
+    ...
 }
 ```
 
