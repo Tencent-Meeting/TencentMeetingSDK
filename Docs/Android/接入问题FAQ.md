@@ -60,11 +60,18 @@
       }
   ```
 
+  - Q: 重复的class报错，但重复类的包名为com.tencent.thumbplayer，且冲突库为com.tencent.liteav.LiteAVSDK_Player:
+  A: 请更新SDK库和LiteAVSDK_Player库版本，同时满足以下版本要求:
+  ```
+  会议SDK版本>=3.21.200;
+  LiteAVSDK_player版本>=11.7.0.13910;
+  ```
+  
   - Q:javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
     A:
-
+  
     -  在src/main/res/xml下新增network_security_config.xml
-
+  
     ```xml
     <?xml version="1.0" encoding="utf-8"?>
     	<network-security-config>
@@ -74,9 +81,9 @@
     	</network-security-config>
     
     ```
-
+  
     - 然后在AndroidManifest.xml中设置networkSecurityConfig
-
+  
     ```xml
     <manifest ... >
           <application android:networkSecurityConfig="@xml/network_security_config">
@@ -84,22 +91,22 @@
           </application>
       </manifest>
     ```
-
+  
     - 其他字段含义可以参考Android官网：https://developer.android.com/training/articles/security-config?hl=zh-cn
-
+  
   - Q:Didn't find class "androidx.localbroadcastmanager.content.LocalBroadcastManager"  && java.lang.NoClassDefFoundError: Failed resolution of: Landroidx/swiperefreshlayout/widget/CircularProgressDrawable; 当出现这个两个类找不到的时候，可能是com.google.android.material:material的版本过高导致的，
-
+  
   - A:在gradle的dependencies添加下面依赖：
-
+  
   ```
           implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
           implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
   ```
-
+  
   - 应用异常退出后，切换账号登录异常或者登录的账号信息错误
-
+  
   > 如果登录的账号发生切换，请主动调用登出接口以清空登录态，再重新尝试登录。
-
+  
   - Q:收到邀请或分享回调后显示透明activity但是背景activity显示的不是会中界面，或者关闭activity后没有回到会中界面
   - A:请确保activity设置了如下所示的taskAffinity属性，并在启动activity时调用intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)，如果仍然无法解决问题，请联系技术支持
   ```
