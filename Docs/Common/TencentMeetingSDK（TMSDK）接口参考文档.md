@@ -963,6 +963,7 @@ msg内容示例：
   - 需要登录完成，不可在会中调用
   - 该接口回调详见4.2中onActionResult说明; 调用该接口需要同时监听onActionResult和onJoinMeeting的回调
   - onActionResult的回调主要监测通过投屏码查询会议码成功失败，不能代表是否成功入会投屏，成功入会投屏需要叠加onJoinMeeting成功的回调
+  - windows端在3.21.300之后新增了扩展屏投屏失败的错误回调，错误码为-1066，表示权限不够安装扩展屏驱动失败
   - user_display_name和meeting_window_title这两个参数是3.12.402新增，不传值或者值为空字符就展示默认值
 * 参数说明：
   * JSON中字段如下表
@@ -2165,6 +2166,7 @@ data内容示例
 | kTMSDKErrorOpenQRCodeUrlNotInWhiteList | -1063 | 当前Url不在白名单内 |onOpenQRCodeUrlResult()|
 | kTMSDKErrorOpenQRCodeUrlInMeeing | -1064 | 当前在会中，不能打开扫码Url |onOpenQRCodeUrlResult()|
 | kTMSDKErrorOpenQRCodeNotLogin | -1065 | 当前未登录，不能打开扫码Url |onOpenQRCodeUrlResult()|
+| kTMSDKErrorNoExtendCastDriver  | -1066 | 无线投屏安装扩展屏驱动失败，权限不足，请提权后重试 |onActionResult()|
 | kTMSDKErrorAddUsersSuccess | -2002 | 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 | -2003 | 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 | -2004 | 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
