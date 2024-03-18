@@ -38,6 +38,7 @@
   * [3.1 AccountService 成员函数](#31-accountservice-成员函数)
     + [setCallback](#setcallback-1)
     + [login](#login)
+    + [loginByJSON](#loginByJSON)
     + [logout](#logout)
     + [isLoggedIn](#isloggedin)
     + [jumpUrlWithLoginStatus](#jumpurlwithloginstatus)
@@ -151,8 +152,9 @@
 | 2023-12-12 | 3.21.100 | 接口调整：会中动作回调onActionResult()新增云录制状态变更事件类型; getCurrentMeetingInfo接口增加字段host_user_id，表示主持人的user_id                                       |
 | 2023-12-12 | 3.21.100 | 新增接口：onAudioStatusChanged（麦克风状态回调）；onVideoStatusChanged（摄像头状态回调）；onAudioOutputDeviceChanged（音频输出设备变化回调，仅支持移动端）
 | 2024-02-01 | 3.21.200 | -1018 错误码从"登录网络错误" 改为 "通用网络错误"
-| 2023-02-01 | 3.21.200 | 接口调整：leaveMeeting 参数调整，废弃 end_meeting 参数，改为 leave_meeting_type 参数，支持多端离会
-| 2023-02-02 | 3.21.200 | 新增接口：新增设置SDK回调代理(TMSDK.setCallback)接口
+| 2024-02-01 | 3.21.200 | 接口调整：leaveMeeting 参数调整，废弃 end_meeting 参数，改为 leave_meeting_type 参数，支持多端离会
+| 2024-02-02 | 3.21.200 | 新增接口：新增设置SDK回调代理(TMSDK.setCallback)接口
+| 2024-05-08 | 3.24.100 | 新增接口：登录(loginByJSON)接口
 # 1. SDK使用说明
 
 <font color="red">**参考前必看:**</font>
@@ -662,6 +664,28 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |---|---|---|---|---|
 |sso_url |string |是 |(无) |单点登录的URL地址，由接入方的服务端生成并返回给接入方客户端 |
 
+### loginByJSON
+* 函数形式：**void loginByJSON(string login_json)**
+* 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。
+* 返回值说明：无
+* **最佳实践和注意事项**：
+  - 在收到`onLogin`该回调前，调用`logout`函数会取消登录过程。
+  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`loginByJSON`。不切换账户的情况，不用调`logout`。
+  - 平时退出App不用调用`logout`，这样下次启动程序后调用`loginByJSON`针对相同账户可以快速登录。
+  - 已登录某个账号，再次调用`loginByJSON`重复登录相同账号，回调会是登录成功，而再次登录不同账号，则会回调提示账号登录冲突
+  - 当企业允许同端多账号在线时，无论force_kick_other_device为true或false都不会将旧设备踢出
+* login_json参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|login_type |int |是 |(无) |登录类型。0:SSOURL登录（当前仅支持SSOURL登录） |
+|force_kick_other_device |bool |否 |true |是否强制登录（当有同端已经登录时，会将该端踢出登录），默认值是强制登录 |
+|login_params |string |是 |(无) |登录参数，JSON串格式，具体描述见下文 |
+
+* login_json参数说明：
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|sso_url |string |否 |(无) |单点登录的URL地址，由接入方的服务端生成并返回给接入方客户端。选择SSOURL登录时需要填写 |
 
 ### logout
 * 函数形式：**void logout()**
@@ -2167,6 +2191,8 @@ data内容示例
 | kTMSDKErrorOpenQRCodeUrlInMeeing | -1064 | 当前在会中，不能打开扫码Url |onOpenQRCodeUrlResult()|
 | kTMSDKErrorOpenQRCodeNotLogin | -1065 | 当前未登录，不能打开扫码Url |onOpenQRCodeUrlResult()|
 | kTMSDKErrorNoExtendCastDriver  | -1066 | 无线投屏安装扩展屏驱动失败，权限不足，请提权后重试 |onActionResult()|
+| kTMSDKErrorAlreadyLoginInOtherDevice | -1067 | 已有一台XXX设备（XXX）在线 |onLogin()|
+| kTMSDKErrorInvalidLoginType | -1068 | 无效的登录类型 |onLogin()|
 | kTMSDKErrorAddUsersSuccess | -2002 | 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 | -2003 | 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 | -2004 | 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
