@@ -667,6 +667,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 ### loginByJSON
 * 函数形式：**void loginByJSON(string login_json)**
+* 可用版本：>=3.24.100
 * 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。
 * 返回值说明：无
 * **最佳实践和注意事项**：
@@ -680,7 +681,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |login_type |int |是 |(无) |登录类型。0:SSOURL登录（当前仅支持SSOURL登录） |
-|force_kick_other_device |bool |否 |true |是否强制登录（当有同端已经登录时，会将该端踢出登录），默认值是强制登录 |
+|force_kick_other_device |bool |否 |true |是否强制登录（当有同端已经登录时，会将该端踢出登录），默认值是强制登录。注意：已经开启了同端不互踢的企业，无论force_kick_other_device值为true或false都不会将已登录的设备踢出 |
 |login_params |string |是 |(无) |登录参数，JSON串格式，具体描述见下文 |
 
 * login_params参数说明：
