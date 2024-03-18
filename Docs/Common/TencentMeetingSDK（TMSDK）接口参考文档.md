@@ -38,7 +38,7 @@
   * [3.1 AccountService 成员函数](#31-accountservice-成员函数)
     + [setCallback](#setcallback-1)
     + [login](#login)
-    + [loginByJSON](#loginByJSON)
+    + [loginByJSON](#loginbyjson)
     + [logout](#logout)
     + [isLoggedIn](#isloggedin)
     + [jumpUrlWithLoginStatus](#jumpurlwithloginstatus)
@@ -664,6 +664,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |---|---|---|---|---|
 |sso_url |string |是 |(无) |单点登录的URL地址，由接入方的服务端生成并返回给接入方客户端 |
 
+
 ### loginByJSON
 * 函数形式：**void loginByJSON(string login_json)**
 * 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。
@@ -682,10 +683,23 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 |force_kick_other_device |bool |否 |true |是否强制登录（当有同端已经登录时，会将该端踢出登录），默认值是强制登录 |
 |login_params |string |是 |(无) |登录参数，JSON串格式，具体描述见下文 |
 
-* login_json参数说明：
+* login_params参数说明：
+
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |sso_url |string |否 |(无) |单点登录的URL地址，由接入方的服务端生成并返回给接入方客户端。选择SSOURL登录时需要填写 |
+
+* login_json详细示例： 
+```json5
+{
+    "login_type": 0,
+    "force_kick_other_device":true,
+    "login_params": {
+        "sso_url":"xxx"
+    }
+}
+```
+
 
 ### logout
 * 函数形式：**void logout()**
