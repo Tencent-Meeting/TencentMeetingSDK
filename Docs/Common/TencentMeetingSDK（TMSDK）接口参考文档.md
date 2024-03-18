@@ -675,7 +675,6 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
   - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`loginByJSON`。不切换账户的情况，不用调`logout`。
   - 平时退出App不用调用`logout`，这样下次启动程序后调用`loginByJSON`针对相同账户可以快速登录。
   - 已登录某个账号，再次调用`loginByJSON`重复登录相同账号，回调会是登录成功，而再次登录不同账号，则会回调提示账号登录冲突
-  - 当企业允许同端多账号在线时，无论force_kick_other_device为true或false都不会将旧设备踢出
 * login_json参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
