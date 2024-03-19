@@ -2154,7 +2154,7 @@ data内容示例
 | kTMSDKErrorUnknown | -1005 | 登录场景、投屏码投屏、屏幕共享状态获取等异常抛出未知错误，出现该错误码，请与官方联系 |onLogin()、onActionResult()|
 | kTMSDKErrorUserNotAuthorized | -1006 | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
 | kTMSDKErrorUserInMeeting | -1007 | 已在会议中。在入会、投屏、显示会前界面的时候，用户在会议中，需先退出。 |onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
-| kTMSDKErrorInvalidParam | -1008 | 无效参数。在调用SDK接口时，包含无效参数。 |onSDKError()、onSDKInitializeResult()、onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onActionResult()、onSDKInitializeResult()|
+| kTMSDKErrorInvalidParam | -1008 | 无效参数。在调用SDK接口时，包含无效参数。 |onSDKError()、onSDKInitializeResult()、onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onActionResult()、onSDKInitializeResult()、onLogin()|
 | kTMSDKErrorInvalidMeetingCode | -1009 | 无效会议号 |onJoinMeeting()|
 | kTMSDKErrorInvalidNickname | -1010 | 无效入会的用户名称，可能长度过长导致 |onJoinMeeting()|
 | kTMSDKErrorDuplicateInitCall | -1011 | 重复调用初始化  |onSDKInitializeResult()|
@@ -2169,7 +2169,7 @@ data内容示例
 | kTMSDKErrorMultiAccountLoginConflict| -1021 | A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
 | kTMSDKErrorJoinMeetingServiceFailed| -1022 | 服务端拒绝入会，可能是频繁入会请求、输入无效会议号、会议已结束等情况，请用返回错误码和错误描述联系官方 | onJoinMeeting()|
 | kTMSDKErrorActionConflict| -1023 | 调用操作与当前状态不匹配 | onActionResult()|
-| kTMSDKErrorInvalidJsonString| -1024 | 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()|
+| kTMSDKErrorInvalidJsonString| -1024 | 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()、onLogin()|
 | kTMSDKErrorProxySetFailed| -1025 | 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
 | kTMSDKErrorInvalidSchemaString| -1026 | 解析schema_url失败的错误码 |OnHandleSchemaResult()、OnParseMeetingInfoUrl|
 | kTMSDKErrorScreenShareOpenNotSupportSwitchPip| -1027 | 正在屏幕共享&用户在等候室&app处于后台无法进入悬浮窗状态 |onSwitchPiPResult()|
