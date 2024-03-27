@@ -34,6 +34,7 @@ android {
 |demo apk大小|159.2MB|98.9MB|↓60.3MB|
 
 
+
 ## Windows减包接入说明
 ### 接入指引
 tbs打包优化：打包可选择对Release\webview和Release\resources\webview目录删除，删除不影响接口调用，使用过程中会触发内置浏览器动态下载(首次初始化触发)。
@@ -42,6 +43,7 @@ tbs打包优化：打包可选择对Release\webview和Release\resources\webview�
 |打包| 有webview | 无webview | 减包大小 |
 |--------------|----------|----------|------|
 |exe大小| todo     | todo     | todo |
+
 
 
 ## Mac减包接入说明
