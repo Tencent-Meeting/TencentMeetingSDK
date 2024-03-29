@@ -38,6 +38,17 @@ android {
 ## Windows减包接入说明
 ### 接入指引
 tbs打包优化：打包可选择对Release\webview和Release\resources\webview目录删除，删除不影响接口调用，使用过程中会触发内置浏览器动态下载(首次初始化触发)。
+下载过程中打开个人笔记的表现：
+
+   下载中：
+   ![image](https://github.com/Tencent-Meeting/TencentMeetingSDK/assets/15232387/01590d36-b882-4f50-b7eb-a7c8e52e9f6c)
+
+   下载完成后点击重新打开按钮可以重新加载页面
+   ![image](https://github.com/Tencent-Meeting/TencentMeetingSDK/assets/15232387/cfd4db1f-3707-4286-b27c-aad6d0702313)
+
+   下载失败场景： 遇到下载失败场景请确保能够正常访问updatecdn.meeting.qq.com
+   ![image](https://github.com/Tencent-Meeting/TencentMeetingSDK/assets/15232387/8059d96a-01e5-4bd0-824e-e4b5143f3fb8)
+
 
 ### 效果对比
 | 打包    | 有webview | 无webview | 减包大小 |
