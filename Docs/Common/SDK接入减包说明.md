@@ -40,9 +40,9 @@ android {
 tbs打包优化：打包可选择对Release\webview和Release\resources\webview目录删除，删除不影响接口调用，使用过程中会触发内置浏览器动态下载(首次初始化触发)。
 
 ### 效果对比
-|打包| 有webview | 无webview | 减包大小 |
-|--------------|----------|----------|------|
-|exe大小| todo     | todo     | todo |
+| 打包    | 有webview | 无webview | 减包大小 |
+|-------|----------|----------|--|
+| zip大小 | 261MB    | 155MB    | 106MB |
 
 
 
