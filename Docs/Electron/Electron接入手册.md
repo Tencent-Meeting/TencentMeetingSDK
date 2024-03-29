@@ -40,6 +40,7 @@ addon，使用里面封装的接口即可。
 | ----- | ------ | --------------------------------------- |
 | api-ms-win*.dll  | SDK |   output/win/win32    |
 | msvcp140.dll  | SDK    | output/win/win32    |
+| msvcp140_1.dll (3.21新增) | SDK    | output/win/win32    |
 | concrt140.dll   | SDK | output/win/win32 |
 | vcomp140.dll | SDK | output/win/win32 |
 | vcruntime140.dll | SDK | output/win/win32 |
@@ -89,6 +90,7 @@ Electron_Demo目录下执行npm start
 | ----- | ------ | --------------------------------------- |
 | api-ms-win*.dll  | SDK/Release/x64 |   output/win/x64    |
 | msvcp140.dll  | SDK/Release/x64    | output/win/x64    |
+| msvcp140_1.dll (3.21新增) | SDK    | output/win/win32    |
 | vcruntime140.dll | SDK/Release/x64 | output/win/x64 |
 | vcruntime140_1.dll | SDK/Release/x64 | output/win/x64 |
 | ucrtbase.dll | SDK/Release/x64 | output/win/x64 |
