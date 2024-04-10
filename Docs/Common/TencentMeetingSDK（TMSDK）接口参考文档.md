@@ -368,8 +368,8 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
   * protocol为string类型，可设置为SOCKS5或者http两种协议
   * agent_typ为int类型，0，全局，1，仅媒体，2，除媒体外
   * 注意事项：
-      1. setProxyInfo要在onSDKInitializeResult返回成功以后。
-      2. 登录login要在onSetProxyResult返回成功以后。
+      1. setProxyInfo要在初始化回调`onSDKInitializeResult`返回成功以后才能使用。
+      2. 登录`login`要在`onSetProxyResult`返回成功以后调用，登录成功后无法调用`setProxyInfo`。
 
 | 属性         | 类型     | 必填  | 默认值     | 说明  |
 |------------|--------|-----|---------|-----|
@@ -658,6 +658,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
   - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`login`。不切换账户的情况，不用调`logout`。
   - 平时退出App不用调用`logout`，这样下次启动程序后调用`login`针对相同账户可以快速登录。
   - 已登录某个账号，再次调用`login`重复登录相同账号，回调会是登录成功，而再次登录不同账号，则会回调提示账号登录冲突
+  - 登录之后不能再设置代理，具体参考`setProxyInfo`介绍
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
@@ -1222,14 +1223,14 @@ msg内容示例：
 PreMeetingCallback 需实现以下成员函数：
 
 ### onJoinMeeting
-* 函数形式：**void onJoinMeeting(int code, string msg)**
+* 函数形式：**void onJoinMeeting(int code, string msg, string meeting_code)**
 * 说明：入会的回调。
 
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
-|msg |string |结果信息 |
-| meeting_code | string | 会议号 |
+|参数名 |参数类型 | 参数说明                             |
+|---|---|----------------------------------|
+|code |int | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+|msg |string | 结果信息                             |
+|meeting_code | string | 要加入会议的会议号                        |
 
 
 ### onActionResult
@@ -1844,7 +1845,7 @@ InMeetingCallback 需实现以下成员函数：
 | type         | int    | 离会类型，1：用户自身操作离会；2：被踢出会议；3：会议结束   |
 | code         | int    | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
 | msg          | string | 结果信息                             |
-| meeting_code | string | 会议号                              |
+| meeting_code | string | 要离开会议的会议号                        |
 
 
 ### onInviteMeeting
