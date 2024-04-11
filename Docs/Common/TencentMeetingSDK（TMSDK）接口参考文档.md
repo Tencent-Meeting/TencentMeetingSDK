@@ -1858,6 +1858,7 @@ invite_info内容
   * 用户在会议中界面点击右侧成员列表上方的添加成员按钮的的回调。
   * 接入方响应回调后，可展示自定义通讯录，在自定义通讯录中添加成员要通知到SDK时，可调用`TMSDK.addUsersWithParam`函数来实现。
   * 对于PSTN呼叫邀请成员回调，user_type的值为4，接入方可以通过解析回调返回的json_data里面user_type的值来判断是否弹出自定义的通讯录实现PSTN呼叫功能
+  
     ![img.png](images/pstn_invite20240411-191410.png)  
 * 参数说明：
 
