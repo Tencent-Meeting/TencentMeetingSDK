@@ -1377,7 +1377,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void enableInviteUsersCallback(bool enable, bool show)**
 * 可用平台：**Linux暂不支持**
 * 函数说明：
-   *设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息。
+   *设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息（users_id）和user_type。
    *设置接口要早于点击会中界面成员列表添加按钮，建议初始化回调之后登录之前设置。
 * 返回值说明：无
 * 参数说明：
@@ -1387,10 +1387,15 @@ PreMeetingCallback 需实现以下成员函数：
 | enable | bool | 否    | false | 是否开启回调                                                  |
 | show   | bool | 是    | true  | 是否还显示SDK的通讯录页面。<br>如果enable为false，则show在SDK中被强制设置为true。 |
 
-* 开启回调后，点击下图红框的按钮会触发SDK回调： 
+* 开启回调后，点击如下两种场景红框的按钮会触发SDK回调： 
+
+  场景一：会中管理成员邀请成员入会， InMeetingCallback.onInviteUsers回调返回user_type=3。
 
 ![img.png](images/inmeeting_invite_users.png)
 
+  场景二：会中呼叫电话（PSTN）邀请成员入会，InMeetingCallback.onInviteUsers回调返回user_type=4。
+
+![img.png](images/pstn_invite20240411-191410.png)  
 
 
 ### bringInMeetingViewTop
@@ -1857,14 +1862,13 @@ invite_info内容
 * 说明：
   * 用户在会议中界面点击右侧成员列表上方的添加成员按钮的的回调。
   * 接入方响应回调后，可展示自定义通讯录，在自定义通讯录中添加成员要通知到SDK时，可调用`TMSDK.addUsersWithParam`函数来实现。
-  * 对于PSTN呼叫邀请成员回调，user_type的值为4，接入方可以通过解析回调返回的json_data里面user_type的值来判断是否弹出自定义的通讯录实现PSTN呼叫功能
-  
-    ![img.png](images/pstn_invite20240411-191410.png)  
+
 * 参数说明：
 
 | 参数名       | 参数类型   | 参数说明                                        |
 |-----------|--------|---------------------------------------------|
 | json_data | string | 会议信息，JSON字符串，内容如下示例 |
+|user_type | int | 邀请入会场景类型：3表示会中管理成员邀请成员入会, 4表示会中PSTN邀请成员入会|
 
 * json_data示例：
 ```json5
