@@ -1389,11 +1389,11 @@ PreMeetingCallback 需实现以下成员函数：
 
 * 开启回调后，点击如下两种场景红框的按钮会触发SDK回调： 
 
-  场景一：会中管理成员邀请成员入会， InMeetingCallback.onInviteUsers回调返回user_type=3。
+  场景一：会中管理成员邀请成员入会， InMeetingCallback.onInviteUsers回调中user_type值为3。
 
 ![img.png](images/inmeeting_invite_users.png)
 
-  场景二：会中呼叫电话（PSTN）邀请成员入会，InMeetingCallback.onInviteUsers回调返回user_type=4。
+  场景二：会中呼叫电话（PSTN）邀请成员入会，InMeetingCallback.onInviteUsers回调中user_type值为4。
 
 ![img.png](images/pstn_invite20240411-191410.png)  
 
