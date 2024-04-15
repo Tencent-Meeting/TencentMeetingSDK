@@ -1377,8 +1377,8 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void enableInviteUsersCallback(bool enable, bool show)**
 * 可用平台：**Linux暂不支持**
 * 函数说明：
-   *设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息（users）和场景类型（user_type）。
-   *设置接口要早于点击会中界面成员列表添加按钮，建议初始化回调之后登录之前设置。
+   * 设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息（users）和场景类型（user_type）。
+   * 设置接口要早于点击会中界面成员列表添加按钮，建议初始化回调之后登录之前设置。
 * 返回值说明：无
 * 参数说明：
 
