@@ -152,7 +152,8 @@
 | 2023-12-12 | 3.21.100 | 新增接口：onAudioStatusChanged（麦克风状态回调）；onVideoStatusChanged（摄像头状态回调）；onAudioOutputDeviceChanged（音频输出设备变化回调，仅支持移动端）
 | 2024-02-01 | 3.21.200 | -1018 错误码从"登录网络错误" 改为 "通用网络错误"
 | 2023-02-01 | 3.21.200 | 接口调整：leaveMeeting 参数调整，废弃 end_meeting 参数，改为 leave_meeting_type 参数，支持多端离会
-| 2023-02-02 | 3.21.200 | 新增接口：新增设置SDK回调代理(TMSDK.setCallback)接口
+| 2023-02-02 | 3.21.200 | 新增接口：新增设置SDK回调代理(TMSDK.setCallback)接口|
+| 2023-5-7 | 3.21.303 | 新增错误码：[-1067]--安全验证失败，需要用户验证通过后才能登录 |
 # 1. SDK使用说明
 
 <font color="red">**参考前必看:**</font>
@@ -2174,6 +2175,7 @@ data内容示例
 | kTMSDKErrorOpenQRCodeUrlInMeeing | -1064 | 当前在会中，不能打开扫码Url |onOpenQRCodeUrlResult()|
 | kTMSDKErrorOpenQRCodeNotLogin | -1065 | 当前未登录，不能打开扫码Url |onOpenQRCodeUrlResult()|
 | kTMSDKErrorNoExtendCastDriver  | -1066 | 无线投屏安装扩展屏驱动失败，权限不足，请提权后重试 |onActionResult()|
+| kTMSDKErrorLoginWithoutRealNameVerify | -1067 | 安全验证失败，需要用户验证通过后才能登录 | onLogin()|
 | kTMSDKErrorAddUsersSuccess | -2002 | 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 | -2003 | 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 | -2004 | 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
