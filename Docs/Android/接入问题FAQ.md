@@ -60,8 +60,11 @@
       }
   ```
 
+  ​	**如果集成SDK后出现mmkv组件版本冲突，原因为 mmkv库与会议SDK使用的mmkv-static不兼容导致，请使用mmkv-static，mmkv-static版本尽量使用新版**
+  
   - Q: 重复的class报错，但重复类的包名为com.tencent.thumbplayer，且冲突库为com.tencent.liteav.LiteAVSDK_Player:
-  A: 请更新SDK库和LiteAVSDK_Player库版本，同时满足以下版本要求:
+    A: 请更新SDK库和LiteAVSDK_Player库版本，同时满足以下版本要求:
+  
   ```
   会议SDK版本>=3.21.200;
   LiteAVSDK_player版本>=11.7.0.13910;
