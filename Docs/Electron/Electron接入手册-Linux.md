@@ -72,13 +72,39 @@ npm run start
     "start": "node start.js && electron ."
 },
 ```
-7. 修改node-gyp编译配置，可参考demo binding.gyp文件，其中配置了native代码编译时候的头文件和Library搜索路径。
-6. 在js中导入 wemeet_electron_sdk.node 文件
+7. 修改node-gyp编译配置，可参考demo binding.gyp文件，其中配置了native代码编译时候的头文件和Library搜索路径。(如果直接使用demo中预编译好的node文件，可以跳过这一步)
+8. 在js中导入 wemeet_electron_sdk.node 文件
 ``` javascript
    // path_to_your_wemeet_electron_sdk.node 表示 wemeet_electron_sdk.node的路径
    const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
    // 这里导入的 wemeet_sdk 会在接下来的接口说明中使用
 ```
+9. 参考demo中`main.js`文件中针对`Linux`平台的环境变量相关设置，在调用SDK初始化之前，配置进程的环境变量等信息，包括Wayland环境兼容设置。
+``` javascript
+if (process.platform === 'linux') {
+  const ldPathEnv = process.env.LD_LIBRARY_PATH;
+  const curWorkingPath = path.join(__dirname, "output", "linux", "Release", "lib");
+  if (ldPathEnv) {
+    process.env.LD_LIBRARY_PATH = `${curWorkingPath}:${ldPathEnv}`;  // 注意路径顺序，新路径放在最前面
+  } else {
+    process.env.LD_LIBRARY_PATH = `${curWorkingPath}:`;
+  }
+  const pathEnv = process.env.PATH;
+  const curReleasePath = path.join(__dirname, "output", "linux", "Release");
+  process.env.PATH = `${curReleasePath}:${pathEnv}`;    // 注意路径顺序，当前路径放在最前面
+  process.env.QT_PLUGIN_PATH = path.join(__dirname, "output", "linux", "Release", "plugins");
+  process.env.TZ = `Asia/Shanghai`;
+  process.env.LC_ALL = `zh_CN.UTF-8`;
+
+  // ... other env settings ...
+  // Wayland环境下的兼容处理
+  if (process.env.XDG_SESSION_TYPE == 'wayland') {
+    // 参考demo代码
+  }
+}
+```
+
+需要注意的是，在设置`PATH`和`LD_LIBRARY_PATH`时，当前路径一定要添加到环境变量最前面，以优先查找到本地依赖库和文件。
 
 
 ## 3. 接口说明

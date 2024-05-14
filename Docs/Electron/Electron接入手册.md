@@ -394,13 +394,7 @@ wemeet_sdk.ShowMeetingDetailView(meeting_id, current_sub_meeting_id, start_time,
 wemeet_sdk.JumpUrlWithLoginStatus(target_url)
 ```
 
-### 16、反初始化
-
-```
-wemeet_sdk.ReleaseWemeetSDK()
-```
-
-### 17、添加js回调
+### 16、添加js回调
 
 ```
 wemeet_sdk.AddJsCallback(call_back)
@@ -408,111 +402,111 @@ wemeet_sdk.AddJsCallback(call_back)
 
 说明：这个函数是electron的sdk独有的函数，call_back 是一个js的function，参数是一个json字符串
 
-### 18、会中窗口置顶
+### 17、会中窗口置顶
 
 ```
 wemeet_sdk.BringInMeetingViewTop()
 ```
 说明：如果当前没有会中窗口，则不做任何操作。没有回调。3.0.102加入。
 
-### 19、获取当前sdk_token
+### 18、获取当前sdk_token
 
 ```
 wemeet_sdk.GetCurrentSDKToken()
 ```
 说明：同步接口，返回类型string，返回当前sdk登录使用的sdk_token串。3.0.107加入。
 
-### 20、刷新sdk_token
+### 19、刷新sdk_token
 
 ```
 wemeet_sdk.RefreshSDKToken(sdk_token)
 ```
 说明：同步接口，参数是要刷新的sdk_token串。返回类型int，失败返回错误码，成功返回0。
 
-### 21、获取带登录态的url链接
+### 20、获取带登录态的url链接
 
 ```
 wemeet_sdk.GetUrlWithLoginStatus(url)
 ```
 说明：同步接口，参数url为不带登录态的url，返回类型string，返回带登录态的url。
 
-### 22、设置代理
+### 21、设置代理
 
 ```
 wemeet_sdk.SetProxyInfo(proxy_info)
 ```
 说明：参数proxy_info为json格式的string类型，格式可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 23、获取代理
+### 22、获取代理
 
 ```
 wemeet_sdk.GetProxyInfo()
 ```
 说明：返回值参考SetProxyInfo。
 
-### 24、通过json串入会
+### 23、通过json串入会
 
 ```
 wemeet_sdk.JoinMeetingByJSON(meeting_josn)
 ```
 说明：参数meeting_josn为json格式的string类型，格式可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 25、显示预定会议页面
+### 24、显示预定会议页面
 
 ```
 wemeet_sdk.ShowScheduleMeetingView(meeting_type)
 ```
 说明：参数meeting_type为会议类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 26、显示投屏页面
+### 25、显示投屏页面
 
 ```
 wemeet_sdk.ShowScreenCastView()
 ```
 说明：展示投屏页面。
 
-### 27、显示加入会议页面
+### 26、显示加入会议页面
 
 ```
 wemeet_sdk.ShowJoinMeetingView()
 ```
 说明：展示加入会议页面。
 
-### 28、获取sdk的版本号
+### 27、获取sdk的版本号
 
 ```
 wemeet_sdk.GetSDKVersion()
 ```
 说明：返回string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 29、一键跳转指定页面
+### 28、一键跳转指定页面
 
 ```
 wemeet_sdk.HandleSchema(schema_url)
 ```
 说明：参数schema_url为跳转链接，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 30、查询会议信息
+### 29、查询会议信息
 
 ```
 wemeet_sdk.QueryMeetingInfo(meeting_info)
 ```
 说明：>= 3.6.200版本，meeting_info为json格式字符串，详细可参考《TencentMeetingSDK（TMSDK）接口参考文档》说明。
-### 31、快速会议
+### 30、快速会议
 
 ```
 wemeet_sdk.QuickMeeting()
 ```
 说明：>= 3.6.200版本。
 
-### 32、获取当前会议状态信息
+### 31、获取当前会议状态信息
 
 ```
 wemeet_sdk.GetCurrentMeetingInfo()
 ```
 说明：>= 3.6.300版本,返回string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 33、添加人员操作，接入方可以邀请人加入预定会议、或邀请人员加入会议
+### 32、添加人员操作，接入方可以邀请人加入预定会议、或邀请人员加入会议
 
 ```
 wemeet_sdk.AddUsersWithParam(json_param)
@@ -520,7 +514,7 @@ wemeet_sdk.AddUsersWithParam(json_param)
 
 说明：>= 3.6.401版本，json_param为json格式字符串，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 34、SDK预定会议界面中，开启定制化通讯录的回调
+### 33、SDK预定会议界面中，开启定制化通讯录的回调
 
 ```
 wemeet_sdk.EnableAddressBookCallback(enable, show)
@@ -528,7 +522,7 @@ wemeet_sdk.EnableAddressBookCallback(enable, show)
 
 说明：\>= 3.6.401版本，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 35、设置是否使用添加成员的回调
+### 34、设置是否使用添加成员的回调
 
 ```
 wemeet_sdk.EnableInviteUsersCallback(enable, show)
@@ -536,7 +530,7 @@ wemeet_sdk.EnableInviteUsersCallback(enable, show)
 
 说明：\>= 3.6.401版本，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 36、设置是否开启自定义组织架构信息
+### 35、设置是否开启自定义组织架构信息
 
 ```
 wemeet_sdk.EnableCustomOrgInfo(enable)
@@ -544,7 +538,7 @@ wemeet_sdk.EnableCustomOrgInfo(enable)
 
 说明：\>= 3.6.401版本，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 37、对相关成员设置自定义的组织架构信息
+### 36、对相关成员设置自定义的组织架构信息
 
 ```
 wemeet_sdk.SetCustomOrgInfo(json_param)
@@ -553,7 +547,7 @@ wemeet_sdk.SetCustomOrgInfo(json_param)
 说明：\>= 3.6.401版本，json_param为json格式字符串，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 
-### 38、短链入会解析
+### 37、短链入会解析
 
 ```
 wemeet_sdk.ParseMeetingInfoUrl(scheme_url)
@@ -561,7 +555,7 @@ wemeet_sdk.ParseMeetingInfoUrl(scheme_url)
 
 说明：\>= 3.12版本，scheme_url为string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 39、查询本地录制信息
+### 38、查询本地录制信息
 
 ```
 wemeet_sdk.QueryLocalRecordInfo(meeting_id, period_id)
@@ -569,7 +563,7 @@ wemeet_sdk.QueryLocalRecordInfo(meeting_id, period_id)
 
 说明：\>= 3.12版本，meeting_id、period_id为int类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 40、查询本地录制信息
+### 39、查询本地录制信息
 
 ```
 wemeet_sdk.ShowRecordFolder(path_id)
@@ -577,7 +571,7 @@ wemeet_sdk.ShowRecordFolder(path_id)
 
 说明：\>= 3.12版本，path_id为int类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 41、查询本地录制信息
+### 40、查询本地录制信息
 
 ```
 wemeet_sdk.Transcode(path_id)
@@ -585,7 +579,7 @@ wemeet_sdk.Transcode(path_id)
 
 说明：\>= 3.12版本，path_id为int类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 42、收集日志信息
+### 41、收集日志信息
 
 ```
 wemeet_sdk.CollectLogFiles(begin_time, end_time)
@@ -593,7 +587,7 @@ wemeet_sdk.CollectLogFiles(begin_time, end_time)
 
 说明：\>= 3.12版本，begin_time、end_time为string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 43、反初始化SDK
+### 42、反初始化SDK
 
 ```
 wemeet_sdk.UninitWemeetSDK(uninit_json)
@@ -601,7 +595,7 @@ wemeet_sdk.UninitWemeetSDK(uninit_json)
 
 说明：\>= 3.12版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 44、获取会中窗口信息
+### 43、获取会中窗口信息
 
 ```
 wemeet_sdk.GetMeetingWindowInfo()
@@ -609,7 +603,7 @@ wemeet_sdk.GetMeetingWindowInfo()
 
 说明：\>= 3.12版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 45、开关会议中字幕展示组件
+### 44、开关会议中字幕展示组件
 
 ```
 wemeet_sdk.SwitchCaption(open, callback)
@@ -617,7 +611,7 @@ wemeet_sdk.SwitchCaption(open, callback)
 
 说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 46、更新字幕相关设置选项
+### 45、更新字幕相关设置选项
 
 ```
 wemeet_sdk.UpdateCaptionSettings(json_setting, callbak)
@@ -625,7 +619,7 @@ wemeet_sdk.UpdateCaptionSettings(json_setting, callbak)
 
 说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 47、获取当前屏幕共享信息
+### 46、获取当前屏幕共享信息
 
 ```
 wemeet_sdk.GetScreenShareInfo()
@@ -633,7 +627,7 @@ wemeet_sdk.GetScreenShareInfo()
 
 说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 48、超声波解码
+### 47、超声波解码
 
 ```
 wemeet_sdk.DecodeUltrasoundScreenCastCode()
@@ -641,7 +635,7 @@ wemeet_sdk.DecodeUltrasoundScreenCastCode()
 
 说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 49、会中开启字幕
+### 48、会中开启字幕
 
 ```
 wemeet_sdk.SwitchCaption(bool open)
@@ -649,7 +643,7 @@ wemeet_sdk.SwitchCaption(bool open)
 
 说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 50、会中字幕设置
+### 49、会中字幕设置
 
 ```
 wemeet_sdk.UpdateCaptionSettings(settings_json)
@@ -657,7 +651,7 @@ wemeet_sdk.UpdateCaptionSettings(settings_json)
 
 说明：\>= 3.12.3版本, settings_json为string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 51、设置是否显示SDK响铃邀请界面
+### 50、设置是否显示SDK响铃邀请界面
 
 ```
 wemeet_sdk.EnableRingInvitationView(enable)
@@ -665,7 +659,7 @@ wemeet_sdk.EnableRingInvitationView(enable)
 
 说明：\>= 3.12.4版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 52、处理响铃邀请
+### 51、处理响铃邀请
 
 ```
 wemeet_sdk.HandleRingInvitation(accept, invite_id, callback)
@@ -673,7 +667,7 @@ wemeet_sdk.HandleRingInvitation(accept, invite_id, callback)
 
 说明：\>= 3.12.4版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 53、用来设置共享屏幕入会后，结束共享时是否展示"结束共享"弹窗
+### 52、用来设置共享屏幕入会后，结束共享时是否展示"结束共享"弹窗
 
 ```
 wemeet_sdk.SetLeaveCastRoomActionType(int actionType)
@@ -681,7 +675,7 @@ wemeet_sdk.SetLeaveCastRoomActionType(int actionType)
 
 说明：\>= 3.12.403版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 54、切换为会议的默认布局
+### 53、切换为会议的默认布局
 
 ```
 wemeet_sdk.SwitchLayout(layout_json, callback)
@@ -689,7 +683,7 @@ wemeet_sdk.SwitchLayout(layout_json, callback)
 
 说明：\>= 3.12.404版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
-### 55、订阅/退订会中事件
+### 54、订阅/退订会中事件
 
 ```
 wemeet_sdk.SubscribeInMeetingActionEvent(action_type, subscribe, subscription_json)

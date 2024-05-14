@@ -347,6 +347,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
   * 主动上传日志，通过接口`SDKCallback.onActiveUploadLogsResult`回调通知返回结果；
   * 只上传开始和结束时间期间的日志，开始时间和结束时间的最大间隔为24h
   * 限制最大传输压缩后的文件1G，30min上传不成功则返回失败回调通知
+  * 当前接口函数不支持重复调用，前次调用没有回调onActiveUploadLogsResult之前调用直接返回`kTMSDKErrorActionConflict`
 * 返回值说明：无
 * 参数说明：
 
@@ -1416,8 +1417,8 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void enableInviteUsersCallback(bool enable, bool show)**
 * 可用平台：**Linux暂不支持**
 * 函数说明：
-   *设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息。
-   *设置接口要早于点击会中界面成员列表添加按钮，建议初始化回调之后登录之前设置。
+   * 设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息（users）和场景类型（user_type）。
+   * 设置接口要早于点击会中界面成员列表添加按钮，建议初始化回调之后登录之前设置。
 * 返回值说明：无
 * 参数说明：
 
@@ -1426,10 +1427,15 @@ PreMeetingCallback 需实现以下成员函数：
 | enable | bool | 否    | false | 是否开启回调                                                  |
 | show   | bool | 是    | true  | 是否还显示SDK的通讯录页面。<br>如果enable为false，则show在SDK中被强制设置为true。 |
 
-* 开启回调后，点击下图红框的按钮会触发SDK回调： 
+* 开启回调后，点击如下两种场景红框的按钮会触发SDK回调： 
+
+  场景一：会中管理成员邀请成员入会， InMeetingCallback.onInviteUsers回调中user_type值为3。
 
 ![img.png](images/inmeeting_invite_users.png)
 
+  场景二：会中呼叫电话（PSTN）邀请成员入会，InMeetingCallback.onInviteUsers回调中user_type值为4。
+
+![img.png](images/pstn_invite20240411-191410.png)  
 
 
 ### bringInMeetingViewTop
@@ -1475,7 +1481,7 @@ PreMeetingCallback 需实现以下成员函数：
 |名称 |说明 |
 |:--|--|
 |code  |接口调用状态码，成功调用时返回0|
-|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息;<br>host_user_id表示主持人的user_id;<br>is_multi_device_in_meeting: 1代表在有多个设备在会中，0代表只有当前设备在会中|
+|data  |接口未成功调用时不返回data信息；接口正常调用时返回的当前会议状态信息，其中包括：<br>is_in_meeting: 1代表在会中，0代表不在会中. <br>meeting_id和meeting_code分别是会议的Id信息和Code信息;<br>host_user_id表示主持人的user_id，只支持查询本企业内的主持人; **[>= 3.21.100]**<br>is_multi_device_in_meeting: 1代表在有多个设备在会中，0代表只有当前设备在会中 **[>= 3.21.200]**|
 |msg   |接口未成功调用时返回错误信息，接口成功调用时返回空字符串|
 * 参数说明：无
 
@@ -1901,11 +1907,13 @@ invite_info内容
 | 参数名       | 参数类型   | 参数说明                                        |
 |-----------|--------|---------------------------------------------|
 | json_data | string | 会议信息，JSON字符串，内容如下示例 |
+|user_type | int | 邀请入会场景类型：3表示会中管理成员邀请成员入会, 4表示会中PSTN邀请成员入会|
 
 * json_data示例：
 ```json5
 {
-    "users": ["user1_id","user2_id","user3_id","user4_id"]
+    "users": ["user1_id","user2_id","user3_id","user4_id"],
+    "user_type": 1
 }
 ```
 
@@ -2169,7 +2177,7 @@ data内容示例
 | kTMSDKErrorChildProcessCrash | -1020 | 子进程退出 |onResetSDKState()|
 | kTMSDKErrorMultiAccountLoginConflict| -1021 | A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
 | kTMSDKErrorJoinMeetingServiceFailed| -1022 | 服务端拒绝入会，可能是频繁入会请求、输入无效会议号、会议已结束等情况，请用返回错误码和错误描述联系官方 | onJoinMeeting()|
-| kTMSDKErrorActionConflict| -1023 | 调用操作与当前状态不匹配 | onActionResult()|
+| kTMSDKErrorActionConflict| -1023 | 调用操作与当前状态不匹配，接收到的接口调用与正在处理的调用不能同时处理 | onActionResult()、onActiveUploadLogsResult|
 | kTMSDKErrorInvalidJsonString| -1024 | 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()、onLogin()|
 | kTMSDKErrorProxySetFailed| -1025 | 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
 | kTMSDKErrorInvalidSchemaString| -1026 | 解析schema_url失败的错误码 |OnHandleSchemaResult()、OnParseMeetingInfoUrl|
