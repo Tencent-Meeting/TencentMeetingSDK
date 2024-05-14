@@ -316,11 +316,13 @@ android {
   A:执行./gradlew app:dependencies(window下执行gradlew app:dependencies)，对照输出依赖将sdk中的依赖排除出去，例如
 
 ```groovy
-    implementation "com.tencent.wemeet: ${wemeet_version}" {
+    implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') {
         exclude group: 'com.tencent.tbssdk', module: 'tbssdk'
         exclude group: 'com.tencent.wemeet', module: 'imsdk'
     }
 ```
+​	**如果集成SDK后出现mmkv组件版本冲突，原因为 mmkv库与会议SDK使用的mmkv-static不兼容导致，请使用mmkv-static，mmkv-static版本尽量使用新版**
+
 - Q:javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
   A:
 
@@ -348,16 +350,17 @@ android {
   - 其他字段含义可以参考Android官网：https://developer.android.com/training/articles/security-config?hl=zh-cn
 - Q:Didn't find class "androidx.localbroadcastmanager.content.LocalBroadcastManager"  && java.lang.NoClassDefFoundError: Failed resolution of: Landroidx/swiperefreshlayout/widget/CircularProgressDrawable; 当出现这个两个类找不到的时候，可能是com.google.android.material:material的版本过高导致的，
 - A:在gradle的dependencies添加下面依赖：
+
 ```
         implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
         implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-```	
+```
 - Q:在会中收到邀请或者分享回调后显示邀请或者分享界面异常怎么处理
 - A:
 ```
        在邀请或者分享的activity里面添加 android:taskAffinity=".meeting.inmeeting.InMeetingActivity"
        在启动邀请或者分享界面离添加 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-```	
+```
 - 应用异常退出后，切换账号登录异常或者登录的账号信息错误
 > 如果登录的账号发生切换，请主动调用登出接口以清空登录态，再重新尝试登录。
 
