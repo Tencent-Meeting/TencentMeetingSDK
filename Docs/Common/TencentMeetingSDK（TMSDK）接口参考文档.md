@@ -142,18 +142,18 @@
 | 2023-05-19 | 3.12.100 | 由于反初始化(uninitialize)接口在macOS和iOS平台上功能表现不稳定，暂不支持在macOS和iOS平台上接入反初始化接口                                                                  |
 | 2023-06-10 | 3.12.201 | 添加投屏接口                                                                                                                                |
 | 2023-07-31 | 3.12.300 | 添加字幕接口，查询代理接口，查询屏幕共享接口，查询会中窗口信息接口                                                                                                     |
-| 2023-07-31 | 3.12.300 | 添加隐私授权未授权错误码                                                                                                                          |                                                                                                |
+| 2023-07-31 | 3.12.300 | 添加隐私授权未授权错误码                                                                                                                          |
 | 2023-09-01 | 3.12.400 | 添加自定义响铃邀请相关接口：EnableRingInvitationView，OnRingInvitationEvent，HandleRingInvitation                                                     |
 | 2023-10-23 | 3.12.402 | 接口调整：decodeUltrasoundScreenCastCode接口支持返回rooms_name；startScreenCast接口支持设置user_display_name和meeting_window_title                       |
 | 2023-11-14 | 3.12.403 | 新增接口：setLeaveCastRoomActionType可设置共享屏幕入会结束共享是否展示对话框                                                                                   |
 | 2023-11-20 | 3.12.404 | 新增接口：switchLayout(切换布局），subscribeInMeetingActionEvent（订阅/退订会中事件）。bringInMeetingViewTop函数支持移动端                                         |
 | 2023-12-12 | 3.21.100 | 新增接口：showUploadLogsView 显示上传日志页面；activeUploadLogs 主动上传日志接口；openQRCodeUrl接受扫码信息接口                                                      |
 | 2023-12-12 | 3.21.100 | 接口调整：会中动作回调onActionResult()新增云录制状态变更事件类型; getCurrentMeetingInfo接口增加字段host_user_id，表示主持人的user_id                                       |
-| 2023-12-12 | 3.21.100 | 新增接口：onAudioStatusChanged（麦克风状态回调）；onVideoStatusChanged（摄像头状态回调）；onAudioOutputDeviceChanged（音频输出设备变化回调，仅支持移动端）
-| 2024-02-01 | 3.21.200 | -1018 错误码从"登录网络错误" 改为 "通用网络错误"
-| 2023-02-01 | 3.21.200 | 接口调整：leaveMeeting 参数调整，废弃 end_meeting 参数，改为 leave_meeting_type 参数，支持多端离会
+| 2023-12-12 | 3.21.100 | 新增接口：onAudioStatusChanged（麦克风状态回调）；onVideoStatusChanged（摄像头状态回调）；onAudioOutputDeviceChanged（音频输出设备变化回调，仅支持移动端）|
+| 2024-02-01 | 3.21.200 | -1018 错误码从"登录网络错误" 改为 "通用网络错误"|
+| 2023-02-01 | 3.21.200 | 接口调整：leaveMeeting 参数调整，废弃 end_meeting 参数，改为 leave_meeting_type 参数，支持多端离会|
 | 2023-02-02 | 3.21.200 | 新增接口：新增设置SDK回调代理(TMSDK.setCallback)接口|
-| 2023-5-7 | 3.21.303 | 新增错误码：[-1067]--安全验证失败，需要用户验证通过后才能登录 |
+| 2023-05-07 | 3.21.303 | 新增错误码：[-1067]--安全验证失败，需要用户验证通过后才能登录 |
 # 1. SDK使用说明
 
 <font color="red">**参考前必看:**</font>
