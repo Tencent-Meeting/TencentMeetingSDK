@@ -660,10 +660,11 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 返回值说明：无
 * **最佳实践和注意事项**：
   - 在收到`onLogin`该回调前，调用`logout`函数会取消登录过程。
-  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`login`。不切换账户的情况，不用调`logout`。
-  - 平时退出App不用调用`logout`，这样下次启动程序后调用`login`针对相同账户可以快速登录。
+  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`login`进行新账号登录。
+  - 平时退出应用程序，不切换账户的情况，不用调用`logout`，这样下次启动程序后，调用`login`针对相同账户可以快速登录。
   - 已登录某个账号，再次调用`login`重复登录相同账号，回调会是登录成功，而再次登录不同账号，则会回调提示账号登录冲突
   - 登录之后不能再设置代理，具体参考`setProxyInfo`介绍
+
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
@@ -678,18 +679,22 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 返回值说明：无
 * **最佳实践和注意事项**：
   - 在收到`onLogin`该回调前，调用`logout`函数会取消登录过程。
-  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`loginByJSON`。不切换账户的情况，不用调`logout`。
-  - 平时退出App不用调用`logout`，这样下次启动程序后调用`loginByJSON`针对相同账户可以快速登录。
+  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`loginByJSON`进行新账号登录。
+  - 平时退出应用程序，不切换账户的情况，不用调用`logout`，这样下次启动程序后，调用`loginByJSON`针对相同账户可以快速登录。
   - 已登录某个账号，再次调用`loginByJSON`重复登录相同账号，回调会是登录成功，而再次登录不同账号，则会回调提示账号登录冲突
+  - 登录之后不能再设置代理，具体参考`setProxyInfo`介绍
+
 * login_json参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |login_type |int |是 |(无) |登录类型。0:SSOURL登录（当前仅支持SSOURL登录） |
 |force_kick_other_device |bool |否 |true |是否强制登录（当有同端已经登录时，会将该端踢出登录），默认值是强制登录。注意：已经开启了同端不互踢的企业，无论force_kick_other_device值为true或false都不会将已登录的设备踢出 |
-|login_params |string |是 |(无) |登录参数，JSON串格式，具体描述见下文 |
+|login_params |string |是 |(无) |登录参数，具体描述见下文 |
 
 * login_params参数说明：
+
+当`login_type`为**0**时，`login_params`的格式为：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
@@ -2157,7 +2162,7 @@ data内容示例
 
 # 6. 错误码
 
-| 名称 | 错误码   | 说明 | 回调函数 |
+| 名称 | 错误码   | 说明 | 适用的函数和通知回调 |
 |---|-------|---|---|
 | kTMSDKErrorSuccess | 0     | 成功。|				 |
 | kTMSDKErrorServerConfigFail | -1001 | 私有云SDK设置服务地址错误或获取服务配置失败     |onSDKInitializeResult()|
@@ -2165,9 +2170,9 @@ data内容示例
 | kTMSDKErrorLogoutInMeeting | -1003 | 正在会议中，无法退出，需先离会 |onLogout()|
 | kTMSDKErrorLoginAborted | -1004 | 登录过程中调用Logout |onLogin()|
 | kTMSDKErrorUnknown | -1005 | 登录场景、投屏码投屏、屏幕共享状态获取等异常抛出未知错误，出现该错误码，请与官方联系 |onLogin()、onActionResult()|
-| kTMSDKErrorUserNotAuthorized | -1006 | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
+| kTMSDKErrorUserNotAuthorized | -1006 | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |各个需要先登录才能调用的函数都适用|
 | kTMSDKErrorUserInMeeting | -1007 | 已在会议中。在入会、投屏、显示会前界面的时候，用户在会议中，需先退出。 |onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
-| kTMSDKErrorInvalidParam | -1008 | 无效参数。在调用SDK接口时，包含无效参数。 |onSDKError()、onSDKInitializeResult()、onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onActionResult()、onSDKInitializeResult()、onLogin()|
+| kTMSDKErrorInvalidParam | -1008 | 无效参数。在调用SDK接口时，包含无效参数。 |各个接口适用|
 | kTMSDKErrorInvalidMeetingCode | -1009 | 无效会议号 |onJoinMeeting()|
 | kTMSDKErrorInvalidNickname | -1010 | 无效入会的用户名称，可能长度过长导致 |onJoinMeeting()|
 | kTMSDKErrorDuplicateInitCall | -1011 | 重复调用初始化  |onSDKInitializeResult()|
