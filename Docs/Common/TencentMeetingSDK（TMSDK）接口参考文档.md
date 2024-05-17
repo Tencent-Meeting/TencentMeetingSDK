@@ -38,6 +38,7 @@
   * [3.1 AccountService 成员函数](#31-accountservice-成员函数)
     + [setCallback](#setcallback-1)
     + [login](#login)
+    + [loginByJSON](#loginbyjson)
     + [logout](#logout)
     + [isLoggedIn](#isloggedin)
     + [jumpUrlWithLoginStatus](#jumpurlwithloginstatus)
@@ -154,6 +155,9 @@
 | 2023-02-01 | 3.21.200 | 接口调整：leaveMeeting 参数调整，废弃 end_meeting 参数，改为 leave_meeting_type 参数，支持多端离会|
 | 2023-02-02 | 3.21.200 | 新增接口：新增设置SDK回调代理(TMSDK.setCallback)接口|
 | 2023-05-07 | 3.21.303 | 新增错误码：[-1067]--安全验证失败，需要用户验证通过后才能登录 |
+| 2024-05-08 | 3.24.100 | 新增接口：登录(loginByJSON)接口
+
+
 # 1. SDK使用说明
 
 <font color="red">**参考前必看:**</font>
@@ -369,8 +373,8 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
   * protocol为string类型，可设置为SOCKS5或者http两种协议
   * agent_typ为int类型，0，全局，1，仅媒体，2，除媒体外
   * 注意事项：
-      1. setProxyInfo要在onSDKInitializeResult返回成功以后。
-      2. 登录login要在onSetProxyResult返回成功以后。
+      1. setProxyInfo要在初始化回调`onSDKInitializeResult`返回成功以后才能使用。
+      2. 登录`login`要在`onSetProxyResult`返回成功以后调用，登录成功后无法调用`setProxyInfo`。
 
 | 属性         | 类型     | 必填  | 默认值     | 说明  |
 |------------|--------|-----|---------|-----|
@@ -656,14 +660,56 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 返回值说明：无
 * **最佳实践和注意事项**：
   - 在收到`onLogin`该回调前，调用`logout`函数会取消登录过程。
-  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`login`。不切换账户的情况，不用调`logout`。
-  - 平时退出App不用调用`logout`，这样下次启动程序后调用`login`针对相同账户可以快速登录。
+  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`login`进行新账号登录。
+  - 平时退出应用程序，不切换账户的情况，不用调用`logout`，这样下次启动程序后，调用`login`针对相同账户可以快速登录。
   - 已登录某个账号，再次调用`login`重复登录相同账号，回调会是登录成功，而再次登录不同账号，则会回调提示账号登录冲突
+  - 登录之后不能再设置代理，具体参考`setProxyInfo`介绍
+
 * 参数说明：
 
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |sso_url |string |是 |(无) |单点登录的URL地址，由接入方的服务端生成并返回给接入方客户端 |
+
+
+### loginByJSON
+* 函数形式：**void loginByJSON(string login_json)**
+* 可用版本：>=3.24.100
+* 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。
+* 返回值说明：无
+* **最佳实践和注意事项**：
+  - 在收到`onLogin`该回调前，调用`logout`函数会取消登录过程。
+  - 如果要切换账户，必须先调`logout`，然后在`onLogout`的回调后再调用`loginByJSON`进行新账号登录。
+  - 平时退出应用程序，不切换账户的情况，不用调用`logout`，这样下次启动程序后，调用`loginByJSON`针对相同账户可以快速登录。
+  - 已登录某个账号，再次调用`loginByJSON`重复登录相同账号，回调会是登录成功，而再次登录不同账号，则会回调提示账号登录冲突
+  - 登录之后不能再设置代理，具体参考`setProxyInfo`介绍
+
+* login_json参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|login_type |int |是 |(无) |登录类型。0:SSOURL登录（当前仅支持SSOURL登录） |
+|force_kick_other_device |bool |否 |true |是否强制登录（当有同端已经登录时，会将该端踢出登录），默认值是强制登录。注意：已经开启了同端不互踢的企业，无论force_kick_other_device值为true或false都不会将已登录的设备踢出 |
+|login_params |string |是 |(无) |登录参数，具体描述见下文 |
+
+* login_params参数说明：
+
+当`login_type`为**0**时，`login_params`的格式为：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|sso_url |string |否 |(无) |单点登录的URL地址，由接入方的服务端生成并返回给接入方客户端。选择SSOURL登录时需要填写 |
+
+* login_json详细示例： 
+```json5
+{
+    "login_type": 0,
+    "force_kick_other_device":true,
+    "login_params": {
+        "sso_url":"xxx"
+    }
+}
+```
 
 
 ### logout
@@ -1187,14 +1233,14 @@ msg内容示例：
 PreMeetingCallback 需实现以下成员函数：
 
 ### onJoinMeeting
-* 函数形式：**void onJoinMeeting(int code, string msg)**
+* 函数形式：**void onJoinMeeting(int code, string msg, string meeting_code)**
 * 说明：入会的回调。
 
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
-|msg |string |结果信息 |
-| meeting_code | string | 会议号 |
+|参数名 |参数类型 | 参数说明                             |
+|---|---|----------------------------------|
+|code |int | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+|msg |string | 结果信息                             |
+|meeting_code | string | 要加入会议的会议号                        |
 
 
 ### onActionResult
@@ -1814,7 +1860,7 @@ InMeetingCallback 需实现以下成员函数：
 | type         | int    | 离会类型，1：用户自身操作离会；2：被踢出会议；3：会议结束   |
 | code         | int    | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
 | msg          | string | 结果信息                             |
-| meeting_code | string | 会议号                              |
+| meeting_code | string | 要离开会议的会议号                        |
 
 
 ### onInviteMeeting
@@ -2116,17 +2162,17 @@ data内容示例
 
 # 6. 错误码
 
-| 名称 | 错误码   | 说明 | 回调函数 |
+| 名称 | 错误码   | 说明 | 适用的函数和通知回调 |
 |---|-------|---|---|
 | kTMSDKErrorSuccess | 0     | 成功。|				 |
 | kTMSDKErrorServerConfigFail | -1001 | 私有云SDK设置服务地址错误或获取服务配置失败     |onSDKInitializeResult()|
 | kTMSDKErrorInvalidAuthCode | -1002 | 无效AuthCode，登录参数不正确或IDaaS登录跳转存在问题   |onLogin()|
 | kTMSDKErrorLogoutInMeeting | -1003 | 正在会议中，无法退出，需先离会 |onLogout()|
-| kTMSDKErrorLoginAborted | -1004 | ~~多次调用Login时，前次登录过程取消~~(已废弃) |onLogin()|
+| kTMSDKErrorLoginAborted | -1004 | 登录过程中调用Logout |onLogin()|
 | kTMSDKErrorUnknown | -1005 | 登录场景、投屏码投屏、屏幕共享状态获取等异常抛出未知错误，出现该错误码，请与官方联系 |onLogin()、onActionResult()|
-| kTMSDKErrorUserNotAuthorized | -1006 | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
+| kTMSDKErrorUserNotAuthorized | -1006 | 未登录。在入会、投屏、显示会前界面之前没有成功登录。 |各个需要先登录才能调用的函数都适用|
 | kTMSDKErrorUserInMeeting | -1007 | 已在会议中。在入会、投屏、显示会前界面的时候，用户在会议中，需先退出。 |onJoinMeeting()、onShowScreenCastResult()、onActionResult()|
-| kTMSDKErrorInvalidParam | -1008 | 无效参数。在调用SDK接口时，包含无效参数。 |onSDKError()、onSDKInitializeResult()、onJumpUrlWithLoginStatus()、onLeaveMeeting()、onJoinMeeting()、onActionResult()、onSDKInitializeResult()|
+| kTMSDKErrorInvalidParam | -1008 | 无效参数。在调用SDK接口时，包含无效参数。 |各个接口适用|
 | kTMSDKErrorInvalidMeetingCode | -1009 | 无效会议号 |onJoinMeeting()|
 | kTMSDKErrorInvalidNickname | -1010 | 无效入会的用户名称，可能长度过长导致 |onJoinMeeting()|
 | kTMSDKErrorDuplicateInitCall | -1011 | 重复调用初始化  |onSDKInitializeResult()|
@@ -2141,7 +2187,7 @@ data内容示例
 | kTMSDKErrorMultiAccountLoginConflict| -1021 | A账户已登录，此时未调用logout()就登录B账户导致，如需切换账户，请先调用logout() | onLogin()|
 | kTMSDKErrorJoinMeetingServiceFailed| -1022 | 服务端拒绝入会，可能是频繁入会请求、输入无效会议号、会议已结束等情况，请用返回错误码和错误描述联系官方 | onJoinMeeting()|
 | kTMSDKErrorActionConflict| -1023 | 调用操作与当前状态不匹配，接收到的接口调用与正在处理的调用不能同时处理 | onActionResult()、onActiveUploadLogsResult|
-| kTMSDKErrorInvalidJsonString| -1024 | 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()|
+| kTMSDKErrorInvalidJsonString| -1024 | 无效json串，请用返回错误码和错误描述联系官方 | onJoinMeeting()、onSetProxyResult()、onLogin()|
 | kTMSDKErrorProxySetFailed| -1025 | 设置代理失败，请用返回错误码和错误描述联系官方 |onSetProxyResult()|
 | kTMSDKErrorInvalidSchemaString| -1026 | 解析schema_url失败的错误码 |OnHandleSchemaResult()、OnParseMeetingInfoUrl|
 | kTMSDKErrorScreenShareOpenNotSupportSwitchPip| -1027 | 正在屏幕共享&用户在等候室&app处于后台无法进入悬浮窗状态 |onSwitchPiPResult()|
@@ -2178,6 +2224,7 @@ data内容示例
 | kTMSDKErrorOpenQRCodeNotLogin | -1065 | 当前未登录，不能打开扫码Url |onOpenQRCodeUrlResult()|
 | kTMSDKErrorNoExtendCastDriver  | -1066 | 无线投屏安装扩展屏驱动失败，权限不足，请提权后重试 |onActionResult()|
 | kTMSDKErrorLoginWithoutRealNameVerify | -1067 | 安全验证失败，需要用户验证通过后才能登录 | onLogin()|
+| kTMSDKErrorAlreadyLoginInOtherDevice | -1068 | 已有一台XXX设备（XXX）在线 |onLogin()|
 | kTMSDKErrorAddUsersSuccess | -2002 | 通讯录回调,新增用户成功 |onAddUsersResult()|
 | kTMSDKErrorAddHostMoreThen10 | -2003 | 通讯录回调，新增用户失败，主持人超过10人 |onAddUsersResult()|
 | kTMSDKErrorAddNormalMoreThen300 | -2004 | 通讯录回调，新增用户失败，新增成员超过300人 |onAddUsersResult()|
