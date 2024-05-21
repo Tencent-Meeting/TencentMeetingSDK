@@ -2239,6 +2239,9 @@ data内容示例
 | kTMSDKErrorCosHttpStatusNotOk | -3007 | 网络连接异常 |onActiveUploadLogsResult()|
 | kTMSDKErrorHttpResponseParseError | -3008 |上传请求返回数据解析错误 |onActiveUploadLogsResult()|
 | kTMSDKErrorZipFileError | -3009 | 压缩日志文件失败 |onActiveUploadLogsResult()|
+| kTMSDKErrorUploadLogsTimeout | -3010 | 上传日志超时 |onActiveUploadLogsResult()|
+| kTMSDKErrorTimeUnitIncorrect | -3011 | 开始或结束时间戳单位错误，请确保时间单位为秒 |onActiveUploadLogsResult()|
+| kTMSDKErrorTimeIntervalExceedsLimit | -3012 | 开始时间和结束时间的最大间隔不应超过24h |onActiveUploadLogsResult()|
 | kTMSDKErrorInvalidLayoutId | -4001 | 无效的layout id |switchLayout()|
 | kTMSDKErrorSwitchLayoutDefaultInMultiMonitorMode | -4002 | 多显示器模式下禁止切换布局 |switchLayout()|
 | kTMSDKErrorSwitchLayoutDefaultLayoutNoStream | -4003 | 需要开启视频或者应用在主画面 |switchLayout()|
