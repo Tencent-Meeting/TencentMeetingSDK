@@ -64,7 +64,7 @@ Linux SDK提供的动态库文件依赖`libc.so.6`/`libstdc++.so.6`标准库文�
 
 其它工具如`CMake`等取决于你的项目管理配置。
 
-### 4.2 构建编译
+### 4.2 SDK依赖文件准备
 
 首先将SDK相关文件拷贝到项目工程下，例如`WemeetSDK`目录中。（path: `/app/WemeetSDK/`）
 
@@ -85,6 +85,21 @@ app/
    └-- libwemeetsdk.so
  └-- YourOtherFiles
 ```
+
+> **注意**：在拷贝上面SDK资源目录（Release目录）时，**必须保留所有子文件的文件属性**。<br>
+> 在终端使用`cp`命令时，可使用`-p`参数，有关`cp`的详细操作参数说明，可执行`man cp`以查阅系统安装的帮助文档。<br>
+> 如果使用`mv`命令移动目录，则默认保留所有文件属性。<br>
+> **避免在图形化界面中直接操作拖动或Ctrl-C/Ctrl-V等方式来拷贝目录**，以避免文件属性丢失等问题。
+
+检查`Release/wemeetapp`文件可执行权限：
+
+> 在终端运行命令`ls -l Release/wemeetapp`，检查输出中文件的属性部分，确保文件owner和用户组有执行权限。正常的输出类似于：
+> ``` shell
+> > ls -l wemeetapp 
+> -rwxrwxr-x 1 user group 678720 Jun  3 17:46 wemeetapp
+> ```
+
+### 4.3 构建编译
 
 下面以CMake配置为例，将SDK相关文件添加到构建依赖中。**假设你的`CMakeLists.txt`文件与`WemeetSDK`目录同级，如果相对位置有差异，请适配修改以下配置中的相对路径。**
 
@@ -108,7 +123,7 @@ target_link_libraries(${YOUR_TARGET} PRIVATE wemeetsdk wemeet_base)
 
 使用其它构建工具的可以参考上述配置内容进行配置。本质上就是告诉编译器在编译和链接时候在何处搜索头文件以及动态库。
 
-### 4.3 打包
+### 4.4 打包
 
 无论是在调试阶段还是最后发布正式包，在最终运行程序的文件夹布局中，都需要满足一个约束：`Release/`目录和`libwemeet_base.so`/`libwemeetsdk.so`文件**必须**位于同一个目录层级下。
 
@@ -116,7 +131,9 @@ target_link_libraries(${YOUR_TARGET} PRIVATE wemeetsdk wemeet_base)
 
 而对于最终打包发布，需要确保解压后或者通过安装程序安装之后，`Release/`目录位于`libwemeetsdk.so`同级路径下。
 
-### 4.4 运行
+> 同样的，对于Release目录下文件，需要确保所有文件属性都被保留，如同SDK压缩包中一样。
+
+### 4.5 运行
 
 因为SDK运行需要的资源都位于`Release`目录下，包括依赖的动态库文件，因此在运行你的app进程时，需要导出一些环境变量设置，以确保SDK子进程可以正确加载动态库和运行。
 
