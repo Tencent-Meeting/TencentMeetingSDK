@@ -30,7 +30,7 @@
 | iOS      | [接入手册](Docs/iOS/iOS接入手册.md) <br>[接入问题FAQ](Docs/iOS/接入问题FAQ.md)                                                              | 集成说明、常见问题说明      |
 | MacOS    | [接入手册 ](Docs/MacOS/MacOS接入手册.md)<br>[接入问题FAQ](Docs/MacOS/接入问题FAQ.md)                                                        | 集成说明、常见问题说明      |
 | Windows  | [接入手册](Docs/Windows/Windows接入手册.md) <br>[接入问题FAQ](Docs/Windows/接入问题FAQ.md)                                                  | 集成说明、常见问题说明      |
-| Linux | [接入手册](./Docs/Linux/Linux接入手册.md)                                                                                           | 集成说明、常见问题说明      |
+| Linux | [接入手册](./Docs/Linux/Linux接入手册.md)<br>[接入问题FAQ](./Docs/Linux/接入问题FAQ.md)                                             | 集成说明、常见问题说明      |
 | Electron | [接入手册](Docs/Electron/Electron接入手册.md) / [Linux接入手册](./Docs/Electron/Electron接入手册-Linux.md) <br>[接入问题FAQ](Docs/Electron/接入问题FAQ.md) | 集成说明、常见问题说明      |
 | QT       | [QT接入手册](Docs/Qt/QT接入手册.md)                                                                                                 | 集成说明、常见问题说明      |
 
