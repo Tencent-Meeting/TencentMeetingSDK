@@ -65,6 +65,8 @@ npm run start
 2. 新建Electron工程。
 3. 在package.json增加Electron等依赖，可参考上面的demo工程，对于LoongArch64架构需要注意版本号。
 4. 拷贝SDK依赖。对于Linux，需要将`libwemeetsdk.so`,`libwemeet_base.so`以及`Release`目录从SDK中拷贝到工程的`.node`文件同级目录下。可参考demo中`configure.sh`文件，生成的node文件被拷贝到`output/linux`下，SDK依赖也放置在该目录。
+    > 拷贝Release目录时需要注意，**必须保留其中所有文件的文件属性**，具体可参考[Linux打包说明](../Linux/Linux接入手册.md#44-打包)。
+
 5. 拷贝SDK头文件到当前目录下，以方便开发。打包时候无需携带头文件。
 6. 在package.json加配置
 ``` javascript
@@ -72,7 +74,7 @@ npm run start
     "start": "node start.js && electron ."
 },
 ```
-7. 修改node-gyp编译配置，可参考demo binding.gyp文件，其中配置了native代码编译时候的头文件和Library搜索路径。(如果直接使用demo中预编译好的node文件，可以跳过这一步)
+7. 修改node-gyp编译配置，可参考demo binding.gyp文件，其中配置了native代码编译时候的头文件和Library搜索路径。(如果直接使用demo中预编译好的node文件，可以跳过这一步，使用demo预编译的node文件需要注意第四步的目录要求)
 8. 在js中导入 wemeet_electron_sdk.node 文件
 ``` javascript
    // path_to_your_wemeet_electron_sdk.node 表示 wemeet_electron_sdk.node的路径
