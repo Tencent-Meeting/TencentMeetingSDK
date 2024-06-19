@@ -122,7 +122,6 @@
   - A:在gradle.properties中添加android.enableJetifier=true
   
     
-  
   - Q: 在Android 11以上设备中，无法使用蓝牙设备怎么处理
   
   - A: 蓝牙权限配置问题，一般是蓝牙权限声明的AndroidManifest.xml文件中，多加了maxSdkVersion的限制。需要去除该限制。
@@ -132,4 +131,8 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>  //去除android:maxSdkVersion="30"
     ```
   
-    
+  - Q: 接入SDK后编译报错，报错信息包含以下内容：
+    Resource compilation failed (Failed to compile values resource file path/to/values.xml. Cause: java.nio.file.InvalidPathException: Illegal char <:> at index 48: path/to/values.xml).
+  
+  - A: 项目中的某个attr跟SDK重复定义了，由于AGP存在bug，这里的报错信息跟attr重复定义并无关系，可以执行aapt2 compile path/to/values.xml -o compiled/，该命令的输出中将包含重复定义的attr，修改该attr名称避免重复问题即可解决。
+  
