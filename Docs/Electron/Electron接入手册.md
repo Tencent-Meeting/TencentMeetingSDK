@@ -295,6 +295,9 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 windows端：wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, app_icon, language);
 mac端：wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, language);
 说明：3.6.3以上版本新增语言设置可选项，详情参考《TencentMeetingSDK（TMSDK）接口参考文档》
+
+3.12以上版本统一接口参数，都需要传app_icon参数，但是Mac端没有app_icon定制场景建议传默认值""空串
+wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, app_icon, language);
 ```
 
 ### 2、登录
