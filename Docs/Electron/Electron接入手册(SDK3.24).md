@@ -291,7 +291,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 
 ### 3.1 TMSDK 成员函数
 
-#### 获取sdk的版本号
+#### 获取当前SDK版本号
 
 ```
 wemeet_sdk.GetSDKVersion()
@@ -697,18 +697,18 @@ wemeet_sdk.ManipulateWindow(action_param)
 #### 开关会议中字幕展示组件
 
 ```
-wemeet_sdk.SwitchCaption(open, callback)
+wemeet_sdk.SwitchCaption(open)
 ```
 
-说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》switchCaption(bool open, Callback complete)说明。
 
 #### 更新字幕相关设置选项
 
 ```
-wemeet_sdk.UpdateCaptionSettings(json_setting, callback)
+wemeet_sdk.UpdateCaptionSettings(json_setting)
 ```
 
-说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》updateCaptionSettings(string json_setting, Callback complete)说明。
 
 #### 获取当前屏幕共享信息
 
@@ -737,10 +737,10 @@ wemeet_sdk.SetLeaveCastRoomActionType(int actionType)
 #### 切换为会议的默认布局
 
 ```
-wemeet_sdk.SwitchLayout(layout_json, callback)
+wemeet_sdk.SwitchLayout(layout_json)
 ```
 
-说明：\>= 3.12.404版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12.404版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》switchLayout(string layout_json, Callback complete)说明。
 
 #### 订阅/退订会中事件
 
