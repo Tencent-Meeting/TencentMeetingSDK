@@ -296,7 +296,7 @@ const wemeet_sdk = require('path_to_your_wemeet_electron_sdk.node')
 ```
 wemeet_sdk.GetSDKVersion()
 ```
-说明：返回string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：返回string类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 初始化 SDK
 
@@ -315,7 +315,7 @@ wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, app_icon, langu
 wemeet_sdk.UninitWemeetSDK(uninit_json)
 ```
 
-说明：\>= 3.12版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 检查初始化状态
 
@@ -353,7 +353,7 @@ wemeet_sdk.OpenLogDirectory()
 wemeet_sdk.CollectLogFiles(begin_time, end_time)
 ```
 
-说明：\>= 3.12版本，begin_time、end_time为string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12版本，begin_time、end_time为string类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 上传日志
 
@@ -361,7 +361,7 @@ wemeet_sdk.CollectLogFiles(begin_time, end_time)
 wemeet_sdk.ActiveUploadLogs(int begin_time, int end_time, string description)
 ```
 
-说明：\>= 3.21.100版本，begin_time、end_time为int类型，description为string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.21.100版本，begin_time、end_time为int类型，description为string类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 设置代理
 
@@ -369,7 +369,7 @@ wemeet_sdk.ActiveUploadLogs(int begin_time, int end_time, string description)
 wemeet_sdk.SetProxyInfo(proxy_info)
 ```
 
-说明：参数proxy_info为json格式的string类型，格式可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：参数proxy_info为json格式的string类型，格式可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 获取代理
 
@@ -385,7 +385,7 @@ wemeet_sdk.GetProxyInfo()
 wemeet_sdk.HandleSchema(schema_url)
 ```
 
-说明：参数schema_url为跳转链接，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：参数schema_url为跳转链接，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 添加人员操作，接入方可以邀请人加入预定会议、或邀请人员加入会议
 
@@ -393,7 +393,7 @@ wemeet_sdk.HandleSchema(schema_url)
 wemeet_sdk.AddUsersWithParam(json_param)
 ```
 
-说明：>= 3.6.401版本，json_param为json格式字符串，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：>= 3.6.401版本，json_param为json格式字符串，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 短链入会解析
 
@@ -401,7 +401,7 @@ wemeet_sdk.AddUsersWithParam(json_param)
 wemeet_sdk.ParseMeetingInfoUrl(scheme_url)
 ```
 
-说明：\>= 3.12版本，scheme_url为string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12版本，scheme_url为string类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 ### 3.2 AccountService 成员函数
 
@@ -417,7 +417,7 @@ wemeet_sdk.Login(sso_url);
 wemeet_sdk.LoginByJSON(login_json)
 ```
 
-说明：\>= 3.24.100版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.24.100版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 登出
 
@@ -461,7 +461,7 @@ wemeet_sdk.JoinMeeting(meeting_code, user_display_name, password, invite_url, mi
 wemeet_sdk.JoinMeetingByJSON(meeting_josn)
 ```
 
-说明：参数meeting_josn为json格式的string类型，格式可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：参数meeting_josn为json格式的string类型，格式可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 快速会议
 
@@ -477,7 +477,7 @@ wemeet_sdk.QuickMeeting()
 wemeet_sdk.QuickMeetingByJSON(json_param)
 ```
 
-说明：>= 3.6.300版本，参数json_param为json格式的string类型，格式可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：>= 3.6.300版本，参数json_param为json格式的string类型，格式可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 显示SDK自带的会前界面（显示home界面）
 
@@ -503,7 +503,7 @@ wemeet_sdk.ShowHistoricalMeetingView();
 wemeet_sdk.ShowMeetingDetailView(meeting_id, current_sub_meeting_id)
 ```
 
-说明：>= 3.6.200版本，重载ShowMeetingDetailView接口，入参可参考统《TencentMeetingSDK（TMSDK）接口参考文档》
+说明：>= 3.6.200版本，重载ShowMeetingDetailView接口，入参可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》
 
 ```
 wemeet_sdk.ShowMeetingDetailView(meeting_id, current_sub_meeting_id, start_time, is_history)
@@ -523,7 +523,7 @@ wemeet_sdk.ShowJoinMeetingView()
 wemeet_sdk.ShowScheduleMeetingView(meeting_type)
 ```
 
-说明：参数meeting_type为会议类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：参数meeting_type为会议类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 显示上传日志界面
 
@@ -555,7 +555,7 @@ wemeet_sdk.ShowScreenCastView()
 wemeet_sdk.DecodeUltrasoundScreenCastCode()
 ```
 
-说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12.3版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 无线投屏
 
@@ -579,7 +579,7 @@ wemeet_sdk.QueryMeetingInfo(meeting_info)
 wemeet_sdk.QueryLocalRecordInfo(meeting_id, period_id)
 ```
 
-说明：\>= 3.12版本，meeting_id、period_id为int类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12版本，meeting_id、period_id为int类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 本地录制文件进行转码
 
@@ -587,7 +587,7 @@ wemeet_sdk.QueryLocalRecordInfo(meeting_id, period_id)
 wemeet_sdk.Transcode(path_id)
 ```
 
-说明：\>= 3.12版本，path_id为int类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12版本，path_id为int类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 打开会议本地录制文件所在文件夹
 
@@ -595,7 +595,7 @@ wemeet_sdk.Transcode(path_id)
 wemeet_sdk.ShowRecordFolder(path_id)
 ```
 
-说明：\>= 3.12版本，path_id为int类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12版本，path_id为int类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### SDK预定会议界面中，开启定制化通讯录的回调
 
@@ -603,7 +603,7 @@ wemeet_sdk.ShowRecordFolder(path_id)
 wemeet_sdk.EnableAddressBookCallback(enable, show)
 ```
 
-说明：\>= 3.6.401版本，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.6.401版本，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 设置是否显示SDK响铃邀请界面
 
@@ -611,7 +611,7 @@ wemeet_sdk.EnableAddressBookCallback(enable, show)
 wemeet_sdk.EnableRingInvitationView(enable)
 ```
 
-说明：\>= 3.12.4版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12.4版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 处理响铃邀请
 
@@ -619,7 +619,7 @@ wemeet_sdk.EnableRingInvitationView(enable)
 wemeet_sdk.HandleRingInvitation(accept, invite_id, callback)
 ```
 
-说明：\>= 3.12.4版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12.4版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 ### 3.4 InMeetingService 成员函数
 
@@ -629,7 +629,7 @@ wemeet_sdk.HandleRingInvitation(accept, invite_id, callback)
 wemeet_sdk.LeaveMeeting(leave_meeting_type)
 ```
 
-说明：可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 邀请回调开关
 
@@ -637,7 +637,7 @@ wemeet_sdk.LeaveMeeting(leave_meeting_type)
 wemeet_sdk.SetNeedShareCallback(invite_on, invite_show)
 ```
 
-说明：可参考统《TencentMeetingSDK（TMSDK）接口参考文档》enableInviteCallback说明。
+说明：可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》enableInviteCallback说明。
 
 #### 会议信息回调开关
 
@@ -645,7 +645,7 @@ wemeet_sdk.SetNeedShareCallback(invite_on, invite_show)
 wemeet_sdk.SetNeedMeetingInfoCallback(info_on, info_show)
 ```
 
-说明：可参考统《TencentMeetingSDK（TMSDK）接口参考文档》enableMeetingInfoCallback说明。
+说明：可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》enableMeetingInfoCallback说明。
 
 #### 设置是否使用添加成员的回调
 
@@ -653,7 +653,7 @@ wemeet_sdk.SetNeedMeetingInfoCallback(info_on, info_show)
 wemeet_sdk.EnableInviteUsersCallback(enable, show)
 ```
 
-说明：\>= 3.6.401版本，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.6.401版本，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 会中窗口置顶
 
@@ -661,14 +661,14 @@ wemeet_sdk.EnableInviteUsersCallback(enable, show)
 wemeet_sdk.BringInMeetingViewTop()
 ```
 
-说明：桌面端：>= 3.0.102版本，如果当前没有会中窗口，则不做任何操作。没有回调。可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：桌面端：>= 3.0.102版本，如果当前没有会中窗口，则不做任何操作。没有回调。可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 获取当前会议状态信息
 
 ```
 wemeet_sdk.GetCurrentMeetingInfo()
 ```
-说明：>= 3.6.300版本，返回string类型，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：>= 3.6.300版本，返回string类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 设置是否开启自定义组织架构信息
 
@@ -676,7 +676,7 @@ wemeet_sdk.GetCurrentMeetingInfo()
 wemeet_sdk.EnableCustomOrgInfo(enable)
 ```
 
-说明：\>= 3.6.401版本，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.6.401版本，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 对相关成员设置自定义的组织架构信息
 
@@ -684,7 +684,7 @@ wemeet_sdk.EnableCustomOrgInfo(enable)
 wemeet_sdk.SetCustomOrgInfo(json_param)
 ```
 
-说明：\>= 3.6.401版本，json_param为json格式字符串，可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.6.401版本，json_param为json格式字符串，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 操作会中窗口，支持【全屏】和【退出全屏】
 
@@ -692,7 +692,7 @@ wemeet_sdk.SetCustomOrgInfo(json_param)
 wemeet_sdk.ManipulateWindow(action_param)
 ```
 
-说明：>= 3.12.201版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：>= 3.12.201版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 开关会议中字幕展示组件
 
@@ -700,7 +700,7 @@ wemeet_sdk.ManipulateWindow(action_param)
 wemeet_sdk.SwitchCaption(open)
 ```
 
-说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》switchCaption(bool open, Callback complete)说明。
+说明：\>= 3.12.3版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》switchCaption(bool open, Callback complete)说明。
 
 #### 更新字幕相关设置选项
 
@@ -708,7 +708,7 @@ wemeet_sdk.SwitchCaption(open)
 wemeet_sdk.UpdateCaptionSettings(json_setting)
 ```
 
-说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》updateCaptionSettings(string json_setting, Callback complete)说明。
+说明：\>= 3.12.3版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》updateCaptionSettings(string json_setting, Callback complete)说明。
 
 #### 获取当前屏幕共享信息
 
@@ -716,7 +716,7 @@ wemeet_sdk.UpdateCaptionSettings(json_setting)
 wemeet_sdk.GetScreenShareInfo()
 ```
 
-说明：\>= 3.12.3版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12.3版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 获取会中窗口信息
 
@@ -724,7 +724,7 @@ wemeet_sdk.GetScreenShareInfo()
 wemeet_sdk.GetMeetingWindowInfo()
 ```
 
-说明：\>= 3.12版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 用来设置共享屏幕入会后，结束共享时是否展示"结束共享"弹窗
 
@@ -732,7 +732,7 @@ wemeet_sdk.GetMeetingWindowInfo()
 wemeet_sdk.SetLeaveCastRoomActionType(int actionType)
 ```
 
-说明：\>= 3.12.403版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12.403版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 切换为会议的默认布局
 
@@ -740,7 +740,7 @@ wemeet_sdk.SetLeaveCastRoomActionType(int actionType)
 wemeet_sdk.SwitchLayout(layout_json)
 ```
 
-说明：\>= 3.12.404版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》switchLayout(string layout_json, Callback complete)说明。
+说明：\>= 3.12.404版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》switchLayout(string layout_json, Callback complete)说明。
 
 #### 订阅/退订会中事件
 
@@ -748,7 +748,7 @@ wemeet_sdk.SwitchLayout(layout_json)
 wemeet_sdk.SubscribeInMeetingActionEvent(action_type, subscribe, subscription_json)
 ```
 
-说明：\>= 3.12.404版本, 可参考统《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.12.404版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 添加js回调
 
