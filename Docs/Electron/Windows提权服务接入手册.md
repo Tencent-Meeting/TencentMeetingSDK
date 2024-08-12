@@ -33,9 +33,9 @@
 
 #### 1.2.1 electron-builder集成nsis的脚本
 
-![1.png](res/1.2.png)
+![1.png](image/1.2.png)
 集成脚本需要再package.json中指定需要引入的文件
-![1.png](res/1.3.png)
+![1.png](image/1.3.png)
 
 #### 1.2.2 service_setup.nsh说明
 
@@ -115,18 +115,18 @@
 注意:
 SERVICE_DEFAULT_INSTALL_DIR 在define_service.nsh中指定，集成方可以指定和修改对应的目录，其中COMPANY_NAME可以在package.json中指定。
 
-![10.png](res/1.4.png)
+![10.png](image/1.4.png)
 
 ## 2. 集成提权服务验证
 
 通过上面的接入指南接入TMSDKUpdateService.exe, 执行安装包, 安装到SERVICE_DEFAULT_INSTALL_DIR目录之后，可通过启动会议sdk进行验证;
 1.检验扩展屏驱动是否能正常安装:(未装扩展屏驱动截图)
-   ![10.png](res/1.5.png)
+   ![10.png](image/1.5.png)
 2.启动会议sdk初始化登录之后驱动安装成功，并显示扩展屏投屏入
-   ![10.png](res/1.6.png)
-   ![10.png](res/1.7.png)
+   ![10.png](image/1.6.png)
+   ![10.png](image/1.7.png)
 3.任务管理器服务运行
-   ![10.png](res/1.8.png)
+   ![10.png](image/1.8.png)
 
 ## 3. 原生接入
 
