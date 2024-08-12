@@ -258,13 +258,14 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### uninitialize
 * 函数形式：**void uninitialize(string param)**
-* 可用版本：>= 3.12.100
-* 可用平台：`Windows`/`Android`/`Linux`
+* 可用版本与平台：
+  * 版本 >= 3.12.100: `Windows` / `Android` / `Linux`
+  * 版本 >= 3.24.200: `Mac` / `iOS`   
 * 函数说明：
   * 反初始化函数用来停止SDK功能并释放SDK资源，让SDK回到初始化之前的状态。
-  * 反初始化调用的结果，通过`SDKCallback.onSDKUninitialize`回调来获取。
+  * 反初始化调用的结果，通过`SDKCallback.onSDKUninitializeResult`回调来获取。
   * 反初始化成功后，之前初始化函数传入的参数都会被清除，设置的回调代理都会无效。
-  * 反初始化成功后，方可再次调用初始化函数，反初始化过程中调用初始化函数会回调初始化错误。
+  * 反初始化成功后，方可再次调用初始化函数，反初始化过程中调用初始化函数会回调初始化失败。
   * 如果正在会议中，将根据反初始化函数参数中force值决定是否强制反初始化：
     - 如果参数force==true：先强制退会再反初始化，并先回调`InMeetingCallback.onLeaveMeeting`
     - 如果参数force==false：不强制退会，则回调反初始化失败
@@ -272,8 +273,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 * 调用限制：
   * 只有在SDK初始化成功之后，才可以调用反初始化函数。
-  * 如果在SDK初始化过程中，即初始化成功回调之前，调用反初始化函数，则会收到`SDKCallback.onSDKUninitialize`失败的回调。
-  * 如果没有初始化或者已经反初始化成功，再次调用反初始化函数将不做任何事情，无任何回调响应。
+  * 如果在SDK初始化过程中，即初始化成功回调之前，调用反初始化函数，则反初始化调用失败。
+  * 如果目前正在登录中、入会中和离会中这些中间状态，则反初始化调用失败
+  * 如果没有初始化或者已经反初始化成功，再次调用反初始化函数将不做任何事情，也无任何回调响应。
 
 * 返回值：无
 * 参数说明：参数为`json`字符串，当前支持的配置有：
@@ -1306,6 +1308,7 @@ PreMeetingCallback 需实现以下成员函数：
   * 用户在收到响铃邀请时的回调，可用作接入方定制响铃邀请界面的通知。
   * 接入方响应回调后，可展示自定义响铃邀请界面，在处理响铃邀请要通知到SDK时，可调用`PreMeetingService.handleRingInvitation`函数来实现。
 * 参数说明： 
+
 | 参数名       | 参数类型   | 参数说明 |
 |-----------|--------|------------|
 | ring_state | int    | 当前响铃状态 |
