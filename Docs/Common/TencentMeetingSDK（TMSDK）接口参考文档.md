@@ -8,7 +8,7 @@
     + [getSDKVersion](#getsdkversion)
     + [setCallback](#setcallback)
     + [initialize](#initialize)
-    + [uninitialize(beta)](#uninitialize)
+    + [uninitialize](#uninitialize)
     + [isInitialized](#isinitialized)
     + [refreshSDKToken](#refreshsdktoken)
     + [getCurrentSDKToken](#getcurrentsdktoken)
@@ -26,14 +26,14 @@
   * [2.2 SDKCallback 回调代理](#22-sdkcallback-回调代理)
     + [onSDKInitializeResult](#onsdkinitializeresult)
     + [onSDKUninitializeResult](#onsdkuninitializeresult)
-    + [onShowLogsResult](#onshowlogsresult)
     + [onSDKError](#onsdkerror)
     + [onResetSDKState](#onresetsdkstate)
-    + [onSetProxyResult](#onsetproxyresult)
-    + [onAddUsersResult](#onaddusersresult)
-    + [OnHandleSchemaResult](#onhandleschemaresult)
-    + [onParseMeetingInfoUrl](#onparsemeetinginfourl)
+    + [onShowLogsResult](#onshowlogsresult)
     + [onActiveUploadLogsResult](#onactiveuploadlogsresult)
+    + [onSetProxyResult](#onsetproxyresult)
+    + [onHandleSchemaResult](#onhandleschemaresult)
+    + [onAddUsersResult](#onaddusersresult)
+    + [onParseMeetingInfoUrl](#onparsemeetinginfourl)
 - [3. AccountService 说明](#3-accountservice-说明)
   * [3.1 AccountService 成员函数](#31-accountservice-成员函数)
     + [setCallback](#setcallback-1)
@@ -56,10 +56,10 @@
     + [quickMeetingByJSON](#quickmeetingbyjson)
     + [showPreMeetingView](#showpremeetingview)
     + [showHistoricalMeetingView](#showhistoricalmeetingview)
-    + [showUploadLogsView](#showuploadlogsview)
     + [showMeetingDetailView](#showmeetingdetailview)
     + [showJoinMeetingView](#showjoinmeetingview)
     + [showScheduleMeetingView](#showschedulemeetingview)
+    + [showUploadLogsView](#showuploadlogsview)
     + [showMeetingSettingView](#showmeetingsettingview)
     + [showScreenCastView](#showscreencastview)
     + [decodeUltrasoundScreenCastCode](#decodeultrasoundscreencastcode)
@@ -523,47 +523,6 @@ SDKCallback 需实现以下成员函数：
 | msg    | string   | 反初始化结果字符串描述                      |
 
 
-### onShowLogsResult
-* 函数形式：**void onShowLogsResult(int code, string msg)**
-* 可用版本：>= 2.18.2
-* 说明：调用`showLogs`的结果回调
-
-|参数名 |参数类型 | 参数说明 |
-|---|---|---|
-| code | int | 打开日志文件夹结果码 |
-| msg | string | 打开日志文件夹结果信息 |
-
-### onHandleSchemaResult
-* 函数形式：**void onHandleSchemaResult(int code, string msg)**
-* 可用版本：>= 3.6.100
-* 说明：调用`TMSDK.handleSchema`函数的回调
-
-| 参数名  | 参数类型   | 参数说明        |
-|------|--------|-------------|
-| code | int    | 错误码         |
-| msg  | string | 解析参数schema_url结果回调 |
-
-### onActiveUploadLogsResult
-* 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
-* 可用版本：>= 3.21.100
-* 说明：调用`TMSDK.activeUploadLogs`函数的回调
-
-| 参数名  | 参数类型   | 参数说明        |
-|------|--------|-------------|
-| code | int    | 错误码         |
-| msg  | string | json格式的错误信息 |
-
-* msg详细示例： 
-```json5
-{
-    "unique_id":"2023.10.23-W999999999-4ae4dd4c3a5c6ae4b2e45844755f0d02-meeting",
-    "description": "upload log success"
-}
-```
-
-其中`unique_id`是日志上传结果返回的唯一索引，用于后台进行唯一检索； `description`用来描述上传结果成功或者失败原因
-
-
 ### onSDKError
 * 函数形式：**void onSDKError(int code, string msg)**
 
@@ -592,6 +551,38 @@ SDKCallback 需实现以下成员函数：
 | msg | string | 错误信息 |
 
 
+### onShowLogsResult
+* 函数形式：**void onShowLogsResult(int code, string msg)**
+* 可用版本：>= 2.18.2
+* 说明：调用`showLogs`的结果回调
+
+|参数名 |参数类型 | 参数说明 |
+|---|---|---|
+| code | int | 打开日志文件夹结果码 |
+| msg | string | 打开日志文件夹结果信息 |
+
+
+### onActiveUploadLogsResult
+* 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
+* 可用版本：>= 3.21.100
+* 说明：调用`TMSDK.activeUploadLogs`函数的回调
+
+| 参数名  | 参数类型   | 参数说明        |
+|------|--------|-------------|
+| code | int    | 错误码         |
+| msg  | string | json格式的错误信息 |
+
+* msg详细示例：
+```json5
+{
+    "unique_id":"2023.10.23-W999999999-4ae4dd4c3a5c6ae4b2e45844755f0d02-meeting",
+    "description": "upload log success"
+}
+```
+
+其中`unique_id`是日志上传结果返回的唯一索引，用于后台进行唯一检索； `description`用来描述上传结果成功或者失败原因
+
+
 ### onSetProxyResult
 * 函数形式：**void onSetProxyResult(int code, string msg)**
 * 可用版本：>= 3.0.106
@@ -602,6 +593,17 @@ SDKCallback 需实现以下成员函数：
 |---|---|---|
 | code | int | 错误码 |
 | msg | string | 错误信息 |
+
+
+### onHandleSchemaResult
+* 函数形式：**void onHandleSchemaResult(int code, string msg)**
+* 可用版本：>= 3.6.100
+* 说明：调用`TMSDK.handleSchema`函数的回调
+
+| 参数名  | 参数类型   | 参数说明        |
+|------|--------|-------------|
+| code | int    | 错误码         |
+| msg  | string | 解析参数schema_url结果回调 |
 
 
 ### onAddUsersResult
