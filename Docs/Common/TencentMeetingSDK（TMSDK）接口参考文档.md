@@ -8,7 +8,7 @@
     + [getSDKVersion](#getsdkversion)
     + [setCallback](#setcallback)
     + [initialize](#initialize)
-    + [uninitialize(beta)](#uninitialize)
+    + [uninitialize](#uninitialize)
     + [isInitialized](#isinitialized)
     + [refreshSDKToken](#refreshsdktoken)
     + [getCurrentSDKToken](#getcurrentsdktoken)
@@ -26,14 +26,14 @@
   * [2.2 SDKCallback 回调代理](#22-sdkcallback-回调代理)
     + [onSDKInitializeResult](#onsdkinitializeresult)
     + [onSDKUninitializeResult](#onsdkuninitializeresult)
-    + [onShowLogsResult](#onshowlogsresult)
     + [onSDKError](#onsdkerror)
     + [onResetSDKState](#onresetsdkstate)
-    + [onSetProxyResult](#onsetproxyresult)
-    + [onAddUsersResult](#onaddusersresult)
-    + [OnHandleSchemaResult](#onhandleschemaresult)
-    + [onParseMeetingInfoUrl](#onparsemeetinginfourl)
+    + [onShowLogsResult](#onshowlogsresult)
     + [onActiveUploadLogsResult](#onactiveuploadlogsresult)
+    + [onSetProxyResult](#onsetproxyresult)
+    + [onHandleSchemaResult](#onhandleschemaresult)
+    + [onAddUsersResult](#onaddusersresult)
+    + [onParseMeetingInfoUrl](#onparsemeetinginfourl)
 - [3. AccountService 说明](#3-accountservice-说明)
   * [3.1 AccountService 成员函数](#31-accountservice-成员函数)
     + [setCallback](#setcallback-1)
@@ -56,10 +56,10 @@
     + [quickMeetingByJSON](#quickmeetingbyjson)
     + [showPreMeetingView](#showpremeetingview)
     + [showHistoricalMeetingView](#showhistoricalmeetingview)
-    + [showUploadLogsView](#showuploadlogsview)
     + [showMeetingDetailView](#showmeetingdetailview)
     + [showJoinMeetingView](#showjoinmeetingview)
     + [showScheduleMeetingView](#showschedulemeetingview)
+    + [showUploadLogsView](#showuploadlogsview)
     + [showMeetingSettingView](#showmeetingsettingview)
     + [showScreenCastView](#showscreencastview)
     + [decodeUltrasoundScreenCastCode](#decodeultrasoundscreencastcode)
@@ -155,7 +155,8 @@
 | 2023-02-01 | 3.21.200 | 接口调整：leaveMeeting 参数调整，废弃 end_meeting 参数，改为 leave_meeting_type 参数，支持多端离会|
 | 2023-02-02 | 3.21.200 | 新增接口：新增设置SDK回调代理(TMSDK.setCallback)接口|
 | 2023-05-07 | 3.21.303 | 新增错误码：[-1067]--安全验证失败，需要用户验证通过后才能登录 |
-| 2024-05-08 | 3.24.100 | 新增接口：登录(loginByJSON)接口
+| 2024-05-08 | 3.24.100 | 新增接口：登录(loginByJSON)接口 |
+| 2024-08-19 | 3.24.200 | Mac和iOS端支持反初始化（uninitialize）接口 |
 
 
 # 1. SDK使用说明
@@ -258,13 +259,14 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### uninitialize
 * 函数形式：**void uninitialize(string param)**
-* 可用版本：>= 3.12.100
-* 可用平台：`Windows`/`Android`/`Linux`
+* 可用版本与平台：
+  * 版本 >= 3.12.100: `Windows` / `Android` / `Linux`
+  * 版本 >= 3.24.200: `Mac` / `iOS`   
 * 函数说明：
   * 反初始化函数用来停止SDK功能并释放SDK资源，让SDK回到初始化之前的状态。
-  * 反初始化调用的结果，通过`SDKCallback.onSDKUninitialize`回调来获取。
+  * 反初始化调用的结果，通过`SDKCallback.onSDKUninitializeResult`回调来获取。
   * 反初始化成功后，之前初始化函数传入的参数都会被清除，设置的回调代理都会无效。
-  * 反初始化成功后，方可再次调用初始化函数，反初始化过程中调用初始化函数会回调初始化错误。
+  * 反初始化成功后，方可再次调用初始化函数，反初始化过程中调用初始化函数会回调初始化失败。
   * 如果正在会议中，将根据反初始化函数参数中force值决定是否强制反初始化：
     - 如果参数force==true：先强制退会再反初始化，并先回调`InMeetingCallback.onLeaveMeeting`
     - 如果参数force==false：不强制退会，则回调反初始化失败
@@ -272,8 +274,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 * 调用限制：
   * 只有在SDK初始化成功之后，才可以调用反初始化函数。
-  * 如果在SDK初始化过程中，即初始化成功回调之前，调用反初始化函数，则会收到`SDKCallback.onSDKUninitialize`失败的回调。
-  * 如果没有初始化或者已经反初始化成功，再次调用反初始化函数将不做任何事情，无任何回调响应。
+  * 如果在SDK初始化过程中，即初始化成功回调之前，调用反初始化函数，则反初始化调用失败。
+  * 如果目前正在登录中、入会中和离会中这些中间状态，则反初始化调用失败
+  * 如果没有初始化或者已经反初始化成功，再次调用反初始化函数将不做任何事情，也无任何回调响应。
 
 * 返回值：无
 * 参数说明：参数为`json`字符串，当前支持的配置有：
@@ -521,47 +524,6 @@ SDKCallback 需实现以下成员函数：
 | msg    | string   | 反初始化结果字符串描述                      |
 
 
-### onShowLogsResult
-* 函数形式：**void onShowLogsResult(int code, string msg)**
-* 可用版本：>= 2.18.2
-* 说明：调用`showLogs`的结果回调
-
-|参数名 |参数类型 | 参数说明 |
-|---|---|---|
-| code | int | 打开日志文件夹结果码 |
-| msg | string | 打开日志文件夹结果信息 |
-
-### onHandleSchemaResult
-* 函数形式：**void onHandleSchemaResult(int code, string msg)**
-* 可用版本：>= 3.6.100
-* 说明：调用`TMSDK.handleSchema`函数的回调
-
-| 参数名  | 参数类型   | 参数说明        |
-|------|--------|-------------|
-| code | int    | 错误码         |
-| msg  | string | 解析参数schema_url结果回调 |
-
-### onActiveUploadLogsResult
-* 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
-* 可用版本：>= 3.21.100
-* 说明：调用`TMSDK.activeUploadLogs`函数的回调
-
-| 参数名  | 参数类型   | 参数说明        |
-|------|--------|-------------|
-| code | int    | 错误码         |
-| msg  | string | json格式的错误信息 |
-
-* msg详细示例： 
-```json5
-{
-    "unique_id":"2023.10.23-W999999999-4ae4dd4c3a5c6ae4b2e45844755f0d02-meeting",
-    "description": "upload log success"
-}
-```
-
-其中`unique_id`是日志上传结果返回的唯一索引，用于后台进行唯一检索； `description`用来描述上传结果成功或者失败原因
-
-
 ### onSDKError
 * 函数形式：**void onSDKError(int code, string msg)**
 
@@ -590,6 +552,38 @@ SDKCallback 需实现以下成员函数：
 | msg | string | 错误信息 |
 
 
+### onShowLogsResult
+* 函数形式：**void onShowLogsResult(int code, string msg)**
+* 可用版本：>= 2.18.2
+* 说明：调用`showLogs`的结果回调
+
+|参数名 |参数类型 | 参数说明 |
+|---|---|---|
+| code | int | 打开日志文件夹结果码 |
+| msg | string | 打开日志文件夹结果信息 |
+
+
+### onActiveUploadLogsResult
+* 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
+* 可用版本：>= 3.21.100
+* 说明：调用`TMSDK.activeUploadLogs`函数的回调
+
+| 参数名  | 参数类型   | 参数说明        |
+|------|--------|-------------|
+| code | int    | 错误码         |
+| msg  | string | json格式的错误信息 |
+
+* msg详细示例：
+```json5
+{
+    "unique_id":"2023.10.23-W999999999-4ae4dd4c3a5c6ae4b2e45844755f0d02-meeting",
+    "description": "upload log success"
+}
+```
+
+其中`unique_id`是日志上传结果返回的唯一索引，用于后台进行唯一检索； `description`用来描述上传结果成功或者失败原因
+
+
 ### onSetProxyResult
 * 函数形式：**void onSetProxyResult(int code, string msg)**
 * 可用版本：>= 3.0.106
@@ -600,6 +594,17 @@ SDKCallback 需实现以下成员函数：
 |---|---|---|
 | code | int | 错误码 |
 | msg | string | 错误信息 |
+
+
+### onHandleSchemaResult
+* 函数形式：**void onHandleSchemaResult(int code, string msg)**
+* 可用版本：>= 3.6.100
+* 说明：调用`TMSDK.handleSchema`函数的回调
+
+| 参数名  | 参数类型   | 参数说明        |
+|------|--------|-------------|
+| code | int    | 错误码         |
+| msg  | string | 解析参数schema_url结果回调 |
 
 
 ### onAddUsersResult
@@ -1306,6 +1311,7 @@ PreMeetingCallback 需实现以下成员函数：
   * 用户在收到响铃邀请时的回调，可用作接入方定制响铃邀请界面的通知。
   * 接入方响应回调后，可展示自定义响铃邀请界面，在处理响铃邀请要通知到SDK时，可调用`PreMeetingService.handleRingInvitation`函数来实现。
 * 参数说明： 
+
 | 参数名       | 参数类型   | 参数说明 |
 |-----------|--------|------------|
 | ring_state | int    | 当前响铃状态 |

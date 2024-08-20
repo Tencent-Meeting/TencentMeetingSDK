@@ -23,16 +23,16 @@
 # 接入说明文档
 接入方的客户端需要了解的说明文档，请结合SDK Demo程序代码一起参考：
 
-| 终端       | 相关文档                                                                                                                        | 说明               |
-|----------|-----------------------------------------------------------------------------------------------------------------------------|------------------|
-| All      | [废弃接口列表](./Docs/Common/DeprecatedList.md)<br>[TencentMeetingSDK接口参考文档](Docs/Common/TencentMeetingSDK（TMSDK）接口参考文档.md)   | 接口参考的统一说明，各端都涉及到 |
-| Android  | [接入手册](Docs/Android/Android接入手册.md) <br>[接入问题FAQ](Docs/Android/接入问题FAQ.md)                                                  | 集成说明、常见问题说明      |
-| iOS      | [接入手册](Docs/iOS/iOS接入手册.md) <br>[接入问题FAQ](Docs/iOS/接入问题FAQ.md)                                                              | 集成说明、常见问题说明      |
-| MacOS    | [接入手册 ](Docs/MacOS/MacOS接入手册.md)<br>[接入问题FAQ](Docs/MacOS/接入问题FAQ.md)                                                        | 集成说明、常见问题说明      |
-| Windows  | [接入手册](Docs/Windows/Windows接入手册.md) <br>[接入问题FAQ](Docs/Windows/接入问题FAQ.md)                                                  | 集成说明、常见问题说明      |
-| Linux | [接入手册](./Docs/Linux/Linux接入手册.md)<br>[接入问题FAQ](./Docs/Linux/接入问题FAQ.md)                                             | 集成说明、常见问题说明      |
+| 终端       | 相关文档                                                                                                                               | 说明               |
+|----------|------------------------------------------------------------------------------------------------------------------------------------|------------------|
+| All      | [废弃接口列表](./Docs/Common/DeprecatedList.md)<br>[TencentMeetingSDK接口参考文档](Docs/Common/TencentMeetingSDK（TMSDK）接口参考文档.md)              | 接口参考的统一说明，各端都涉及到 |
+| Android  | [接入手册](Docs/Android/Android接入手册.md) <br>[接入问题FAQ](Docs/Android/接入问题FAQ.md)                                                         | 集成说明、常见问题说明      |
+| iOS      | [接入手册](Docs/iOS/iOS接入手册.md) <br>[接入问题FAQ](Docs/iOS/接入问题FAQ.md)                                                                     | 集成说明、常见问题说明      |
+| MacOS    | [接入手册 ](Docs/MacOS/MacOS接入手册.md)<br>[接入问题FAQ](Docs/MacOS/接入问题FAQ.md)                                                               | 集成说明、常见问题说明      |
+| Windows  | [接入手册](Docs/Windows/Windows接入手册.md) <br>[接入问题FAQ](Docs/Windows/接入问题FAQ.md) <br>[Windows提权服务接入手册](Docs/Electron/Windows提权服务接入手册.md) | 集成说明、常见问题说明      |
+| Linux    | [接入手册](./Docs/Linux/Linux接入手册.md)<br>[接入问题FAQ](./Docs/Linux/接入问题FAQ.md)                                                            | 集成说明、常见问题说明      |
 | Electron | [接入手册](Docs/Electron/Electron接入手册.md) / [Linux接入手册](./Docs/Electron/Electron接入手册-Linux.md) <br>[接入问题FAQ](Docs/Electron/接入问题FAQ.md) | 集成说明、常见问题说明      |
-| QT       | [QT接入手册](Docs/Qt/QT接入手册.md)                                                                                                 | 集成说明、常见问题说明      |
+| QT       | [QT接入手册](Docs/Qt/QT接入手册.md)                                                                                                        | 集成说明、常见问题说明      |
 
 # 腾讯会议SDK隐私政策
 [腾讯会议SDK个人信息保护规则](https://privacy.qq.com/document/preview/67043f4d1b5848e49251e5e228511eba)
