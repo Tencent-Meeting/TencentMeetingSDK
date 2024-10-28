@@ -1939,7 +1939,7 @@ layout_id枚举值如下:
 
 
 ### showScreenShareView
-* 函数形式：**void ShowScreenShareView(Callback complete, void* user_data)**
+* 函数形式：**void ShowScreenShareView(Callback complete, string user_data)**
 * 可用版本：>= 3.24.300
 * 可用平台：桌面端（win, mac）
 * 函数说明：
@@ -1952,7 +1952,7 @@ layout_id枚举值如下:
 |参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明               |
 |---|---|------|-------|--------------------|
 |complete |Callback | 否    | 空     | 操作结束回调block，可以为空   |
-|user_data |void | 否    | 无     | 用户自定义数据，可以为空 |
+|user_data |string | 否    | 无     | 用户自定义数据，可以为空 |
 
 * 回调说明：
 
