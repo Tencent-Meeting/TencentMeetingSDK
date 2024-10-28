@@ -98,6 +98,7 @@
     + [setLeaveCastRoomActionType](#setLeaveCastRoomActionType)
     + [switchLayout](#switchLayout)
     + [subscribeInMeetingActionEvent](#subscribeInMeetingActionEvent)
+    + [configPipButtonAction](#configpipbuttonaction)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -157,7 +158,7 @@
 | 2023-05-07 | 3.21.303 | 新增错误码：[-1067]--安全验证失败，需要用户验证通过后才能登录 |
 | 2024-05-08 | 3.24.100 | 新增接口：登录(loginByJSON)接口 |
 | 2024-08-19 | 3.24.200 | Mac和iOS端支持反初始化（uninitialize）接口 |
-| 2024-10-24 | 3.24.300 | 新增错误码：[-1070]--重复调用初始化(初始化已完成) |
+| 2024-10-24 | 3.24.300 | 新增错误码：[-1070]--重复调用初始化(初始化已完成)；移动端新增接口：configPipButtonAction(设置关闭悬浮窗时的行为)；回调InMeetingCallback.onPipModeChanged的data字段新增参数back_to_meeting |
 
 
 # 1. SDK使用说明
@@ -1853,6 +1854,36 @@ layout_id枚举值如下:
   ```
 
 
+### configPipButtonAction
+* 函数形式：**void configPipButtonAction(int pipActionType, string data, Callback complete)**
+* 可用版本：>= 3.24.300（**仅支持移动端**）
+* 函数说明：
+  * 这个接口允许用户设置关闭悬浮窗时的行为，并在相应的回调函数 **InMeetingCallback.onPipModeChanged**参数中返回设置
+  * 调用时机：初始化后可调用。
+* 参数说明：
+  
+| 参数名             | 参数类型   | 参数必填 | 参数默认值 | 参数说明 |
+|-------------------|----------|----|------|----------------------------------------|
+| pipActionType     | int      | 是 | 无   | 表示何种行为事件，见后文枚举值说明 |
+| data              | string   | 是 | 无   | json字符串，按钮对应行为的设置 |
+| complete          | Callback | 是 | 无   | 调用接口的结果(成功与否) |
+
+当前支持的订阅/退订的pipActionType如下，未来会扩展：
+
+| pipActionType | 说明               |
+|---------------|:----------------- |
+| 1             | 点击关闭悬浮窗按钮   |
+
+
+* data参数格式示例：
+```json5
+// pipActionType = 1 点击关闭悬浮窗按钮
+{ 
+  "back_to_meeting"： true // 点击关闭悬浮窗是否回到会中页面
+}
+```
+
+
 ## 5.2 InMeetingCallback 回调代理
 
 InMeetingCallback 需实现以下成员函数：
@@ -1955,6 +1986,7 @@ invite_info内容
 * 说明：
   * 进入悬浮窗或者退出悬浮窗状态时回调。
   * iOS14.0以上才支持全局小窗
+  * 3.24.300新增参数：back_to_meeting 悬浮窗消失时是否回到会中，默认true
 * 返回值：无
 * 参数说明：
 
@@ -1965,7 +1997,8 @@ invite_info内容
 data内容示例
 ```json5
 {
-    "is_in_pip_mode": true // 是否处于悬浮窗状态
+    "is_in_pip_mode": true, // 是否处于悬浮窗状态
+    "back_to_meeting": true // 是否回到会中（3.24.300后的版本提供）
 }
 ```
 
