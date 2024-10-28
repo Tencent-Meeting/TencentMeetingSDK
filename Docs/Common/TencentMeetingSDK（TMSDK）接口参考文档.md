@@ -72,6 +72,7 @@
     + [enableRingInvitationView](#enableringinvitationview)
     + [handleRingInvitation](#handleringinvitation)
     + [openQRCodeUrl](#openqrcodeurl)
+    + [discoverNearScreenCastCode](#discoverNearScreenCastCode)
   * [4.2 PreMeetingCallback 回调代理](#42-premeetingcallback-回调代理)
     + [onJoinMeeting](#onjoinmeeting)
     + [onActionResult](#onactionresult)
@@ -158,7 +159,7 @@
 | 2023-05-07 | 3.21.303 | 新增错误码：[-1067]--安全验证失败，需要用户验证通过后才能登录 |
 | 2024-05-08 | 3.24.100 | 新增接口：登录(loginByJSON)接口 |
 | 2024-08-19 | 3.24.200 | Mac和iOS端支持反初始化（uninitialize）接口 |
-| 2024-10-24 | 3.24.300 | 新增错误码：[-1070]--重复调用初始化(初始化已完成)；移动端新增接口：configPipButtonAction(设置关闭悬浮窗时的行为)；回调InMeetingCallback.onPipModeChanged的data字段新增参数back_to_meeting |
+| 2024-10-24 | 3.24.300 | 新增错误码：[-1070]--重复调用初始化(初始化已完成)；移动端新增接口：configPipButtonAction(设置关闭悬浮窗时的行为)；回调InMeetingCallback.onPipModeChanged的data字段新增参数back_to_meeting，新增接口：discoverNearScreenCastCode(获取近场投屏码） |
 
 
 # 1. SDK使用说明
@@ -1235,6 +1236,50 @@ msg内容示例：
 - 参数说明：扫描二维码后要被打开的URL
 
 
+### discoverNearScreenCastCode
+
+* 函数形式：**void discoverNearScreenCastCode(string json_param)**
+* 可用版本：>= 3.24.300
+* 可用平台：`Windows`/`macOS`/`ios`/`Android`
+* 函数说明：
+  - 桌面端支持超声波&蓝牙发现投屏码，移动端只支持蓝牙发现投屏码
+  - 需要在设置页面勾选蓝牙和超声波投屏开关
+  - 超声波搜索需要Mac端开启麦克风权限
+  - 因为设备和环境等原因，可能获取不到
+  - 该接口回调详见4.2中onActionResult说明
+* 返回值说明：无
+* 参数说明：
+|参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明               |
+|---|---|------|-------|--------------------|
+|start |bool | 是    | 无     | true开启近场发现扫描，false关闭近场发现扫描 |
+
+* `PreMeetingCallback.onActionResult`回调说明：
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|action_type |int |这处为`discoverNearScreenCastCode` |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|msg |string |结果的JSON信息，示例如下 |
+
+msg内容示例：
+```json5
+{
+  "rooms_list":[
+    {
+      "rooms_code": "ABCDEF",
+      "rooms_name": "RoomsName"
+    },
+    {
+      "rooms_code": "ABCDEF",
+      "rooms_name": "RoomsName"
+    }
+  ],
+  "bluetooth_state":0,//0开启且已授权，1开启未授权，2开关已关闭
+  "ultrasound_state":0,//0开启且已授权，1开启未授权，2开关已关闭
+  "scan_state":1//1:扫描中，2:扫描结束
+}
+```
+
+
 ## 4.2 PreMeetingCallback 回调代理
 
 PreMeetingCallback 需实现以下成员函数：
@@ -1280,6 +1325,7 @@ PreMeetingCallback 需实现以下成员函数：
 | DecodeUltrasoundScreenCastCode | 12   | 获取超声波投屏码回调 | 回调的JSON数据，格式参考`decodeUltrasoundScreenCastCode`函数说明                     |
 | StartScreenCast | 13   | 投屏回调 | 回调的JSON数据，格式参考`startScreenCast`函数说明                                       |
 | ShowUploadLogsView | 14   | 打开日志上传页面 |结果的说明文字                                       |
+| DiscoverNearScreenCastCode | 15   | 获取近场投屏码回调 |回调的JSON数据，格式参考`discoverNearScreenCastCode`函数说明                                       |
 
 
 ### onShowAddressBook
