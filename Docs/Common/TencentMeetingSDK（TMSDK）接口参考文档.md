@@ -1935,6 +1935,31 @@ layout_id枚举值如下:
 ```
 
 
+### showScreenShareView
+* 函数形式：**void ShowScreenShareView(Callback complete, void* user_data)**
+* 可用版本：>= 3.24.300
+* 可用平台：桌面端（win, mac）
+* 函数说明：
+  * 开关打开屏幕共享窗口。
+  * 调用时机：只能在会中调用。
+  * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。签名详情见回调说明。
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明               |
+|---|---|------|-------|--------------------|
+|complete |Callback | 否    | 空     | 操作结束回调block，可以为空   |
+|user_data |void | 否    | 无     | 用户自定义数据，可以为空 |
+
+* 回调说明：
+
+`Callback`签名：**void (\*)(int code, string msg)**
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|code |int |操作结果错误码，0表示成功 |
+|msg |string |操作出错时包含错误信息，操作成功时值为空 |
+
 ## 5.2 InMeetingCallback 回调代理
 
 InMeetingCallback 需实现以下成员函数：
@@ -2256,6 +2281,17 @@ data内容示例
 |扬声器|AudioOutputModeSpeaker|2|
 |有线耳机|AudioOutputModeHeadset|3|
 |蓝牙|AudioOutputModeBluetooth|4|
+
+### onShowScreenShareView
+* 函数形式：**void OnShowScreenShareView(int code, string msg)**
+* 可用版本：>=3.24.300
+* 说明：调用ShowScreenShareView接口的回调。
+* 参数说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+|msg |string |结果信息|
 
 # 6. 错误码
 详情见：<br>[错误码列表](错误码列表.md)
