@@ -100,7 +100,7 @@
     + [switchLayout](#switchLayout)
     + [subscribeInMeetingActionEvent](#subscribeInMeetingActionEvent)
     + [configPipButtonAction](#configpipbuttonaction)
-    + [showScreenShareView](#showscreensharesiew)
+    + [showScreenShareView](#showscreenshareview)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -162,6 +162,7 @@
 | 2024-05-08 | 3.24.100 | 新增接口：登录(loginByJSON)接口 |
 | 2024-08-19 | 3.24.200 | Mac和iOS端支持反初始化（uninitialize）接口 |
 | 2024-10-24 | 3.24.300 | 新增错误码：[-1070]--重复调用初始化(初始化已完成)；移动端新增接口：configPipButtonAction(设置关闭悬浮窗时的行为)；回调InMeetingCallback.onPipModeChanged的data字段新增参数back_to_meeting，新增接口：discoverNearScreenCastCode(获取近场投屏码） |
+| 2024-10-28 | 3.24.300 | 新增接口：桌面端新增接口：showScreenShareView(打开屏幕共享窗口) |
 
 
 # 1. SDK使用说明
