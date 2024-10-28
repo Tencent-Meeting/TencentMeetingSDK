@@ -100,6 +100,7 @@
     + [switchLayout](#switchLayout)
     + [subscribeInMeetingActionEvent](#subscribeInMeetingActionEvent)
     + [configPipButtonAction](#configpipbuttonaction)
+    + [showScreenShareView](#showscreensharesiew)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -114,6 +115,7 @@
     + [onAudioStatusChanged](#onAudioStatusChanged)
     + [onVideoStatusChanged](#onVideoStatusChanged)
     + [onAudioOutputDeviceChanged](#onAudioOutputDeviceChanged)
+    + [onShowScreenShareView](#onshowscreensharesiew)
 
 - [6. 错误码](#6-错误码)
 
