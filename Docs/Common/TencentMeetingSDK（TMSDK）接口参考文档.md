@@ -115,7 +115,7 @@
     + [onAudioStatusChanged](#onAudioStatusChanged)
     + [onVideoStatusChanged](#onVideoStatusChanged)
     + [onAudioOutputDeviceChanged](#onAudioOutputDeviceChanged)
-    + [onShowScreenShareView](#onshowscreensharesiew)
+    + [onShowScreenShareView](#onshowscreenshareview)
 
 - [6. 错误码](#6-错误码)
 
