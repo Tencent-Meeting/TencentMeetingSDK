@@ -115,7 +115,6 @@
     + [onAudioStatusChanged](#onAudioStatusChanged)
     + [onVideoStatusChanged](#onVideoStatusChanged)
     + [onAudioOutputDeviceChanged](#onAudioOutputDeviceChanged)
-    + [onShowScreenShareView](#onshowscreenshareview)
 
 - [6. 错误码](#6-错误码)
 
@@ -2286,16 +2285,6 @@ data内容示例
 |有线耳机|AudioOutputModeHeadset|3|
 |蓝牙|AudioOutputModeBluetooth|4|
 
-### onShowScreenShareView
-* 函数形式：**void OnShowScreenShareView(int code, string msg)**
-* 可用版本：>=3.24.300
-* 说明：调用ShowScreenShareView接口的回调。
-* 参数说明：
-
-|参数名 |参数类型 |参数说明 |
-|---|---|---|
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
-|msg |string |结果信息|
 
 # 6. 错误码
 详情见：<br>[错误码列表](错误码列表.md)
