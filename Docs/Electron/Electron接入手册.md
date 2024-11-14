@@ -621,6 +621,14 @@ wemeet_sdk.HandleRingInvitation(accept, invite_id, callback)
 
 说明：\>= 3.12.4版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
+#### 获取近场投屏码
+
+```
+wemeet_sdk.DiscoverNearScreenCastCode(json_param)
+```
+
+说明：\>= 3.24.300版本, 可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+
 ### 3.4 InMeetingService 成员函数
 
 #### 退出会议

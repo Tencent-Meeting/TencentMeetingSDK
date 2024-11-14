@@ -72,6 +72,7 @@
     + [enableRingInvitationView](#enableringinvitationview)
     + [handleRingInvitation](#handleringinvitation)
     + [openQRCodeUrl](#openqrcodeurl)
+    + [discoverNearScreenCastCode](#discoverNearScreenCastCode)
   * [4.2 PreMeetingCallback 回调代理](#42-premeetingcallback-回调代理)
     + [onJoinMeeting](#onjoinmeeting)
     + [onActionResult](#onactionresult)
@@ -87,6 +88,7 @@
     + [enableInviteUsersCallback](#enableinviteuserscallback)
     + [bringInMeetingViewTop](#bringinmeetingviewtop)
     + [switchPIPModel](#switchpipmodel)
+    + [configPipButtonAction](#configpipbuttonaction)
     + [getCurrentMeetingInfo](#getcurrentmeetinginfo)
     + [enableCustomOrgInfo](#enablecustomorginfo)
     + [setCustomOrgInfo](#setcustomorginfo)
@@ -98,6 +100,7 @@
     + [setLeaveCastRoomActionType](#setLeaveCastRoomActionType)
     + [switchLayout](#switchLayout)
     + [subscribeInMeetingActionEvent](#subscribeInMeetingActionEvent)
+    + [showScreenShareView](#showscreenshareview)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -157,6 +160,9 @@
 | 2023-05-07 | 3.21.303 | 新增错误码：[-1067]--安全验证失败，需要用户验证通过后才能登录 |
 | 2024-05-08 | 3.24.100 | 新增接口：登录(loginByJSON)接口 |
 | 2024-08-19 | 3.24.200 | Mac和iOS端支持反初始化（uninitialize）接口 |
+| 2024-10-24 | 3.24.300 | 新增错误码：[-1070]--重复调用初始化(初始化已完成)；移动端新增接口：configPipButtonAction(设置关闭悬浮窗时的行为)；回调InMeetingCallback.onPipModeChanged的data字段新增参数back_to_meeting|
+| 2024-10-24 | 3.24.300 | 新增接口：discoverNearScreenCastCode(获取近场投屏码） |
+| 2024-10-28 | 3.24.300 | 新增接口：桌面端新增接口：showScreenShareView(打开屏幕共享窗口) |
 
 
 # 1. SDK使用说明
@@ -1209,6 +1215,7 @@ msg内容示例：
 * 返回值说明： 无
 * 参数说明
 
+
 |参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明               |
 |---|---|------|-------|--------------------|
 |accept |bool | 是    | 无     | true接受响铃邀请，false拒绝响铃邀请 |
@@ -1232,6 +1239,64 @@ msg内容示例：
 - 函数说明：集成方App上层实现打开摄像头扫描二维码功能，将扫描到的会议二维码内容（一般为URL），通过该函数打开。执行结果通过`PreMeetingCallback.onOpenQRCodeUrlResult`回调通知。
 - 参数说明：扫描二维码后要被打开的URL
 
+
+### discoverNearScreenCastCode
+
+* 函数形式：**void discoverNearScreenCastCode(string json_param)**
+* 可用版本：>= 3.24.300
+* 可用平台：`Windows`/`macOS`/`ios`/`Android`
+* 函数说明：
+  - 近场发现获取投屏码的开关功能
+  - 桌面端支持超声波&蓝牙发现投屏码，移动端只支持蓝牙发现投屏码
+  - 需要先在设置页面勾选蓝牙和超声波投屏开关
+  - 超声波搜索在Mac端需要开启麦克风权限
+  - 因为设备和环境等原因，有可能获取不到的情况
+  - 调用接口后会进行投屏码扫描，当搜索列表变化或者搜索完成时会触发回调
+  - 近场发现的事件通过`PreMeetingCallback.onActionResult`回调通知
+  - 不支持在登录的回调中调用该接口
+* 返回值说明：无
+* 参数说明：
+
+参数为JSON格式的字符串，格式如下：
+
+| 参数名    | 参数类型 | 参数必填 | 参数默认值 | 参数说明 |
+|--------|------|------|-------|------------------------|
+| start | bool | 是    | (无)   | true开启近场发现扫描，false关闭近场发现扫描 |
+
+参数示例：
+```json5
+{
+  "start": true
+}
+```
+
+* `PreMeetingCallback.onActionResult`回调说明：
+
+|参数名 |参数类型 | 参数说明                                 |
+|---|---|--------------------------------------|
+|action_type |int | 这处为`DiscoverNearScreenCastCode`应对的数值 |
+|code |int | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节     |
+|msg |string | 结果的JSON信息，示例如下                       |
+
+msg内容示例：
+```json5
+{
+  "rooms_list":[
+    {
+      "rooms_code": "ABCDEF",
+      "rooms_name": "RoomsName1"
+    },
+    {
+      "rooms_code": "UVWXYZ",
+      "rooms_name": "RoomsName2"
+    }
+  ],
+  "bluetooth_state": 0,  //0:开启且已授权，1:开启未授权，2:开关已关闭
+  "ultrasound_state": 0, //0:开启且已授权，1:开启未授权，2:开关已关闭
+  "scan_state": 1    //1:扫描中，2:扫描结束
+}
+```
+> **注意**：会议设置中的蓝牙关闭和设备的蓝牙关闭都视为蓝牙开关已关闭
 
 ## 4.2 PreMeetingCallback 回调代理
 
@@ -1278,6 +1343,7 @@ PreMeetingCallback 需实现以下成员函数：
 | DecodeUltrasoundScreenCastCode | 12   | 获取超声波投屏码回调 | 回调的JSON数据，格式参考`decodeUltrasoundScreenCastCode`函数说明                     |
 | StartScreenCast | 13   | 投屏回调 | 回调的JSON数据，格式参考`startScreenCast`函数说明                                       |
 | ShowUploadLogsView | 14   | 打开日志上传页面 |结果的说明文字                                       |
+| DiscoverNearScreenCastCode | 15   | 获取近场投屏码回调 |回调的JSON数据，格式参考`discoverNearScreenCastCode`函数说明                                       |
 
 
 ### onShowAddressBook
@@ -1466,7 +1532,7 @@ PreMeetingCallback 需实现以下成员函数：
 ### switchPIPModel
 * 函数形式：**void switchPIPModel(bool isEnterPip)**
 * 可用版本：>= 3.6.200
-* 适用平台：android & ios
+* 适用平台：移动端（Android, iOS）
 * 函数说明：进入悬浮窗或者退出悬浮窗状态，结果会在回调`InMeetingCallback.onSwitchPiPResult`返回。
 * 返回值说明：无
 * 参数说明：
@@ -1474,6 +1540,37 @@ PreMeetingCallback 需实现以下成员函数：
 |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
 |---|---|---|---|---|
 |isEnterPip |bool |是 |true or false | false 退出悬浮窗状态；true 进入悬浮窗状态  |
+
+
+### configPipButtonAction
+* 函数形式：**void configPipButtonAction(int pipActionType, string data, Callback complete)**
+* 可用版本：>= 3.24.300
+* 适用平台：移动端（Android, iOS）
+* 函数说明：
+  * 这个接口允许接入方设置用户关闭悬浮窗时的行为，并在相应的回调函数 **InMeetingCallback.onPipModeChanged**参数中返回通知
+  * 调用时机：初始化后可调用。
+* 参数说明：
+
+| 参数名             | 参数类型   | 参数必填 | 参数默认值 | 参数说明 |
+|-------------------|----------|----|------|----------------------------------------|
+| pipActionType     | int      | 是 | 无   | 表示何种行为事件，见后文枚举值说明 |
+| data              | string   | 是 | 无   | json字符串，按钮对应行为的设置 |
+| complete          | Callback | 是 | 无   | 调用接口的结果(成功与否) |
+
+当前支持的订阅/退订的pipActionType如下，未来会扩展：
+
+| pipActionType | 说明               |
+|---------------|:----------------- |
+| 1             | 点击关闭悬浮窗按钮   |
+
+
+* data参数格式示例：
+```json5
+// pipActionType = 1 点击关闭悬浮窗按钮
+{ 
+  "back_to_meeting": true // 点击关闭悬浮窗是否回到会中页面
+}
+```
 
 
 ### getCurrentMeetingInfo
@@ -1852,6 +1949,32 @@ layout_id枚举值如下:
   ```
 
 
+### showScreenShareView
+* 函数形式：**void ShowScreenShareView(Callback complete)**
+* 可用版本：>= 3.24.300
+* 可用平台：桌面端（win, mac）
+* 函数说明：
+  * 开关打开屏幕共享窗口。
+  * 调用时机：只能在会中调用。
+  * 操作结果由`Callback`回调`complete`参数带回，回调可能会异步执行。详情见回调说明。
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明                     |
+|---|---|------|-------|--------------------------|
+|complete |Callback | 否    | 空     | 操作的回调函数，可以为空             |
+
+* 回调说明：
+
+`Callback`函数格式：**void (\*)(int code, string msg)**
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|code |int |操作结果错误码，0表示成功 |
+|msg |string |操作出错时包含错误信息，操作成功时值为空 |
+
+
+
 ## 5.2 InMeetingCallback 回调代理
 
 InMeetingCallback 需实现以下成员函数：
@@ -1954,6 +2077,7 @@ invite_info内容
 * 说明：
   * 进入悬浮窗或者退出悬浮窗状态时回调。
   * iOS14.0以上才支持全局小窗
+  * 3.24.300新增参数：back_to_meeting 悬浮窗消失时是否回到会中，默认true
 * 返回值：无
 * 参数说明：
 
@@ -1964,7 +2088,8 @@ invite_info内容
 data内容示例
 ```json5
 {
-    "is_in_pip_mode": true // 是否处于悬浮窗状态
+    "is_in_pip_mode": true, // 是否处于悬浮窗状态
+    "back_to_meeting": true // 是否回到会中（3.24.300后的版本提供）
 }
 ```
 
@@ -2171,6 +2296,7 @@ data内容示例
 |扬声器|AudioOutputModeSpeaker|2|
 |有线耳机|AudioOutputModeHeadset|3|
 |蓝牙|AudioOutputModeBluetooth|4|
+
 
 # 6. 错误码
 详情见：<br>[错误码列表](错误码列表.md)
