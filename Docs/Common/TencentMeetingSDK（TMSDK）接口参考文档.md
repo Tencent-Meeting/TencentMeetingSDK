@@ -163,6 +163,7 @@
 | 2024-10-24 | 3.24.300 | 新增错误码：[-1070]--重复调用初始化(初始化已完成)；移动端新增接口：configPipButtonAction(设置关闭悬浮窗时的行为)；回调InMeetingCallback.onPipModeChanged的data字段新增参数back_to_meeting|
 | 2024-10-24 | 3.24.300 | 新增接口：discoverNearScreenCastCode(获取近场投屏码） |
 | 2024-10-28 | 3.24.300 | 新增接口：桌面端新增接口：showScreenShareView(打开屏幕共享窗口) |
+| 2024-11-27 | 3.24.400 | 新增错误码：[-1071]--账号登录失败。可能的原因：账号不存在；企业不存在；企业账号被封禁；设备被禁止登录等。 |
 
 
 # 1. SDK使用说明
