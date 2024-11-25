@@ -164,6 +164,9 @@
 | 2024-10-24 | 3.24.300 | 新增接口：discoverNearScreenCastCode(获取近场投屏码） |
 | 2024-10-28 | 3.24.300 | 新增接口：桌面端新增接口：showScreenShareView(打开屏幕共享窗口) |
 | 2024-11-27 | 3.24.400 | 新增错误码：[-1071]--账号登录失败。可能的原因：账号不存在；企业不存在；企业账号被封禁；设备被禁止登录等。 |
+| 2024-11-27 | 3.24.400 | 接口调整：更新字幕设置接口updateCaptionSettings，增加接收参数"allow_member_open", 可在会中修改成员权限，禁止或允许成员开启字幕 |
+
+allow_member_open
 
 
 # 1. SDK使用说明
@@ -1714,6 +1717,8 @@ msg内容示例:
 `json_setting`字幕设置项json格式示例：
 ```json5
 {
+  //允许成员开启字幕
+  "allow_member_open": true,
   // 源语言设置
   "source_language": "zh",
   // 目标语言设置
