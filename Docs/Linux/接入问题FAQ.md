@@ -4,7 +4,7 @@
 
 ---
 
-* 调用初始化接口回调失败，msg：`InitializeStateIng ipc connect failed`。
+## * 调用初始化接口回调失败，msg：`InitializeStateIng ipc connect failed`。
 
 该问题通常是由于会议子进程启动失败导致，可以在终端使用`ps -ef | grep wemeetapp`等命令检查是否存在会议子进程，必要时候可以关注父进程PID等信息以进行确认。
 
@@ -14,25 +14,29 @@
 
 有关打包更多操作和要求，可以参考[Linux打包](./Linux接入手册.md#44-打包)。
 
-* Linux SDK在wayland下初始化提示 'wayland display is not support'。
+## * Linux SDK在wayland下初始化提示 'wayland display is not support'。
 
+### 问题原因：
 Linux SDK目前不支持原生wayland，这里uos和kylin os操作系统厂商对xwayland进行了改造，完成了/opt/x11-wayland的补丁，使得Linux SDK在uos和kylinOS 的wayland下可以正常运行。在没有改造的发行版上，会议在wayland下是不支持的。
 
+### 解决方法：
 可以通过如下方式解决：
 1.引导用户切换至x11下使用Linux SDK
 2.若用户有wayland强诉求，确认用户是否为uos和kylin os操作系统，其他系统不支持
 3.确认/opt/x11-wayland文件夹是否存在，缺少补丁联系对应系统操作系统厂商提供
 
-* Linux SDK发生闪退/崩溃
+## * Linux SDK发生闪退/崩溃
 
-排查建议：
-1.让用户在终端输入coredumpctl list wemeetapp，查看是否有会议进程崩溃记录
-2.终端输入coredumpctl dump -o ~/Desktop/wemeetapp.coredump SDK安装目录/Release/tmsdkapp 提取dump文件
-3.让客户提供桌面的wemeetapp.coredump文件给研发侧分析堆栈
+### 排查建议：
+1. 让用户在终端输入coredumpctl list wemeetapp，查看是否有会议进程崩溃记录
+2. 终端输入coredumpctl dump -o ~/Desktop/wemeetapp.coredump SDK安装目录/Release/tmsdkapp 提取dump文件
+3. 让客户提供桌面的wemeetapp.coredump文件给研发侧分析堆栈
 
-补充场景：
-1.文件wemeetapp.coredump 大小为 0kb
+### 补充场景：
+1. 文件wemeetapp.coredump 大小为 0kb
+
 这是由于系统限制了崩溃时core文件的大小限制，在终端中ulimit -c unlimited，设置不限制后，复现崩溃场景后再重新提取dump
 
-2.终端输入coredumpctl dump -o ~/Desktop/wemeetapp.coredump SDK安装目录/Release/tmsdkapp 提取dump文件提示文件夹不存在
+2. 终端输入coredumpctl dump -o ~/Desktop/wemeetapp.coredump SDK安装目录/Release/tmsdkapp 提取dump文件提示文件夹不存在
+
 这是因为有的系统的桌面路径不是“Desktop”，而是中文的“桌面"，对应替换即可，coredumpctl dump -o ~/桌面/wemeetapp.coredump SDK安装目录/Release/tmsdkapp
