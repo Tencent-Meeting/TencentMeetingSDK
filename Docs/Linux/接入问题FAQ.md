@@ -28,15 +28,15 @@ Linux SDK目前不支持原生wayland，这里uos和kylin os操作系统厂商�
 ## * Linux SDK发生闪退/崩溃
 
 ### 排查建议：
-1. 让用户在终端输入coredumpctl list wemeetapp，查看是否有会议进程崩溃记录
-2. 终端输入coredumpctl dump -o ~/Desktop/wemeetapp.coredump SDK安装目录/Release/tmsdkapp 提取dump文件
+1. 让用户在终端输入coredumpctl list tmsdkapp，查看是否有会议进程崩溃记录
+2. 终端输入coredumpctl dump -o ~/Desktop/tmsdkapp.coredump SDK安装目录/Release/tmsdkapp 提取dump文件
 3. 让客户提供桌面的wemeetapp.coredump文件给研发侧分析堆栈
 
 ### 补充场景：
-1. 文件wemeetapp.coredump 大小为 0kb
+1. tmsdkapp.coredump 大小为 0kb
 
 这是由于系统限制了崩溃时core文件的大小限制，在终端中ulimit -c unlimited，设置不限制后，复现崩溃场景后再重新提取dump
 
-2. 终端输入coredumpctl dump -o ~/Desktop/wemeetapp.coredump SDK安装目录/Release/tmsdkapp 提取dump文件提示文件夹不存在
+2. 终端输入coredumpctl dump -o ~/Desktop/tmsdkapp.coredump SDK安装目录/Release/tmsdkapp 提取dump文件提示文件夹不存在
 
-这是因为有的系统的桌面路径不是“Desktop”，而是中文的“桌面"，对应替换即可，coredumpctl dump -o ~/桌面/wemeetapp.coredump SDK安装目录/Release/tmsdkapp
+这是因为有的系统的桌面路径不是“Desktop”，而是中文的“桌面"，对应替换即可，coredumpctl dump -o ~/桌面/tmsdkapp.coredump SDK安装目录/Release/tmsdkapp
