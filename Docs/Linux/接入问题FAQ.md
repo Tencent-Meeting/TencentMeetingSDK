@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/efbe30e9-1c1e-49a8-baa2-7aecc67c7051)# Linux接入问题 / FAQ
+# Linux接入问题 / FAQ
 
 **在遇到相关问题之前，可以使用demo在相同环境下运行对比一下表现。**
 
