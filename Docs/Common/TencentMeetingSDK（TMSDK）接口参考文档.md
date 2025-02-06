@@ -265,6 +265,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |公有云SDK专用 |app_icon |string |否 |(无) |  用来指定窗口图标对应的文件绝对路径（仅windows端）|
 |公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，如传入其它值则显示为zh-cn，3.6.200及以上版本可用） |
 |通用 |proxy_info |string |否 |(无) | 用于初始化时设置网络代理，内容为json串，格式可参考setProxyInfo接口。如果使用了此参数，则必须拿到设置代理的回调后再调用登录接口（3.12.200以及以上版本可用） |
+|公有云SDK专用 |allow_home_view |bool |否 | true | 用于初始化时设置是否使用会议主面板，Windows和Mac可用，3.30.1以及以上版本可用 |
 
 
 ### uninitialize
@@ -899,7 +900,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 
 ### showPreMeetingView
-* 函数形式：**void showPreMeetingView(int style)**
+* 函数形式：**void showPreMeetingView(int style, int type)**
 * 函数说明：显示SDK自带的会前界面。登录完成后，才可调用。
 * 版本说明：3.21.200及以后版本仅支持展示多Tab样式的会前界面，不会受style参数值的影响。
 * 返回值说明：无
@@ -908,6 +909,7 @@ AuthenticationCallback 需实现以下成员函数：
   |参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
   |---|---|---|---|---|
   |style |int |否 |0 |面板样式：<br>0: 经典样式<br>1: 多Tab样式 |
+  |type |int |否 |0 |面板类型：<br>0: 会议<br>1: 通讯录<br>2: 录制<br>Windows和Mac可用，3.30.1版本及以上可用 |
 
 
 
