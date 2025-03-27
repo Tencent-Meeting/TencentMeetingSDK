@@ -283,8 +283,16 @@ android {
 
 ```groovy
 repositories {
-   	maven {
+    maven {
         url "file://${new File(project.rootProject.rootDir, 'repo').getAbsolutePath()}"
+    }
+    maven {
+        allowInsecureProtocol = true
+        url "https://maven.columbus.heytapmobi.com/repository/OpenCapability/"
+	credentials {
+            username "ocuser"
+            password "3dca1351358f49aeaf5af516ffd05a7c8e0cbd56"
+	}
     }
 }
 dependencies {
