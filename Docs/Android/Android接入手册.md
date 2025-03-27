@@ -286,6 +286,7 @@ repositories {
     maven {
         url "file://${new File(project.rootProject.rootDir, 'repo').getAbsolutePath()}"
     }
+    // SDK Version >= 3.30.0 需添加以下仓库
     maven {
         allowInsecureProtocol = true
         url "https://maven.columbus.heytapmobi.com/repository/OpenCapability/"
