@@ -74,6 +74,7 @@
     + [openQRCodeUrl](#openqrcodeurl)
     + [discoverNearScreenCastCode](#discoverNearScreenCastCode)
     + [showAIAssistantView](#showAIAssistantView)
+    + [showRoomsControllerView](#showRoomsControllerView)
   * [4.2 PreMeetingCallback 回调代理](#42-premeetingcallback-回调代理)
     + [onJoinMeeting](#onjoinmeeting)
     + [onActionResult](#onactionresult)
@@ -167,8 +168,8 @@
 | 2024-11-27 | 3.24.400 | 新增错误码：[-1071]--账号登录失败。可能的原因：账号不存在；企业不存在；企业账号被封禁；设备被禁止登录等。 |
 | 2024-11-27 | 3.24.400 | 接口调整：更新字幕设置接口updateCaptionSettings，增加接收参数"allow_member_open", 可在会中修改成员权限，禁止或允许成员开启字幕 |
 | 2025-03-20 | 3.30.100 | 新增接口：showAIAssistantView(打开AI小助手页面) |
+| 2025-04-29 | 3.30.200 | 新增接口：showRoomsControllerView(打开Rooms控制器页面) |
 
-allow_member_open
 
 
 # 1. SDK使用说明
@@ -1325,6 +1326,25 @@ msg内容示例：
 |code |int | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节     |
 |msg |string | 结果信息                      |
 
+### showRoomsControllerView
+* 函数形式：**void ShowRoomsControllerView()**
+* 可用版本：>= 3.30.200
+* 可用平台：iOS, Android, Windows, Mac
+* 函数说明：
+  * 打开Rooms控制器页面。
+  * 调用时机：需要初始化、登录。
+  * 通过`PreMeetingCallback.onActionResult`回调操作结果，`action_type`参数是`ShowRoomsControllerView`
+* 返回值说明：无
+* 参数说明：无
+
+* `PreMeetingCallback.onActionResult`回调说明：
+
+|参数名 |参数类型 | 参数说明                                 |
+|---|---|--------------------------------------|
+|action_type |int | 这处为`ShowRoomsControllerView`应对的数值 |
+|code |int | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节     |
+|msg |string | 结果信息              
+
 ## 4.2 PreMeetingCallback 回调代理
 
 PreMeetingCallback 需实现以下成员函数：
@@ -1372,6 +1392,7 @@ PreMeetingCallback 需实现以下成员函数：
 | ShowUploadLogsView | 14   | 打开日志上传页面 |结果的说明文字                                       |
 | DiscoverNearScreenCastCode | 15   | 获取近场投屏码回调 |回调的JSON数据，格式参考`discoverNearScreenCastCode`函数说明                                       |
 | ShowAIAssistantView | 16   | 打开AI小助手页面 |结果的说明文字 |
+| ShowRoomsControllerView | 18   | 打开Rooms控制器页面 |结果的说明文字 |
 
 
 ### onShowAddressBook
