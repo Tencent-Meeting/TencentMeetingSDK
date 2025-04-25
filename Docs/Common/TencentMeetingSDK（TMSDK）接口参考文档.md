@@ -168,7 +168,7 @@
 | 2024-11-27 | 3.24.400 | 新增错误码：[-1071]--账号登录失败。可能的原因：账号不存在；企业不存在；企业账号被封禁；设备被禁止登录等。 |
 | 2024-11-27 | 3.24.400 | 接口调整：更新字幕设置接口updateCaptionSettings，增加接收参数"allow_member_open", 可在会中修改成员权限，禁止或允许成员开启字幕 |
 | 2025-03-20 | 3.30.100 | 新增接口：showAIAssistantView(打开AI小助手页面) |
-| 2025-04-29 | 3.30.200 | 新增接口：showRoomsControllerView(打开Rooms控制器页面) |
+| 2025-04-29 | 3.30.200 | 新增接口：showRoomsControllerView(打开Rooms控制器页面)；初始化接口支持设置SDK语言为日语 |
 
 
 
@@ -266,7 +266,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |通用 |data_path |string |否 |`tmsdkapp.exe`同级目录 | 仅`Windows`/`Linux`支持:自定义SDK数据存储路径，里面包括日志目录。 |
 |通用 |app_name |string |否 |网络会议 | 指定显示的品牌名称 |
 |公有云SDK专用 |app_icon |string |否 |(无) |  用来指定窗口图标对应的文件绝对路径（仅windows端）|
-|公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，如传入其它值则显示为zh-cn，3.6.200及以上版本可用） |
+|公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，ja，如传入其它值则显示为zh-cn，3.6.200及以上版本可用， 其中日语从3.30.200及以上版本支持） |
 |通用 |proxy_info |string |否 |(无) | 用于初始化时设置网络代理，内容为json串，格式可参考setProxyInfo接口。如果使用了此参数，则必须拿到设置代理的回调后再调用登录接口（3.12.200以及以上版本可用） |
 |公有云SDK专用 |allow_home_view |bool |否 | true | 用于初始化时设置是否使用会议主面板，Windows和Mac可用，3.30.100以及以上版本可用 |
 
