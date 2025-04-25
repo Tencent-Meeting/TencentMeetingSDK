@@ -168,7 +168,7 @@
 | 2024-11-27 | 3.24.400 | 新增错误码：[-1071]--账号登录失败。可能的原因：账号不存在；企业不存在；企业账号被封禁；设备被禁止登录等。 |
 | 2024-11-27 | 3.24.400 | 接口调整：更新字幕设置接口updateCaptionSettings，增加接收参数"allow_member_open", 可在会中修改成员权限，禁止或允许成员开启字幕 |
 | 2025-03-20 | 3.30.100 | 新增接口：showAIAssistantView(打开AI小助手页面) |
-| 2025-04-29 | 3.30.200 | 新增接口：showRoomsControllerView(打开Rooms控制器页面)；初始化接口支持设置SDK语言为日语 |
+| 2025-04-29 | 3.30.200 | 新增接口：showRoomsControllerView(打开Rooms控制器页面)；initialize接口中InitParam支持设置SDK语言为日语 |
 
 
 
