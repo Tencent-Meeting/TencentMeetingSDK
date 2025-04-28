@@ -73,6 +73,8 @@ A: 横竖屏设置的优先级顺序是：Appdelegate/Info.plist=>TabBarControll
     }
     return needLandscape;
 }
+3. 以下window需要支持全方向：
+    WMWebEmbededFullScreenWindow
 ```
 
 
