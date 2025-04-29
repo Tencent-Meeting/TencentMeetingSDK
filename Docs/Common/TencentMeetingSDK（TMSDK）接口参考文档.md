@@ -174,12 +174,9 @@
 | 2024-11-27 | 3.24.400 | 新增错误码：[-1071]--账号登录失败。可能的原因：账号不存在；企业不存在；企业账号被封禁；设备被禁止登录等。 |
 | 2024-11-27 | 3.24.400 | 接口调整：更新字幕设置接口updateCaptionSettings，增加接收参数"allow_member_open", 可在会中修改成员权限，禁止或允许成员开启字幕 |
 | 2025-03-20 | 3.30.100 | 新增接口：showAIAssistantView(打开AI小助手页面) |
-| 2025-04-29 | 3.30.200 | 新增接口：showRoomsControllerView(打开Rooms控制器页面)|
+| 2025-04-29 | 3.30.200 | 新增接口：showRoomsControllerView(打开Rooms控制器页面)，showVoiceRecordView(打开录音笔页面)|
 | 2025-04-29 | 3.30.200 | 接口调整：initialize接口中InitParam支持设置SDK语言为日语|
-| 2025-04-29 | 3.30.200 | 新增接口：showVoiceRecordView(打开录音笔页面)|
-| 2025-04-29 | 3.30.200 | 新增接口：setUserConfiguration(设置用户配置)|
-| 2025-04-29 | 3.30.200 | 新增接口：getUserConfiguration(获取用户配置)|
-
+| 2025-04-29 | 3.30.200 | 新增服务：UserConfigService(用户配置服务)|
 
 
 
@@ -525,6 +522,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### getUserConfigService
 * 函数形式：**UserConfigService getUserConfigService()**
+* 可用版本：>= 3.30.200
 * 函数说明：获取SDK`UserConfigService`的对象实例。
 * 返回值说明：`UserConfigService`的对象实例
 * 参数说明：无
@@ -1372,6 +1370,7 @@ msg内容示例：
 * 返回值说明：无
 * 参数说明：无
 * `PreMeetingCallback.onActionResult`回调说明：
+  
 | 参数名      | 参数类型 | 参数说明                                                      |
 | ----------- | -------- | ------------------------------------------------------------- |
 | action_type | int      | 这处为 `ShowVoiceRecordView`应对的数值                      |
@@ -1497,6 +1496,7 @@ PreMeetingCallback 需实现以下成员函数：
   * 用户在打开录音笔界面后，可用来作为录音笔状态的通知。
   * 当录音笔状态发生变化时候，通过回调函数通知用户。
 * 参数说明：
+
 | 参数名     | 参数类型 | 参数说明     |
 | ---------- | -------- | ------------ |
 | status | int      | 当前录音实例状态 |
@@ -2416,12 +2416,13 @@ data内容示例
 |有线耳机|AudioOutputModeHeadset|3|
 |蓝牙|AudioOutputModeBluetooth|4|
 
+
 # 6. UserConfigService 说明
 UserConfigService用来管理用户配置，可以设置和获取用户配置。该实例是通过TMSDK.getUserConfigService()获得。
 
 ## 6.1 UserConfigService 成员函数
 ### SetUserConfiguration
-* 函数形式：**void setUserConfiguration(string config_key, string config_value, Callback complete)**
+* 函数形式：**void setUserConfiguration(string config_key, string config_json, Callback complete)**
 * 可用版本：>= 3.30.200
 * 可用平台：iOS, Android, Windows, Mac
 * 函数说明：
@@ -2433,12 +2434,12 @@ UserConfigService用来管理用户配置，可以设置和获取用户配置。
 |参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明 |
 |---|---|------|-------|--------------------|
 |config_key |string |是 |无 |配置项对应的key | 
-|config_value |string | 是    | 无     | json格式配置的内容 |
+|config_json |string | 是    | 无     | json格式配置的内容 |
 |complete |Callback | 否    | 空     | 设置结束回调block，可以为空   |
 
-* config_value以JSON字符串的格式输入。配置项以 key-value对的方式进行设置，config_value为设置参数。
+* config_json以JSON字符串的格式输入。配置项以 key-value对的方式进行设置，config_value为设置参数。
 * 每个功能设置需要调用一次
-* 设置config_value参数示例
+* 设置config_json参数示例
   ```json5
   {
       "config_value" : true
@@ -2474,15 +2475,16 @@ UserConfigService用来管理用户配置，可以设置和获取用户配置。
 	
 * 回调说明：
   
-	`Callback`签名：**void (\*)(int code, string msg, config_value)**
+	`Callback`签名：**void (\*)(int code, string msg, config_json)**
 	|参数名 |参数类型 |参数说明 |
 	|---|---|---|
 	|code |int |操作结果错误码，0表示成功 |
 	|msg |string |操作出错时包含错误信息，操作成功时值为空 |
-	|config_value |string | 配置的内容，配置项见`setUserConfiguration`支持的设置项列表。如果查询配置项不支持，返回空对象 |
-* config_value配置内容示例:
+	|config_json |string | 配置的内容，配置项见`setUserConfiguration`支持的设置项列表。如果查询配置项不支持，返回空对象 |
+* config_json配置内容示例:
 	```json5
-	{	
+	{
+	    "config_key" : "xxxx",	
 	    "config_value" : true
 	}
 	```
