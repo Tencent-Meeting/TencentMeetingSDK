@@ -1,6 +1,7 @@
 # 1. HarmonyOS SDK接入指南
 
-## 1.1 SDK组成
+## 1.1 SDK说明
+### 1.1.1 SDK组成
 SDK的产物解压后主要分为两部分：.har文件（har包）以及.tgz文件（集成态hsp）。
 
 har包和集成态hsp都有多个。
@@ -10,6 +11,10 @@ har包和集成态hsp都有多个。
 project/files/libs/*.har
 project/files/libs/*.tgz
 ```
+
+### 1.1.2 版本环境说明
+- 支持compatibleSdkVersion 5.0.1(13)
+- 使用DevEco Studio Build Version: 5.0.7.210 及以上版本作为IDE
 
 ## 1.2 集成步骤
 
