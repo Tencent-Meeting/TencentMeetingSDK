@@ -1,25 +1,24 @@
 # 1. HarmonyOS SDK接入指南
 
 ## 1.1 SDK说明
-### 1.1.1 SDK组成
-SDK的产物解压后主要分为两部分：.har文件（har包）以及.tgz文件（集成态hsp）。
-
-har包和集成态hsp都有多个。
-
-集成使用时，需要统一放置到鸿蒙工程目录下的files文件夹中,使目录结构成如下形式：
-```
-project/files/libs/*.har
-project/files/libs/*.tgz
-```
-
-### 1.1.2 版本环境说明
-- 支持compatibleSdkVersion 5.0.1(13)
+### 1.1.1 版本环境说明
+- 支持compatibleSdkVersion = 5.0.1(13)
 - 使用DevEco Studio Build Version: 5.0.7.210 及以上版本作为IDE
+
+### 1.1.2 SDK组成
+- SDK Demo样例工程
+- 包含所有SDK库文件的.har和.tgz的压缩包SDK.zip
 
 ## 1.2 集成步骤
 
 ### 1.2.1 工程脚本配置
+先将SDK.zip解压到鸿蒙工程根目录下的files文件夹中，解压后的目录结构成如下形式：
+```
+project/files/libs/*.har
+project/files/libs/*.tgz
+```
 #### 1.2.1.1 project配置文件
+
 sdk的har+hsp文件，放在集成方工程根目录下的files目录下，并在project/oh-package.json5文件中增加overrides节点配置，配置如下：
 ```
 "overrides": {
@@ -165,10 +164,10 @@ sdk_sample/src/main/module.json5如下：
 
 方案一：
 
-路由交互部分完全由TencentMeetingSdk提供的代理handler来完成。
-宿主提供handler所需要的相关参数, 执行handler。
+SDK的路由交互部分完全由TencentMeetingSdk提供的回调中的handler函数来完成。
+宿主提供handler函数所需要的相关参数, 并执行handler。
 
-sdk的onRouterToPage和onTerminateSdkPage回调函数中，宿主执行handler，并传入scheme、routerParam、NavPathStack实例、UiAbilityContext实例。其中NavPathStack实例、UiAbilityContext实例由宿主提供，scheme、routerParam由SDK回调函数提供。
+sdk的onRouterToPage和onTerminateSdkPage回调函数中，宿主执行handler函数，并传入scheme、routerParam、NavPathStack实例、UiAbilityContext实例。其中NavPathStack实例、UiAbilityContext实例由宿主提供，scheme、routerParam由SDK回调函数提供。
 示例如下：
 ```
 onRouterToPage(scheme: string, routerParam: string,
@@ -191,7 +190,7 @@ onTerminateSdkPage(scheme: string, routerParam?: string,
 ---
 方案二：
 
-路由交互部分，由宿主自己在回调中完成交互。Sdk不做任何处理，仅回调路由参数。
+SDK的路由交互部分，由宿主自己在回调中完成交互。Sdk不做任何处理，仅回调路由参数。
 示例如下：
 
 ```
@@ -213,10 +212,10 @@ onRouterToPage(scheme: string, routerParam: string,
 
 ```
 
-**需要注意：如果宿主使用了方案二，自己处理路由交互部分，需要宿主同时处理全屏状态变化和还原、屏幕旋转变化和还原等系统事件。**
+**需要注意：如果集成方使用了方案二，自己处理路由交互部分，需要集成方同时处理全屏状态变化和还原、屏幕旋转变化和还原等系统事件。**
 
 ## 1.3 资源文件和自定义通知栏图标
-
+-- 待后续补充
 
 # 2. FAQ
 # 2.1 打包失败，提示targetAPIVersion diffent
