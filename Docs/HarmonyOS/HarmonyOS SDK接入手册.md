@@ -1,8 +1,10 @@
 # 1. HarmonyOS SDK接入指南
 
 ## 1.1 SDK组成
-SDK的产物解压后主要分为两部分：.har文件（har包）以及.tgz文件（集成态hsp）
-har包和集成态hsp都有多个.
+SDK的产物解压后主要分为两部分：.har文件（har包）以及.tgz文件（集成态hsp）。
+
+har包和集成态hsp都有多个。
+
 集成使用时，需要统一放置到鸿蒙工程目录下的files文件夹中,使目录结构成如下形式：
 ```
 project/files/libs/*.har
@@ -12,7 +14,7 @@ project/files/libs/*.tgz
 ## 1.2 集成步骤
 
 ### 1.2.1 工程脚本配置
-#### 1.2.1 project配置文件
+#### 1.2.1.1 project配置文件
 sdk的har+hsp文件，放在集成方工程根目录下的files目录下，并在project/oh-package.json5文件中增加overrides节点配置，配置如下：
 ```
 "overrides": {
@@ -55,14 +57,14 @@ sdk的har+hsp文件，放在集成方工程根目录下的files目录下，并�
       ...
     "externalNativeOptions": {
       ...
-      //因为TencentMeetingSDK目前只支持arm64-v8a架构的设备，因此需做如下配置，过滤下cpu架构进行打包
+      //因为TencentMeetingSDK目前只支持arm64-v8a架构的设备，因此需做如下配置，过滤下cpu架构进行打包。
       "abiFilters": ["arm64-v8a"]
     },
     ...
     "nativeLib": {
       "filter": {
         "pickFirsts": [
-      // 如果出现多个同名的so文件冲突，请在这里指明pickFirst
+      // 如果出现多个同名的so库冲突，请在这里指明pickFirst
           "libwemeet_platform.so",
           "libwemeet_framework.so",
           "libWMWhiteboardSDK.so",
@@ -79,6 +81,8 @@ sdk的har+hsp文件，放在集成方工程根目录下的files目录下，并�
       }
     }
   }
+  ...
+}
 
 ```
 
@@ -86,7 +90,12 @@ sdk的har+hsp文件，放在集成方工程根目录下的files目录下，并�
 工程目录下的build-profile.json5文件中，compatibleSdkVersion必须高于TencentMeetingSDK当前的compatibleSdkVersion版本，否则无法使用，参考配置如下：
 ```project/build-profile.json5
 ...
-"compatibleSdkVersion": "5.0.1(13)",
+"products": [
+      {
+            ...
+            "compatibleSdkVersion": "5.0.1(13)",
+      }
+]
 ...
 ```
 ### 1.2.1.5 targetSdkVersion配置
@@ -113,6 +122,17 @@ export class App extends AbilityStage {
 }
 ```
 
+该步骤主要用于设置AbilityStageContext以及必要的状态，不会进行真正的初始化。
+
+#### 1.2.3.2 初始化函数
+在鸿蒙平台，sdk的初始化函数需要额外传入common.UIAbilityContext作为参数。示例如下：
+```
+private context = getContext(this) as common.UIAbilityContext;
+private init: () => void = () => {
+      TMSDK.initialize(this.context, param, new MyCallback());
+}
+```
+
 #### 1.2.3.2 保活配置：
 在使用sdk的ability文件所在的module中，配置backgroundModes。
 例如sdk_sample中的模块配置文件
@@ -133,14 +153,18 @@ sdk_sample/src/main/module.json5如下：
 ...
 ```
 
-## 1.2.4 路由使用说明
-鸿蒙平台下，宿主与TencentMeetingSdk进行交互的路由跳转，需要依赖宿主的pageStack使用，因此需要额外处理路由事件。Sdk这里提供了两种路由接入方案供接入方自由选择：
+#### 1.2.3.3 路由使用说明
+鸿蒙平台下，宿主与TencentMeetingSdk进行交互的路由跳转，需要依赖宿主的NavPathStack使用，因此需要额外处理路由事件。Sdk这里提供了两种路由接入方案供接入方自由选择：
+
+在SDKCallback回调函数中，有onRouterToPage函数和onTerminateSdkPage函数
 
 方案一：
 
-路由交互部分完全由TencentMeetingSdk提供的代理handler来完成，宿主提供handler所需要的相关参数。示例如下：
+路由交互部分完全由TencentMeetingSdk提供的代理handler来完成。
+宿主提供handler所需要的相关参数, 执行handler。
 
-在SDKCallback回调函数中，调用sdk相关回调函数提供的handler，并传入参数。
+sdk的onRouterToPage和onTerminateSdkPage回调函数中，宿主执行handler，并传入scheme、routerParam、NavPathStack实例、UiAbilityContext实例。其中NavPathStack实例、UiAbilityContext实例由宿主提供，scheme、routerParam由SDK回调函数提供。
+示例如下：
 ```
 onRouterToPage(scheme: string, routerParam: string,
     pushPathHandler?: (scheme: string, routerParams: string, pathStack?: NavPathStack,
@@ -185,7 +209,6 @@ onRouterToPage(scheme: string, routerParam: string,
 ```
 
 **需要注意：如果宿主使用了方案二，自己处理路由交互部分，需要宿主同时处理全屏状态变化和还原、屏幕旋转变化和还原等系统事件。**
-
 
 ## 1.3 资源文件和自定义通知栏图标
 
