@@ -1,0 +1,195 @@
+# 1. HarmonyOS SDK接入指南
+
+## 1.1 SDK组成
+SDK的产物解压后主要分为两部分：.har文件（har包）以及.tgz文件（集成态hsp）
+har包和集成态hsp都有多个.
+集成使用时，需要统一放置到鸿蒙工程目录下的files文件夹中,使目录结构成如下形式：
+```
+project/files/libs/*.har
+project/files/libs/*.tgz
+```
+
+## 1.2 集成步骤
+
+### 1.2.1 工程脚本配置
+#### 1.2.1 project配置文件
+sdk的har+hsp文件，放在集成方工程根目录下的files目录下，并在project/oh-package.json5文件中增加overrides节点配置，配置如下：
+```
+"overrides": {
+    "tm_harmony_sdk": "file: ./files/libs/tm_harmony_sdk.har",
+    "tm_harmony_sdk_core": "file: ./files/libs/tm_harmony_sdk_core.har",
+    "app_common": "file: ./files/libs/app_common.har",
+    "common": "file: ./files/libs/common.har",
+    "module_core": "file: ./files/libs/module_core.har",
+    "nxui_app": "file: ./files/libs/nxui_app.har",
+    "nxui_uikit": "file: ./files/libs/nxui_uikit.har",
+    "startup": "file: ./files/libs/startup.har",
+    "thirdparty": "file: ./files/libs/thirdparty.har",
+    "wemeet": "file: ./files/libs/wemeet.har",
+    "wemeet_framework": "file: ./files/libs/wemeet_framework.har",
+    "wemeet_platform": "file: ./files/libs/wemeet_platform.har",
+    "tpns": "file: ./files/libs/tpns.har",
+    "qimei": "file: ./files/libs/qimei.har",
+    "wemeet_base": "file: ./files/libs/wemeet_base.tgz",
+    "libxcast": "file: ./files/libs/libxcast.tgz"
+  },
+```
+
+如果overrides节点已经存在，请在overrides节点内增加上述overrides中的配置项。
+
+#### 1.2.1.2 module配置文件
+在需要使用TencentMeetingSdk的模块中，引入相关依赖，配置到module/oh-package.json5文件中，配置如下：
+```
+  "dependencies": {
+    "tm_harmony_sdk": "file: ../files/libs/tm_harmony_sdk.har",
+  }
+
+```
+
+#### 1.2.1.3 so架构与so打包冲突解决
+在entry module的build-profile.json5文件中，配置abiFilters,配置如下：
+```
+{
+  "apiType": "stageMode",
+  "buildOption": {
+      ...
+    "externalNativeOptions": {
+      ...
+      //因为TencentMeetingSDK目前只支持arm64-v8a架构的设备，因此需做如下配置，过滤下cpu架构进行打包
+      "abiFilters": ["arm64-v8a"]
+    },
+    ...
+    "nativeLib": {
+      "filter": {
+        "pickFirsts": [
+      // 如果出现多个同名的so文件冲突，请在这里指明pickFirst
+          "libwemeet_platform.so",
+          "libwemeet_framework.so",
+          "libWMWhiteboardSDK.so",
+          "libtms_canary.so",
+          "libtms_file_delta.so",
+          "libvideo_render.so",
+          "libskia.so",
+        ],
+        "enableOverride": true,
+        "excludes": [
+          "armeabi-v7a/**",
+          "x86_64/**"
+        ]
+      }
+    }
+  }
+
+```
+
+### 1.2.1.4 compatibleSdkVersion配置
+工程目录下的build-profile.json5文件中，compatibleSdkVersion必须高于TencentMeetingSDK当前的compatibleSdkVersion版本，否则无法使用，参考配置如下：
+```project/build-profile.json5
+...
+"compatibleSdkVersion": "5.0.1(13)",
+...
+```
+### 1.2.1.5 targetSdkVersion配置
+该配置为可选，建议不要设置。如果设置，请设置值等同于compatibleSdkVersion，否则可能导致应用无法打包上架。
+
+### 1.2.2 安装依赖
+项目根目录下执行如下安装命令:
+```
+ohpm install
+```
+
+### 1.2.3 代码配置
+
+#### 1.2.3.1 appStage配置
+在应用的App.ets文件中增加如下配置：
+```
+import { AbilityStage } from '@kit.AbilityKit'
+import { TMSDK } from 'tm_harmony_sdk'
+
+export class App extends AbilityStage {
+  onCreate(): void {
+    TMSDK.initOnApplicationCreate(this.context);
+  }
+}
+```
+
+#### 1.2.3.2 保活配置：
+在使用sdk的ability文件所在的module中，配置backgroundModes。
+例如sdk_sample中的模块配置文件
+sdk_sample/src/main/module.json5如下：
+```
+...
+"abilities": [
+      {
+        "name": "Sdk_sampleAbility",
+        ...
+        "backgroundModes": [
+          // 长时任务类型的配置项
+          "voip",
+          "audioRecording"
+        ]
+      }
+]
+...
+```
+
+## 1.2.4 路由使用说明
+鸿蒙平台下，宿主与TencentMeetingSdk进行交互的路由跳转，需要依赖宿主的pageStack使用，因此需要额外处理路由事件。Sdk这里提供了两种路由接入方案供接入方自由选择：
+
+方案一：
+
+路由交互部分完全由TencentMeetingSdk提供的代理handler来完成，宿主提供handler所需要的相关参数。示例如下：
+
+在SDKCallback回调函数中，调用sdk相关回调函数提供的handler，并传入参数。
+```
+onRouterToPage(scheme: string, routerParam: string,
+    pushPathHandler?: (scheme: string, routerParams: string, pathStack?: NavPathStack,
+      context?: common.UIAbilityContext) => boolean) {
+    const pathStack = Nav.getPathStack(); //获取宿主自己定义的pageStack
+    if (pathStack && pushPathHandler?.(scheme, routerParam, pathStack, Nav.getUIContext())) {
+      return;
+    }
+  }
+
+onTerminateSdkPage(scheme: string, routerParam?: string,
+    popPathHandler?: (pathStack?: NavPathStack, context?: common.UIAbilityContext) => boolean) {
+    const pathStack = Nav.getPathStack();//获取宿主自己定义的pageStack
+    if (pathStack && popPathHandler?.(pathStack, Nav.getUIContext())) {
+      return;
+    }
+}
+```
+---
+方案二：
+
+路由交互部分，由宿主自己在回调中完成交互。Sdk不做任何处理，仅回调路由参数。
+示例如下：
+
+```
+onRouterToPage(scheme: string, routerParam: string,
+    pushPathHandler?: (scheme: string, routerParams: string, pathStack?: NavPathStack,
+      context?: common.UIAbilityContext) => boolean) {
+    Nav.getPathStack().pushDestination({
+      name: scheme,
+      param: {
+        param: routerParam
+      } as ESObject
+    })
+  }
+
+  onTerminateSdkPage(scheme: string, routerParam?: string,
+    popPathHandler?: (pathStack?: NavPathStack, context?: common.UIAbilityContext) => boolean) {
+    Nav.getPathStack().removeByName(scheme)
+  }
+
+```
+
+**需要注意：如果宿主使用了方案二，自己处理路由交互部分，需要宿主同时处理全屏状态变化和还原、屏幕旋转变化和还原等系统事件。**
+
+
+## 1.3 资源文件和自定义通知栏图标
+
+
+# 2. FAQ
+# 2.1 打包失败，提示targetAPIVersion diffent
+sdk的targetSdkVersion与宿主不一致导致，此时需要修改宿主的targetSdkVersion，与sdk保持一致。当前sdk版本（3.30），targetSdkVersion=13。
