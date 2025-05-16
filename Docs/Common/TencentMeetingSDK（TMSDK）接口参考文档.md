@@ -224,7 +224,8 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 函数说明：获取当前SDK版本号。
 * 返回值说明：版本号信息
 * 参数说明：无
-
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
 
 ### setCallback
 * 函数形式：**void setCallback(SDKCallback callback)**
@@ -275,6 +276,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 可用版本与平台：
   * 版本 >= 3.12.100: `Windows` / `Android` / `Linux`
   * 版本 >= 3.24.200: `Mac` / `iOS`   
+  * 版本 >= 3.30.100: `HarmonyOS` 
 * 函数说明：
   * 反初始化函数用来停止SDK功能并释放SDK资源，让SDK回到初始化之前的状态。
   * 反初始化调用的结果，通过`SDKCallback.onSDKUninitializeResult`回调来获取。
@@ -308,6 +310,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### isInitialized
 * 函数形式：**bool isInitialized()**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本：`IOS` / `Android` / `Win` / `Mac`
 * 函数说明：判断是否已初始化SDK成功。
 * 返回值说明：是否已经初始化SDK
 * 参数说明：无
@@ -315,6 +320,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### refreshSDKToken
 * 函数形式：**int refreshSDKToken(string new_sdk_token)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本：`IOS` / `Android` / `Win` / `Mac`
 * 函数说明：更新SDK Token，替换掉过期或快过期的SDK Token。
 * 返回值说明：处理结果的错误码，0表示成功；其他值表示失败，如：**-1008**表示**无效参数**。详情参考`6. 错误码`章节。
 * 参数说明：
@@ -326,6 +334,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### getCurrentSDKToken
 * 函数形式：**string getCurrentSDKToken()**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本：`IOS` / `Android` / `Win` / `Mac`
 * 函数说明：获取当前SDK Token的值。
 * 返回值说明：当前的SDK Token值
 * 参数说明：无
@@ -333,6 +344,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### showLogs
 * 函数形式：**void showLogs()**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本：`IOS` / `Android` / `Win` / `Mac`
 * 函数说明：帮助用户获取日志，移动端会对日志目录打包，并打开系统的分享；桌面端会打开日志文件夹。调用结果通过`SDKCallback.onShowLogsResult`回调通知。
 * 返回值说明：无
 * 参数说明：无
@@ -349,7 +363,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### collectLogFiles
 * 函数形式：**string[] collectLogFiles(int begin_time, int end_time)**
-* 可用版本：>= 3.12.100
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.12.100: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：根据开始和结束时间，返回会议SDK的日志文件路径的列表
 * 返回值说明：类型是字符串数组，表示日志文件绝对路径的列表，每个小时1个日志文件，所以多个日志文件
 * 参数说明：
@@ -362,7 +378,9 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### activeUploadLogs
 * 函数形式：**activeUploadLogs(int begin_time, int end_time, string description)**
-* 可用版本：>= 3.21.100
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.21.100：`IOS` / `Android` / `Win` / `Mac`
 * 函数说明：
   * 主动上传日志，通过接口`SDKCallback.onActiveUploadLogsResult`回调通知返回结果；
   * 只上传开始和结束时间期间的日志，开始时间和结束时间的最大间隔为24h
@@ -381,6 +399,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### setProxyInfo
 * 函数形式：**void setProxyInfo(string proxy_info)**
 * 可用版本：桌面端 >= 3.0.106，移动端 >= 3.6.300
+  * 版本 >= 3.30.100: `HarmonyOS` 
 * 函数说明：设置代理接口，通过JSON字符串传递代理配置参数；调用结果通过`SDKCallback.onSetProxyResult`回调通知。
 * 返回值说明：无
 * 参数说明：
@@ -418,14 +437,18 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### getProxyInfo
 * 函数形式：**string getProxyInfo()**
-* 可用版本：>= 3.12.300
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.12.300:`IOS` / `Android` / `Win` / `Mac`
 * 函数说明：查询代理信息，返回代理信息的JSON字符串，如果未初始化会返回空字符串
 * 返回值说明：参见`setProxyInfo`接口参数格式
 
 
 ### handleSchema
 * 函数形式：**void handleSchema (string schema_url)**
-* 可用版本：>= 3.6.100
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.6.100: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：带有复合功能接口(一键跳转包含登录、入会能力)，通过解析schema_url不同页面跳转指定界面，
            schema_url格式是否符合格式标准通过`SDKCallback.OnHandleSchemaResult`回调，
            user_code登录结果通过`AuthenticationCallback.onLogin`回调，
@@ -452,7 +475,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### addUsersWithParam
 * 函数形式：**void addUsersWithParam(string json_param)**
 * 可用版本：>= 3.6.401
-* 可用平台：**Linux暂不支持**
+* 可用平台：**Linux、HarmonyOS暂不支持**
 * 函数说明：
   - 添加人员操作，接入方可以邀请人加入预定会议、或邀请人员加入会议，添加的结果通过`SDKCallback.onAddUsersResult`回调通知给接入方
   - 当使用SDK的预定会议界面时，并在`PreMeetingCallback.onShowAddressBook`回调中，可通过该函数添加主持人和成员
@@ -480,6 +503,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 - 函数形式：**void parseMeetingInfoUrl(string schema_url)**
 - 可用版本：>= 3.12.100
+- 可用平台：**HarmonyOS暂不支持**
 - 函数说明：用户通过入会短链获取对应的会议信息，调用结果通过`SDKCallback.onParseMeetingInfoUrl`回调通知。
 - 返回值说明：无
 - 参数说明：
@@ -518,6 +542,9 @@ SDKCallback 需实现以下成员函数：
 
 ### onSDKInitializeResult
 * 函数形式：**void onSDKInitializeResult(int code, string msg)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 说明：调用SDK初始化的结果回调
 
 |参数名 |参数类型 | 参数说明 |
@@ -528,7 +555,9 @@ SDKCallback 需实现以下成员函数：
 
 ### onSDKUninitializeResult
 - 函数形式：**void onSDKUninitializeResult(int code, string msg)**
-- 可用版本：>= 3.12.100
+- 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.12.100: `IOS` / `Android` / `Win` / `Mac`
 - 说明：调用反初始化函数之后的结果回调。
 
 | 参数名 | 参数类型 | 参数说明                                                   |
@@ -539,6 +568,9 @@ SDKCallback 需实现以下成员函数：
 
 ### onSDKError
 * 函数形式：**void onSDKError(int code, string msg)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 
 |参数名 |参数类型 | 参数说明 |
 |---|---|---|
@@ -548,7 +580,9 @@ SDKCallback 需实现以下成员函数：
 
 ### onResetSDKState
 * 函数形式：**void onResetSDKState(int code, string msg)**
-* 可用版本：>= 2.18.2
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 2.18.2: `IOS` / `Android` / `Win` / `Mac`
 * 说明：发生错误，需要重置状态
 * 详细说明：错误码与对应说明见下表
 
@@ -568,6 +602,7 @@ SDKCallback 需实现以下成员函数：
 ### onShowLogsResult
 * 函数形式：**void onShowLogsResult(int code, string msg)**
 * 可用版本：>= 2.18.2
+* 可用平台：**HarmonyOS暂不支持**
 * 说明：调用`showLogs`的结果回调
 
 |参数名 |参数类型 | 参数说明 |
@@ -578,7 +613,9 @@ SDKCallback 需实现以下成员函数：
 
 ### onActiveUploadLogsResult
 * 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
-* 可用版本：>= 3.21.100
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.21.100: `IOS` / `Android` / `Win` / `Mac`
 * 说明：调用`TMSDK.activeUploadLogs`函数的回调
 
 | 参数名  | 参数类型   | 参数说明        |
@@ -599,7 +636,9 @@ SDKCallback 需实现以下成员函数：
 
 ### onSetProxyResult
 * 函数形式：**void onSetProxyResult(int code, string msg)**
-* 可用版本：>= 3.0.106
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.0.106: `IOS` / `Android` / `Win` / `Mac`
 * 说明：代理设置接口`setProxyInfo`的回调
 * 详细说明：当code为-1024，表示无效json串，需要检测`setProxyInfo`传入的json串是否符合格式标准；当code为-1025，表示ip代理设置失败，需要检"ip+端口+用户名+密码"是否配置正确
 
@@ -611,7 +650,9 @@ SDKCallback 需实现以下成员函数：
 
 ### onHandleSchemaResult
 * 函数形式：**void onHandleSchemaResult(int code, string msg)**
-* 可用版本：>= 3.6.100
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.6.100: `IOS` / `Android` / `Win` / `Mac`
 * 说明：调用`TMSDK.handleSchema`函数的回调
 
 | 参数名  | 参数类型   | 参数说明        |
@@ -623,7 +664,7 @@ SDKCallback 需实现以下成员函数：
 ### onAddUsersResult
 * 函数形式：**void onAddUsersResult(int user_type, int code, string msg)**
 * 可用版本：>= 3.6.401
-* 可用平台：**Linux暂不支持**
+* 可用平台：**Linux、HarmonyOS暂不支持**
 * 说明：调用`TMSDK.addUsersWithParam`函数的回调
 
 | 参数名       | 参数类型   | 参数说明                                            |
@@ -636,6 +677,7 @@ SDKCallback 需实现以下成员函数：
 ### onParseMeetingInfoUrl
 - 函数形式：**void onParseMeetingInfoUrl(int code, string msg)**
 - 可用版本：>= 3.12.100
+- 可用平台：**HarmonyOS暂不支持**
 - 说明：通过入会短链获取对应的会议信息的回调。
 
 | 参数名 | 参数类型 | 参数说明                                                   |
@@ -674,6 +716,9 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 ### login
 * 函数形式：**void login(string sso_url)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。
 * 返回值说明：无
 * **最佳实践和注意事项**：
@@ -692,7 +737,9 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 ### loginByJSON
 * 函数形式：**void loginByJSON(string login_json)**
-* 可用版本：>=3.24.100
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.24.100: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。
 * 返回值说明：无
 * **最佳实践和注意事项**：
@@ -732,6 +779,9 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 ### logout
 * 函数形式：**void logout()**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：发起登出请求，登出结果会在回调`AuthenticationCallback.onLogout`返回。
 * 返回值说明：无
 * **最佳实践和注意事项**：
@@ -744,6 +794,9 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 ### isLoggedIn
 * 函数形式：**bool isLoggedIn()**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：判断是否已登录
 * 返回值说明：是否已登录
 * 参数说明：无
@@ -751,6 +804,9 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 ### jumpUrlWithLoginStatus
 * 函数形式：**void jumpUrlWithLoginStatus(string target_url)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：带登录态去打开目标地址，该地址必须是会议相关的、并支持登录态方式的页面，必须登录成功才可调用。
 * 返回值说明：无
 * 参数说明：
@@ -762,7 +818,9 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 
 ### getUrlWithLoginStatus
 * 函数形式：**string getUrlWithLoginStatus(string target_url)**
-* 可用版本：>= 2.18.1
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 2.18.1: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：获取一个带登录态的URL链接，该地址必须是会议相关的、并支持登录态方式的页面，必须登录成功才可调用。
 * 返回值说明：一个带登录态的URL链接
 * 参数说明：
@@ -778,6 +836,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### onLogin
 * 函数形式：**void onLogin(int code, string msg)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 说明：账户登录的回调。
 
 |参数名 |参数类型 |参数说明 |
@@ -788,6 +849,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### onLogout
 * 函数形式：**void onLogout(int type, int code, string msg)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 说明：账户登出的回调。
 
 |参数名 |参数类型 |参数说明 |
@@ -799,6 +863,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### onJumpUrlWithLoginStatus
 * 函数形式：**void onJumpUrlWithLoginStatus(int code, string msg)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 说明：带登录态跳转的回调。
 
 |参数名 |参数类型 |参数说明 |
@@ -826,6 +893,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### joinMeeting
 * 函数形式：**void joinMeeting(JoinParam param)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：
   * 发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
   * 如果想使用JoinParam参数中缺省的默认值，请使用`joinMeetingByJSON`函数
@@ -853,7 +923,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### joinMeetingByJSON
 * 函数形式：**void joinMeetingByJSON(string json_param)**
-* 可用版本：>=3.0.106
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.0.106: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
 * 返回值说明：无
 * 参数说明：
@@ -879,7 +951,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### quickMeeting
 * 函数形式：**void quickMeeting()**
-* 可用版本：>= 3.6.200
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.6.200: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：无
@@ -887,7 +961,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### quickMeetingByJSON
 * 函数形式：**void quickMeetingByJSON(string json_param)**
-* 可用版本：>= 3.6.300
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.6.300: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：
@@ -903,6 +979,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### showPreMeetingView
 * 函数形式：**void showPreMeetingView(int style, int type)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：显示SDK自带的会前界面。登录完成后，才可调用。
 * 版本说明：3.21.200及以后版本仅支持展示多Tab样式的会前界面，不会受style参数值的影响。
 * 返回值说明：无
@@ -918,6 +997,7 @@ AuthenticationCallback 需实现以下成员函数：
 ### showHistoricalMeetingView
 * 函数形式：**void showHistoricalMeetingView()**
 * 可用版本：>= 2.18.1
+* 可用平台：**HarmonyOS暂不支持**
 * 函数说明：显示用户历史会议界面。登录完成后，才可调用。
 * 返回值说明：无
 * 参数说明：无
@@ -925,7 +1005,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### showMeetingDetailView
 - 函数形式：**void showMeetingDetailView(string meeting_id, string current_sub_meeting_id, string start_time, bool is_history)**
-- 可用版本：>= 3.6.200
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.6.200: `IOS` / `Android` / `Win` / `Mac`
 - 函数说明：
   - 显示某一个具体会议的界面。
   - 登陆完成后，才可调用。
@@ -945,7 +1027,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### showJoinMeetingView
 * 函数形式：**void showJoinMeetingView()**
-* 可用版本：>= 2.18.2
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 2.18.2: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：显示加入会议界面。登录完成后，才可调用。
 * 返回值说明：无
 * 参数说明：无
@@ -953,7 +1037,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### showScheduleMeetingView
 * 函数形式：**void showScheduleMeetingView(int meeting_type)**
-* 可用版本：>= 2.18.2
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 2.18.2: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：显示预定会议会议界面。登录完成后，才可调用。
 * 返回值说明：无
 * 参数说明：
@@ -965,7 +1051,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### showUploadLogsView
 * 函数形式：**void showUploadLogsView()**
-* 可用版本：>= 3.21.100
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.21.100: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：
   * 显示上传日志界面。
   * 初始化完成后，才可调用。
@@ -976,7 +1064,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### showMeetingSettingView
 * 函数形式：**void showMeetingSettingView()**
-* 可用版本：>= 2.18.2
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 2.18.2: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：显示设置管理界面。初始化后，才可调用。
 * 返回值说明：无
 * 参数说明：无
@@ -984,6 +1074,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### showScreenCastView
 * 函数形式：**void showScreenCastView()**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：显示SDK自带的投屏码输入界面。登录完成后，才可调用。
 * 可用平台：**Linux暂不支持**
 * 返回值说明：无
@@ -1023,6 +1116,9 @@ msg内容示例：
 
 ### startScreenCast
 * 函数形式：**void startScreenCast(string json_param)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.12.201: `IOS` / `Android` / `Win` / `Mac`
 * 可用版本：>= 3.12.201
 * 可用平台：**Linux暂不支持**
 * 函数说明：
@@ -1065,7 +1161,9 @@ msg内容示例：
 
 ### queryMeetingInfo
 * 函数形式：**void queryMeetingInfo(string param)**
-* 可用版本：>= 3.6.200
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.6.200: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：查询会议信息，通过回调`PreMeetingCallback.onActionResult`的查询结果，`action_type`参数是`QueryMeetingInfo`
 * 返回值说明：无
 * 参数说明：
@@ -1178,7 +1276,7 @@ msg内容示例：
 ### enableAddressBookCallback
 * 函数形式：**void enableAddressBookCallback(bool enable, bool show)**
 * 可用版本：>= 3.6.401
-* 可用平台：**Linux暂不支持**
+* 可用平台：**Linux、HarmonyOS暂不支持**
 * 函数说明：
   * SDK预定会议界面中，开启定制化通讯录的回调。
   * 当用户在SDK预定会议界面中，点击通讯录选人按钮来邀请成员和主持人时，发起`PreMeetingCallback.onShowAddressBook`回调。
@@ -1198,7 +1296,9 @@ msg内容示例：
 
 ### enableRingInvitationView
 * 函数形式：**void enableRingInvitationView(bool enable)**
-* 可用版本：>= 3.12.400
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.12.400: `IOS` / `Android` / `Win` / `Mac`
 * 可用平台：**Linux暂不支持**
 * 函数说明：设置是否显示SDK的响铃邀请界面
 * 返回值说明：无
@@ -1214,7 +1314,9 @@ msg内容示例：
 
 ### handleRingInvitation
 * 函数形式：**void handleRingInvitation(bool accept, string invite_id, Callback complete)**
-* 可用版本：>= 3.12.400
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.12.400: `IOS` / `Android` / `Win` / `Mac`
 * 可用平台：**Linux暂不支持**
 * 函数说明：
   * 处理响铃邀请
@@ -1244,6 +1346,7 @@ msg内容示例：
 
 - 函数形式：**void openQRCodeUrl( string url_string)**
 - 可用版本：>= 3.21.100
+- 可用平台：**HarmonyOS暂不支持**
 - 函数说明：集成方App上层实现打开摄像头扫描二维码功能，将扫描到的会议二维码内容（一般为URL），通过该函数打开。执行结果通过`PreMeetingCallback.onOpenQRCodeUrlResult`回调通知。
 - 参数说明：扫描二维码后要被打开的URL
 
@@ -1253,6 +1356,7 @@ msg内容示例：
 * 函数形式：**void discoverNearScreenCastCode(string json_param)**
 * 可用版本：>= 3.24.300
 * 可用平台：`Windows`/`macOS`/`ios`/`Android`
+  - **HarmonyOS暂不支持**
 * 函数说明：
   - 近场发现获取投屏码的开关功能
   - 桌面端支持超声波&蓝牙发现投屏码，移动端只支持蓝牙发现投屏码
@@ -1310,6 +1414,7 @@ msg内容示例：
 * 函数形式：**void ShowAIAssistantView()**
 * 可用版本：>= 3.30.100
 * 可用平台：iOS, Android, Windows, Mac
+  - **HarmonyOS暂不支持**
 * 函数说明：
   * 打开AI小助手页面。
   * 调用时机：需要初始化、登录。
@@ -1331,6 +1436,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### onJoinMeeting
 * 函数形式：**void onJoinMeeting(int code, string msg, string meeting_code)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 说明：入会的回调。
 
 |参数名 |参数类型 | 参数说明                             |
@@ -1342,7 +1450,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### onActionResult
 * 函数形式：**void onActionResult(int action_type, int code, string msg)**
-* 可用版本：>= 2.18.2
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 2.18.2: `IOS` / `Android` / `Win` / `Mac`
 * 说明：各种行为操作的通知回调。
 
 |参数名 |参数类型 |参数说明 |
@@ -1377,7 +1487,7 @@ PreMeetingCallback 需实现以下成员函数：
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
 * 可用版本：>= 3.6.401
-* 可用平台：**Linux暂不支持**
+* 可用平台：**Linux、HarmonyOS暂不支持**
 * 说明：
   * 用户在SDK界面中打开通讯录的回调，可用作接入方定制通讯录的通知。
   * 在`PreMeetingService.enableAddressBookCallback`函数参数enable设置为true的情况下，在SDK预定会议界面中，用户点击通讯录邀请成员、指定主持人时，会收到该回调。
@@ -1399,7 +1509,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### onRingInvitationEvent
 * 函数形式：**void onRingInvitationEvent(int ring_state, string ring_info)**
-* 可用版本：>= 3.12.400
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.12.400: `IOS` / `Android` / `Win` / `Mac`
 * 可用平台：**Linux暂不支持**
 * 说明：
   * 用户在收到响铃邀请时的回调，可用作接入方定制响铃邀请界面的通知。
@@ -1438,6 +1550,7 @@ PreMeetingCallback 需实现以下成员函数：
 
 - 函数形式：**void onOpenQRCodeUrlResult(int code,string url,string msg)**
 - 可用版本：>= 3.21.100
+- 可用平台：**HarmonyOS暂不支持**
 - 说明：客户调用了`openQRCodeUrl`接口后的回调
 - 参数说明
 
@@ -1478,6 +1591,10 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：
   - **void leaveMeeting(int leave_meeting_type) [>= 3.21.200]**
   - **void leaveMeeting(bool end_meeting) [< 3.21.200]**  
+
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：发起离会请求，结果会在回调`InMeetingCallback.onLeaveMeeting`返回。
 * 返回值说明：无
 * 参数说明：
@@ -1489,6 +1606,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### enableInviteCallback
 * 函数形式：**void enableInviteCallback(bool enable, bool show)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：设置是否使用邀请回调，如果使用，点击会议中界面下方工具栏上的邀请按钮，会触发`InMeetingCallback.onInviteMeeting`回调，并回调会议信息。
            该接口入会之前设置有效，建议初始化回调之后，登录之前设置。
 * 返回值说明：无
@@ -1507,6 +1627,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### enableMeetingInfoCallback
 * 函数形式：**void enableMeetingInfoCallback(bool enable, bool show)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：设置是否使用会议信息回调，如果使用，点击会议title后面(i)信息按钮，会触发`InMeetingCallback.onShowMeetingInfo`回调，并回调会议信息。
 * 返回值说明：无
 * 参数说明：
@@ -1524,7 +1647,7 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### enableInviteUsersCallback
 * 函数形式：**void enableInviteUsersCallback(bool enable, bool show)**
-* 可用平台：**Linux暂不支持**
+* 可用平台：**Linux、HarmonyOS暂不支持**
 * 函数说明：
    * 设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息（users）和场景类型（user_type）。
    * 设置接口要早于点击会中界面成员列表添加按钮，建议初始化回调之后登录之前设置。
@@ -1550,6 +1673,7 @@ PreMeetingCallback 需实现以下成员函数：
 ### bringInMeetingViewTop
 * 函数形式：**void bringInMeetingViewTop()**
 * 可用版本：桌面端：>= 3.0.102; 移动端：>= 3.12.404
+  * 版本 >= 3.30.100: `HarmonyOS` 
 * 函数说明：
   * 桌面端: 将会中窗口置顶，如果当前没有会中窗口，则不做任何操作。没有回调。
   * 移动端: 会切到会中界面，如果不在会议中，则不做任何操作。没有回调。
@@ -1559,7 +1683,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### switchPIPModel
 * 函数形式：**void switchPIPModel(bool isEnterPip)**
-* 可用版本：>= 3.6.200
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.6.200: `IOS` / `Android` / `Win` / `Mac`
 * 适用平台：移动端（Android, iOS）
 * 函数说明：进入悬浮窗或者退出悬浮窗状态，结果会在回调`InMeetingCallback.onSwitchPiPResult`返回。
 * 返回值说明：无
@@ -1572,7 +1698,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### configPipButtonAction
 * 函数形式：**void configPipButtonAction(int pipActionType, string data, Callback complete)**
-* 可用版本：>= 3.24.300
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.24.300: `IOS` / `Android` / `Win` / `Mac`
 * 适用平台：移动端（Android, iOS）
 * 函数说明：
   * 这个接口允许接入方设置用户关闭悬浮窗时的行为，并在相应的回调函数 **InMeetingCallback.onPipModeChanged**参数中返回通知
@@ -1603,7 +1731,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### getCurrentMeetingInfo
 * 函数形式：**string getCurrentMeetingInfo()**
-* 可用版本：>= 3.6.300
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.6.300: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：获取当前会议状态信息
 * 返回值说明：
   * 未初始化前不可调用，非法调用返回空字符串。
@@ -1628,7 +1758,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### enableCustomOrgInfo
 * 函数形式：**void enableCustomOrgInfo(bool enable)**
-* 可用版本：>= 3.6.401
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.6.401: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：
   * 设置是否开启自定义组织架构信息
   * 如果开启，SDK将在需要的时候，通过回调方式向接入方查询相关用户的组织架构信息，并展示在界面上。
@@ -1640,7 +1772,9 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### setCustomOrgInfo
 * 函数形式：**void setCustomOrgInfo(string json_param)**
-* 可用版本：>= 3.6.401
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.6.401: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：
   * 对相关成员设置自定义的组织架构信息
   * 调用时机：一般在`InMeetingCallback.onQueryCustomOrgInfo`回调中获取需要设置组织架构信息的用户id列表，然后调用该函数告知SDK。
@@ -1696,7 +1830,7 @@ msg内容示例:
 ### switchCaption
 * 函数形式：**void switchCaption(bool open, Callback complete)**
 * 可用版本：>= 3.12.300
-* 可用平台：**Linux暂不支持**
+* 可用平台：**Linux、HarmonyOS暂不支持**
 * 函数说明：
   * 开关会议中字幕展示组件。
   * 调用时机：只能在会中调用。
@@ -1723,7 +1857,7 @@ msg内容示例:
 ### updateCaptionSettings
 * 函数形式：**void updateCaptionSettings(string json_setting, Callback complete)**
 * 可用版本：>= 3.12.300
-* 可用平台：**Linux暂不支持**
+* 可用平台：**Linux、HarmonyOS暂不支持**
 * 函数说明：
   * 更新字幕相关设置选项。当前支持设置“源语言”、“翻译目标语言”、“是否双语展示”。
   * 调用时机：只能在会中调用。部分设置项需要主持人才能调用修改。
@@ -1796,7 +1930,9 @@ msg内容示例:
 
 ### getScreenShareInfo
 * 函数形式：**string getScreenShareInfo()**
-* 可用版本：>= 3.12.300
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.12.300: `IOS` / `Android` / `Win` / `Mac`
 * 函数说明：获取当前屏幕共享信息
 * 参数说明：无
 * 返回值说明：
@@ -1882,7 +2018,7 @@ msg内容示例:
 
 * 函数形式：**void setLeaveCastRoomActionType(int actionType)**
 * 可用版本：>= 3.12.403
-* 可用平台：**Linux暂不支持**
+* 可用平台：**Linux、HarmonyOS暂不支持**
 * 函数说明：用来设置共享屏幕入会后，结束共享时是否展示"结束共享"弹窗。
 * 参数说明：
 
@@ -1895,7 +2031,7 @@ msg内容示例:
 ### switchLayout
 
 * 函数形式：**void switchLayout(string layout_json, Callback complete)**
-* 可用版本：>= 3.12.404（**仅支持桌面端，Linux暂不支持**）
+* 可用版本：>= 3.12.404（**仅支持桌面端，Linux、HarmonyOS暂不支持**）
 * 函数说明：
   * 切换会议的默认布局。
   * 调用时机：只能在会中调用。
@@ -1942,7 +2078,7 @@ layout_id枚举值如下:
 
 ### subscribeInMeetingActionEvent
 * 函数形式：**void subscribeInMeetingActionEvent(int action_type, bool subscribe, string subscription_json)**
-* 可用版本：>= 3.12.404（**仅支持桌面端，Linux暂不支持**）
+* 可用版本：>= 3.12.404（**仅支持桌面端，Linux、HarmonyOS暂不支持**）
 * 函数说明：
   * 订阅/退订会中事件。
   * 调用时机：初始化后可调用。
@@ -2011,6 +2147,9 @@ InMeetingCallback 需实现以下成员函数：
 
 ### onLeaveMeeting
 * 函数形式：**void onLeaveMeeting(int type, int code, string msg, string meeting_code)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 说明：离会的回调。
 * 参数说明：
 
@@ -2024,6 +2163,9 @@ InMeetingCallback 需实现以下成员函数：
 
 ### onInviteMeeting
 * 函数形式：**void onInviteMeeting(string invite_info)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 说明：用户在会议中界面点击下方工具栏邀请按钮后的回调。
 * 参数说明：
 
@@ -2055,6 +2197,9 @@ invite_info内容
 
 ### onShowMeetingInfo
 * 函数形式：**void onShowMeetingInfo(string meeting_info)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 说明：用户在会议中界面点击展示会议信息的回调。
 * 参数说明：
 
@@ -2066,7 +2211,7 @@ invite_info内容
 ### onInviteUsers
 * 函数形式：**void onInviteUsers(string json_data)**
 * 可用版本：>= 3.6.401
-* 可用平台：**Linux暂不支持**
+* 可用平台：**Linux、HarmonyOS暂不支持**
 * 说明：
   * 用户在会议中界面点击右侧成员列表上方的添加成员按钮的的回调。
   * 接入方响应回调后，可展示自定义通讯录，在自定义通讯录中添加成员要通知到SDK时，可调用`TMSDK.addUsersWithParam`函数来实现。
@@ -2094,6 +2239,9 @@ invite_info内容
 
 ### onSwitchPiPResult
 * 函数形式：**void onSwitchPiPResult(int code, string msg)**
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 说明：调用switchPIPModel接口的回调。
 * 参数说明：
 
@@ -2104,6 +2252,9 @@ invite_info内容
 
 
 ### onPipModeChanged
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 全版本: `IOS` / `Android` / `Win` / `Mac`
 * 说明：
   * 进入悬浮窗或者退出悬浮窗状态时回调。
   * iOS14.0以上才支持全局小窗
@@ -2126,7 +2277,9 @@ data内容示例
 
 ### onQueryCustomOrgInfo
 * 函数形式：**void onQueryCustomOrgInfo(string json_data)**
-* 可用版本：>= 3.6.401
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.6.401: `IOS` / `Android` / `Win` / `Mac`
 * 说明：
   * SDK主动向接入放查询自定义的组织架构信息
   * 当调用`InMeetingService.enableCustomOrgInfo`函数开启了该功能，才会收到该回调
@@ -2140,7 +2293,9 @@ data内容示例
 
 ### onActionResult
 * 函数形式：**void onActionResult(int action_type, int code, string msg)**
-* 可用版本：>= 3.6.401
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.6.401: `IOS` / `Android` / `Win` / `Mac`
 * 说明：会中的各种行为操作的通知回调
 
 |参数名 |参数类型 | 参数说明                           |
@@ -2234,7 +2389,7 @@ data内容示例
 ### onCaptionSwitchChanged
 * 函数形式：**void onCaptionSwitchChanged(bool is_open)**
 * 可用版本：>=3.12.300
-* 可用平台：**Linux暂不支持**
+* 可用平台：**Linux、HarmonyOS暂不支持**
 * 说明：当字幕开关状态变化时回调，无论该变化是由用户UI操作引起的还是调用API接口设置引起的。
 
 |参数名 |参数类型 |参数说明 |
@@ -2245,7 +2400,7 @@ data内容示例
 ### onCaptionSettingChanged
 * 函数形式：**void onCaptionSettingChanged(string json_info)**
 * 可用版本：>=3.12.300
-* 可用平台：**Linux暂不支持**
+* 可用平台：**Linux、HarmonyOS暂不支持**
 * 说明：当字幕任意设置项被修改更新后回调，无论该变化是由用户UI操作引起的还是调用API接口设置引起的。
 
 |参数名 |参数类型 |参数说明 |
@@ -2287,7 +2442,9 @@ data内容示例
 
 ### onAudioStatusChanged
 * 函数形式：**void onAudioStatusChanged(int audioStatus)**
-* 可用版本：>=3.21.100
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.21.100: `IOS` / `Android` / `Win` / `Mac`
 * 说明：当前用户麦克风状态改变会收到此事件回调，具体的状态值如下
 
 | 名称 | key | 值 |
@@ -2303,7 +2460,9 @@ data内容示例
 
 ### onVideoStatusChanged
 * 函数形式：**void onVideoStatusChanged(int videoStatus)**
-* 可用版本：>=3.21.100
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.21.100: `IOS` / `Android` / `Win` / `Mac`
 * 说明：当前用户摄像头开关状态变化时，收到此事件回调，具体状态如下
 
 | 名称 | key | 值 |
@@ -2316,7 +2475,9 @@ data内容示例
 
 ### onAudioOutputDeviceChanged
 * 函数形式：**void onAudioOutputDeviceChanged(int type)**
-* 可用版本：>=3.21.100
+* 可用版本与平台： 
+  * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.21.100: `IOS` / `Android` / `Win` / `Mac`
 * 说明：当前用户切换音频播放设备会收到此事件回调，只支持移动端，具体状态如下
 
 | 名称 | key | 值 |
