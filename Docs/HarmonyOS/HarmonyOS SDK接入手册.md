@@ -6,48 +6,48 @@
 - 使用DevEco Studio Build Version: 5.0.7.210 及以上版本作为IDE
 
 ### 1.1.2 SDK组成
-- SDK Demo样例工程
-- 包含所有SDK库文件的.har和.tgz的压缩包SDK.zip
+- SDKSample Demo样例工程
+- libs 包含所有SDK库文件的.har和.tgz文件夹
 
 ## 1.2 集成步骤
 
 ### 1.2.1 工程脚本配置
-先将SDK.zip解压到鸿蒙工程根目录下的files文件夹中，解压后的目录结构成如下形式：
+先将TMSDK_HarmonyOS.zip解压，然后将解压后的libs文件夹整体复制到鸿蒙工程根目录（ProjectDir）下，解压后的目录结构成如下形式：
 ```
-project/files/libs/*.har
-project/files/libs/*.tgz
+ProjectDir/libs/*.har
+ProjectDir/libs/*.tgz
 ```
 #### 1.2.1.1 project配置文件
 
-sdk的har+hsp文件，放在集成方工程根目录下的files目录下，并在project/oh-package.json5文件中增加overrides节点配置，配置如下：
+TMSDK的har+hsp文件，放在集成方工程根目录下的libs目录下，并在 ***ProjectDir/oh-package.json5***文件中增加overrides节点配置，配置如下：
 ```
 "overrides": {
-    "tm_harmony_sdk": "file: ./files/libs/tm_harmony_sdk.har",
-    "tm_harmony_sdk_core": "file: ./files/libs/tm_harmony_sdk_core.har",
-    "app_common": "file: ./files/libs/app_common.har",
-    "common": "file: ./files/libs/common.har",
-    "module_core": "file: ./files/libs/module_core.har",
-    "nxui_app": "file: ./files/libs/nxui_app.har",
-    "nxui_uikit": "file: ./files/libs/nxui_uikit.har",
-    "startup": "file: ./files/libs/startup.har",
-    "thirdparty": "file: ./files/libs/thirdparty.har",
-    "wemeet": "file: ./files/libs/wemeet.har",
-    "wemeet_framework": "file: ./files/libs/wemeet_framework.har",
-    "wemeet_platform": "file: ./files/libs/wemeet_platform.har",
-    "tpns": "file: ./files/libs/tpns.har",
-    "qimei": "file: ./files/libs/qimei.har",
-    "wemeet_base": "file: ./files/libs/wemeet_base.tgz",
-    "libxcast": "file: ./files/libs/libxcast.tgz"
+    "tm_harmony_sdk": "file: ./libs/tm_harmony_sdk.har",
+    "tm_harmony_sdk_core": "file: ./libs/tm_harmony_sdk_core.har",
+    "app_common": "file: ./libs/app_common.har",
+    "common": "file: ./libs/common.har",
+    "module_core": "file: ./libs/module_core.har",
+    "nxui_app": "file: ./libs/nxui_app.har",
+    "nxui_uikit": "file: ./libs/nxui_uikit.har",
+    "startup": "file: ./libs/startup.har",
+    "thirdparty": "file: ./libs/thirdparty.har",
+    "wemeet": "file: ./libs/wemeet.har",
+    "wemeet_framework": "file: ./libs/wemeet_framework.har",
+    "wemeet_platform": "file: ./libs/wemeet_platform.har",
+    "tpns": "file: ./libs/tpns-1.0.4.har",
+    "qimei": "file: ./libs/qimei-1.0.21.har",
+    "wemeet_base": "file: ./libs/wemeet_base.tgz",
+    "libxcast": "file: ./libs/libxcast.tgz"
   },
 ```
 
 如果overrides节点已经存在，请在overrides节点内增加上述overrides中的配置项。
 
 #### 1.2.1.2 module配置文件
-在需要使用TencentMeetingSdk的模块中，引入相关依赖，配置到module/oh-package.json5文件中，配置如下：
+在需要使用TencentMeetingSdk的模块中，引入相关依赖，配置到此模块的 ***module/oh-package.json5*** 文件中，配置如下：
 ```
   "dependencies": {
-    "tm_harmony_sdk": "file: ../files/libs/tm_harmony_sdk.har",
+    "tm_harmony_sdk": "file: ../libs/tm_harmony_sdk.har",  //这里要看使用模块的实际路径
   }
 
 ```
