@@ -12,7 +12,7 @@
 ## 1.2 集成步骤
 
 ### 1.2.1 工程脚本配置
-先将TMSDK_HarmonyOS.zip解压，然后将解压后的libs文件夹整体复制到鸿蒙工程根目录（ProjectDir）下，解压后的目录结构成如下形式：
+先将TMSDK_HarmonyOS.zip解压，然后将解压后的libs文件夹整体复制到鸿蒙工程根目录（ProjectDir）下，复制完成后的目录结构成如下形式：
 ```
 ProjectDir/libs/*.har
 ProjectDir/libs/*.tgz
