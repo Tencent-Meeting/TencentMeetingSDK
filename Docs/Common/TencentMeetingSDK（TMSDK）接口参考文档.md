@@ -1005,9 +1005,9 @@ AuthenticationCallback 需实现以下成员函数：
 
 ### showMeetingDetailView
 - 函数形式：**void showMeetingDetailView(string meeting_id, string current_sub_meeting_id, string start_time, bool is_history)**
-* 可用版本与平台： 
-  * 版本 >= 3.30.100: `HarmonyOS` 
+* 可用版本： 
   * 版本 >= 3.6.200: `IOS` / `Android` / `Win` / `Mac`
+* 可用平台：**HarmonyOS暂不支持**
 - 函数说明：
   - 显示某一个具体会议的界面。
   - 登陆完成后，才可调用。
@@ -1119,7 +1119,6 @@ msg内容示例：
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
   * 版本 >= 3.12.201: `IOS` / `Android` / `Win` / `Mac`
-* 可用版本：>= 3.12.201
 * 可用平台：**Linux暂不支持**
 * 函数说明：
   - 开始投屏，如调用成功会自动入会，然后弹出投屏选择界面
