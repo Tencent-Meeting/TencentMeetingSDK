@@ -790,6 +790,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
   - 未登录时调用`logout`，会回调success。
   - 平时退出App不用调用`logout`，这样下次启动程序后调用`login`针对相同账户可以快速登录。    
 * 参数说明：无
+  - 鸿蒙端增加shouldLogoutInMeeting：boolean可选参数，默认false。当参数值为true时，可强制离会后再执行登出逻辑。
 
 
 ### isLoggedIn
@@ -967,7 +968,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：
-  * json_param必须是json标准字符串，可以包含一下字段，其他字段会自动忽略
+  * json_param必须是json标准字符串，可以包含以下字段，其他字段会自动忽略
   * meeting_window_title，会中窗口标题，如果不传或者为空，则以initialize接口的app_name为准，长度限制36（标准ASCII码算1，其它算2），超过会截断
 * 参数示例：
 ```
@@ -1954,7 +1955,7 @@ msg内容示例:
 * `data`字段说明
   - share_status: 
 
-    | share_type值 | 说明   |
+    | share_status值 | 说明   |
     |:------------|------|
     | 0           | 未共享  |
     | 1           | 共享中  |
