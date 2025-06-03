@@ -167,7 +167,7 @@ sdk_sample/src/main/module.json5如下：
 ```
 
 #### 1.2.3.3 路由使用说明
-鸿蒙平台下，宿主与TencentMeetingSdk进行交互的路由跳转，需要依赖宿主的NavPathStack使用，因此需要额外处理路由事件。Sdk这里提供了两种路由接入方案供接入方自由选择：
+鸿蒙平台下，TencentMeetingSdk使用鸿蒙推荐的Navigation实现路由跳转。因此，宿主与SDK进行交互时，需要依赖宿主提供NavPathStack，因此需要处理首个与SDK页面交互的路由事件。SDK已经提供了两种路由接入方案供接入方自由选择：
 
 在SDKCallback回调函数中，有onRouterToPage函数和onTerminateSdkPage函数
 
@@ -232,5 +232,61 @@ onRouterToPage(scheme: string, routerParam: string,
 -- 待后续补充
 
 # 2. FAQ
-# 2.1 打包失败，提示targetAPIVersion diffent
-sdk的targetSdkVersion与宿主不一致导致，此时需要修改宿主的targetSdkVersion，与sdk保持一致。当前sdk版本（3.30），targetSdkVersion=13。
+## 2.1 打包失败，提示targetAPIVersion diffent?
+A: sdk的targetSdkVersion与宿主不一致导致，此时需要修改宿主的targetSdkVersion，与sdk保持一致。当前sdk版本（3.30），targetSdkVersion=13。
+
+## 2.2 编译时遇到duplicate so问题?
+A: 参考上文：[[so架构与so打包冲突解决]](#1.2.1.3-so架构与so打包冲突解决)
+
+## 2.3 宿主使用了旧版路由Router,无法直接与SDK的Navigation页面交互?
+A: Navigation路由方式本身可以嵌入router路由方式中使用，但是需要注意，所有Navigation页面（NavigationDestination）应尽量挂载在一个router页面的Navigation节点下，不建议穿插挂载。
+
+嵌入方式如下：
+- 跳转到Navigation挂载页面
+```
+//router到NavigationMiddle页面
+router.pushUrl({ url: 'pages/NavigationMiddle' }); 
+```
+- 挂载页面实现
+```
+//NavigationMiddle 需声明在命名路由中，挂载Navigation节点，加载了'NavigationIndex'页面
+@Entry({ storage: LocalStorage.getShared() })
+@Component
+struct NavigationMiddle {
+  aboutToAppear(): void {
+    Nav.setUIContext(getContext(this) as common.UIAbilityContext)
+  }
+
+  build() {
+    Column() {
+      Navigation(Nav.getPathStack()) {
+      }
+      .onAttach(() => {
+        Nav.getPathStack().pushDestinationByName('NavigationIndex', null)
+      })
+      .hideNavBar(true)
+    }
+  }
+}
+```
+- 纯血Navigation路由组件
+```
+// NavigationIndex 页面为Navigation路由方式，与SDK提供的路由方式完全一致
+@Entry({ storage: LocalStorage.getShared() })
+@Component
+struct NavigationIndex {
+  build() {
+    NavDestination() {
+      NavigationIndexContent()
+    }.hideTitleBar(true)
+    .onDetach(()=> {
+      if (Nav.getPathStack().size() == 0) {
+        router.back();
+      }
+    })
+  }
+}
+```
+
+
+
