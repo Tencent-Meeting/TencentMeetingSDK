@@ -1699,9 +1699,9 @@ PreMeetingCallback 需实现以下成员函数：
 ### configPipButtonAction
 * 函数形式：**void configPipButtonAction(int pipActionType, string data, Callback complete)**
 * 可用版本与平台： 
-  * 版本 >= 3.30.100: `HarmonyOS` 
   * 版本 >= 3.24.300: `IOS` / `Android` / `Win` / `Mac`
 * 适用平台：移动端（Android, iOS）
+  - **HarmonyOS暂不支持**
 * 函数说明：
   * 这个接口允许接入方设置用户关闭悬浮窗时的行为，并在相应的回调函数 **InMeetingCallback.onPipModeChanged**参数中返回通知
   * 调用时机：初始化后可调用。
