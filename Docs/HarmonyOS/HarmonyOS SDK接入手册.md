@@ -114,7 +114,7 @@ ohpm install
 ### 1.2.3 代码配置
 
 #### 1.2.3.1 appStage配置
-在应用的App.ets文件中增加如下配置：
+* 在应用的App.ets文件中增加如下配置：
 ```
 import { AbilityStage } from '@kit.AbilityKit'
 import { TMSDK } from 'tm_harmony_sdk'
@@ -125,6 +125,15 @@ export class App extends AbilityStage {
   }
 }
 ```
+* 在应用entry模块的module.json5配置文件中，增加如下声明：
+```
+  "module": {
+    ...
+    "srcEntry": "./ets/entry/App.ets",  //增加App.ets的配置
+    ...
+  }
+```
+
 
 该步骤主要用于设置AbilityStageContext以及必要的状态，不会进行真正的初始化。
 
