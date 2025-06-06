@@ -39,11 +39,10 @@ addon，使用里面封装的接口即可。
 | 名称   | 原路径   | 目的路径  |
 | ----- | ------ | --------------------------------------- |
 | api-ms-win*.dll  | SDK |   output/win/win32    |
-| msvcp140.dll  | SDK    | output/win/win32    |
-| msvcp140_1.dll (3.21新增) | SDK    | output/win/win32    |
+| msvcp140*.dll  | SDK    | output/win/win32    |
 | concrt140.dll   | SDK | output/win/win32 |
 | vcomp140.dll | SDK | output/win/win32 |
-| vcruntime140.dll | SDK | output/win/win32 |
+| vcruntime140*.dll | SDK | output/win/win32 |
 | ucrtbase.dll | SDK | output/win/win32 |
 | wemeet_base.dll | SDK | output/win/win32 |
 | wemeetsdk_x86.dll | SDK | output/win/win32 |
@@ -56,11 +55,10 @@ rmdir /s /q Release
 mkdir Release
 xcopy /S /E /Y /Q /H /D ..\..\..\..\SDK\Release .\Release
 copy  ..\..\..\..\SDK\api-ms-win*.dll .\
-copy ..\..\..\..\SDK\msvcp140.dll .\msvcp140.dll
-copy ..\..\..\..\SDK\msvcp140_1.dll .\msvcp140_1.dll
+copy ..\..\..\..\SDK\msvcp140*.dll .\
 copy ..\..\..\..\SDK\concrt140.dll .\concrt140.dll
 copy ..\..\..\..\SDK\vcomp140.dll .\vcomp140.dll
-copy ..\..\..\..\SDK\vcruntime140.dll .\vcruntime140.dll
+copy ..\..\..\..\SDK\vcruntime140*.dll .\
 copy ..\..\..\..\SDK\ucrtbase.dll .\ucrtbase.dll
 copy ..\..\..\..\SDK\wemeet_base.dll .\wemeet_base.dll
 copy ..\..\..\..\SDK\wemeetsdk_x86.dll .\wemeetsdk_x86.dll
@@ -90,10 +88,8 @@ Electron_Demo目录下执行npm start
  | 名称   | 原路径   | 目的路径  |
 | ----- | ------ | --------------------------------------- |
 | api-ms-win*.dll  | SDK/Release/x64 |   output/win/x64    |
-| msvcp140.dll  | SDK/Release/x64    | output/win/x64    |
-| msvcp140_1.dll (3.21新增) | SDK    | output/win/win32    |
-| vcruntime140.dll | SDK/Release/x64 | output/win/x64 |
-| vcruntime140_1.dll | SDK/Release/x64 | output/win/x64 |
+| msvcp140*.dll  | SDK/Release/x64    | output/win/x64    |
+| vcruntime140*.dll | SDK/Release/x64 | output/win/x64 |
 | ucrtbase.dll | SDK/Release/x64 | output/win/x64 |
 | wemeet_base_x64.dll | SDK | output/win/x64 |
 | wemeetsdk_x64.dll | SDK | output/win/x64 |
@@ -106,10 +102,8 @@ rmdir /s /q Release
 mkdir Release
 xcopy /S /E /Y /Q /H /D ..\..\..\..\SDK\Release .\Release
 copy  ..\..\..\..\SDK\Release\x64\api-ms-win*.dll .\
-copy ..\..\..\..\SDK\Release\x64\msvcp140.dll .\msvcp140.dll
-copy ..\..\..\..\SDK\Release\x64\msvcp140_1.dll .\msvcp140_1.dll
-copy ..\..\..\..\SDK\Release\x64\vcruntime140.dll .\vcruntime140.dll
-copy ..\..\..\..\SDK\Release\x64\vcruntime140_1.dll .\vcruntime140_1.dll
+copy ..\..\..\..\SDK\Release\x64\msvcp140*.dll .\
+copy ..\..\..\..\SDK\Release\x64\vcruntime140*.dll .\
 copy ..\..\..\..\SDK\Release\x64\ucrtbase.dll .\ucrtbase.dll
 copy ..\..\..\..\SDK\wemeet_base_x64.dll .\wemeet_base_x64.dll
 copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
