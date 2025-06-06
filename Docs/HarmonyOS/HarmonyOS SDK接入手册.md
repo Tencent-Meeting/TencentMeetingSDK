@@ -19,7 +19,7 @@ ProjectDir/libs/*.tgz
 ```
 #### 1.2.1.1 project配置文件
 
-TMSDK的har+hsp文件，放在集成方工程根目录下的libs目录下，并在 ***ProjectDir/oh-package.json5***文件中增加overrides节点配置，配置如下：
+TMSDK的har包+hsp包(.tgz)文件，放在集成方工程根目录下的libs目录下，并在 ***ProjectDir/oh-package.json5***文件中增加overrides节点配置，配置如下：
 ```
 "overrides": {
     "tm_harmony_sdk": "file: ./libs/tm_harmony_sdk.har",
@@ -114,7 +114,7 @@ ohpm install
 ### 1.2.3 代码配置
 
 #### 1.2.3.1 appStage配置
-* 在应用的App.ets文件中增加如下配置：
+* 在应用entry模块的ets/entry目录下创建App.ets文件，并做如下配置：
 ```
 import { AbilityStage } from '@kit.AbilityKit'
 import { TMSDK } from 'tm_harmony_sdk'
@@ -237,6 +237,11 @@ A: sdk的targetSdkVersion与宿主不一致导致，此时需要修改宿主的t
 
 ## 2.2 编译时遇到duplicate so问题?
 A: 参考上文：[[so架构与so打包冲突解决]](#1.2.1.3-so架构与so打包冲突解决)
+
+## 2.3 主工程使用了router路由, 无法与sdk页面交互？
+A: 推荐先升级主工程的路由方式到Navigation，这也是鸿蒙推荐的路由方式：https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-navigation-navigation。
+
+TMSDK为暂时无法使用Navigation的用户提供了setRouterEnable(boolean)的兼容函数，当setRouterEnable(true)调用后，会开启兼容router的路由模式。**但是此种兼容模式存在无法修复的路由缺陷，影响用户体验**，请谨慎开启。
 
 
 
