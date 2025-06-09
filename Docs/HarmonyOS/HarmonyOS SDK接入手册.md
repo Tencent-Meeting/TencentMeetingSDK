@@ -237,11 +237,3 @@ A: sdk的targetSdkVersion与宿主不一致导致，此时需要修改宿主的t
 
 ## 2.2 编译时遇到duplicate so问题?
 A: 参考上文：[[so架构与so打包冲突解决]](#1.2.1.3-so架构与so打包冲突解决)
-
-## 2.3 主工程使用了router路由, 无法与sdk页面交互？
-A: 推荐先升级主工程的路由方式到Navigation，这也是鸿蒙推荐的路由方式：https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/arkts-navigation-navigation。
-
-TMSDK为暂时无法使用Navigation的用户提供了setRouterEnable(boolean)的兼容函数，当setRouterEnable(true)调用后，会开启兼容router的路由模式。**但是此种兼容模式存在无法修复的路由缺陷，影响用户体验**，请谨慎开启。
-
-
-
