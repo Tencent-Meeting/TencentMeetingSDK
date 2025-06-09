@@ -352,10 +352,10 @@ wemeet_sdk.CollectLogFiles(begin_time, end_time)
 #### 上传日志
 
 ```
-wemeet_sdk.ActiveUploadLogs(int begin_time, int end_time, string description)
+wemeet_sdk.ActiveUploadLogs(begin_time, end_time, description)
 ```
 
-说明：\>= 3.21.100版本，begin_time、end_time为int类型，description为string类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.21.100版本，begin_time、end_time为string类型，description为string类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 设置代理
 
