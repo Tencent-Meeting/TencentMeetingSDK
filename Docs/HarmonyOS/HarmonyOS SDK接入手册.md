@@ -167,11 +167,25 @@ sdk_sample/src/main/module.json5如下：
 ```
 
 #### 1.2.3.3 路由使用说明
-鸿蒙平台下，TencentMeetingSdk使用鸿蒙推荐的Navigation实现路由跳转。因此，宿主与SDK进行交互时，需要依赖宿主提供NavPathStack，因此需要处理首个与SDK页面交互的路由事件。SDK已经提供了两种路由接入方案供接入方自由选择：
+鸿蒙平台下，TencentMeetingSdk使用鸿蒙推荐的Navigation实现路由跳转。宿主与SDK进行路由跳转时，需要依赖**宿主提供NavPathStack**，也需要宿主在接口回调中处理SDK页面交互的路由事件。
+- 在SDKCallback回调接口中，SDK提供了onRouterToPage函数和onTerminateSdkPage函数，分别用来处理进入SDK页面和退出SDK页面的路由事件。
+```
+onRouterToPage: (scheme: string, routerParam: string, pushPathHandler?: (scheme: string, params: string, stack?: NavPathStack, context?: common.UIAbilityContext) => boolean) => void;
 
-在SDKCallback回调函数中，有onRouterToPage函数和onTerminateSdkPage函数
+onTerminateSdkPage: (scheme: string, routerParam?: string, popPathHandler?: (pathStack?: NavPathStack, context?: common.UIAbilityContext) => boolean) => void;
+```
+- 为方便快速接入，SDKCallback回调接口的onRouterToPage函数和onTerminateSdkPage函数参数中，分别提供了路由处理函数：pushPathHandler和popPathHandler。
+```
+pushPathHandler?: (scheme: string, params: string, stack?: NavPathStack, context?: common.UIAbilityContext) => boolean
 
-方案一：
+popPathHandler?: (pathStack?: NavPathStack, context?: common.UIAbilityContext) => boolean
+```
+- 接入方只需在onRouterToPage函数中调用pushPathHandler，在onTerminateSdkPage函数中调用popPathHandler，即可自动处理SDK页面交互的路由事件。
+- pushPathHandler和popPathHandler中都需要使用**宿主提供的NavPathStack**和**宿主提供的UIAbilityContext**作为参数
+
+
+
+方案一(快速接入，推荐)：
 
 SDK的路由交互部分完全由TencentMeetingSdk提供的回调中的handler函数来完成。
 宿主提供handler函数所需要的相关参数, 并执行handler。
@@ -182,7 +196,9 @@ sdk的onRouterToPage和onTerminateSdkPage回调函数中，宿主执行handler�
 onRouterToPage(scheme: string, routerParam: string,
     pushPathHandler?: (scheme: string, routerParams: string, pathStack?: NavPathStack,
       context?: common.UIAbilityContext) => boolean) {
-    const pathStack = Nav.getPathStack(); //获取宿主自己定义的pageStack
+    //获取宿主APP自己的pageStack
+    const pathStack = Nav.getPathStack(); 
+    //传pageStack和uiAbilityContext参数给handler
     if (pathStack && pushPathHandler?.(scheme, routerParam, pathStack, Nav.getUIContext())) {
       return;
     }
@@ -190,14 +206,16 @@ onRouterToPage(scheme: string, routerParam: string,
 
 onTerminateSdkPage(scheme: string, routerParam?: string,
     popPathHandler?: (pathStack?: NavPathStack, context?: common.UIAbilityContext) => boolean) {
-    const pathStack = Nav.getPathStack();//获取宿主自己定义的pageStack
+    //获取宿主APP自己的pageStack  
+    const pathStack = Nav.getPathStack();
+    //传pageStack和uiAbilityContext参数给handler
     if (pathStack && popPathHandler?.(pathStack, Nav.getUIContext())) {
       return;
     }
 }
 ```
 ---
-方案二：
+方案二（接入方自己处理SDK路由交互事件，接入场景复杂时使用）：
 
 SDK的路由交互部分，由宿主自己在回调中完成交互。Sdk不做任何处理，仅回调路由参数。
 示例如下：
@@ -237,3 +255,10 @@ A: sdk的targetSdkVersion与宿主不一致导致，此时需要修改宿主的t
 
 ## 2.2 编译时遇到duplicate so问题?
 A: 参考上文：[[so架构与so打包冲突解决]](#1.2.1.3-so架构与so打包冲突解决)
+
+## 2.3 使用router路由集成TencentMeetingSDK后，无法正常拉起会议？
+鸿蒙平台下，TencentMeetingSDK使用鸿蒙推荐的Navigation实现路由跳转。请升级到Navigation路由方式后尝试拉起会议。
+
+同时，TencentMeetingSDK可使用兼容router方案进行临时接入（接入后需要尽快升级到Navigation路由方式确保用户体验），但需要集成方自己实现跳转SDK页面路由和退出SDK页面路由。兼容方案如下：
+- 改造应用根页面，使用Navigation的路由方式，并初始化NavPathStack
+- onRouterToPage()函数中，先router回到应用根页面，再执行pushPathHandler并传入相关参数，否则sdk页面会被其他page覆盖导致不可见。
