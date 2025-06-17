@@ -2,7 +2,7 @@
 
 ## 1.1 SDK说明
 ### 1.1.1 版本环境说明
-- 当前仅支持compatibleSdkVersion = 5.0.1(13)
+- 支持compatibleSdkVersion = 5.0.1(13)
 - 使用DevEco Studio Build Version: 5.0.7.210 及以上版本作为IDE
 
 ### 1.1.2 SDK组成
@@ -34,7 +34,6 @@ TMSDK的har包+hsp包(.tgz)文件，放在集成方工程根目录下的libs目�
     "wemeet": "file: ./libs/wemeet.har",
     "wemeet_framework": "file: ./libs/wemeet_framework.har",
     "wemeet_platform": "file: ./libs/wemeet_platform.har",
-    "tpns": "file: ./libs/tpns-1.0.4.har",
     "qimei": "file: ./libs/qimei-1.0.21.har",
     "wemeet_base": "file: ./libs/wemeet_base.tgz",
     "libxcast": "file: ./libs/libxcast.tgz"
@@ -91,7 +90,7 @@ TMSDK的har包+hsp包(.tgz)文件，放在集成方工程根目录下的libs目�
 ```
 
 #### 1.2.1.4 compatibleSdkVersion配置
-工程目录下的build-profile.json5文件中，compatibleSdkVersion必须高于TencentMeetingSDK当前的compatibleSdkVersion版本，否则无法使用，参考配置如下：
+工程目录下的build-profile.json5文件中，compatibleSdkVersion必须大于等于TencentMeetingSDK当前的compatibleSdkVersion版本，否则无法使用，参考配置如下：
 ```project/build-profile.json5
 ...
 "products": [
