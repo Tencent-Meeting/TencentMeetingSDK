@@ -33,6 +33,8 @@
 | Linux    | [接入手册](./Docs/Linux/Linux接入手册.md)<br>[接入问题FAQ](./Docs/Linux/接入问题FAQ.md)                                                                                | 集成说明、常见问题说明      |
 | Electron | [接入手册](Docs/Electron/Electron接入手册.md) / [Linux接入手册](./Docs/Electron/Electron接入手册-Linux.md) <br>[接入问题FAQ](Docs/Electron/接入问题FAQ.md)                     | 集成说明、常见问题说明      |
 | QT       | [QT接入手册](Docs/Qt/QT接入手册.md)                                                                                                                            | 集成说明、常见问题说明      |
+| HarmonyOS | [接入手册](Docs/HarmonyOS/HarmonyOS%20SDK接入手册.md) | 集成说明、常见问题说明 |
+
 
 # 腾讯会议SDK隐私政策
 [腾讯会议SDK个人信息保护规则](https://privacy.qq.com/document/preview/67043f4d1b5848e49251e5e228511eba)
