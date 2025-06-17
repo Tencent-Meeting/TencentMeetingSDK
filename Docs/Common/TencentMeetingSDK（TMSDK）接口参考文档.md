@@ -23,6 +23,7 @@
     + [getAccountService](#getaccountservice)
     + [getPreMeetingService](#getpremeetingservice)
     + [getInMeetingService](#getinmeetingservice)
+    + [getUserConfigService](#getuserconfigservice)
   * [2.2 SDKCallback 回调代理](#22-sdkcallback-回调代理)
     + [onSDKInitializeResult](#onsdkinitializeresult)
     + [onSDKUninitializeResult](#onsdkuninitializeresult)
@@ -74,6 +75,8 @@
     + [openQRCodeUrl](#openqrcodeurl)
     + [discoverNearScreenCastCode](#discoverNearScreenCastCode)
     + [showAIAssistantView](#showAIAssistantView)
+    + [showRoomsControllerView](#showRoomsControllerView)
+    + [showVoiceRecordView](#showVoiceRecordView)
   * [4.2 PreMeetingCallback 回调代理](#42-premeetingcallback-回调代理)
     + [onJoinMeeting](#onjoinmeeting)
     + [onActionResult](#onactionresult)
@@ -116,8 +119,12 @@
     + [onAudioStatusChanged](#onAudioStatusChanged)
     + [onVideoStatusChanged](#onVideoStatusChanged)
     + [onAudioOutputDeviceChanged](#onAudioOutputDeviceChanged)
+- [6. UserConfigService 说明](#6-userconfigservice-说明)
+  * [6.1 UserConfigService 成员函数](#61-userconfig-成员函数)
+    + [setUserConfiguration](#setuserconfiguration)
+    + [getUserConfiguration](#getuserconfiguration)
 
-- [6. 错误码](#6-错误码)
+- [7. 错误码](#7-错误码)
 
 
 
@@ -167,9 +174,11 @@
 | 2024-11-27 | 3.24.400 | 新增错误码：[-1071]--账号登录失败。可能的原因：账号不存在；企业不存在；企业账号被封禁；设备被禁止登录等。 |
 | 2024-11-27 | 3.24.400 | 接口调整：更新字幕设置接口updateCaptionSettings，增加接收参数"allow_member_open", 可在会中修改成员权限，禁止或允许成员开启字幕 |
 | 2025-03-20 | 3.30.100 | 新增接口：showAIAssistantView(打开AI小助手页面) |
+| 2025-04-29 | 3.30.200 | 新增接口：showRoomsControllerView(打开Rooms控制器页面)，showVoiceRecordView(打开录音笔页面)|
+| 2025-04-29 | 3.30.200 | 接口调整：initialize接口中InitParam支持设置SDK语言为日语|
+| 2025-04-29 | 3.30.200 | 新增服务：UserConfigService(用户配置服务)|
 | 2025-06-16 | 3.30.100 for HarmonyOS | 新增错误码：[-1077]--因成员限制，加入会议时无法入会 |
 
-allow_member_open
 
 
 # 1. SDK使用说明
@@ -267,7 +276,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |通用 |data_path |string |否 |`tmsdkapp.exe`同级目录 | 仅`Windows`/`Linux`支持:自定义SDK数据存储路径，里面包括日志目录。 |
 |通用 |app_name |string |否 |网络会议 | 指定显示的品牌名称 |
 |公有云SDK专用 |app_icon |string |否 |(无) |  用来指定窗口图标对应的文件绝对路径（仅windows端）|
-|公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，如传入其它值则显示为zh-cn，3.6.200及以上版本可用） |
+|公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，ja，如传入其它值则显示为zh-cn，3.6.200及以上版本可用， 其中日语从3.30.200及以上版本支持） |
 |通用 |proxy_info |string |否 |(无) | 用于初始化时设置网络代理，内容为json串，格式可参考setProxyInfo接口。如果使用了此参数，则必须拿到设置代理的回调后再调用登录接口（3.12.200以及以上版本可用） |
 |公有云SDK专用 |allow_home_view |bool |否 | true | 用于初始化时设置是否使用会议主面板，Windows和Mac可用，3.30.100以及以上版本可用 |
 
@@ -325,7 +334,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
   * 版本 >= 3.30.100: `HarmonyOS` 
   * 全版本：`iOS` / `Android` / `Win` / `Mac`
 * 函数说明：更新SDK Token，替换掉过期或快过期的SDK Token。
-* 返回值说明：处理结果的错误码，0表示成功；其他值表示失败，如：**-1008**表示**无效参数**。详情参考`6. 错误码`章节。
+* 返回值说明：处理结果的错误码，0表示成功；其他值表示失败，如：**-1008**表示**无效参数**。详情参考`7. 错误码`章节。
 * 参数说明：
 
 | 参数名           | 参数类型   | 参数必填 | 参数默认值 | 参数说明       |
@@ -536,6 +545,12 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 参数说明：无
 
 
+### getUserConfigService
+* 函数形式：**UserConfigService getUserConfigService()**
+* 可用版本：>= 3.30.200
+* 函数说明：获取SDK`UserConfigService`的对象实例。
+* 返回值说明：`UserConfigService`的对象实例
+* 参数说明：无
 
 ## 2.2 SDKCallback 回调代理
 
@@ -563,7 +578,7 @@ SDKCallback 需实现以下成员函数：
 
 | 参数名 | 参数类型 | 参数说明                                                   |
 | ------ | -------- | ---------------------------------------------------------- |
-| code   | int      | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+| code   | int      | 结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节 |
 | msg    | string   | 反初始化结果字符串描述                      |
 
 
@@ -683,7 +698,7 @@ SDKCallback 需实现以下成员函数：
 
 | 参数名 | 参数类型 | 参数说明                                                   |
 | ------ | -------- | ---------------------------------------------------------- |
-| code   | int      | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+| code   | int      | 结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节 |
 | msg    | string   | 入会短链对应的会议信息，JSON字符串                         |
 
 - msg 会议信息内容
@@ -845,7 +860,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
-| code | int | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+| code | int | 结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节 |
 |msg |string |结果信息 |
 
 
@@ -859,7 +874,7 @@ AuthenticationCallback 需实现以下成员函数：
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
 |type |int |登出类型：1、手动登出；2、强制登出（同端登录被踢） |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节|
 |msg |string |结果信息 |
 
 
@@ -872,7 +887,7 @@ AuthenticationCallback 需实现以下成员函数：
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节|
 |msg |string |结果信息 |
 
 
@@ -1101,7 +1116,7 @@ AuthenticationCallback 需实现以下成员函数：
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
 |action_type |int |这处为`decodeUltrasoundScreenCastCode` |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节|
 |msg |string |结果的JSON信息，示例如下 |
 
 msg内容示例：
@@ -1156,7 +1171,7 @@ msg内容示例：
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
 |action_type |int |这处为`startScreenCast` |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节|
 |msg |string |错误说明 |
 
 
@@ -1178,7 +1193,7 @@ msg内容示例：
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
 |action_type |int |这处为`QueryMeetingInfo` |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节|
 |msg |string |结果的JSON信息，示例如下 |
 
 msg内容示例：
@@ -1228,7 +1243,7 @@ msg内容示例：
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
 |action_type |int |这处为`QueryLocalRecordInfo` |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节|
 |msg |string |结果的JSON信息，示例如下 |
 
 msg内容示例：
@@ -1388,7 +1403,7 @@ msg内容示例：
 |参数名 |参数类型 | 参数说明                                 |
 |---|---|--------------------------------------|
 |action_type |int | 这处为`DiscoverNearScreenCastCode`应对的数值 |
-|code |int | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节     |
+|code |int | 结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节     |
 |msg |string | 结果的JSON信息，示例如下                       |
 
 msg内容示例：
@@ -1428,8 +1443,45 @@ msg内容示例：
 |参数名 |参数类型 | 参数说明                                 |
 |---|---|--------------------------------------|
 |action_type |int | 这处为`ShowAIAssistantView`应对的数值 |
-|code |int | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节     |
+|code |int | 结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节     |
 |msg |string | 结果信息                      |
+
+### showRoomsControllerView
+* 函数形式：**void ShowRoomsControllerView()**
+* 可用版本：>= 3.30.200
+* 可用平台：iOS, Android, Windows, Mac
+* 函数说明：
+  * 打开Rooms控制器页面。
+  * 调用时机：需要初始化、登录。
+  * 通过`PreMeetingCallback.onActionResult`回调操作结果，`action_type`参数是`ShowRoomsControllerView`
+* 返回值说明：无
+* 参数说明：无
+
+* `PreMeetingCallback.onActionResult`回调说明：
+
+|参数名 |参数类型 | 参数说明                                 |
+|---|---|--------------------------------------|
+|action_type |int | 这处为`ShowRoomsControllerView`应对的数值 |
+|code |int | 结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节     |
+|msg |string | 结果信息              
+
+### showVoiceRecordView
+* 函数形式：**void ShowVoiceRecordView()**
+* 可用版本：>= 3.30.200
+* 可用平台：iOS, Android, Windows, Mac
+* 函数说明：
+  * 唤起录音笔界面。
+  * 调用时机：需要初始化、登录。
+  * 通过 `PreMeetingCallback.onActionResult`回调操作结果，`action_type`参数是 `ShowVoiceRecordView`
+* 返回值说明：无
+* 参数说明：无
+* `PreMeetingCallback.onActionResult`回调说明：
+  
+| 参数名      | 参数类型 | 参数说明                                                      |
+| ----------- | -------- | ------------------------------------------------------------- |
+| action_type | int      | 这处为 `ShowVoiceRecordView`应对的数值                      |
+| code        | int      | 结果码：0表示成功；其他值表示失败，详情参考 `7. 错误码`章节 |
+| msg         | string   | 结果信息                                                      |
 
 ## 4.2 PreMeetingCallback 回调代理
 
@@ -1444,7 +1496,7 @@ PreMeetingCallback 需实现以下成员函数：
 
 |参数名 |参数类型 | 参数说明                             |
 |---|---|----------------------------------|
-|code |int | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+|code |int | 结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节 |
 |msg |string | 结果信息                             |
 |meeting_code | string | 要加入会议的会议号                        |
 
@@ -1459,7 +1511,7 @@ PreMeetingCallback 需实现以下成员函数：
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
 |action_type |int |表示何种行为操作，详情参考下表 |
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节|
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节|
 |msg |string |结果信息 |
 
 其中`action_type`值对应的含义如下：
@@ -1483,6 +1535,8 @@ PreMeetingCallback 需实现以下成员函数：
 | ShowUploadLogsView | 14   | 打开日志上传页面 |结果的说明文字                                       |
 | DiscoverNearScreenCastCode | 15   | 获取近场投屏码回调 |回调的JSON数据，格式参考`discoverNearScreenCastCode`函数说明                                       |
 | ShowAIAssistantView | 16   | 打开AI小助手页面 |结果的说明文字 |
+| ShowVoiceRecordView | 17   | 打开录音笔页面   | 结果的说明文|
+| ShowRoomsControllerView | 18   | 打开Rooms控制器页面 |结果的说明文字 |
 
 
 ### onShowAddressBook
@@ -1544,6 +1598,41 @@ PreMeetingCallback 需实现以下成员函数：
   "meeting_code": "111",  //会议号
   "meeting_id": "222",  //会议id
   "invite_id": "333"  //本次邀请的唯一标识
+}
+```
+
+### onVoiceRecordStatusChange
+* 函数形式：**void onVoiceRecordStatusChange(int status, string msg)**
+* 可用版本：>= 3.30.200
+* 可用平台：**Linux暂不支持**
+* 说明：
+  * 用户在打开录音笔界面后，可用来作为录音笔状态的通知。
+  * 当录音笔状态发生变化时候，通过回调函数通知用户。
+* 参数说明：
+
+| 参数名     | 参数类型 | 参数说明     |
+| ---------- | -------- | ------------ |
+| status | int      | 当前录音实例状态 |
+| msg  | string   | 状态对应的提示信息 |
+
+其中 `status`值对应的含义如下：
+
+| 枚举值 | 说明             |
+| ------ | ----------------|
+| -1     | 未录音状态       |
+| 0      | 录音结束         |    
+| 1      | 录音开始         |
+| 2      | 录音正在进行     |
+| 3      | 录音暂停         |
+| 4      | 录音上传成功     |
+| 5      | 录音上传失败     |
+
+`msg`状态json格式示例：
+上传成功或者失败的结果返回如下：
+```json5
+{
+  "title": "20250425录音文件",  //录音标题
+  "jump_url": "https://meeting.tencent.com/meeting-record/shares?id=3nVh6jXmqz1NdZnR2D4NqK946ch8VMcZfXqgDCjkMvU&from=3&record_type=5", //查看录音web页面
 }
 ```
 
@@ -1798,7 +1887,7 @@ PreMeetingCallback 需实现以下成员函数：
 | 参数名      | 参数类型 | 参数说明                                                |
 | ----------- | -------- | ------------------------------------------------------- |
 | action_type | int      | 此处为`SetCustomOrgInfo`对应的枚举值1000                |
-| code        | int      | 结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
+| code        | int      | 结果码：0表示成功；其他表示失败，详情参考`7.错误码`章节 |
 | msg         | string   | 结果信息，格式为JSON串，示例如下                        |
 
 msg内容示例:
@@ -1991,7 +2080,7 @@ msg内容示例:
 
 | 参数名  |  参数类型  |                参数说明                |
 |------|:------:|:----------------------------------:|
-| code |  int   | 结果码：0表示成功；其他值表示失败，详情参考 `6. 错误码` 章节 |
+| code |  int   | 结果码：0表示成功；其他值表示失败，详情参考 `7. 错误码` 章节 |
 | msg  | string |                结果描述                |
 | data | string |                查询结果                |
 
@@ -2073,7 +2162,7 @@ layout_id枚举值如下:
 
 | 参数名  | 参数类型   | 参数说明                                 |
 |------|--------|--------------------------------------|
-| code | int    | 操作结果错误码，0表示成功，其他值表示失败。详情参考`6. 错误码`章节 |
+| code | int    | 操作结果错误码，0表示成功，其他值表示失败。详情参考`7. 错误码`章节 |
 | msg  | string | 操作出错时包含错误信息，操作成功时值为空                 |
 
 
@@ -2083,7 +2172,7 @@ layout_id枚举值如下:
 * 函数说明：
   * 订阅/退订会中事件。
   * 调用时机：初始化后可调用。
-* 返回值说明：订阅/退订会中事件的结果，0表示成功；其他值表示失败，如：**-1061**表示**无效action_type**。详情参考`6. 错误码`章节。
+* 返回值说明：订阅/退订会中事件的结果，0表示成功；其他值表示失败，如：**-1061**表示**无效action_type**。详情参考`7. 错误码`章节。
 * 参数说明：
   
 | 参数名               | 参数类型   | 参数必填 | 参数默认值 | 参数说明                                   |
@@ -2157,7 +2246,7 @@ InMeetingCallback 需实现以下成员函数：
 | 参数名          | 参数类型   | 参数说明                             |
 |--------------|--------|----------------------------------|
 | type         | int    | 离会类型，1：用户自身操作离会；2：被踢出会议；3：会议结束   |
-| code         | int    | 结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+| code         | int    | 结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节 |
 | msg          | string | 结果信息                             |
 | meeting_code | string | 要离开会议的会议号                        |
 
@@ -2248,7 +2337,7 @@ invite_info内容
 
 |参数名 |参数类型 |参数说明 |
 |---|---|---|
-|code |int |结果码：0表示成功；其他值表示失败，详情参考`6. 错误码`章节 |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节 |
 |msg |string |结果信息|
 
 
@@ -2302,7 +2391,7 @@ data内容示例
 |参数名 |参数类型 | 参数说明                           |
 |-|-|--------------------------------|
 |action_type |int | 表示何种行为操作，详情参考下表                |
-|code |int | 结果码：0表示成功；其他表示失败，详情参考`6.错误码`章节 |
+|code |int | 结果码：0表示成功；其他表示失败，详情参考`7.错误码`章节 |
 |msg |string | 结果信息，格式为JSON字符串，详情参考下表         |
 
 
@@ -2490,5 +2579,77 @@ data内容示例
 |蓝牙|AudioOutputModeBluetooth|4|
 
 
-# 6. 错误码
+# 6. UserConfigService 说明
+UserConfigService用来管理用户配置，可以设置和获取用户配置。该实例是通过TMSDK.getUserConfigService()获得。
+
+## 6.1 UserConfigService 成员函数
+### SetUserConfiguration
+* 函数形式：**void setUserConfiguration(string config_key, string config_json, Callback complete)**
+* 可用版本：>= 3.30.200
+* 可用平台：iOS, Android, Windows, Mac
+* 函数说明：
+  * 设置用户使用配置，用以设置使用偏好或开关功能。通过JSON字符串传递代理配置参数
+  * 调用时机：需要初始化、登录
+* 返回值说明：无
+* 参数说明：
+  
+|参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明 |
+|---|---|------|-------|--------------------|
+|config_key |string |是 |无 |配置项对应的key | 
+|config_json |string | 是    | 无     | json格式配置的内容 |
+|complete |Callback | 否    | 空     | 设置结束回调block，可以为空   |
+
+* config_json以JSON字符串的格式输入。配置项以 key-value对的方式进行设置，config_value为设置参数。
+* 每个功能设置需要调用一次
+* 设置config_json参数示例
+  ```json5
+  {
+      "config_value" : true
+  }
+  ```
+* 支持的设置项列表  
+  
+  | 设置项key | 类型 | 默认值 | 说明 | 平台 | 错误码 |
+  | ------ | :------: | :------: | :------: | :------: | ------ |
+  | enableNearDiscover | bool | false | 是否启用近场发现 | 全部 | -6001 设置失败<br>-6002 无蓝牙权限 |
+  | enableQuickPip | bool | false | 是否开启Android快捷浮窗 | Android & iOS | -6001 设置失败 |
+
+* 回调说明：
+  
+	`Callback`签名：**void (\*)(int code, string msg)**
+	| 参数名 | 参数类型 | 参数说明 |
+	|---|---|---|
+	| code | int | 设置结果错误码，0表示成功(见`7. 错误码`) |
+	| msg | string | 设置出错时包含错误信息，操作成功时值为空 |
+
+### GetUserConfiguration
+* 函数形式：**void getUserConfiguration(string config_key, Callback complete)**
+* 可用版本：>= 3.30.200
+* 可用平台：iOS, Android, Windows, Mac
+* 函数说明：
+  * 查询用户使用配置，返回用户配置的JSON字符串
+  * 调用时机：需要初始化、登录
+* 参数说明：
+	* config_key是字符串类型，为功能设置的key
+* 返回值说明：
+	* JSON格式
+	* 配置项见`setUserConfiguration`支持的设置项列表
+	
+* 回调说明：
+  
+	`Callback`签名：**void (\*)(int code, string msg, config_json)**
+	|参数名 |参数类型 |参数说明 |
+	|---|---|---|
+	|code |int |操作结果错误码，0表示成功 |
+	|msg |string |操作出错时包含错误信息，操作成功时值为空 |
+	|config_json |string | 配置的内容，配置项见`setUserConfiguration`支持的设置项列表。如果查询配置项不支持，返回空对象 |
+* config_json配置内容示例:
+	```json5
+	{
+	    "config_key" : "xxxx",	
+	    "config_value" : true
+	}
+	```
+
+# 7. 错误码
 详情见：<br>[错误码列表](错误码列表.md)

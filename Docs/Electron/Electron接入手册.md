@@ -39,11 +39,10 @@ addon，使用里面封装的接口即可。
 | 名称   | 原路径   | 目的路径  |
 | ----- | ------ | --------------------------------------- |
 | api-ms-win*.dll  | SDK |   output/win/win32    |
-| msvcp140.dll  | SDK    | output/win/win32    |
-| msvcp140_1.dll (3.21新增) | SDK    | output/win/win32    |
+| msvcp140*.dll  | SDK    | output/win/win32    |
 | concrt140.dll   | SDK | output/win/win32 |
 | vcomp140.dll | SDK | output/win/win32 |
-| vcruntime140.dll | SDK | output/win/win32 |
+| vcruntime140*.dll | SDK | output/win/win32 |
 | ucrtbase.dll | SDK | output/win/win32 |
 | wemeet_base.dll | SDK | output/win/win32 |
 | wemeetsdk_x86.dll | SDK | output/win/win32 |
@@ -56,11 +55,10 @@ rmdir /s /q Release
 mkdir Release
 xcopy /S /E /Y /Q /H /D ..\..\..\..\SDK\Release .\Release
 copy  ..\..\..\..\SDK\api-ms-win*.dll .\
-copy ..\..\..\..\SDK\msvcp140.dll .\msvcp140.dll
-copy ..\..\..\..\SDK\msvcp140_1.dll .\msvcp140_1.dll
+copy ..\..\..\..\SDK\msvcp140*.dll .\
 copy ..\..\..\..\SDK\concrt140.dll .\concrt140.dll
 copy ..\..\..\..\SDK\vcomp140.dll .\vcomp140.dll
-copy ..\..\..\..\SDK\vcruntime140.dll .\vcruntime140.dll
+copy ..\..\..\..\SDK\vcruntime140*.dll .\
 copy ..\..\..\..\SDK\ucrtbase.dll .\ucrtbase.dll
 copy ..\..\..\..\SDK\wemeet_base.dll .\wemeet_base.dll
 copy ..\..\..\..\SDK\wemeetsdk_x86.dll .\wemeetsdk_x86.dll
@@ -90,10 +88,8 @@ Electron_Demo目录下执行npm start
  | 名称   | 原路径   | 目的路径  |
 | ----- | ------ | --------------------------------------- |
 | api-ms-win*.dll  | SDK/Release/x64 |   output/win/x64    |
-| msvcp140.dll  | SDK/Release/x64    | output/win/x64    |
-| msvcp140_1.dll (3.21新增) | SDK    | output/win/win32    |
-| vcruntime140.dll | SDK/Release/x64 | output/win/x64 |
-| vcruntime140_1.dll | SDK/Release/x64 | output/win/x64 |
+| msvcp140*.dll  | SDK/Release/x64    | output/win/x64    |
+| vcruntime140*.dll | SDK/Release/x64 | output/win/x64 |
 | ucrtbase.dll | SDK/Release/x64 | output/win/x64 |
 | wemeet_base_x64.dll | SDK | output/win/x64 |
 | wemeetsdk_x64.dll | SDK | output/win/x64 |
@@ -106,10 +102,8 @@ rmdir /s /q Release
 mkdir Release
 xcopy /S /E /Y /Q /H /D ..\..\..\..\SDK\Release .\Release
 copy  ..\..\..\..\SDK\Release\x64\api-ms-win*.dll .\
-copy ..\..\..\..\SDK\Release\x64\msvcp140.dll .\msvcp140.dll
-copy ..\..\..\..\SDK\Release\x64\msvcp140_1.dll .\msvcp140_1.dll
-copy ..\..\..\..\SDK\Release\x64\vcruntime140.dll .\vcruntime140.dll
-copy ..\..\..\..\SDK\Release\x64\vcruntime140_1.dll .\vcruntime140_1.dll
+copy ..\..\..\..\SDK\Release\x64\msvcp140*.dll .\
+copy ..\..\..\..\SDK\Release\x64\vcruntime140*.dll .\
 copy ..\..\..\..\SDK\Release\x64\ucrtbase.dll .\ucrtbase.dll
 copy ..\..\..\..\SDK\wemeet_base_x64.dll .\wemeet_base_x64.dll
 copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
@@ -301,12 +295,12 @@ wemeet_sdk.GetSDKVersion()
 #### 初始化 SDK
 
 ```
-windows端：wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, app_icon, language);
-mac端：wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, language);
+windows端：wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, app_icon, language, proxy_info, allow_home_view);
+mac端：wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, language, proxy_info, allow_home_view);
 说明：3.6.3以上版本新增语言设置可选项，详情参考《TencentMeetingSDK（TMSDK）接口参考文档》
 
 3.12.1以上版本统一接口参数，都需要传app_icon参数，但是Mac端没有app_icon定制场景建议传默认值""空串
-wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, app_icon, language);
+wemeet_sdk.InitWemeetSDK(sdk_id, sdk_token, data_path, app_name, app_icon, language, proxy_info, allow_home_view);
 ```
 
 #### 反初始化SDK
@@ -358,10 +352,10 @@ wemeet_sdk.CollectLogFiles(begin_time, end_time)
 #### 上传日志
 
 ```
-wemeet_sdk.ActiveUploadLogs(int begin_time, int end_time, string description)
+wemeet_sdk.ActiveUploadLogs(begin_time, end_time, description)
 ```
 
-说明：\>= 3.21.100版本，begin_time、end_time为int类型，description为string类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
+说明：\>= 3.21.100版本，begin_time、end_time为string类型，description为string类型，可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 设置代理
 
