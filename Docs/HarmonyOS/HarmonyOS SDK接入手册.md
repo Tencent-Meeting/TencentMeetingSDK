@@ -2,7 +2,7 @@
 
 ## 1.1 SDK说明
 ### 1.1.1 版本环境说明
-- 支持compatibleSdkVersion = 5.0.1(13)
+- 当前仅支持compatibleSdkVersion = 5.0.1(13)
 - 使用DevEco Studio Build Version: 5.0.7.210 及以上版本作为IDE
 
 ### 1.1.2 SDK组成
@@ -90,7 +90,7 @@ TMSDK的har包+hsp包(.tgz)文件，放在集成方工程根目录下的libs目�
 
 ```
 
-### 1.2.1.4 compatibleSdkVersion配置
+#### 1.2.1.4 compatibleSdkVersion配置
 工程目录下的build-profile.json5文件中，compatibleSdkVersion必须高于TencentMeetingSDK当前的compatibleSdkVersion版本，否则无法使用，参考配置如下：
 ```project/build-profile.json5
 ...
@@ -102,7 +102,7 @@ TMSDK的har包+hsp包(.tgz)文件，放在集成方工程根目录下的libs目�
 ]
 ...
 ```
-### 1.2.1.5 targetSdkVersion配置
+#### 1.2.1.5 targetSdkVersion配置
 该配置为可选，建议不要设置。如果设置，请设置值等同于compatibleSdkVersion，否则可能导致应用无法打包上架。
 
 ### 1.2.2 安装依赖
@@ -166,7 +166,7 @@ sdk_sample/src/main/module.json5如下：
 ...
 ```
 
-#### 1.2.3.3 路由使用说明
+### 1.2.4 路由使用说明
 鸿蒙平台下，TencentMeetingSdk使用鸿蒙推荐的Navigation实现路由跳转。宿主与SDK进行路由跳转时，需要依赖**宿主提供NavPathStack**，也需要宿主在接口回调中处理SDK页面交互的路由事件。
 - 在SDKCallback回调接口中，SDK提供了onRouterToPage函数和onTerminateSdkPage函数，分别用来处理进入SDK页面和退出SDK页面的路由事件。
 ```
@@ -185,7 +185,7 @@ popPathHandler?: (pathStack?: NavPathStack, context?: common.UIAbilityContext) =
 
 
 
-方案一(快速接入，推荐)：
+#### 1.2.4.1 方案一(快速接入，推荐)：
 
 SDK的路由交互部分完全由TencentMeetingSdk提供的回调中的handler函数来完成。
 宿主提供handler函数所需要的相关参数, 并执行handler。
@@ -215,7 +215,7 @@ onTerminateSdkPage(scheme: string, routerParam?: string,
 }
 ```
 ---
-方案二（接入方自己处理SDK路由交互事件，接入场景复杂时使用）：
+#### 1.2.4.2 方案二（接入方自己处理SDK路由交互事件，接入场景复杂时使用）：
 
 SDK的路由交互部分，由宿主自己在回调中完成交互。Sdk不做任何处理，仅回调路由参数。
 示例如下：
@@ -239,15 +239,12 @@ onRouterToPage(scheme: string, routerParam: string,
 
 ```
 
-**需要注意：**
+#### 1.2.4.3 注意项
 - **如果集成方使用了方案二，自己处理路由交互部分，需要集成方同时处理全屏状态变化和还原、屏幕旋转变化和还原等系统事件。**
 - **集成方鸿蒙App中，需要使用鸿蒙官方推荐的Navigation和NavPathStack进行路由管理。同时路由中的页面顶层元素需要声明为NavDestination，否则可能无法路由到sdk页面。详细使用方式可参考SdkSample中的Index.ets和MeetingTab.ets实现**
 
 
 
-
-## 1.3 资源文件和自定义通知栏图标
--- 待后续补充
 
 # 2. FAQ
 ## 2.1 打包失败，提示targetAPIVersion diffent?
