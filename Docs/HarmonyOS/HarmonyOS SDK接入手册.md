@@ -253,8 +253,8 @@ A: sdk的targetSdkVersion与宿主不一致导致，此时需要修改宿主的t
 A: 参考上文：[[so架构与so打包冲突解决]](#1.2.1.3-so架构与so打包冲突解决)
 
 ## 2.3 使用router路由集成TencentMeetingSDK后，无法正常拉起会议？
-鸿蒙平台下，TencentMeetingSDK使用鸿蒙推荐的Navigation实现路由跳转。请升级到Navigation路由方式后尝试拉起会议。
+A：鸿蒙平台下，TencentMeetingSDK使用鸿蒙推荐的Navigation实现路由跳转。请升级到Navigation路由方式后尝试拉起会议。
 
 同时，TencentMeetingSDK可使用兼容router方案进行临时接入（接入后需要尽快升级到Navigation路由方式确保用户体验），但需要集成方自己实现跳转SDK页面路由和退出SDK页面路由。兼容方案如下：
-- 改造应用根页面，使用Navigation的路由方式，并初始化NavPathStack
+- 改造应用根页面，使用Navigation的路由方式，并在根页面初始化NavPathStack
 - onRouterToPage()函数中，先router回到应用根页面，再执行pushPathHandler并传入相关参数，否则sdk页面会被其他page覆盖导致不可见。
