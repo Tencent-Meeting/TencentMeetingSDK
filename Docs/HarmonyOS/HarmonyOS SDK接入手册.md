@@ -258,3 +258,9 @@ A：鸿蒙平台下，TencentMeetingSDK使用鸿蒙推荐的Navigation实现路�
 同时，TencentMeetingSDK可使用兼容router方案进行临时接入（接入后需要尽快升级到Navigation路由方式确保用户体验），但需要集成方自己实现跳转SDK页面路由和退出SDK页面路由。兼容方案如下：
 - 改造应用根页面，使用Navigation的路由方式，并在根页面初始化NavPathStack
 - onRouterToPage()函数中，先router回到应用根页面，再执行pushPathHandler并传入相关参数，否则sdk页面会被其他page覆盖导致不可见。
+
+## 2.4 从ohpm beta镜像仓库无法下载到所需的三方库，导致编译失败？
+A: 鸿蒙官方指定的三方仓库地址是:
+https://ohpm.openharmony.cn/ohpm/
+开发者请按照如下鸿蒙官方指引文档地址，将三方仓库地址正确配置到项目ohpm配置中：
+https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-ohpmrc
