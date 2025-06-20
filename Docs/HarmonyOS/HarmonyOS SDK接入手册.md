@@ -260,7 +260,21 @@ A：鸿蒙平台下，TencentMeetingSDK使用鸿蒙推荐的Navigation实现路�
 - onRouterToPage()函数中，先router回到应用根页面，再执行pushPathHandler并传入相关参数，否则sdk页面会被其他page覆盖导致不可见。
 
 ## 2.4 从ohpm beta镜像仓库无法下载到所需的三方库，导致编译失败？
-A: 鸿蒙官方指定的三方仓库地址是:
+A: 
+- 鸿蒙官方指定的三方仓库地址是:
+```
 https://ohpm.openharmony.cn/ohpm/
-开发者请按照如下鸿蒙官方指引文档地址，将三方仓库地址正确配置到项目ohpm配置中：
+```
+- 开发者请按照如下鸿蒙官方指引文档地址，将三方仓库地址正确配置到项目ohpm配置中：
 https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-ohpmrc
+- 如果设置.ohpmrc后配置未生效，命令行执行ohpm config list，查看ohpm的所有配置信息和生效的配置文件路径，请自行修改为正确的配置
+```
+ohpm config list
+```
+- 如果因为https证书问题无法访问仓库地址，请在.ohpmrc配置关闭证书验证：
+```
+strict_ssl=false
+```
+
+
+
