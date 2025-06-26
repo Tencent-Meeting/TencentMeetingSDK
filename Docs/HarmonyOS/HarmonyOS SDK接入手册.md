@@ -271,6 +271,8 @@ https://developer.huawei.com/consumer/cn/doc/harmonyos-guides/ide-ohpmrc
 ```
 ohpm config list
 ```
+- 如果执行ohpm config list后，ohpm配置信息和仓库地址已正确指向`https://ohpm.openharmony.cn/ohpm/`,但执行ohpm install时，没有从该仓库中下载。请确保本地工程中的缓存路径已清除，可删除工程中的`oh-package-lock.json5`文件并`Sync and Refresh Project`工程。
+
 - 如果因为https证书问题无法访问仓库地址，请在.ohpmrc配置关闭证书验证：
 ```
 strict_ssl=false
