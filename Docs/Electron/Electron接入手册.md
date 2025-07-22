@@ -70,8 +70,11 @@ copy ..\..\..\..\SDK\wemeetsdk_x86.dll .\wemeetsdk_x86.dll
 
 注意：
 windows SDK 3.30.300及以上版本，如果不使用会议node，自行编译node，需要在npm install前拷贝静态库：
-copy ..\SDK\wemeetsdk_x86.lib .\wemeet_sdk\win\lib\win32\release\wemeetsdk_x86.lib
-copy ..\SDK\wemeetsdk_x64.lib .\wemeet_sdk\win\lib\x64\release\wemeetsdk_x64.lib
+
+**copy ..\SDK\wemeetsdk_x86.lib .\wemeet_sdk\win\lib\win32\release\wemeetsdk_x86.lib**
+
+**copy ..\SDK\wemeetsdk_x64.lib .\wemeet_sdk\win\lib\x64\release\wemeetsdk_x64.lib**
+
 以上命令的执行目录为Electron_Demo
 
 - 方法一：Electron_Demo目录下执行npm install安装依赖
