@@ -70,9 +70,9 @@ copy ..\..\..\..\SDK\wemeetsdk_x86.dll .\wemeetsdk_x86.dll
 
 Electron_Demo目录下 
 
-**cp ..\SDK\wemeetsdk_x86.lib .\wemeet_sdk\win\lib\x64\release\wemeetsdk_x86.lib**
+**copy ..\SDK\wemeetsdk_x86.lib .\wemeet_sdk\win\lib\win32\release\wemeetsdk_x86.lib**
 
-**cp ..\SDK\include 磁盘根目录**
+**copy ..\SDK\include 磁盘根目录**
 
 **执行npm install安装依赖，生成node**
 
@@ -126,9 +126,9 @@ copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
 
 Electron_Demo目录下
 
-**cp ..\SDK\wemeetsdk_x64.lib  wemeet_sdk\win\lib\x64\release/**
+**copy ..\SDK\wemeetsdk_x64.lib  wemeet_sdk\win\lib\x64\release/**
 
-**cp ..\SDK\include 磁盘根目录**
+**copy ..\SDK\include 磁盘根目录**
 
 **执行npm install安装依赖，生成node**
 
