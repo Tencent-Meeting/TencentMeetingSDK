@@ -68,12 +68,10 @@ copy ..\..\..\..\SDK\wemeetsdk_x86.dll .\wemeetsdk_x86.dll
 
 **二、安装electron以及相关的依赖**
 
-注意：
-windows SDK 3.30.300及以上版本，如果不使用会议node，自行编译node，需要在npm install前拷贝静态库：
+Electron_Demo目录下 
+**copy ..\SDK\wemeetsdk_x86.lib .\wemeet_sdk\win\lib\x64\release\wemeetsdk_x86.lib**
 
-**copy ..\SDK\wemeetsdk_x64.lib .\wemeet_sdk\win\lib\x64\release\wemeetsdk_x64.lib**
-
-Electron_Demo目录下执行npm install安装依赖
+执行npm install安装依赖，生成node
 
 **三、拷贝node**
 
@@ -118,12 +116,10 @@ copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
 
 **二、安装electron以及相关的依赖**
 
-注意：
-windows SDK 3.30.300及以上版本，如果不使用会议node，自行编译node，需要在npm install前拷贝静态库：
+Electron_Demo目录下
+**cp ../SDK/wemeetsdk_x64.lib  wemeet_sdk/win/lib/x64/release/**
 
-cp ../SDK/wemeetsdk_x64.lib  wemeet_sdk/win/lib/x64/release/
-
-Electron_Demo目录下执行npm install安装依赖
+执行npm install安装依赖，生成node
 
 **三、拷贝node**
 
