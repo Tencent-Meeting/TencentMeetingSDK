@@ -70,6 +70,7 @@ copy ..\..\..\..\SDK\wemeetsdk_x86.dll .\wemeetsdk_x86.dll
 
 Electron_Demo目录下 
 **copy ..\SDK\wemeetsdk_x86.lib .\wemeet_sdk\win\lib\x64\release\wemeetsdk_x86.lib**
+**copy ..\SDK\include 磁盘根目录**
 
 执行npm install安装依赖，生成node
 
@@ -77,10 +78,13 @@ Electron_Demo目录下
 
 cp build/Release/wemeet_electron_sdk.node   output/win/win32/
 
-**四、运行demo**
+**四、拷贝完整的SDK**
+
+将win32下所有目录和文件拷贝到宿主的执行环境
+
+**五、运行demo（可选）**
 
 Electron_Demo目录下执行npm start
-
 
 
 #### 1.3.2 64位 Windows
@@ -120,6 +124,7 @@ copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
 
 Electron_Demo目录下
 **cp ../SDK/wemeetsdk_x64.lib  wemeet_sdk/win/lib/x64/release/**
+**copy ..\SDK\include 磁盘根目录**
 
 执行npm install安装依赖，生成node
 
@@ -127,7 +132,11 @@ Electron_Demo目录下
 
 cp build/Release/wemeet_electron_sdk.node   output/tm-meeting-tmsdk/win-x64
 
-**四、运行demo**
+**四、拷贝完整的SDK**
+
+将win-x64下所有目录和文件拷贝到宿主的执行环境
+
+**五、运行demo（可选）**
 
 Electron_Demo目录下执行npm start
 
