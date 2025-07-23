@@ -69,10 +69,12 @@ copy ..\..\..\..\SDK\wemeetsdk_x86.dll .\wemeetsdk_x86.dll
 **二、安装electron以及相关的依赖**
 
 Electron_Demo目录下 
-**copy ..\SDK\wemeetsdk_x86.lib .\wemeet_sdk\win\lib\x64\release\wemeetsdk_x86.lib**
-**copy ..\SDK\include 磁盘根目录**
 
-执行npm install安装依赖，生成node
+**cp ..\SDK\wemeetsdk_x86.lib .\wemeet_sdk\win\lib\x64\release\wemeetsdk_x86.lib**
+
+**cp ..\SDK\include 磁盘根目录**
+
+**执行npm install安装依赖，生成node**
 
 **三、拷贝node**
 
@@ -123,10 +125,12 @@ copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
 **二、安装electron以及相关的依赖**
 
 Electron_Demo目录下
-**cp ../SDK/wemeetsdk_x64.lib  wemeet_sdk/win/lib/x64/release/**
-**copy ..\SDK\include 磁盘根目录**
 
-执行npm install安装依赖，生成node
+**cp ..\SDK\wemeetsdk_x64.lib  wemeet_sdk\win\lib\x64\release/**
+
+**cp ..\SDK\include 磁盘根目录**
+
+**执行npm install安装依赖，生成node**
 
 **三、拷贝node**
 
