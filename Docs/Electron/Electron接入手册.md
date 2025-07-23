@@ -87,20 +87,20 @@ Electron_Demo目录下执行npm start
 
 **一、拷贝SDK**
 
-- 方法一：按照如下表格拷贝依赖文件
+按照如下表格拷贝依赖文件
 
  | 名称   | 原路径   | 目的路径  |
 | ----- | ------ | --------------------------------------- |
-| api-ms-win*.dll  | SDK/Release/x64 |   output/win/x64    |
-| msvcp140*.dll  | SDK/Release/x64    | output/win/x64    |
-| vcruntime140*.dll | SDK/Release/x64 | output/win/x64 |
-| ucrtbase.dll | SDK/Release/x64 | output/win/x64 |
-| wemeet_base.dll | SDK | output/win/x64 |
-| wemeetsdk_x64.dll | SDK | output/win/x64 |
-| Release文件夹 | SDK | output/win/x64 |
+| api-ms-win*.dll  | SDK/Release/x64 |   output/tm-meeting-tmsdk/win-x64    |
+| msvcp140*.dll  | SDK/Release/x64    | output/tm-meeting-tmsdk/win-x64    |
+| vcruntime140*.dll | SDK/Release/x64 | output/tm-meeting-tmsdk/win-x64 |
+| ucrtbase.dll | SDK/Release/x64 | output/tm-meeting-tmsdk/win-x64 |
+| wemeet_base.dll | SDK | output/tm-meeting-tmsdk/win-x64 |
+| wemeetsdk_x64.dll | SDK | output/tm-meeting-tmsdk/win-x64 |
+| Release文件夹 | SDK | output/win/tm-meeting-tmsdk/win-x64 |
 
 注意：大版本升级sdk需要删除原来sdk所有目录文件重新拷贝，避免旧包文件残留导致包校验失败
-- 方法二:  直接执行output/win/x64/copy_win32_release.bat(bat文件中的内容也就是做了方法1的操作，写成了脚本)
+
 ```
 rmdir /s /q Release
 mkdir Release
@@ -123,7 +123,7 @@ Electron_Demo目录下
 
 **三、拷贝node**
 
-cp build/Release/wemeet_electron_sdk.node   output/win/x64/
+cp build/Release/wemeet_electron_sdk.node   output/tm-meeting-tmsdk/win-x64
 
 **四、运行demo**
 
