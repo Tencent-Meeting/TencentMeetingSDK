@@ -126,7 +126,7 @@ copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
 
 Electron_Demo目录下
 
-**copy ..\SDK\wemeetsdk_x64.lib  wemeet_sdk\win\lib\x64\release\**
+**copy ..\SDK\wemeetsdk_x64.lib  wemeet_sdk\win\lib\x64\release\wemeetsdk_x64.lib**
 
 **copy ..\SDK\include 磁盘根目录**
 
