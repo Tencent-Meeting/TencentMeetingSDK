@@ -95,7 +95,7 @@ Electron_Demo目录下执行npm start
 | msvcp140*.dll  | SDK/Release/x64    | output/win/x64    |
 | vcruntime140*.dll | SDK/Release/x64 | output/win/x64 |
 | ucrtbase.dll | SDK/Release/x64 | output/win/x64 |
-| wemeet_base_x64.dll | SDK | output/win/x64 |
+| wemeet_base.dll | SDK | output/win/x64 |
 | wemeetsdk_x64.dll | SDK | output/win/x64 |
 | Release文件夹 | SDK | output/win/x64 |
 
