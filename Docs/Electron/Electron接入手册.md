@@ -97,7 +97,7 @@ Electron_Demo目录下执行npm start
 | ucrtbase.dll | SDK/Release/x64 | output/tm-meeting-tmsdk/win-x64 |
 | wemeet_base.dll | SDK | output/tm-meeting-tmsdk/win-x64 |
 | wemeetsdk_x64.dll | SDK | output/tm-meeting-tmsdk/win-x64 |
-| Release文件夹 | SDK | output/win/tm-meeting-tmsdk/win-x64 |
+| Release文件夹 | SDK | output/tm-meeting-tmsdk/win-x64 |
 
 注意：大版本升级sdk需要删除原来sdk所有目录文件重新拷贝，避免旧包文件残留导致包校验失败
 
