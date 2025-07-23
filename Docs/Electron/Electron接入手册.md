@@ -101,15 +101,17 @@ Electron_Demo目录下执行npm start
 
 注意：大版本升级sdk需要删除原来sdk所有目录文件重新拷贝，避免旧包文件残留导致包校验失败
 
+可以在output/tm-meeting-tmsdk/win-x64目录下执行以下命令
 ```
 rmdir /s /q Release
 mkdir Release
 xcopy /S /E /Y /Q /H /D ..\..\..\..\SDK\Release .\Release
-copy  ..\..\..\..\SDK\Release\x64\api-ms-win*.dll .\
-copy ..\..\..\..\SDK\Release\x64\msvcp140*.dll .\
-copy ..\..\..\..\SDK\Release\x64\vcruntime140*.dll .\
+copy ..\..\..\..\SDK\Release\x64\api-ms-win*.dll .\
+copy ..\..\..\..\SDK\Release\x64\msvcp*.dll .\
+copy ..\..\..\..\SDK\Release\x64\vcruntime140.dll .\vcruntime140.dll
+copy ..\..\..\..\SDK\Release\x64\vcruntime140_1.dll .\vcruntime140_1.dll
 copy ..\..\..\..\SDK\Release\x64\ucrtbase.dll .\ucrtbase.dll
-copy ..\..\..\..\SDK\wemeet_base_x64.dll .\wemeet_base_x64.dll
+copy ..\..\..\..\SDK\Release\x64\wemeet_base.dll .\wemeet_base.dll
 copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
 ```
 减包注意（3.21.200包大小优化）： 打包可选择对Release\webview和Release\resources\webview目录删除，删除不影响接口调用，使用过程中会触发内置浏览器动态下载(首次初始化触发)。
