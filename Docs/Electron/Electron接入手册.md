@@ -78,7 +78,7 @@ Electron_Demo目录下
 
 **三、拷贝node**
 
-cp build/Release/wemeet_electron_sdk.node   output/win/win32/
+copy build/Release/wemeet_electron_sdk.node   output/win/win32/
 
 **四、拷贝完整的SDK**
 
@@ -126,7 +126,7 @@ copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
 
 Electron_Demo目录下
 
-**copy ..\SDK\wemeetsdk_x64.lib  wemeet_sdk\win\lib\x64\release/**
+**copy ..\SDK\wemeetsdk_x64.lib  wemeet_sdk\win\lib\x64\release\**
 
 **copy ..\SDK\include 磁盘根目录**
 
@@ -134,7 +134,7 @@ Electron_Demo目录下
 
 **三、拷贝node**
 
-cp build/Release/wemeet_electron_sdk.node   output/tm-meeting-tmsdk/win-x64
+copy build/Release/wemeet_electron_sdk.node   output/tm-meeting-tmsdk/win-x64
 
 **四、拷贝完整的SDK**
 
