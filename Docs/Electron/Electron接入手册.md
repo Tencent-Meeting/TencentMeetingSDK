@@ -68,65 +68,79 @@ copy ..\..\..\..\SDK\wemeetsdk_x86.dll .\wemeetsdk_x86.dll
 
 **二、安装electron以及相关的依赖**
 
-注意：
-windows SDK 3.30.300及以上版本，如果不使用会议node，自行编译node，需要在npm install前拷贝静态库：
+Electron_Demo目录下 
 
 **copy ..\SDK\wemeetsdk_x86.lib .\wemeet_sdk\win\lib\win32\release\wemeetsdk_x86.lib**
 
-**copy ..\SDK\wemeetsdk_x64.lib .\wemeet_sdk\win\lib\x64\release\wemeetsdk_x64.lib**
+**copy ..\SDK\include 磁盘根目录**
 
-以上命令的执行目录为Electron_Demo
+**执行npm install安装依赖，生成node**
 
-- 方法一：Electron_Demo目录下执行npm install安装依赖
-- 方法二：Windows内置了npm依赖包可以直接解压，解压node_modules_x86.zip到当前目录，得到32位windows node环境依赖node_modules目录
+**三、拷贝node**
 
-![6.png](images/6.png)
+copy build/Release/wemeet_electron_sdk.node   output/win/win32/
 
-**三、运行demo**
+**四、拷贝完整的SDK**
+
+将win32下所有目录和文件拷贝到宿主的执行环境
+
+**五、运行demo（可选）**
 
 Electron_Demo目录下执行npm start
-
 
 
 #### 1.3.2 64位 Windows
 
 **一、拷贝SDK**
 
-- 方法一：按照如下表格拷贝依赖文件
+按照如下表格拷贝依赖文件
 
  | 名称   | 原路径   | 目的路径  |
 | ----- | ------ | --------------------------------------- |
-| api-ms-win*.dll  | SDK/Release/x64 |   output/win/x64    |
-| msvcp140*.dll  | SDK/Release/x64    | output/win/x64    |
-| vcruntime140*.dll | SDK/Release/x64 | output/win/x64 |
-| ucrtbase.dll | SDK/Release/x64 | output/win/x64 |
-| wemeet_base_x64.dll | SDK | output/win/x64 |
-| wemeetsdk_x64.dll | SDK | output/win/x64 |
-| Release文件夹 | SDK | output/win/x64 |
+| api-ms-win*.dll  | SDK/Release/x64 |   output/tm-meeting-tmsdk/win-x64    |
+| msvcp140*.dll  | SDK/Release/x64    | output/tm-meeting-tmsdk/win-x64    |
+| vcruntime140*.dll | SDK/Release/x64 | output/tm-meeting-tmsdk/win-x64 |
+| ucrtbase.dll | SDK/Release/x64 | output/tm-meeting-tmsdk/win-x64 |
+| wemeet_base.dll | SDK | output/tm-meeting-tmsdk/win-x64 |
+| wemeetsdk_x64.dll | SDK | output/tm-meeting-tmsdk/win-x64 |
+| Release文件夹 | SDK | output/tm-meeting-tmsdk/win-x64 |
 
 注意：大版本升级sdk需要删除原来sdk所有目录文件重新拷贝，避免旧包文件残留导致包校验失败
-- 方法二:  直接执行output/win/x64/copy_win32_release.bat(bat文件中的内容也就是做了方法1的操作，写成了脚本)
+
+可以在output/tm-meeting-tmsdk/win-x64目录下执行以下命令
 ```
 rmdir /s /q Release
 mkdir Release
 xcopy /S /E /Y /Q /H /D ..\..\..\..\SDK\Release .\Release
-copy  ..\..\..\..\SDK\Release\x64\api-ms-win*.dll .\
-copy ..\..\..\..\SDK\Release\x64\msvcp140*.dll .\
-copy ..\..\..\..\SDK\Release\x64\vcruntime140*.dll .\
+copy ..\..\..\..\SDK\Release\x64\api-ms-win*.dll .\
+copy ..\..\..\..\SDK\Release\x64\msvcp*.dll .\
+copy ..\..\..\..\SDK\Release\x64\vcruntime140.dll .\vcruntime140.dll
+copy ..\..\..\..\SDK\Release\x64\vcruntime140_1.dll .\vcruntime140_1.dll
 copy ..\..\..\..\SDK\Release\x64\ucrtbase.dll .\ucrtbase.dll
-copy ..\..\..\..\SDK\wemeet_base_x64.dll .\wemeet_base_x64.dll
+copy ..\..\..\..\SDK\Release\x64\wemeet_base.dll .\wemeet_base.dll
 copy ..\..\..\..\SDK\wemeetsdk_x64.dll .\wemeetsdk_x64.dll
 ```
 减包注意（3.21.200包大小优化）： 打包可选择对Release\webview和Release\resources\webview目录删除，删除不影响接口调用，使用过程中会触发内置浏览器动态下载(首次初始化触发)。
 
 **二、安装electron以及相关的依赖**
 
-- 方法一：Electron_Demo目录下执行npm install安装依赖
+Electron_Demo目录下
 
-- 方法二：Windows内置了npm依赖包可以直接解压，解压node_modules_x64.zip到当前目录，得到64位windows node环境依赖node_modules目录
-![7.png](images/7.png)
+**copy ..\SDK\wemeetsdk_x64.lib  wemeet_sdk\win\lib\x64\release\wemeetsdk_x64.lib**
 
-**三、运行demo**
+**copy ..\SDK\include 磁盘根目录**
+
+**执行npm install安装依赖，生成node**
+
+**三、拷贝node**
+
+copy build/Release/wemeet_electron_sdk.node   output/tm-meeting-tmsdk/win-x64
+
+**四、拷贝完整的SDK**
+
+将win-x64下所有目录和文件拷贝到宿主的执行环境
+
+**五、运行demo（可选）**
 
 Electron_Demo目录下执行npm start
 
