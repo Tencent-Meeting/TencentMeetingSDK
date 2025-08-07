@@ -90,7 +90,7 @@ TMSDK的har包+hsp包(.tgz)文件，放在集成方工程根目录下的libs目�
 ```
 
 #### 1.2.1.4 compatibleSdkVersion配置
-工程目录下的build-profile.json5文件中，compatibleSdkVersion必须大于等于TencentMeetingSDK当前的compatibleSdkVersion版本，否则无法使用，参考配置如下：
+工程目录下的build-profile.json5文件中，compatibleSdkVersion必须等于TencentMeetingSDK当前的compatibleSdkVersion版本，否则无法使用，参考配置如下：（鸿蒙应用市场限制，当前仅支持宿主的compatibleSdkVersion等于SDK的compatibleSdkVersion，否则APP无法上架应用市场）
 ```project/build-profile.json5
 ...
 "products": [
