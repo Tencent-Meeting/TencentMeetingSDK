@@ -41,7 +41,7 @@ addon，使用里面封装的接口即可。
 | api-ms-win*.dll  | SDK |   output/win/win32    |
 | msvcp140*.dll  | SDK    | output/win/win32    |
 | concrt140.dll   | SDK | output/win/win32 |
-| vcomp140.dll | SDK | output/win/win32 |
+| vcomp140.dll(3.30版本无) | SDK | output/win/win32 |
 | vcruntime140*.dll | SDK | output/win/win32 |
 | ucrtbase.dll | SDK | output/win/win32 |
 | wemeet_base.dll | SDK | output/win/win32 |
