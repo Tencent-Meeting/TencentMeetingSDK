@@ -16,4 +16,4 @@
 
   
   ### 1.3 拷贝node(electron接入)
-  **参考 [Electron接入手册](./Docs/Linux/Linux接入手册.md) 1.3章节中生成和拷贝node的方法**
+  **参考 [Electron接入手册](/Docs/Electron/Electron接入手册.md) 1.3章节中生成和拷贝node的方法**
