@@ -13,3 +13,7 @@
   **3、宿主如果是32位，接64位的sdk，需要拷贝x86的zip中SDK目录下的系统库，wemeetsdk_x86.dll，wemeet_base.dll文件到会议目录；拷贝x64的zip中SDK的Release目录到会议目录**
   
   **4、宿主如果是64位，接32位的sdk，需要拷贝x64的zip中SDK目录下的系统库，wemeetsdk_x64.dll，wemeet_base.dll文件到会议目录；拷贝x86的zip下SDK的Release目录到会议目录**
+
+  
+  ### 1.3 拷贝node(electron接入)
+  **参考<br>[Electron接入手册](Docs/Electron/Electron接入手册.md) 1.3章节中生成和拷贝node的方法**
