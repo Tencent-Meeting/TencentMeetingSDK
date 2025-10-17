@@ -1040,6 +1040,8 @@ AuthenticationCallback 需实现以下成员函数：
 | current_sub_meeting_id | string   | 是       | (无)       | 非周期性会议时值为0；周期会议时，可以通过腾讯会议“查询用户的会议列表”的REST APis获取 |
 | start_time             | string   | 是       | (无)       | 会议开始时间戳(单位秒)；如：2022-01-01 00:00:00时间戳1640966400。注意：该参数传入不正确，可能导致页面加载失败 |
 | is_history             | bool     | 否       | true       | 控制展示会议还是会后会议详情页面，如果为true，展示会后会议详情页面；如果为false，展示会议详情页面； |
+- **使用须知**  
+如果没有参加过会议，is_history传false，参加过才传true。否则详情页删除会议记录不会有实际效果。
 
 
 ### showJoinMeetingView
