@@ -1,5 +1,6 @@
 # FAQ
 
+### 常见接入错误
 - 出现以下错误，请按照前面的工程配置，检查 SDK 头文件的目录是否正确添加：
 > fatal error C1083: Cannot open include file: 'wemeet_sdk.h': No such file or directory
 
@@ -16,3 +17,17 @@
   
 - 出现以下错误，请更改字符集为“使用多字节字符集”：
 > C2664	“void IPreMeetingService::ShowMeetingDetailView(const char *,const char *)”: 无法将参数 1 从“wchar_t *”转换为“const char *”
+
+
+### 常见运行错误
+- 初始化无响应，初始化超时
+  
+1、请检查SDK文件是否拷贝完整，具体可参考Windows相关接入手册
+
+2、如果升级大版本，尤其要注意不能有老版本文件残留
+
+- 使用过程中遇到闪退
+
+1、请检查有无安全软件管控会议进程tmsdkapp.exe
+
+2、请将%temp%\tencent目录打包发给我们排查
