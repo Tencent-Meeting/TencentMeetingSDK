@@ -504,8 +504,8 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
   
 | user_type | 说明                                                                                        |
 |-----------|-------------------------------------------------------------------------------------------|
-| 1         | 预定会议添加主持人，响应`PreMeetingCallback.onShowAddressBook`回调时使用。（仅使用SDK的预定会议界面时有效，接入方自定义预定会议界面无效） |
-| 2         | 预定会议添加成员，响应`PreMeetingCallback.onShowAddressBook`回调时使用。（仅使用SDK的预定会议界面有时效，接入方自定义预定会议界面无效）  |
+| 1         | 预定会议设置主持人，响应`PreMeetingCallback.onShowAddressBook`回调时使用。（仅使用SDK的预定会议界面时有效，接入方自定义预定会议界面无效） |
+| 2         | 预定会议设置成员，响应`PreMeetingCallback.onShowAddressBook`回调时使用。（仅使用SDK的预定会议界面有时效，接入方自定义预定会议界面无效）  |
 | 3         | 会中添加会议成员，可在响应`InMeetingCallback.onInviteUsers`回调时使用，也可独立使用。 （仅会议中时有效）                     |
 
 
