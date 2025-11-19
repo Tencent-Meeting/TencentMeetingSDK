@@ -2169,7 +2169,7 @@ layout_id枚举值如下:
 
 
 ### subscribeInMeetingActionEvent
-* 函数形式：**void subscribeInMeetingActionEvent(int action_type, bool subscribe, string subscription_json)**
+* 函数形式：**int subscribeInMeetingActionEvent(int action_type, bool subscribe, string subscription_json)**
 * 可用版本：>= 3.12.404（**仅支持桌面端，Linux、HarmonyOS暂不支持**）
 * 函数说明：
   * 订阅/退订会中事件。
