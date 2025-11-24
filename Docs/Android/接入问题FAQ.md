@@ -6,11 +6,14 @@
   A: compileSdkVersion 31及以上
   ```
 
+  ---
+
   - Q:接入sdk后，出现运行时异常：Execution failed for task ':baselibrary:compileDebugJavaWithJavac'. > javax/xml/bind/JAXBException
 
   ```
   A:implementation "javax.xml.bind:jaxb-api:2.3.1"
   ```
+  ---
 
   - Q:接入sdk后，出现运行时异常：java.lang.UnsatisfiedLinkError
   - A:目前会议的so只支持armeabi-v7a和arm64-v8a的架构
@@ -29,6 +32,7 @@
   	...
   }
   ```
+  ---
 
   - Q:遇到编译错误：Invoke-customs are only supported starting with Android O
     A:请在build.gradle中添加：
@@ -43,6 +47,7 @@
   	...
   }
   ```
+  ---
 
   - Q:重复class报错，目前会出现此类问题的主要以x5内核和imsdk下的文件为主
 
@@ -61,6 +66,9 @@
   ```
 
   ​	**如果集成SDK后出现mmkv组件版本冲突，原因为 mmkv库与会议SDK使用的mmkv-static不兼容导致，请使用mmkv-static，mmkv-static版本尽量使用新版**
+
+  ---
+  
   
   - Q: 重复的class报错，但重复类的包名为com.tencent.thumbplayer，且冲突库为com.tencent.liteav.LiteAVSDK_Player:
     A: 请更新SDK库和LiteAVSDK_Player库版本，同时满足以下版本要求:
@@ -70,6 +78,7 @@
   LiteAVSDK_player版本>=11.7.0.13910;
   ```
   
+  ---
   - Q:javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
     A:
   
@@ -96,6 +105,8 @@
     ```
   
     - 其他字段含义可以参考Android官网：https://developer.android.com/training/articles/security-config?hl=zh-cn
+
+    ---
   
   - Q:Didn't find class "androidx.localbroadcastmanager.content.LocalBroadcastManager"  && java.lang.NoClassDefFoundError: Failed resolution of: Landroidx/swiperefreshlayout/widget/CircularProgressDrawable; 当出现这个两个类找不到的时候，可能是com.google.android.material:material的版本过高导致的，
   
@@ -109,6 +120,8 @@
   - 应用异常退出后，切换账号登录异常或者登录的账号信息错误
   
   > 如果登录的账号发生切换，请主动调用登出接口以清空登录态，再重新尝试登录。
+
+  ---
   
   - Q:收到邀请或分享回调后显示透明activity但是背景activity显示的不是会中界面，或者关闭activity后没有回到会中界面
   - A:请确保activity设置了如下所示的taskAffinity属性，并在启动activity时调用intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)，如果仍然无法解决问题，请联系技术支持
@@ -116,10 +129,14 @@
           android:taskAffinity=".meeting.inmeeting.InMeetingActivity" // SDK Version < 3.12.3
           android:taskAffinity="com.tencent.wemeet.tmsdk.meeting.inmeeting.InMeetingActivity" // SDK Version >= 3.12.3
   ```
+
+  ---
   
   - Q:在会中界面点击管理成员发生crash，错误为java.lang.ClassNotFoundException: Didn't find class "android.support.v7.widget.RecyclerView$ItemDecoration"
   
   - A:在gradle.properties中添加android.enableJetifier=true
+
+  ---
   
     
   - Q: 在Android 11以上设备中，无法使用蓝牙设备怎么处理
@@ -130,9 +147,23 @@
     <uses-permission android:name="android.permission.BLUETOOTH"/>  //去除android:maxSdkVersion="30"
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>  //去除android:maxSdkVersion="30"
     ```
+
+    ---
   
   - Q: 接入SDK后编译报错，报错信息包含以下内容：
     Resource compilation failed (Failed to compile values resource file path/to/values.xml. Cause: java.nio.file.InvalidPathException: Illegal char <:> at index 48: path/to/values.xml).
   
   - A: 项目中的某个attr跟SDK重复定义了，由于AGP存在bug，这里的报错信息跟attr重复定义并无关系，可以执行aapt2 compile path/to/values.xml -o compiled/，该命令的输出中将包含重复定义的attr，修改该attr名称避免重复问题即可解决。
+
+  ---
+
+  - Q: APP的targetSdkVersion=35,Android15的手机进入会中，会中工具栏被系统导航栏遮挡
+  - A: 这是因为SDK暂无法声明豁免edgeToEdge,接入方请在工程中手动声明豁免edgeToEdge：
+
+    在res/values-v35文件夹(不存在请先创建该文件夹)中声明如下主题，声明后sdk会自行加载使用：
+  ```xml
+  <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+  </style>
+  ```
   
