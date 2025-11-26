@@ -162,7 +162,7 @@
 
     在res/values-v35文件夹(不存在请先创建该文件夹)中声明如下主题，声明后sdk会自行加载使用：
   ```xml
-  <style name="AppTheme" parent="Theme.AppCompat.Light">
+  <style name="TMSDKAppTheme" parent="Theme.AppCompat.Light">
     <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
   </style>
   ```
