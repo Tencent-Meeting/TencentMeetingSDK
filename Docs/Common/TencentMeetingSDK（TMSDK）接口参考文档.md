@@ -81,7 +81,6 @@
     + [onJoinMeeting](#onjoinmeeting)
     + [onActionResult](#onactionresult)
     + [onShowAddressBook](#onshowaddressbook)
-    + [onShowScreenCastViewResult](#onshowscreenastviewresult)
     + [onRingInvitationEvent](#onringinvitationevent)
     + [onOpenQRCodeUrlResult](#onopenqrcodeurlresult)
 - [5. InMeetingService 说明](#5-inmeetingservice-说明)
@@ -1563,20 +1562,6 @@ PreMeetingCallback 需实现以下成员函数：
 {
     "users": ["user1_id","user2_id","user3_id","user4_id"]
 }
-```
-
-### OnShowScreenCastViewResult
-* 函数形式：**void OnShowScreenCastViewResult(int code, string msg)**
-* 可用版本：>= 3.6.401
-* 可用平台：**Linux、HarmonyOS暂不支持**
-* 说明：
-  * 用户打开投屏窗口的回调，可用作接入方使用投屏相关功能的通知。
-
-| 参数名 | 参数类型| 参数说明 |
-|-------|---------|---------|
-| code  | int    | 打开窗口的响应状态，0代表成功，其他代表失败 |
-| msg   | string | 状态对应的提示信息 |
-
 ```
 
 ### onRingInvitationEvent
