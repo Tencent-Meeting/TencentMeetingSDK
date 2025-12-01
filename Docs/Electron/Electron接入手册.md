@@ -469,8 +469,9 @@ wemeet_sdk.GetUrlWithLoginStatus(url)
 #### 入会
 
 ``` 
-wemeet_sdk.JoinMeeting(meeting_code, user_display_name, password, invite_url, mic_on, camera_on, speaker_on, face_beauty_on)
+wemeet_sdk.JoinMeeting(meeting_code, user_display_name, password, invite_url, mic_on, camera_on, speaker_on, face_beauty_on, meetingtitle)
 ```
+说明：各个参数类型，格式可参考统一《TencentMeetingSDK（TMSDK）接口参考文档》说明。
 
 #### 通过json串入会
 
