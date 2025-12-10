@@ -1368,6 +1368,21 @@ msg内容示例：
 - 函数说明：集成方App上层实现打开摄像头扫描二维码功能，将扫描到的会议二维码内容（一般为URL），通过该函数打开。执行结果通过`PreMeetingCallback.onOpenQRCodeUrlResult`回调通知。
 - 参数说明：扫描二维码后要被打开的URL
 
+### openPrivacyPage
+- 函数形式：**void openPrivacyPage()**
+- 可用版本：>= 3.24.100
+- 可用平台：`ios`/`Android`，其他平台暂不支持
+- 函数说明：打开SDK隐私条款web页面。执行结果通过`PreMeetingCallback.onActionResult`回调通知。`action_type`参数是`OpenPrivacyPage`
+- 参数说明：无
+
+* `PreMeetingCallback.onActionResult`回调说明：
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|action_type |int |这处为`OpenPrivacyPage` |
+|code |int |结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节|
+|msg |string |错误说明 |
+
 
 ### discoverNearScreenCastCode
 
@@ -1539,6 +1554,7 @@ PreMeetingCallback 需实现以下成员函数：
 | ShowAIAssistantView | 16   | 打开AI小助手页面 |结果的说明文字 |
 | ShowVoiceRecordView | 17   | 打开录音笔页面   | 结果的说明文|
 | ShowRoomsControllerView | 18   | 打开Rooms控制器页面 |结果的说明文字 |
+| OpenPrivacyPage | 19   | 打开SDK隐私协议页面 |结果的说明文字 |
 
 
 ### onShowAddressBook
