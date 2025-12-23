@@ -20,18 +20,19 @@ plugins {
 - 支持 minsdkVersion 21
 - Glide 4.12.0及以上
 - 使用Android Studio作为IDE
-- 如果您还在使用android.support.*，建议您迁移到AndroidX，建议迁移前满足以下条件
-	1. Android Studio 3.2及以上
-	1. AGP版本4.2.0及以上
-	1. KGP版本1.7.0及以上
-	1. Gradle版本6.7.1及以上
-	1. 项目编译版本33及以上
-	1. NDK版本21及以上
-	1. JDK版本11及以上
+- 您的项目如果还在使用android.support.*，请先迁移到AndroidX，且项目工程需满足以下条件
+>    1. Android Studio 3.2及以上
+>    1. AGP版本4.2.0及以上
+>    1. KGP版本1.7.0及以上
+>    1. Gradle版本6.7.1及以上
+>    1. 项目编译版本33及以上
+>    1. NDK版本21及以上
+>    1. JDK版本11及以上
+
 - 迁移到Android X步骤
-	1. 在Android studio中点击`Refactor > Migrate to AndroidX`，依照提示进行迁移即可。(迁移过程遇到问题可以参考官方文档)
-	1. 通过反射取support包内class的代码，可以全局搜索android.support找到对应的位置手动名进行替换
-	1. 如果项目中有对support库进行混淆配置，需要针对对应的AndroidX加上相应的混淆配置
+    1. 在Android studio中点击`Refactor > Migrate to AndroidX`，依照提示进行迁移即可。(迁移过程遇到问题可以参考官方文档)
+    1. 通过反射取support包内class的代码，可以全局搜索android.support找到对应的位置手动名进行替换
+    1. 如果项目中有对support库进行混淆配置，需要针对对应的AndroidX加上相应的混淆配置
 - 如果您的应用的targetSdkVersion >= 31，请在AndroidManifest.xml中添加以下标签，如果没有添加，当您的应用运行在Android 12及以上版本系统时美颜功能可能无法正常工作
 ```
 <uses-native-library
@@ -260,22 +261,22 @@ plugins {
 - 在主工程的build.gradle文件中，添加
 ```groovy
 android {
-	...
+    ...
     defaultConfig {
-		...
-        minSdkVersion 21
-        multiDexEnabled true
-		...
+      ...
+      minSdkVersion 21
+      multiDexEnabled true
+      ...
     }
-	...
-	compileOptions {
-        sourceCompatibility = 1.8
-        targetCompatibility = 1.8
+    ...
+    compileOptions {
+      sourceCompatibility = 1.8
+      targetCompatibility = 1.8
     }
     packagingOptions {
-        exclude 'AndroidManifest.xml'
+      exclude 'AndroidManifest.xml'
     }
-	...
+    ...
 }
 ```
 
@@ -288,19 +289,19 @@ repositories {
     }
     // SDK Version >= 3.30.0 需添加以下仓库
     maven {
-        allowInsecureProtocol = true
-        url "https://maven.columbus.heytapmobi.com/repository/OpenCapability/"
-	credentials {
-            username "ocuser"
-            password "3dca1351358f49aeaf5af516ffd05a7c8e0cbd56"
-	}
+      allowInsecureProtocol = true
+      url "https://maven.columbus.heytapmobi.com/repository/OpenCapability/"
+      credentials {
+          username "ocuser"
+          password "3dca1351358f49aeaf5af516ffd05a7c8e0cbd56"
+      }
     }
 }
 dependencies {
-	...
-	//wemeet_version为使用sdk版本
-	implementation "com.tencent.wemeet:tm-android-sdk:${wemeet_version}"
-	...
+    ...
+    //wemeet_version为使用sdk版本
+    implementation "com.tencent.wemeet:tm-android-sdk:${wemeet_version}"
+    ...
 }
 ```
 
@@ -310,62 +311,194 @@ dependencies {
 
 Android SDK初始化除在《TencentMeetingSDK（TMSDK）接口参考文档》中已有说明的 `TMSDK.initialize` 外，还需要在Application的`onCreate` 下 调用 `initOnApplicationCreate` ，这个步骤主要用于设置context以及必要的状态，不会进行真正的初始化操作（注意这个方法initOnApplicationCreate必须在所有进程初始化）
 
-**为支持隐私合规,已在3.6.200版本提供支持隐私合规的接入方式**
+**为支持隐私合规,已在>=3.6.200版本提供支持隐私合规的接入方式**
 - initOnApplicationCreate在原有基础上提供重载方法
 ```
-    //原有方式，不支持隐私合规
-    TMSDK.initOnApplicationCreate(Application application); 
+//原有方式，不支持隐私合规
+TMSDK.initOnApplicationCreate(Application application);
 
-    //支持隐私合规的接入方式，此时`isPrivacyNeedGrant`参数需要传true，表示开启隐私合规检查。如果此参数为false，则表示SDK不支持隐私合规
-    TMSDK.initOnApplicationCreate(Application application, boolean isPrivacyNeedGrant); 
+//支持隐私合规的接入方式，此时`isPrivacyNeedGrant`参数需要传true，表示开启隐私合规检查。如果此参数为false，则表示SDK不支持隐私合规
+TMSDK.initOnApplicationCreate(Application application, boolean isPrivacyNeedGrant);
 ```
 - 增加用户同意SDK隐私授权接口
 ```
-    //如果initOnApplicationCreate传入参数`isPrivacyNeedGrant`为true，必须调用notifyPrivacyGranted后方可正常初始化SDK,否则会导致SDK异常
-    TMSDK.notifyPrivacyGranted(Context context);
+//如果initOnApplicationCreate传入参数`isPrivacyNeedGrant`为true，必须调用notifyPrivacyGranted后方可正常初始化SDK,否则会导致SDK异常
+TMSDK.notifyPrivacyGranted(Context context);
 ```
 - 接入展示
 ```kotlin
 //DemoApplication
 @Override
 public void onCreate() {
-
   super.onCreate();
   TMSDK.initOnApplicationCreate(this, true);
 }
 
 //DemoActivity
 //首次启动，在用户同意隐私授权后的适当时机调用：
-mBtnAgree.setOnClickListener(
-        v -> {
-            TMSDK.notifyPrivacyGranted(DemoActivity.this);
-            TMSDK.INSTANCE.initialize(initParams, sdkCallback)
-            ...
-        }
-);
+mBtnAgree.setOnClickListener(v -> {
+    TMSDK.notifyPrivacyGranted(DemoActivity.this);
+    TMSDK.INSTANCE.initialize(initParams, sdkCallback)
+    ...
+});
 ```
 
 自定义通知栏样式：
 
 ```kotlin
- val notificationConfig = NotificationConfig.Builder()
-            .setNotificationLargeIconResId(R.mipmap.ic_logo_round)
-            .setNotificationSmallIconResId(R.mipmap.ic_logo_round)
-            .showNotificationLargeIcon(true)
-            .build()
- TMSDK.setMeetingNotificationConfig(notificationConfig)
+val notificationConfig = NotificationConfig.Builder()
+    .setNotificationLargeIconResId(R.mipmap.ic_logo_round)
+    .setNotificationSmallIconResId(R.mipmap.ic_logo_round)
+    .showNotificationLargeIcon(true)
+    .build()
+TMSDK.setMeetingNotificationConfig(notificationConfig)
 ```
 
-如果您的应用开启了邀请(enableInviteCallback)、会议信息(enableMeetingInfoCallback)、添加成员(enableInviteUsersCallback)等回调，并打算在收到这些回调时展示一个新的Activity，您需要给这个Activity设置如下所示的'taskAffinity'属性，并给启动该Activity的intent中添加FLAG_ACTIVITY_NEW_TASK，以保证该Activity跟会中Activity处于同一个任务栈，在关闭该Activity时才能正常返回会中界面，如果没有正确地设置'taskAffinity'属性和flag，该Activity将启动在应用默认的任务栈，关闭Activity时将显示默认任务栈中最顶层的Activity，不会自动回到会中。
-```
- // AndroidManifest.xml
- ...
- android:taskAffinity=".meeting.inmeeting.InMeetingActivity" // SDK Version < 3.12.3
- android:taskAffinity="com.tencent.wemeet.tmsdk.meeting.inmeeting.InMeetingActivity" // SDK Version >= 3.12.3
- ...
+## 3. 减包说明
 
- // 邀请、会议信息、添加成员等回调
- ...
- intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
- ...
+Android TencentMeetingSDK默认包含armeabi-v7a和arm64-v8a这两种架构so，对于绝大多数android机型，现在已经支持运行64位应用，
+因此我们可以根据自身情况，通过gradle脚本来配置构建出只包含64位架构so的apk来减小apk的体积，具体配置如下：
+```groovy
+    android {
+    ...
+    defaultConfig {
+      ...
+      ndk {
+          //可以根据需求减少armeabi-v7a，只保留arm64-v8a，但是不能增加其他abi
+          setAbiFilters(['arm64-v8a'])
+      }
+      ...
+    }
+    ...
+}
 ```
+
+## 4. FAQ
+
+### 4.1
+> Q:接入sdk后，出现运行时异常：java.lang.UnsatisfiedLinkError
+
+A:目前会议的so只支持armeabi-v7a和arm64-v8a的架构，需要检查是否做了以下配置
+```groovy
+    android {
+    ...
+    defaultConfig {
+      ...
+      ndk {
+          //可以根据需求减少abi，但是不能增加其他abi
+          setAbiFilters(['armeabi-v7a', 'arm64-v8a'])
+      }
+      ...
+    }
+    ...
+}
+```
+### 4.2
+> Q:遇到编译错误：Invoke-customs are only supported starting with Android O
+
+A:请在build.gradle中添加：
+```groovy
+    android {
+    ...
+    compileOptions {
+      sourceCompatibility = 1.8
+      targetCompatibility = 1.8
+    }
+    ...
+}
+```
+### 4.3
+> Q:重复class报错，目前会出现此类问题的主要以x5内核和imsdk下的文件为主
+
+ A:执行./gradlew app:dependencies(window下执行gradlew app:dependencies)，对照输出依赖将sdk中的依赖排除出去，例如
+
+```groovy
+implementation ('com.tencent.wemeet:tm-android-sdk:${wemeet_version}') {
+  exclude group: 'com.tencent.tbssdk', module: 'tbssdk'
+  exclude group: 'com.tencent.wemeet', module: 'imsdk'
+}
+```
+
+### 4.4
+> Q:javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
+
+A:
+
+- 在src/main/res/xml下新增network_security_config.xml
+
+```xml
+    <?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+<domain-config cleartextTrafficPermitted="true">
+    <domain includeSubdomains="true">需要开放的域名</domain>
+    </domain-config>
+</network-security-config>
+
+```
+- 然后在AndroidManifest.xml中设置networkSecurityConfig
+
+```xml
+    <manifest ... >
+<application android:networkSecurityConfig="@xml/network_security_config">
+...
+</application>
+</manifest>
+```
+
+- 其他字段含义可以参考Android官网：https://developer.android.com/training/articles/security-config?hl=zh-cn
+
+### 4.5
+> Q:Didn't find class "androidx.localbroadcastmanager.content.LocalBroadcastManager"  && java.lang.NoClassDefFoundError: Failed resolution of: Landroidx/swiperefreshlayout/widget/CircularProgressDrawable; 当出现这个两个类找不到的时候，可能是com.google.android.material:material的版本过高导致的，
+
+ A: 在gradle的dependencies添加下面依赖：
+
+```
+implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+```
+
+### 4.6
+> Q:在会中收到邀请或者分享回调后显示邀请或者分享界面异常怎么处理
+
+A: 如果您的应用开启如下回调：
+
+        邀请(enableInviteCallback)；
+
+        会议信息(enableMeetingInfoCallback)；
+
+        添加成员(enableInviteUsersCallback)；
+您需为意图跳转的**Activity设置'taskAffinity'属性**，以便在应用收到如上**回调时正确展示目标Activity页面**。
+
+此外，请为启动该Activity的intent中**添加FLAG_ACTIVITY_NEW_TASK标志**，以保证该Activity跟会中Activity处于同一个任务栈，在关闭该Activity时才能正常返回会中界面。
+
+*！！！如果没有正确地设置'taskAffinity'属性和flag，该Activity将启动在应用默认的任务栈，关闭Activity时将显示默认任务栈中最顶层的Activity，不会自动回到会中*。！！！
+
+```
+...
+intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+...
+```
+
+```
+// AndroidManifest.xml 
+// SDK Version < 3.12.3
+<activity
+...
+android:taskAffinity=".meeting.inmeeting.InMeetingActivity"
+/>
+```
+
+```
+// AndroidManifest.xml 
+// SDK Version >= 3.12.3
+<activity
+...
+android:taskAffinity="com.tencent.wemeet.tmsdk.meeting.inmeeting.InMeetingActivity"
+/>
+```
+
+### 4.7
+> Q:应用异常退出后，切换账号登录异常或者登录的账号信息错误
+
+ A: 如果登录的账号发生切换，请主动调用登出接口以清空登录态，再重新尝试登录。
+
