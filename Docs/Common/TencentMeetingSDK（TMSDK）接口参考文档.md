@@ -1007,6 +1007,9 @@ AuthenticationCallback 需实现以下成员函数：
   |style |int |否 |0 |面板样式：<br>0: 经典样式<br>1: 多Tab样式 |
   |type |int |否 |0 |面板类型：<br>0: 会议<br>1: 通讯录<br>2: 录制<br> |
 
+示例：桌面端初始化接口Initialize参数allow_home_view设置为false，调用showPremeetingView接口时type设置为2（录制）的效果如下：
+<img width="1448" height="966" alt="7b198f71-b4ec-4b61-bf3a-4f3f9aa19af9" src="https://github.com/user-attachments/assets/063471b9-7240-45a0-8c1a-bda7951a53a5" />
+
 
 
 ### showHistoricalMeetingView
