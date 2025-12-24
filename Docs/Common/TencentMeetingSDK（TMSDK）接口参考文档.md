@@ -267,18 +267,16 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 **`InitParam`数据结构**
 
-|产品 |属性 |类型 |必填 |默认值 |说明 |
-|---|---|---|---|---|---|
-|公有云SDK专用 |sdk_id |string |必填 |(无) |SDK ID |
-|公有云SDK专用|sdk_token |string |必填 |(无) |SDK Token |
-|私有化SDK专用 |server_host |string |必填，二选一 |(无) |私有化服务器地址，格式为：{protocol}://{domain}:{port}，protocol默认为http；port默认为29666; 如需配置两个域名，请用';'分隔 |
-|私有化SDK专用|org_domain |string |必填，二选一 |(无) |组织机构域，如填写，SDK则会通过`org_domain`从公有云服务上获取私有化服务器地址，并覆盖`server_host`的值 |
-|通用 |data_path |string |否 |`tmsdkapp.exe`同级目录 | 仅`Windows`/`Linux`支持:自定义SDK数据存储路径，里面包括日志目录。 |
-|通用 |app_name |string |否 |网络会议 | 指定显示的品牌名称 |
-|公有云SDK专用 |app_icon |string |否 |(无) |  用来指定窗口图标对应的文件绝对路径（仅windows端）|
-|公有云SDK专用 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，ja，如传入其它值则显示为zh-cn，3.6.200及以上版本可用， 其中日语从3.30.200及以上版本支持） |
-|通用 |proxy_info |string |否 |(无) | 用于初始化时设置网络代理，内容为json串，格式可参考setProxyInfo接口。如果使用了此参数，则必须拿到设置代理的回调后再调用登录接口（3.12.200以及以上版本可用） |
-|公有云SDK专用 |allow_home_view |bool |否 | true | 用于初始化时设置是否使用会议主面板，Windows和Mac可用，3.30.100以及以上版本可用 |
+|属性 |类型 |必填 |默认值 |说明 |
+|---|---|---|---|---|
+|sdk_id |string |必填 |(无) |SDK ID |
+|sdk_token |string |必填 |(无) |SDK Token |
+|data_path |string |否 |`tmsdkapp.exe`同级目录 | 仅`Windows`/`Linux`支持:自定义SDK数据存储路径，里面包括日志目录。 |
+|app_name |string |否 |网络会议 | 指定显示的品牌名称 |
+|app_icon |string |否 |(无) |  用来指定窗口图标对应的文件绝对路径（仅windows端）|
+|prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，ja，如传入其它值则显示为zh-cn，3.6.200及以上版本可用， 其中日语从3.30.200及以上版本支持） |
+|proxy_info |string |否 |(无) | 用于初始化时设置网络代理，内容为json串，格式可参考setProxyInfo接口。如果使用了此参数，则必须拿到设置代理的回调后再调用登录接口（3.12.200以及以上版本可用） |
+|allow_home_view |bool |否 | true | 用于初始化时设置是否使用会议主面板，Windows和Mac可用，ios和android默认使用会议主面板，3.30.100以及以上版本可用 |
 
 
 ### uninitialize
