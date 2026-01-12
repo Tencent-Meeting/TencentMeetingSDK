@@ -72,7 +72,7 @@ SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 ````
 
 ## 4.登录和登出
-
+**重要提示：请确保当前视图控制器(UIViewController)位于导航控制器(UINavigationController)的导航栈中，否则可能导致登录实名认证流程无法正常完成。此问题在Flutter单页面应用中尤为常见，请特别注意。**
 ```
 
 - (void)login:(NSString *)SSOUrl forceKickOtherDevice:(BOOL)forceKickOtherDevice {
