@@ -28,7 +28,6 @@ ${SDK_ROOT}/
 ├── SDKSample/                    # Sample 示例工程
 │   └── Electron/                 # Electron Sample
 │       ├── package.json          # 依赖配置
-│       ├── dist/                 # 编译后的前端资源
 │       └── src/                  # 源代码
 │
 └── tmsdk-node-addon/             # Node.js Native Addon
