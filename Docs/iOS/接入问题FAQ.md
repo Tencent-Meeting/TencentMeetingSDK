@@ -2,7 +2,7 @@
 
 Q1.接入腾讯会议SDK的应用，Archive后的产物，点击Distribute APP，使用AppStore Connect导出的启动时会崩溃。但是用Adhoc打包ipa安装又是正常的。
 
-A：根本原因是打包过程中，修改了SDK内部的framework的版本号，导致了相对应的部分模块没有加载而crash。打包时请注意下面的选项：Manage Version and Build Number。
+A：根本原因是打包过程中，修改了SDK内部的framework的版本号，导致了相对应的部分模块没有加载而crash。打包时请注意 **不要勾选** 下面的选项：Manage Version and Build Number。
 
 <img src="./images/Xnip2021-12-07_19-12-16.png" alt="Xnip2021-12-06_10-27-10" style="zoom:30%;" />
 
