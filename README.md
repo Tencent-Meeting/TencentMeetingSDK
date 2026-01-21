@@ -25,7 +25,7 @@
 
 | 终端       | 相关文档                                                                                                                                                   | 说明               |
 |----------|--------------------------------------------------------------------------------------------------------------------------------------------------------|------------------|
-| All      | [废弃接口列表](./Docs/Common/DeprecatedList.md)<br>[TencentMeetingSDK接口参考文档](Docs/Common/TencentMeetingSDK（TMSDK）接口参考文档.md)<br>[错误码列表](Docs/Common/错误码列表.md) | 接口参考的统一说明，各端都涉及到 |
+| All      | * [废弃接口列表](./Docs/Common/DeprecatedList.md)<br>* [TencentMeetingSDK接口参考文档](Docs/Common/TencentMeetingSDK（TMSDK）接口参考文档.md)<br>* [错误码列表](Docs/Common/错误码列表.md)<br>* [版本更新与开发适配指南](Docs/Common/版本更新与开发适配指南.md) | 接口参考的统一说明，各端都涉及到 |
 | Android  | [接入手册](Docs/Android/Android接入手册.md) <br>[接入问题FAQ](Docs/Android/接入问题FAQ.md)                                                                             | 集成说明、常见问题说明      |
 | iOS      | [接入手册](Docs/iOS/iOS接入手册.md) <br>[接入问题FAQ](Docs/iOS/接入问题FAQ.md)                                                                                         | 集成说明、常见问题说明      |
 | MacOS    | [接入手册 ](Docs/MacOS/MacOS接入手册.md)<br>[接入问题FAQ](Docs/MacOS/接入问题FAQ.md)                                                                                   | 集成说明、常见问题说明      |
