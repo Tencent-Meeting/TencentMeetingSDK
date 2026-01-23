@@ -2,7 +2,7 @@
 
 ## 1.1 SDK说明
 ### 1.1.1 版本环境说明
-- 支持compatibleSdkVersion = 5.0.1(13)
+- 支持compatibleSdkVersion = 5.0.3(15)
 - 使用DevEco Studio Build Version: 5.0.7.210 及以上版本作为IDE
 
 ### 1.1.2 SDK组成
@@ -96,7 +96,7 @@ TMSDK的har包+hsp包(.tgz)文件，放在集成方工程根目录下的libs目�
 "products": [
       {
             ...
-            "compatibleSdkVersion": "5.0.1(13)",
+            "compatibleSdkVersion": "5.0.3(15)",
       }
 ]
 ...
@@ -136,7 +136,29 @@ export class App extends AbilityStage {
 
 该步骤主要用于设置AbilityStageContext以及必要的状态，不会进行真正的初始化。
 
-#### 1.2.3.2 初始化函数
+#### 1.2.3.2 UIAbility配置
+* 在应用入口UIAbility#onWindowStageCreate方法中，调用windowStage.loadContent并传入LocalStorage对象：
+```
+export default class MainAbility extends UIAbility {
+  private storage: LocalStorage = new LocalStorage();
+
+  onWindowStageCreate(windowStage: window.WindowStage): void {
+    windowStage.loadContent('pages/Index', this.storage, (err) => {});
+  }
+}
+```
+* 在loadContent加载页面的@Entry装饰器传入LocalStorage.getShared()：
+```
+@Entry({ storage: LocalStorage.getShared() })
+@Component
+struct Index {
+
+  build() {
+  }
+}
+```
+
+#### 1.2.3.3 初始化函数
 在鸿蒙平台，sdk的初始化函数需要额外传入common.UIAbilityContext作为参数。示例如下：
 ```
 private context = getContext(this) as common.UIAbilityContext;
@@ -145,7 +167,7 @@ private init: () => void = () => {
 }
 ```
 
-#### 1.2.3.2 保活配置：
+#### 1.2.3.4 保活配置：
 在使用sdk的ability文件所在的module中，配置backgroundModes。
 例如sdk_sample中的模块配置文件
 sdk_sample/src/main/module.json5如下：
