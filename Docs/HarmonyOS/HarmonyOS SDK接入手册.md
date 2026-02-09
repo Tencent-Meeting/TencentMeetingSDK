@@ -7,48 +7,90 @@
 
 ### 1.1.2 SDK组成
 - SDKSample Demo样例工程
-- libs 包含所有SDK库文件的.har和.tgz文件夹
+- libs 包含SDK库文件
+  - **3.30.200及以上版本**：包含3个 .tgz 文件（tm_harmony_sdk.tgz、wemeet_base.tgz、libxcast.tgz）
+  - **3.30.101及更早版本**：包含多个 .har 文件和 .tgz 文件
+
+### 1.1.3 版本说明
+从 3.30.200 版本开始，SDK 的包结构和依赖管理方式有重大变化，请按对应版本的接入方式进行配置。
 
 ## 1.2 集成步骤
 
 ### 1.2.1 工程脚本配置
-先将TMSDK_HarmonyOS.zip解压，然后将解压后的libs文件夹整体复制到鸿蒙工程根目录（ProjectDir）下，复制完成后的目录结构成如下形式：
-```
-ProjectDir/libs/*.har
-ProjectDir/libs/*.tgz
-```
+先将TMSDK_HarmonyOS.zip解压，然后将解压后的libs文件夹整体复制到鸿蒙工程根目录（ProjectDir）下。
+
 #### 1.2.1.1 project配置文件
 
-TMSDK的har包+hsp包(.tgz)文件，放在集成方工程根目录下的libs目录下，并在 ***ProjectDir/oh-package.json5***文件中增加overrides节点配置，配置如下：
-```
-"overrides": {
-    "tm_harmony_sdk": "file: ./libs/tm_harmony_sdk.har",
-    "tm_harmony_sdk_core": "file: ./libs/tm_harmony_sdk_core.har",
-    "app_common": "file: ./libs/app_common.har",
-    "common": "file: ./libs/common.har",
-    "module_core": "file: ./libs/module_core.har",
-    "nxui_app": "file: ./libs/nxui_app.har",
-    "nxui_uikit": "file: ./libs/nxui_uikit.har",
-    "startup": "file: ./libs/startup.har",
-    "thirdparty": "file: ./libs/thirdparty.har",
-    "wemeet": "file: ./libs/wemeet.har",
-    "wemeet_framework": "file: ./libs/wemeet_framework.har",
-    "wemeet_platform": "file: ./libs/wemeet_platform.har",
-    "qimei": "file: ./libs/qimei-1.0.21.har",
-    "wemeet_base": "file: ./libs/wemeet_base.tgz",
-    "libxcast": "file: ./libs/libxcast.tgz"
+**【3.30.200及以上版本】** SDK 采用简化的依赖管理方式，在 ***ProjectDir/oh-package.json5*** 文件中增加如下配置：
+
+1. 在工程根目录下创建 ***tm_harmony_sdk_deps.json5*** 文件，配置SDK的内部依赖关系：
+```json5
+{
+  "dependencies": {
+    "@tencent/wemeet_base": "*",
+    "@tencent/xcast": "*"
   },
+  "devDependencies": {
+  },
+  "dynamicDependencies": {
+  }
+}
+```
+
+2. 在 ***ProjectDir/oh-package.json5*** 文件中增加 overrides 和 overrideDependencyMap 节点配置：
+```json5
+"overrides": {
+  "@tencent/tm_harmony_sdk": "file:./libs/tm_harmony_sdk.tgz",
+  "@tencent/wemeet_base": "./libs/wemeet_base.tgz",
+  "@tencent/xcast": "./libs/libxcast.tgz"
+},
+"overrideDependencyMap": {
+  "@tencent/tm_harmony_sdk": "./tm_harmony_sdk_deps.json5"
+}
+```
+
+如果overrides节点已经存在，请在overrides节点内增加上述overrides中的配置项。
+
+---
+
+**【3.30.101及更早版本】** SDK 使用多个 .har 文件的方式，在 ***ProjectDir/oh-package.json5*** 文件中增加overrides节点配置，配置如下：
+```json5
+"overrides": {
+    "tm_harmony_sdk": "file:./libs/tm_harmony_sdk.har",
+    "tm_harmony_sdk_core": "file:./libs/tm_harmony_sdk_core.har",
+    "app_common": "file:./libs/app_common.har",
+    "common": "file:./libs/common.har",
+    "module_core": "file:./libs/module_core.har",
+    "nxui_app": "file:./libs/nxui_app.har",
+    "nxui_uikit": "file:./libs/nxui_uikit.har",
+    "startup": "file:./libs/startup.har",
+    "thirdparty": "file:./libs/thirdparty.har",
+    "wemeet": "file:./libs/wemeet.har",
+    "wemeet_framework": "file:./libs/wemeet_framework.har",
+    "wemeet_platform": "file:./libs/wemeet_platform.har",
+    "qimei": "file:./libs/qimei-1.0.21.har",
+    "wemeet_base": "file:./libs/wemeet_base.tgz",
+    "libxcast": "file:./libs/libxcast.tgz"
+}
 ```
 
 如果overrides节点已经存在，请在overrides节点内增加上述overrides中的配置项。
 
 #### 1.2.1.2 module配置文件
-在需要使用TencentMeetingSdk的模块中，引入相关依赖，配置到此模块的 ***module/oh-package.json5*** 文件中，配置如下：
-```
-  "dependencies": {
-    "tm_harmony_sdk": "file: ../libs/tm_harmony_sdk.har",  //这里要看使用模块的实际路径
-  }
+在需要使用TencentMeetingSdk的模块中，引入相关依赖，配置到此模块的 ***module/oh-package.json5*** 文件中。
 
+**【3.30.200及以上版本】** 配置如下：
+```json5
+"dependencies": {
+  "@tencent/tm_harmony_sdk": "file:../libs/tm_harmony_sdk.tgz"  //这里要看使用模块的实际路径
+}
+```
+
+**【3.30.101及更早版本】** 配置如下：
+```json5
+"dependencies": {
+  "tm_harmony_sdk": "file:../libs/tm_harmony_sdk.har"  //这里要看使用模块的实际路径
+}
 ```
 
 #### 1.2.1.3 so架构与so打包冲突解决
@@ -114,9 +156,11 @@ ohpm install
 
 #### 1.2.3.1 appStage配置
 * 在应用entry模块的ets/entry目录下创建App.ets文件，并做如下配置：
-```
+
+```typescript
 import { AbilityStage } from '@kit.AbilityKit'
-import { TMSDK } from 'tm_harmony_sdk'
+import { TMSDK } from '@tencent/tm_harmony_sdk'  // 3.30.200及以上版本
+// import { TMSDK } from 'tm_harmony_sdk'  // 3.30.101及更早版本
 
 export class App extends AbilityStage {
   onCreate(): void {
@@ -124,8 +168,9 @@ export class App extends AbilityStage {
   }
 }
 ```
+
 * 在应用entry模块的module.json5配置文件中，增加如下声明：
-```
+```json5
   "module": {
     ...
     "srcEntry": "./ets/entry/App.ets",  //增加App.ets的配置
@@ -160,7 +205,7 @@ struct Index {
 
 #### 1.2.3.3 初始化函数
 在鸿蒙平台，sdk的初始化函数需要额外传入common.UIAbilityContext作为参数。示例如下：
-```
+```typescript
 private context = getContext(this) as common.UIAbilityContext;
 private init: () => void = () => {
       TMSDK.initialize(this.context, param, new MyCallback());
@@ -263,6 +308,38 @@ onRouterToPage(scheme: string, routerParam: string,
 #### 1.2.4.3 注意项
 - **如果集成方使用了方案二，自己处理路由交互部分，需要集成方同时处理全屏状态变化和还原、屏幕旋转变化和还原等系统事件。**
 - **集成方鸿蒙App中，需要使用鸿蒙官方推荐的Navigation和NavPathStack进行路由管理。同时路由中的页面顶层元素需要声明为NavDestination，否则可能无法路由到sdk页面。详细使用方式可参考SdkSample中的Index.ets和MeetingTab.ets实现**
+
+### 1.2.5 版本迁移说明（3.30.101 → 3.30.200）
+
+如果您正在从旧版本（3.30.101及更早版本）升级到新版本（3.30.200及以上版本），需要进行以下变更：
+
+#### 1.2.5.1 库文件变更
+- **旧版本**：libs 目录包含多个独立的 .har 文件（tm_harmony_sdk.har、tm_harmony_sdk_core.har、app_common.har 等13个文件）
+- **新版本**：libs 目录简化为3个 .tgz 文件（tm_harmony_sdk.tgz、wemeet_base.tgz、libxcast.tgz）
+
+#### 1.2.5.2 配置文件变更
+
+1. **project级 oh-package.json5 变更**：
+   - 新增 tm_harmony_sdk_deps.json5 文件来管理SDK内部依赖
+   - overrides 配置项大幅简化，仅需配置3个主要依赖
+   - 新增 overrideDependencyMap 配置项
+
+2. **module级 oh-package.json5 变更**：
+   - 依赖项名称从 `tm_harmony_sdk` 改为 `@tencent/tm_harmony_sdk`
+   - 文件路径从 `.har` 改为 `.tgz`
+
+3. **代码 import 语句变更**：
+   - 旧版本：`import { TMSDK } from 'tm_harmony_sdk'`
+   - 新版本：`import { TMSDK } from '@tencent/tm_harmony_sdk'`
+
+#### 1.2.5.3 迁移步骤
+1. 备份旧版本配置文件
+2. 替换 libs 目录为新版本的库文件
+3. 按照 1.2.1.1 的新版本说明更新 project 级 oh-package.json5，并创建 tm_harmony_sdk_deps.json5
+4. 按照 1.2.1.2 的新版本说明更新 module 级 oh-package.json5
+5. 全局搜索并替换所有代码中的 import 语句（`'tm_harmony_sdk'` → `'@tencent/tm_harmony_sdk'`）
+6. 执行 `ohpm install` 重新安装依赖
+7. Clean 并重新编译项目
 
 
 
