@@ -178,6 +178,7 @@
 | 2025-04-29 | 3.30.200 | 接口调整：initialize接口中InitParam支持设置SDK语言为日语|
 | 2025-04-29 | 3.30.200 | 新增服务：UserConfigService(用户配置服务)|
 | 2025-06-16 | 3.30.100 for HarmonyOS | 新增错误码：[-1077]--因成员限制，加入会议时无法入会 |
+| 2026-05-06 | 3.34.100 for HarmonyOS | 鸿蒙端版本升级；支持邀请参会人接口和回调：enableAddressBookCallback、enableInviteUsersCallback、addUsersWithParam、onAddUsersResult、onShowAddressBook、onInviteUsers |
 
 
 
@@ -482,8 +483,10 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 
 ### addUsersWithParam
 * 函数形式：**void addUsersWithParam(string json_param)**
-* 可用版本：>= 3.6.401
-* 可用平台：**Linux、HarmonyOS暂不支持**
+* 可用版本与平台：
+  * 版本 >= 3.34.100: `HarmonyOS` 
+  * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
+  * 暂不支持: `Linux`
 * 函数说明：
   - 添加人员操作，接入方可以邀请人加入预定会议、或邀请人员加入会议，添加的结果通过`SDKCallback.onAddUsersResult`回调通知给接入方
   - 当使用SDK的预定会议界面时，并在`PreMeetingCallback.onShowAddressBook`回调中，可通过该函数添加主持人和成员
@@ -677,8 +680,11 @@ SDKCallback 需实现以下成员函数：
 
 ### onAddUsersResult
 * 函数形式：**void onAddUsersResult(int user_type, int code, string msg)**
-* 可用版本：>= 3.6.401
-* 可用平台：**Linux、HarmonyOS暂不支持**
+* 可用版本与平台：
+  * 版本 >= 3.34.100: `HarmonyOS` 
+  * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
+  * 暂不支持: `Linux`
+  
 * 说明：调用`TMSDK.addUsersWithParam`函数的回调
 
 | 参数名       | 参数类型   | 参数说明                                            |
@@ -1294,8 +1300,10 @@ msg内容示例：
 
 ### enableAddressBookCallback
 * 函数形式：**void enableAddressBookCallback(bool enable, bool show)**
-* 可用版本：>= 3.6.401
-* 可用平台：**Linux、HarmonyOS暂不支持**
+* 可用版本与平台：
+  * 版本 >= 3.34.100: `HarmonyOS` 
+  * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
+  * 暂不支持: `Linux`
 * 函数说明：
   * SDK预定会议界面中，开启定制化通讯录的回调。
   * 当用户在SDK预定会议界面中，点击通讯录选人按钮来邀请成员和主持人时，发起`PreMeetingCallback.onShowAddressBook`回调。
@@ -1560,8 +1568,10 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### onShowAddressBook
 * 函数形式：**void onShowAddressBook(int user_type, string json_data)**
-* 可用版本：>= 3.6.401
-* 可用平台：**Linux、HarmonyOS暂不支持**
+* 可用版本与平台：
+  * 版本 >= 3.34.100: `HarmonyOS` 
+  * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
+  * 暂不支持: `Linux`
 * 说明：
   * 用户在SDK界面中打开通讯录的回调，可用作接入方定制通讯录的通知。
   * 在`PreMeetingService.enableAddressBookCallback`函数参数enable设置为true的情况下，在SDK预定会议界面中，用户点击通讯录邀请成员、指定主持人时，会收到该回调。
@@ -1756,7 +1766,11 @@ PreMeetingCallback 需实现以下成员函数：
 
 ### enableInviteUsersCallback
 * 函数形式：**void enableInviteUsersCallback(bool enable, bool show)**
-* 可用平台：**Linux、HarmonyOS暂不支持**
+* 可用版本与平台：
+  * 版本 >= 3.34.100: `HarmonyOS` 
+  * 版本 >= 2.18.2: `iOS` / `Android` / `Win` / `Mac`
+  * 暂不支持: `Linux`
+
 * 函数说明：
    * 设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息（users）和场景类型（user_type）。
    * 设置接口要早于点击会中界面成员列表添加按钮，建议初始化回调之后登录之前设置。
@@ -2319,8 +2333,10 @@ invite_info内容
 
 ### onInviteUsers
 * 函数形式：**void onInviteUsers(string json_data)**
-* 可用版本：>= 3.6.401
-* 可用平台：**Linux、HarmonyOS暂不支持**
+* 可用版本与平台：
+  * 版本 >= 3.34.100: `HarmonyOS` 
+  * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
+  * 暂不支持: `Linux`
 * 说明：
   * 用户在会议中界面点击右侧成员列表上方的添加成员按钮的的回调。
   * 接入方响应回调后，可展示自定义通讯录，在自定义通讯录中添加成员要通知到SDK时，可调用`TMSDK.addUsersWithParam`函数来实现。
