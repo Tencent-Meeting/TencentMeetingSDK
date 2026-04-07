@@ -159,7 +159,7 @@ ohpm install
 
 ```typescript
 import { AbilityStage } from '@kit.AbilityKit'
-import { TMSDK } from '@tencent/tm_harmony_sdk'  // 3.30.200及以上版本
+import { TMSDK, SDKConfig } from '@tencent/tm_harmony_sdk'  // 3.30.200及以上版本
 // import { TMSDK } from 'tm_harmony_sdk'  // 3.30.101及更早版本
 
 export class App extends AbilityStage {
@@ -180,6 +180,37 @@ export class App extends AbilityStage {
 
 
 该步骤主要用于设置AbilityStageContext以及必要的状态，不会进行真正的初始化。
+
+#### 1.2.3.1.1 SDKConfig 说明
+
+> **3.30.200 新增**：`initOnApplicationCreate` 方法新增了可选参数 `config?: SDKConfig`，用于在 Application 初始化阶段传入框架级配置。
+
+**方法签名：**
+```typescript
+static initOnApplicationCreate(context: Context | null | undefined, config?: SDKConfig): void
+```
+
+**SDKConfig 字段说明：**
+
+| 字段 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `configImageKnife` | `boolean` | `true` | 是否由 SDK 初始化 ImageKnife。默认为 `true`。如果宿主应用已自行配置了 ImageKnife，可设置为 `false` 以避免冲突。|
+
+**示例：** 宿主应用已自行配置 ImageKnife 时，可传入 SDKConfig 避免冲突：
+```typescript
+import { AbilityStage } from '@kit.AbilityKit'
+import { TMSDK, SDKConfig } from '@tencent/tm_harmony_sdk'
+
+export class App extends AbilityStage {
+  onCreate(): void {
+    const config = new SDKConfig();
+    config.configImageKnife = false;  // 宿主已配置 ImageKnife，禁止 SDK 重复初始化
+    TMSDK.initOnApplicationCreate(this.context, config);
+  }
+}
+```
+
+`config` 参数为可选，不传时与之前行为保持一致（SDK 默认初始化 ImageKnife）。
 
 #### 1.2.3.2 UIAbility配置
 * 在应用入口UIAbility#onWindowStageCreate方法中，调用windowStage.loadContent并传入LocalStorage对象：
