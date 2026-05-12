@@ -195,9 +195,9 @@ static initOnApplicationCreate(context: Context | null | undefined, config?: SDK
 | 字段 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `configImageKnife` | `boolean` | `true` | 是否由 SDK 初始化 ImageKnife。默认为 `true`。如果宿主应用已自行配置了 ImageKnife，可设置为 `false` 以避免冲突。|
-| `configBugly` | `boolean` | `true` | 是否使用SDK的bugly上报。默认为 `true`。如果宿主应用已自行配置了 Bugly上报，可设置为 `false` 以避免冲突。|
+| `configBugly` | `boolean` | `true` | 是否使用SDK的Bugly上报。默认为 `true`。如果宿主应用已自行配置了 Bugly上报，可设置为 `false` 以避免冲突。|
 
-**示例：** 宿主应用已自行配置 ImageKnife和bugly 时，可传入 SDKConfigOptions 避免冲突：
+**示例：** 宿主应用已自行配置 ImageKnife 和 Bugly 时，可传入 SDKConfigOptions 避免冲突：
 ```typescript
 import { AbilityStage } from '@kit.AbilityKit'
 import { TMSDK, SDKConfigOptions } from '@tencent/tm_harmony_sdk'
@@ -206,7 +206,7 @@ export class App extends AbilityStage {
   onCreate(): void {
     TMSDK.initOnApplicationCreate(this.context, {
       configImageKnife: false,  // 宿主已配置 ImageKnife，禁止 SDK 重复初始化
-      configBugly: false  // 宿主已配置 bugly，禁止 SDK 重复配置bugly
+      configBugly: false  // 宿主已配置 Bugly，禁止 SDK 重复配置Bugly
     });
   }
 }
