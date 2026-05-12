@@ -197,7 +197,7 @@ static initOnApplicationCreate(context: Context | null | undefined, config?: SDK
 | `configImageKnife` | `boolean` | `true` | 是否由 SDK 初始化 ImageKnife。默认为 `true`。如果宿主应用已自行配置了 ImageKnife，可设置为 `false` 以避免冲突。|
 | `configBugly` | `boolean` | `true` | 是否使用SDK的bugly上报。默认为 `true`。如果宿主应用已自行配置了 Bugly上报，可设置为 `false` 以避免冲突。|
 
-**示例：** 宿主应用已自行配置 ImageKnife 时，可传入 SDKConfigOptions 避免冲突：
+**示例：** 宿主应用已自行配置 ImageKnife和bugly 时，可传入 SDKConfigOptions 避免冲突：
 ```typescript
 import { AbilityStage } from '@kit.AbilityKit'
 import { TMSDK, SDKConfigOptions } from '@tencent/tm_harmony_sdk'
