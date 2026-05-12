@@ -183,29 +183,31 @@ export class App extends AbilityStage {
 
 #### 1.2.3.1.1 SDKConfig 说明
 
-> **3.30.200 新增**：`initOnApplicationCreate` 方法新增了可选参数 `config?: SDKConfig`，用于在 Application 初始化阶段传入框架级配置。
+> **3.30.200 新增**：`initOnApplicationCreate` 方法新增了可选参数 `config?: SDKConfigOptions`，用于在 Application 初始化阶段传入框架级配置。
 
 **方法签名：**
 ```typescript
-static initOnApplicationCreate(context: Context | null | undefined, config?: SDKConfig): void
+static initOnApplicationCreate(context: Context | null | undefined, config?: SDKConfigOptions): void
 ```
 
-**SDKConfig 字段说明：**
+**SDKConfigOption 字段说明：**
 
 | 字段 | 类型 | 默认值 | 说明 |
 |------|------|--------|------|
 | `configImageKnife` | `boolean` | `true` | 是否由 SDK 初始化 ImageKnife。默认为 `true`。如果宿主应用已自行配置了 ImageKnife，可设置为 `false` 以避免冲突。|
+| `configBugly` | `boolean` | `true` | 是否使用SDK的bugly上报。默认为 `true`。如果宿主应用已自行配置了 Bugly上报，可设置为 `false` 以避免冲突。|
 
-**示例：** 宿主应用已自行配置 ImageKnife 时，可传入 SDKConfig 避免冲突：
+**示例：** 宿主应用已自行配置 ImageKnife 时，可传入 SDKConfigOptions 避免冲突：
 ```typescript
 import { AbilityStage } from '@kit.AbilityKit'
-import { TMSDK, SDKConfig } from '@tencent/tm_harmony_sdk'
+import { TMSDK, SDKConfigOptions } from '@tencent/tm_harmony_sdk'
 
 export class App extends AbilityStage {
   onCreate(): void {
-    const config = new SDKConfig();
-    config.configImageKnife = false;  // 宿主已配置 ImageKnife，禁止 SDK 重复初始化
-    TMSDK.initOnApplicationCreate(this.context, config);
+    TMSDK.initOnApplicationCreate(this.context, {
+      configImageKnife: false,  // 宿主已配置 ImageKnife，禁止 SDK 重复初始化
+      configBugly: false  // 宿主已配置 bugly，禁止 SDK 重复配置bugly
+    });
   }
 }
 ```
