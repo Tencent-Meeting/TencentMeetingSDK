@@ -831,7 +831,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 函数形式：**void jumpUrlWithLoginStatus(string target_url)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
+  * 版本 3.19.100: `Linux`
   * 全版本: `iOS` / `Android` / `Win` / `Mac`
 * 函数说明：带登录态去打开目标地址，该地址必须是会议相关的、并支持登录态方式的页面，必须登录成功才可调用。
 * 返回值说明：无
@@ -891,7 +891,8 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void onJumpUrlWithLoginStatus(int code, string msg)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
+  * 版本 3.19.100: `Linux`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac`
 * 说明：带登录态跳转的回调。
 
 |参数名 |参数类型 |参数说明 |
@@ -1098,7 +1099,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void showMeetingSettingView()**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS`
-  * 版本 >= 3.26.100: `Linux`
+  * 版本 3.19.100: `Linux`
   * 版本 >= 2.18.2: `iOS` / `Android` / `Win` / `Mac`
 * 函数说明：显示设置管理界面。初始化后，才可调用。
 * 返回值说明：无
