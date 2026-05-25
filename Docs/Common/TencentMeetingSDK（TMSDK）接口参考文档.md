@@ -633,7 +633,7 @@ SDKCallback 需实现以下成员函数：
 * 函数形式：**void onActiveUploadLogsResult(int code, string msg)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS`
-  * 版本 >= 3.26.100: `Linux` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.21.100: `iOS` / `Android` / `Win` / `Mac`
 * 说明：调用`TMSDK.activeUploadLogs`函数的回调
 
@@ -891,8 +891,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void onJumpUrlWithLoginStatus(int code, string msg)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 说明：带登录态跳转的回调。
 
 |参数名 |参数类型 |参数说明 |
@@ -952,8 +951,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void joinMeetingByJSON(string json_param)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
-  * 版本 >= 3.0.106: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.0.106: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
 * 返回值说明：无
 * 参数说明：
@@ -991,8 +989,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void quickMeetingByJSON(string json_param)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
-  * 版本 >= 3.6.300: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.6.300: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：
@@ -1087,7 +1084,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void showUploadLogsView()**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS`
-  * 版本 >= 3.26.100: `Linux` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.21.100: `iOS` / `Android` / `Win` / `Mac`
 * 函数说明：
   * 显示上传日志界面。
@@ -1101,7 +1098,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void showMeetingSettingView()**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS`
-  * 版本 >= 3.26.100: `Linux` 
+  * 版本 >= 3.26.100: `Linux`
   * 版本 >= 2.18.2: `iOS` / `Android` / `Win` / `Mac`
 * 函数说明：显示设置管理界面。初始化后，才可调用。
 * 返回值说明：无
