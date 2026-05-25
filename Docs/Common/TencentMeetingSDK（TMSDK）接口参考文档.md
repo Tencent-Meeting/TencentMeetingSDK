@@ -821,8 +821,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 函数形式：**bool isLoggedIn()**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：判断是否已登录
 * 返回值说明：是否已登录
 * 参数说明：无
