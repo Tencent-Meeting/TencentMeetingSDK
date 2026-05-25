@@ -321,7 +321,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 函数形式：**bool isInitialized()**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本：`iOS` / `Android` / `Win` / `Mac`
+  * 全版本：`iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：判断是否已初始化SDK成功。
 * 返回值说明：是否已经初始化SDK
 * 参数说明：无
@@ -355,7 +355,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 函数形式：**void showLogs()**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本：`iOS` / `Android` / `Win` / `Mac`
+  * 全版本：`iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：帮助用户获取日志，移动端会对日志目录打包，并打开系统的分享；桌面端会打开日志文件夹。调用结果通过`SDKCallback.onShowLogsResult`回调通知。
 * 返回值说明：无
 * 参数说明：无
@@ -374,7 +374,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 函数形式：**string[] collectLogFiles(int begin_time, int end_time)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 3.12.100: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.12.100: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：根据开始和结束时间，返回会议SDK的日志文件路径的列表
 * 返回值说明：类型是字符串数组，表示日志文件绝对路径的列表，每个小时1个日志文件，所以多个日志文件
 * 参数说明：
@@ -389,7 +389,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 函数形式：**activeUploadLogs(int begin_time, int end_time, string description)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS`
-  * 版本 >= 3.26.100: `Linux` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.21.100：`iOS` / `Android` / `Win` / `Mac`
 * 函数说明：
   * 主动上传日志，通过接口`SDKCallback.onActiveUploadLogsResult`回调通知返回结果；
@@ -486,9 +486,8 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 函数形式：**void addUsersWithParam(string json_param)**
 * 可用版本与平台：
   * 版本 >= 3.34.100: `HarmonyOS`
-  * 版本 >= 3.30.100: `Linux` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
-  * 暂不支持: `Linux`
 * 函数说明：
   - 添加人员操作，接入方可以邀请人加入预定会议、或邀请人员加入会议，添加的结果通过`SDKCallback.onAddUsersResult`回调通知给接入方
   - 当使用SDK的预定会议界面时，并在`PreMeetingCallback.onShowAddressBook`回调中，可通过该函数添加主持人和成员
@@ -563,7 +562,7 @@ SDKCallback 需实现以下成员函数：
 * 函数形式：**void onSDKInitializeResult(int code, string msg)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 说明：调用SDK初始化的结果回调
 
 |参数名 |参数类型 | 参数说明 |
@@ -576,7 +575,7 @@ SDKCallback 需实现以下成员函数：
 - 函数形式：**void onSDKUninitializeResult(int code, string msg)**
 - 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 3.12.100: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.12.100: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 - 说明：调用反初始化函数之后的结果回调。
 
 | 参数名 | 参数类型 | 参数说明                                                   |
@@ -589,7 +588,7 @@ SDKCallback 需实现以下成员函数：
 * 函数形式：**void onSDKError(int code, string msg)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 
 |参数名 |参数类型 | 参数说明 |
 |---|---|---|
@@ -685,8 +684,8 @@ SDKCallback 需实现以下成员函数：
 * 函数形式：**void onAddUsersResult(int user_type, int code, string msg)**
 * 可用版本与平台：
   * 版本 >= 3.34.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
-  * 暂不支持: `Linux`
   
 * 说明：调用`TMSDK.addUsersWithParam`函数的回调
 
@@ -741,7 +740,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 函数形式：**void login(string sso_url)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。
 * 返回值说明：无
 * **最佳实践和注意事项**：
@@ -762,6 +761,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 函数形式：**void loginByJSON(string login_json)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.24.100: `iOS` / `Android` / `Win` / `Mac`
 * 函数说明：发起登录请求，登录结果会在回调`AuthenticationCallback.onLogin`返回。
 * 返回值说明：无
@@ -804,7 +804,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 函数形式：**void logout()**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：发起登出请求，登出结果会在回调`AuthenticationCallback.onLogout`返回。
 * 返回值说明：无
 * **最佳实践和注意事项**：
@@ -820,6 +820,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 函数形式：**bool isLoggedIn()**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 全版本: `iOS` / `Android` / `Win` / `Mac`
 * 函数说明：判断是否已登录
 * 返回值说明：是否已登录
@@ -830,6 +831,7 @@ AccountService用来管理账户的登录、登出和账户信息，在所有会
 * 函数形式：**void jumpUrlWithLoginStatus(string target_url)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 全版本: `iOS` / `Android` / `Win` / `Mac`
 * 函数说明：带登录态去打开目标地址，该地址必须是会议相关的、并支持登录态方式的页面，必须登录成功才可调用。
 * 返回值说明：无
@@ -862,7 +864,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void onLogin(int code, string msg)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 说明：账户登录的回调。
 
 |参数名 |参数类型 |参数说明 |
@@ -875,7 +877,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void onLogout(int type, int code, string msg)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 说明：账户登出的回调。
 
 |参数名 |参数类型 |参数说明 |
@@ -889,6 +891,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void onJumpUrlWithLoginStatus(int code, string msg)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 全版本: `iOS` / `Android` / `Win` / `Mac`
 * 说明：带登录态跳转的回调。
 
@@ -919,7 +922,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void joinMeeting(JoinParam param)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：
   * 发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
   * 如果想使用JoinParam参数中缺省的默认值，请使用`joinMeetingByJSON`函数
@@ -949,6 +952,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void joinMeetingByJSON(string json_param)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.0.106: `iOS` / `Android` / `Win` / `Mac`
 * 函数说明：发起入会请求，结果会在回调`PreMeetingCallback.onJoinMeeting`返回。登录完成后，才可调用。
 * 返回值说明：无
@@ -977,7 +981,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void quickMeeting()**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 3.6.200: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.6.200: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
 * 参数说明：无
@@ -987,6 +991,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 函数形式：**void quickMeetingByJSON(string json_param)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.6.300: `iOS` / `Android` / `Win` / `Mac`
 * 函数说明：快速会议，不支持重复调用，需要在回调之后onJoinMeeting，才能发起第二次调用；
 * 返回值说明：无，通过回调PreMeetingCallback的onJoinMeeting回调结果
@@ -1307,8 +1312,8 @@ msg内容示例：
 * 函数形式：**void enableAddressBookCallback(bool enable, bool show)**
 * 可用版本与平台：
   * 版本 >= 3.34.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
-  * 暂不支持: `Linux`
 * 函数说明：
   * SDK预定会议界面中，开启定制化通讯录的回调。
   * 当用户在SDK预定会议界面中，点击通讯录选人按钮来邀请成员和主持人时，发起`PreMeetingCallback.onShowAddressBook`回调。
@@ -1522,7 +1527,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void onJoinMeeting(int code, string msg, string meeting_code)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 说明：入会的回调。
 
 |参数名 |参数类型 | 参数说明                             |
@@ -1536,7 +1541,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void onActionResult(int action_type, int code, string msg)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 2.18.2: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 2.18.2: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 说明：各种行为操作的通知回调。
 
 |参数名 |参数类型 |参数说明 |
@@ -1718,7 +1723,7 @@ PreMeetingCallback 需实现以下成员函数：
 
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：发起离会请求，结果会在回调`InMeetingCallback.onLeaveMeeting`返回。
 * 返回值说明：无
 * 参数说明：
@@ -1732,6 +1737,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void enableInviteCallback(bool enable, bool show)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 全版本: `iOS` / `Android` / `Win` / `Mac`
 * 函数说明：设置是否使用邀请回调，如果使用，点击会议中界面下方工具栏上的邀请按钮，会触发`InMeetingCallback.onInviteMeeting`回调，并回调会议信息。
            该接口入会之前设置有效，建议初始化回调之后，登录之前设置。
@@ -1753,7 +1759,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void enableMeetingInfoCallback(bool enable, bool show)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：设置是否使用会议信息回调，如果使用，点击会议title后面(i)信息按钮，会触发`InMeetingCallback.onShowMeetingInfo`回调，并回调会议信息。
 * 返回值说明：无
 * 参数说明：
@@ -1773,8 +1779,8 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void enableInviteUsersCallback(bool enable, bool show)**
 * 可用版本与平台：
   * 版本 >= 3.34.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 2.18.2: `iOS` / `Android` / `Win` / `Mac`
-  * 暂不支持: `Linux`
 
 * 函数说明：
    * 设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息（users）和场景类型（user_type）。
@@ -1888,6 +1894,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void enableCustomOrgInfo(bool enable)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
 * 函数说明：
   * 设置是否开启自定义组织架构信息
@@ -1902,6 +1909,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void setCustomOrgInfo(string json_param)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
 * 函数说明：
   * 对相关成员设置自定义的组织架构信息
@@ -2277,7 +2285,7 @@ InMeetingCallback 需实现以下成员函数：
 * 函数形式：**void onLeaveMeeting(int type, int code, string msg, string meeting_code)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 说明：离会的回调。
 * 参数说明：
 
@@ -2293,7 +2301,7 @@ InMeetingCallback 需实现以下成员函数：
 * 函数形式：**void onInviteMeeting(string invite_info)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 说明：用户在会议中界面点击下方工具栏邀请按钮后的回调。
 * 参数说明：
 
@@ -2327,7 +2335,7 @@ invite_info内容
 * 函数形式：**void onShowMeetingInfo(string meeting_info)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 说明：用户在会议中界面点击展示会议信息的回调。
 * 参数说明：
 
@@ -2340,8 +2348,8 @@ invite_info内容
 * 函数形式：**void onInviteUsers(string json_data)**
 * 可用版本与平台：
   * 版本 >= 3.34.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
-  * 暂不支持: `Linux`
 * 说明：
   * 用户在会议中界面点击右侧成员列表上方的添加成员按钮的的回调。
   * 接入方响应回调后，可展示自定义通讯录，在自定义通讯录中添加成员要通知到SDK时，可调用`TMSDK.addUsersWithParam`函数来实现。
@@ -2409,6 +2417,7 @@ data内容示例
 * 函数形式：**void onQueryCustomOrgInfo(string json_data)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
+  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
 * 说明：
   * SDK主动向接入放查询自定义的组织架构信息
@@ -2425,7 +2434,7 @@ data内容示例
 * 函数形式：**void onActionResult(int action_type, int code, string msg)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 说明：会中的各种行为操作的通知回调
 
 |参数名 |参数类型 | 参数说明                           |
