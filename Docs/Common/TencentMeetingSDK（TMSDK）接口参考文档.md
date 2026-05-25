@@ -492,6 +492,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
   - 添加人员操作，接入方可以邀请人加入预定会议、或邀请人员加入会议，添加的结果通过`SDKCallback.onAddUsersResult`回调通知给接入方
   - 当使用SDK的预定会议界面时，并在`PreMeetingCallback.onShowAddressBook`回调中，可通过该函数添加主持人和成员
   - 当会议中时，可通过该函数邀请呼叫人员入会，一般在`InMeetingCallback.onInviteUsers`回调中使用
+  - `Linux`平台下仅支持会中邀请（user_type=3）
 * 返回值说明：无
 * 参数说明：
   - json_param格式：
