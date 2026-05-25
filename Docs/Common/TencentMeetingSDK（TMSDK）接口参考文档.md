@@ -1735,8 +1735,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void enableInviteCallback(bool enable, bool show)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
-  * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
 * 函数说明：设置是否使用邀请回调，如果使用，点击会议中界面下方工具栏上的邀请按钮，会触发`InMeetingCallback.onInviteMeeting`回调，并回调会议信息。
            该接口入会之前设置有效，建议初始化回调之后，登录之前设置。
 * 返回值说明：无
@@ -1777,8 +1776,8 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void enableInviteUsersCallback(bool enable, bool show)**
 * 可用版本与平台：
   * 版本 >= 3.34.100: `HarmonyOS` 
-  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 2.18.2: `iOS` / `Android` / `Win` / `Mac`
+  * 暂不支持: `Linux`
 
 * 函数说明：
    * 设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息（users）和场景类型（user_type）。
@@ -2346,8 +2345,8 @@ invite_info内容
 * 函数形式：**void onInviteUsers(string json_data)**
 * 可用版本与平台：
   * 版本 >= 3.34.100: `HarmonyOS` 
-  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
+  * 暂不支持: `Linux`
 * 说明：
   * 用户在会议中界面点击右侧成员列表上方的添加成员按钮的的回调。
   * 接入方响应回调后，可展示自定义通讯录，在自定义通讯录中添加成员要通知到SDK时，可调用`TMSDK.addUsersWithParam`函数来实现。
