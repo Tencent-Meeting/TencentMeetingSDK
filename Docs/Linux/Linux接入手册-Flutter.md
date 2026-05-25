@@ -472,7 +472,7 @@ chmod +x run_x86_64.sh
 
 ## 接口说明
 
-> ⚠️ **注意**：SDK 接口分为异步接口和同步接口。异步接口的结果需要在对应的回调中处理，同步接口会直接返回结果。**初始化（`WemeetSDKBindings.initializeSDK`）必须等到 `onInitializeResult` 回调成功后，再进行其他接口调用**，否则其他接口调用均无效。
+> ⚠️ **注意**：SDK 接口分为异步接口和同步接口。异步接口的结果需要在对应的回调中处理，同步接口会直接返回结果。**初始化（`WemeetSDKBindings.initializeSDK`）必须等到回调成功后，再进行其他接口调用**，否则其他接口调用均无效。
 
 📖 本文档只列出接口的名称和参数，具体参数说明可以参考《TencentMeetingSDK（TMSDK）接口参考文档》
 
