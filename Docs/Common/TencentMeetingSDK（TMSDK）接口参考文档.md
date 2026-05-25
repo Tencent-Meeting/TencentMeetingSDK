@@ -1310,8 +1310,8 @@ msg内容示例：
 * 函数形式：**void enableAddressBookCallback(bool enable, bool show)**
 * 可用版本与平台：
   * 版本 >= 3.34.100: `HarmonyOS` 
-  * 版本 >= 3.26.100: `Linux`（仅 Flutter 框架）
   * 版本 >= 3.6.401: `iOS` / `Android` / `Win` / `Mac`
+  * 暂不支持: `Linux`
 * 函数说明：
   * SDK预定会议界面中，开启定制化通讯录的回调。
   * 当用户在SDK预定会议界面中，点击通讯录选人按钮来邀请成员和主持人时，发起`PreMeetingCallback.onShowAddressBook`回调。
