@@ -2,7 +2,7 @@
 
 > 📖 本文档将指导您如何在 Flutter 项目中快速接入腾讯会议 SDK（Linux 版本）
 >
-> ⚠️ **本文档以 Ubuntu 24.04+（x86_64）为例**，其他 Linux 发行版或架构的用户在接入时可能需要根据实际情况做适当调整（如系统依赖的安装命令、库路径等）。
+> ⚠️ **本文档以 Ubuntu 24.04+（x86_64）为例**，同时支持 **ARM64（aarch64）** 架构。其他 Linux 发行版的用户在接入时可能需要根据实际情况做适当调整（如系统依赖的安装命令、库路径等）。
 
 ## 📋 目录
 
@@ -14,7 +14,10 @@
 
 ## 环境要求
 
-- **系统要求**：Ubuntu（x86_64）
+- **系统要求**：Ubuntu（x86_64 / ARM64）
+- **支持架构**：
+  - x86_64（x64）
+  - ARM64（aarch64）
 - **开发环境**：
   - Flutter SDK
   - CMake
@@ -45,6 +48,7 @@ ${SDK_ROOT}/
     │   ├── wemeet_sdk_wrapper.cc # C Wrapper 层（SDK 开发者提供）
     │   └── wemeet_sdk_wrapper.h  # C Wrapper 头文件（SDK 开发者提供）
     ├── run_x86_64.sh             # 启动脚本
+    ├── run_arm.sh                # 启动脚本
     ├── pubspec.yaml              # 项目依赖配置
     └── ...
 ```
