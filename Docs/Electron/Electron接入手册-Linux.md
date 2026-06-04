@@ -87,21 +87,76 @@ if (process.platform === 'linux') {
   const ldPathEnv = process.env.LD_LIBRARY_PATH;
   const curWorkingPath = path.join(__dirname, "output", "linux", "Release", "lib");
   if (ldPathEnv) {
-    process.env.LD_LIBRARY_PATH = `${curWorkingPath}:${ldPathEnv}`;  // 注意路径顺序，新路径放在最前面
+    process.env.LD_LIBRARY_PATH = `${curWorkingPath}:${ldPathEnv}`;
   } else {
     process.env.LD_LIBRARY_PATH = `${curWorkingPath}:`;
   }
   const pathEnv = process.env.PATH;
   const curReleasePath = path.join(__dirname, "output", "linux", "Release");
-  process.env.PATH = `${curReleasePath}:${pathEnv}`;    // 注意路径顺序，当前路径放在最前面
+  process.env.PATH = `${curReleasePath}:${pathEnv}`;
   process.env.QT_PLUGIN_PATH = path.join(__dirname, "output", "linux", "Release", "plugins");
   process.env.TZ = `Asia/Shanghai`;
   process.env.LC_ALL = `zh_CN.UTF-8`;
 
-  // ... other env settings ...
-  // Wayland环境下的兼容处理
-  if (process.env.XDG_SESSION_TYPE == 'wayland') {
-    // 参考demo代码
+  console.log("LD_LIBRARY_PATH: ", process.env.LD_LIBRARY_PATH);
+  console.log("PATH: ", process.env.PATH);
+  console.log("QT_PLUGIN_PATH: ", process.env.QT_PLUGIN_PATH);
+
+  const xdgSessionType = process.env.XDG_SESSION_TYPE;
+  if (xdgSessionType == 'wayland') {
+    const { exec } = require('child_process');
+    const { parse } = require('dotenv');
+    isWaylandDisplay = true;
+
+    // 提取公共函数：执行shell命令并更新环境变量
+    function updateEnvironmentFromShellScript(scriptPath) {
+      return new Promise((resolve, reject) => {
+        exec(`source ${scriptPath} && env`, { shell: '/bin/bash' }, (err, stdout, stderr) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+
+          // 将输出的环境变量解析为一个对象
+          const env = parse(stdout);
+          console.log("env.LD_LIBRARY_PATH: ", env.LD_LIBRARY_PATH);
+          console.log("env.XDG_SESSION_TYPE: ", env.XDG_SESSION_TYPE);
+
+          // 将解析后的环境变量设置到当前进程的环境变量中
+          if (env.LD_LIBRARY_PATH && env.LD_LIBRARY_PATH.includes(process.env.LD_LIBRARY_PATH)) {
+            process.env.LD_LIBRARY_PATH = env.LD_LIBRARY_PATH;
+          } else {
+            process.env.LD_LIBRARY_PATH = `${process.env.LD_LIBRARY_PATH}:${env.LD_LIBRARY_PATH}`;
+          }
+          process.env.XDG_SESSION_TYPE = env.XDG_SESSION_TYPE;
+          delete process.env.WAYLAND_DISPLAY;
+          isWaylandDisplay = false;
+          console.log('wayland env updated.');
+          console.log("process.env.LD_LIBRARY_PATH: ", process.env.LD_LIBRARY_PATH);
+
+          resolve();
+        });
+      });
+    }
+
+    if (fs.existsSync('/opt/x11-wayland/x11-ext.sh')) {
+      updateEnvironmentFromShellScript('/opt/x11-wayland/x11-ext.sh')
+        .then(() => {
+          console.log('wayland env updated from system script.');
+        })
+        .catch(err => {
+          console.error('Failed to update environment from system script:', err);
+        });
+    } else {
+      // electron_linux.sh 由 SDK 提供，参见 Docs/Linux/electron_linux.sh
+      updateEnvironmentFromShellScript('./output/linux/Release/electron_linux.sh')
+        .then(() => {
+          console.log('electron_linux env updated from fallback script.');
+        })
+        .catch(err => {
+          console.error('Failed to update environment from fallback script:', err);
+        });
+    }
   }
 }
 ```
