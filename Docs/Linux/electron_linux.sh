@@ -32,6 +32,7 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ];then
   if [ -f "/opt/x11-wayland/x11-ext.sh" ];then
     source /opt/x11-wayland/x11-ext.sh
   else
+    source ${HERE}/x11-wayland/x11-ext.sh
     export QT_QPA_PLATFORM=xcb
     export XDG_SESSION_TYPE=x11
     unset WAYLAND_DISPLAY
