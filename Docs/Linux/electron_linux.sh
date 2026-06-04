@@ -7,7 +7,7 @@ if [[ -e ${os_release} ]];then
   case $ID in
   ubuntu)
     if [[ ${main} -le "16" ]];then
-      zenity --info --title="腾讯会议" --text="腾讯会议检测到您操作系统版本过低，请升级系统到ubuntu18.04或以上版本！" --width=350 --height=100
+      zenity --info --title="网络会议" --text="网络会议检测到您操作系统版本过低，请升级系统到ubuntu18.04或以上版本！" --width=350 --height=100
       exit 1
     fi
     
