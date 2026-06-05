@@ -119,6 +119,7 @@ if (process.platform === 'linux') {
 
           // 将输出的环境变量解析为一个对象
           const env = parse(stdout);
+          console.log("Full process.env before update:", process.env);
           console.log("Full env from script:", env);
 
           // 保存原有 LD_LIBRARY_PATH，Object.assign 会覆盖它
@@ -132,6 +133,13 @@ if (process.platform === 'linux') {
             if (!env.LD_LIBRARY_PATH.includes(originalLdPath)) {
               process.env.LD_LIBRARY_PATH = `${originalLdPath}:${env.LD_LIBRARY_PATH}`;
             }
+          }
+
+          // WAYLAND_DISPLAY 以脚本意图为准：
+          // 脚本 unset 了（env 里没有该 key）→ JS 侧同步删除
+          // 脚本未 unset（env 里有该 key）→ Object.assign 已同步，不做额外处理
+          if (!('WAYLAND_DISPLAY' in env)) {
+            delete process.env.WAYLAND_DISPLAY;
           }
 
           isWaylandDisplay = false;
