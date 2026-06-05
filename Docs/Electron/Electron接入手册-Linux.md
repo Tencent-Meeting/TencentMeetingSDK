@@ -119,20 +119,24 @@ if (process.platform === 'linux') {
 
           // 将输出的环境变量解析为一个对象
           const env = parse(stdout);
-          console.log("env.LD_LIBRARY_PATH: ", env.LD_LIBRARY_PATH);
-          console.log("env.XDG_SESSION_TYPE: ", env.XDG_SESSION_TYPE);
+          console.log("Full env from script:", env);
 
-          // 将解析后的环境变量设置到当前进程的环境变量中
-          if (env.LD_LIBRARY_PATH && env.LD_LIBRARY_PATH.includes(process.env.LD_LIBRARY_PATH)) {
-            process.env.LD_LIBRARY_PATH = env.LD_LIBRARY_PATH;
-          } else {
-            process.env.LD_LIBRARY_PATH = `${process.env.LD_LIBRARY_PATH}:${env.LD_LIBRARY_PATH}`;
+          // 保存原有 LD_LIBRARY_PATH，Object.assign 会覆盖它
+          const originalLdPath = process.env.LD_LIBRARY_PATH;
+
+          // 将脚本中的所有环境变量同步到当前进程
+          Object.assign(process.env, env);
+
+          // LD_LIBRARY_PATH 特殊处理：将原有路径与脚本路径合并，避免原有路径丢失
+          if (env.LD_LIBRARY_PATH && originalLdPath) {
+            if (!env.LD_LIBRARY_PATH.includes(originalLdPath)) {
+              process.env.LD_LIBRARY_PATH = `${originalLdPath}:${env.LD_LIBRARY_PATH}`;
+            }
           }
-          process.env.XDG_SESSION_TYPE = env.XDG_SESSION_TYPE;
-          delete process.env.WAYLAND_DISPLAY;
+
           isWaylandDisplay = false;
           console.log('wayland env updated.');
-          console.log("process.env.LD_LIBRARY_PATH: ", process.env.LD_LIBRARY_PATH);
+          console.log("process.env.LD_LIBRARY_PATH:", process.env.LD_LIBRARY_PATH);
 
           resolve();
         });
