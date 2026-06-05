@@ -137,6 +137,7 @@ if (process.platform === 'linux') {
           isWaylandDisplay = false;
           console.log('wayland env updated.');
           console.log("process.env.LD_LIBRARY_PATH:", process.env.LD_LIBRARY_PATH);
+          console.log("Full process.env after update:", process.env);
 
           resolve();
         });
