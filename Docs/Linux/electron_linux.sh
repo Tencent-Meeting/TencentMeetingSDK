@@ -1,6 +1,9 @@
 #!/bin/bash
 
 os_release="/etc/os-release"
+SELF=$(readlink -f "$0")
+HERE=${SELF%/*}
+
 if [[ -e ${os_release} ]];then
   source /etc/os-release
   main=`echo ${VERSION_ID} | awk -F . '{print $1}'`
@@ -39,9 +42,6 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ];then
     export WEMEET_XWAYLAND=1
   fi
 fi
-
-SELF=$(readlink -f "$0")
-HERE=${SELF%/*}
 
 export LC_ALL=zh_CN.UTF-8
 export PATH="${HERE}:${HERE}/Release${PATH:+:$PATH}"
