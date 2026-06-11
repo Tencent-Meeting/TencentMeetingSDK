@@ -82,6 +82,9 @@ npm run start
    // 这里导入的 wemeet_sdk 会在接下来的接口说明中使用
 ```
 9. 参考demo中`main.js`文件中针对`Linux`平台的环境变量相关设置，在调用SDK初始化之前，配置进程的环境变量等信息，包括Wayland环境兼容设置。
+   需要下载github仓库中的Docs/Linux/electron_linux.sh、TencentMeetingSDK\Docs\Linux下x11-wayland目录、，并拷贝到
+   output/linux/Release目录下。
+    
 ``` javascript
 if (process.platform === 'linux') {
   const ldPathEnv = process.env.LD_LIBRARY_PATH;
