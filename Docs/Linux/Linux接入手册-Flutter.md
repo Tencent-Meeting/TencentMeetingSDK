@@ -443,7 +443,69 @@ cd my_meeting_app
 sed -i 's/wemeet_flutter_demo/my_meeting_app/g' run_x86_64.sh
 ```
 
-3. **运行应用**：
+3. **关于 Wayland 兼容性处理（重要，请勿删除）**：
+
+> ⚠️ 在自定义启动脚本时，请**勿删除**以下 Wayland 兼容性处理代码段，否则在 Wayland 会话下可能出现窗口异常、输入失效等问题。
+
+脚本中的兼容性处理片段如下，**x86_64 与 ARM 均需保留**：
+
+```bash
+# ====== Wayland 兼容性处理（x86_64 / ARM 通用，请勿删除） ======
+# 在 Wayland 会话下强制走 XWayland，避免渲染/输入异常。
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+  # 优先使用系统预置的 x11-wayland 扩展脚本
+  if [ -f "/opt/x11-wayland/x11-ext.sh" ]; then
+    source /opt/x11-wayland/x11-ext.sh
+  else
+    # 系统未预置时，仅 ARM 架构需要 source 包内随附的扩展脚本
+    ARCH="$(uname -m)"
+    if [[ $ARCH == arm* || $ARCH == aarch64 ]]; then
+      if [ -f "${SCRIPT_DIR}/x11-wayland/x11-ext.sh" ]; then
+        source "${SCRIPT_DIR}/x11-wayland/x11-ext.sh"
+      else
+        echo "Warning: x11-ext.sh not found, ARM Wayland compatibility may be limited."
+      fi
+    fi
+  fi
+
+  # 通用环境变量（x86_64 / ARM 均需要）
+  export QT_QPA_PLATFORM=xcb
+  export XDG_SESSION_TYPE=x11
+  unset WAYLAND_DISPLAY
+  export WEMEET_XWAYLAND=1
+fi
+```
+
+📌 **ARM 设备特别说明**：
+
+ARM 设备需要的 `x11-ext.sh` 脚本，脚本会按以下顺序查找：
+
+1. 优先使用系统预置路径：`/opt/x11-wayland/x11-ext.sh`
+2. 若系统未预置，则回退到 SDK 包内随附的路径：`${SCRIPT_DIR}/x11-wayland/x11-ext.sh`
+
+**是否需要手动下载？** 需接入方在 ARM 目标设备上自行确认 `/opt/x11-wayland/x11-ext.sh` 是否存在。若该路径缺失，请从 SDK 仓库的 `Docs/Linux/x11-wayland/` 目录下载（包含 `x11-ext.sh` 以及对应内核版本的依赖库），并随启动脚本一起放置到项目根目录下的 `x11-wayland/` 子目录中：
+
+```
+my_meeting_app/
+├── run_x86_64.sh
+└── x11-wayland/
+    ├── x11-ext.sh
+    ├── 1040/lib/aarch64-linux-gnu/   # 对应内核 1040
+    └── 1050/lib/aarch64-linux-gnu/   # 对应内核 1050
+```
+
+4. **库路径与插件路径设置**：
+
+启动脚本中会自动设置以下环境变量，确保 SDK 库和 Qt 插件能被正确加载：
+
+```bash
+# 设置 SDK 库查找路径
+export LD_LIBRARY_PATH="${BUNDLE_DIR}/lib/Release/lib:${BUNDLE_DIR}/lib:${LD_LIBRARY_PATH}"
+# 设置 Qt 插件路径
+export QT_PLUGIN_PATH="${BUNDLE_DIR}/lib/Release/plugins"
+```
+
+5. **运行应用**：
 
 ```bash
 chmod +x run_x86_64.sh
