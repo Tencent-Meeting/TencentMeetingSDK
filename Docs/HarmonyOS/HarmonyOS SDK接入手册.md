@@ -216,6 +216,8 @@ export class App extends AbilityStage {
 
 #### 1.2.3.2 UIAbility配置
 * 在应用入口UIAbility#onWindowStageCreate方法中，调用windowStage.loadContent并传入LocalStorage对象：
+
+**!!!注意：如果这里localStorage对象不传或传null，会引起会议SDK页面内容与状态栏重叠等UI问题!!!**
 ```
 export default class MainAbility extends UIAbility {
   private storage: LocalStorage = new LocalStorage();
@@ -410,3 +412,7 @@ ohpm config list
 ```
 strict_ssl=false
 ```
+
+## 2.5 SDK会中页面内容与状态栏重叠？
+A: 参见 [UIAbility配置](#1232-uiability配置), 正确传入localStorage对象到Entry中，保证sdk能使用该对象进行状态栏适配。
+
