@@ -1,8 +1,8 @@
 #!/bin/bash
 
 os_release="/etc/os-release"
-SELF=$(readlink -f "$0")
-HERE=${SELF%/*}
+SELF=$(readlink -f "${BASH_SOURCE[0]}")
+HERE=$(dirname "$SELF")
 
 if [[ -e ${os_release} ]];then
   source /etc/os-release
