@@ -101,11 +101,48 @@ if (process.platform === 'linux') {
   process.env.TZ = `Asia/Shanghai`;
   process.env.LC_ALL = `zh_CN.UTF-8`;
 
-  console.log("LD_LIBRARY_PATH: ", process.env.LD_LIBRARY_PATH);
-  console.log("PATH: ", process.env.PATH);
-  console.log("QT_PLUGIN_PATH: ", process.env.QT_PLUGIN_PATH);
-
   const xdgSessionType = process.env.XDG_SESSION_TYPE;
+  if (xdgSessionType == 'x11') {
+      // 强制设置图形环境为 X11
+      process.env.DISPLAY = process.env.DISPLAY || ':0';
+      
+      // 构建完整的库路径，优先包含 X11 兼容的 EGL 相关库
+      const waylandLibPath = '/opt/x11-wayland/lib/aarch64-linux-gnu';
+      const curWorkingPath = path.join(__dirname, "output", "linux", "Release", "lib");
+      const mesaLibPath = '/usr/lib/aarch64-linux-gnu/mesa-egl';
+      const eglLibPath = '/usr/lib/aarch64-linux-gnu/egl';
+      const systemX11LibPath = '/usr/lib/x86_64-linux-gnu';
+      
+      // 按优先级构建库路径列表，确保 X11 兼容库优先
+      const libraryPaths = [
+        curWorkingPath,           // 应用自带库（优先级最高）
+        mesaLibPath,             // Mesa X11 EGL 库
+        eglLibPath,              // 系统 X11 EGL 库
+        systemX11LibPath,        // 系统 X11 库
+        '/usr/lib/aarch64-linux-gnu',
+        '/usr/lib',
+        '/lib/aarch64-linux-gnu',
+        '/lib'
+      ].filter(fs.existsSync); // 只保留实际存在的路径
+
+      const unifiedLibraryPath = libraryPaths.join(':');
+      
+      // 设置环境变量LD_LIBRARY_PATH
+      process.env.LD_LIBRARY_PATH = unifiedLibraryPath;
+      
+      // 强制设置图形相关环境变量
+      process.env.EGL_PLATFORM = 'x11';
+      process.env.LIBGL_ALWAYS_SOFTWARE = '0'; // 允许硬件加速
+      process.env.LIBGL_ALWAYS_INDIRECT = '1';
+
+      // 创建库加载预配置，防止加载 Wayland 库
+      process.env.LD_PRELOAD = '';
+      
+      console.log("=== EGL 库加载配置 ===");
+      console.log("EGL_PLATFORM:", process.env.EGL_PLATFORM);
+      console.log("GLX_VENDOR_LIBRARY_NAME:", process.env.GLX_VENDOR_LIBRARY_NAME);
+  }
+
   if (xdgSessionType == 'wayland') {
     const { exec } = require('child_process');
     const { parse } = require('dotenv');
@@ -147,8 +184,6 @@ if (process.platform === 'linux') {
 
           isWaylandDisplay = false;
           console.log('wayland env updated.');
-          console.log("process.env.LD_LIBRARY_PATH:", process.env.LD_LIBRARY_PATH);
-          console.log("Full process.env after update:", process.env);
 
           resolve();
         });
@@ -174,6 +209,10 @@ if (process.platform === 'linux') {
         });
     }
   }
+
+  console.log("LD_LIBRARY_PATH: ", process.env.LD_LIBRARY_PATH);
+  console.log("PATH: ", process.env.PATH);
+  console.log("QT_PLUGIN_PATH: ", process.env.QT_PLUGIN_PATH);
 }
 ```
 
