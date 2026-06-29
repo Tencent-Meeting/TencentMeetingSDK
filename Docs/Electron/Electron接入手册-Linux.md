@@ -82,27 +82,137 @@ npm run start
    // 这里导入的 wemeet_sdk 会在接下来的接口说明中使用
 ```
 9. 参考demo中`main.js`文件中针对`Linux`平台的环境变量相关设置，在调用SDK初始化之前，配置进程的环境变量等信息，包括Wayland环境兼容设置。
+   需要下载github仓库中的Docs/Linux/electron_linux.sh、TencentMeetingSDK\Docs\Linux下x11-wayland目录、，并拷贝到
+   output/linux/Release目录下。
+    
 ``` javascript
 if (process.platform === 'linux') {
   const ldPathEnv = process.env.LD_LIBRARY_PATH;
   const curWorkingPath = path.join(__dirname, "output", "linux", "Release", "lib");
   if (ldPathEnv) {
-    process.env.LD_LIBRARY_PATH = `${curWorkingPath}:${ldPathEnv}`;  // 注意路径顺序，新路径放在最前面
+    process.env.LD_LIBRARY_PATH = `${curWorkingPath}:${ldPathEnv}`;
   } else {
     process.env.LD_LIBRARY_PATH = `${curWorkingPath}:`;
   }
   const pathEnv = process.env.PATH;
   const curReleasePath = path.join(__dirname, "output", "linux", "Release");
-  process.env.PATH = `${curReleasePath}:${pathEnv}`;    // 注意路径顺序，当前路径放在最前面
+  process.env.PATH = `${curReleasePath}:${pathEnv}`;
   process.env.QT_PLUGIN_PATH = path.join(__dirname, "output", "linux", "Release", "plugins");
   process.env.TZ = `Asia/Shanghai`;
   process.env.LC_ALL = `zh_CN.UTF-8`;
 
-  // ... other env settings ...
-  // Wayland环境下的兼容处理
-  if (process.env.XDG_SESSION_TYPE == 'wayland') {
-    // 参考demo代码
+  const xdgSessionType = process.env.XDG_SESSION_TYPE;
+  if (xdgSessionType == 'x11') {
+      // 强制设置图形环境为 X11
+      process.env.DISPLAY = process.env.DISPLAY || ':0';
+      
+      // 构建完整的库路径，优先包含 X11 兼容的 EGL 相关库
+      const waylandLibPath = '/opt/x11-wayland/lib/aarch64-linux-gnu';
+      const curWorkingPath = path.join(__dirname, "output", "linux", "Release", "lib");
+      const mesaLibPath = '/usr/lib/aarch64-linux-gnu/mesa-egl';
+      const eglLibPath = '/usr/lib/aarch64-linux-gnu/egl';
+      const systemX11LibPath = '/usr/lib/x86_64-linux-gnu';
+      
+      // 按优先级构建库路径列表，确保 X11 兼容库优先
+      const libraryPaths = [
+        curWorkingPath,           // 应用自带库（优先级最高）
+        mesaLibPath,             // Mesa X11 EGL 库
+        eglLibPath,              // 系统 X11 EGL 库
+        systemX11LibPath,        // 系统 X11 库
+        '/usr/lib/aarch64-linux-gnu',
+        '/usr/lib',
+        '/lib/aarch64-linux-gnu',
+        '/lib'
+      ].filter(fs.existsSync); // 只保留实际存在的路径
+
+      const unifiedLibraryPath = libraryPaths.join(':');
+      
+      // 设置环境变量LD_LIBRARY_PATH
+      process.env.LD_LIBRARY_PATH = unifiedLibraryPath;
+      
+      // 强制设置图形相关环境变量
+      process.env.EGL_PLATFORM = 'x11';
+      process.env.LIBGL_ALWAYS_SOFTWARE = '0'; // 允许硬件加速
+      process.env.LIBGL_ALWAYS_INDIRECT = '1';
+
+      // 创建库加载预配置，防止加载 Wayland 库
+      process.env.LD_PRELOAD = '';
+      
+      console.log("=== EGL 库加载配置 ===");
+      console.log("EGL_PLATFORM:", process.env.EGL_PLATFORM);
+      console.log("GLX_VENDOR_LIBRARY_NAME:", process.env.GLX_VENDOR_LIBRARY_NAME);
   }
+
+  if (xdgSessionType == 'wayland') {
+    const { exec } = require('child_process');
+    const { parse } = require('dotenv');
+    isWaylandDisplay = true;
+
+    // 提取公共函数：执行shell命令并更新环境变量
+    function updateEnvironmentFromShellScript(scriptPath) {
+      return new Promise((resolve, reject) => {
+        exec(`source ${scriptPath} && env`, { shell: '/bin/bash' }, (err, stdout, stderr) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+
+          // 将输出的环境变量解析为一个对象
+          const env = parse(stdout);
+          console.log("Full process.env before update:", process.env);
+          console.log("Full env from script:", env);
+
+          // 保存原有 LD_LIBRARY_PATH，Object.assign 会覆盖它
+          const originalLdPath = process.env.LD_LIBRARY_PATH;
+
+          // 将脚本中的所有环境变量同步到当前进程
+          Object.assign(process.env, env);
+
+          // LD_LIBRARY_PATH 特殊处理：将原有路径与脚本路径合并，避免原有路径丢失
+          if (env.LD_LIBRARY_PATH && originalLdPath) {
+            if (!env.LD_LIBRARY_PATH.includes(originalLdPath)) {
+              process.env.LD_LIBRARY_PATH = `${originalLdPath}:${env.LD_LIBRARY_PATH}`;
+            }
+          }
+
+          // WAYLAND_DISPLAY 以脚本意图为准：
+          // 脚本 unset 了（env 里没有该 key）→ JS 侧同步删除
+          // 脚本未 unset（env 里有该 key）→ Object.assign 已同步，不做额外处理
+          if (!('WAYLAND_DISPLAY' in env)) {
+            delete process.env.WAYLAND_DISPLAY;
+          }
+
+          isWaylandDisplay = false;
+          console.log('wayland env updated.');
+
+          resolve();
+        });
+      });
+    }
+
+    if (fs.existsSync('/opt/x11-wayland/x11-ext.sh')) {
+      updateEnvironmentFromShellScript('/opt/x11-wayland/x11-ext.sh')
+        .then(() => {
+          console.log('wayland env updated from system script.');
+        })
+        .catch(err => {
+          console.error('Failed to update environment from system script:', err);
+        });
+    } else {
+      // electron_linux.sh 由 SDK 提供，参见 Docs/Linux/electron_linux.sh
+      updateEnvironmentFromShellScript('./output/linux/Release/electron_linux.sh')
+        .then(() => {
+          console.log('electron_linux env updated from fallback script.');
+        })
+        .catch(err => {
+          console.error('Failed to update environment from fallback script:', err);
+        });
+    }
+  }
+
+  console.log("LD_LIBRARY_PATH: ", process.env.LD_LIBRARY_PATH);
+  console.log("PATH: ", process.env.PATH);
+  console.log("QT_PLUGIN_PATH: ", process.env.QT_PLUGIN_PATH);
 }
 ```
 

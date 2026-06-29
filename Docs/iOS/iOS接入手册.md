@@ -72,7 +72,7 @@ SDK Demo屏幕共享扩展的bundle id规定为XXX.XXX.XXX.WemeetExtension
 ````
 
 ## 4.登录和登出
-
+**重要提示：请确保当前视图控制器(UIViewController)位于导航控制器(UINavigationController)的导航栈中，否则可能导致登录实名认证流程无法正常完成。此问题在Flutter单页面应用中尤为常见，请特别注意。**
 ```
 
 - (void)login:(NSString *)SSOUrl forceKickOtherDevice:(BOOL)forceKickOtherDevice {
@@ -252,6 +252,25 @@ interfaceOrientation:(UIInterfaceOrientation)previousInterfaceOrientation
     /// 仅App主window会发出通知。个别场景需要用到。
     [[TencentMeetingSDK instance] appMultiWindowLayoutTypeChangedFromSize:fromSize toSize:toSize];
 }
+```
+
+## 9.单页面应用
+**重要提示：请确保当前视图控制器(UIViewController)位于导航控制器(UINavigationController)的导航栈中，否则可能导致登录实名认证流程无法正常完成。此问题在Flutter单页面应用中尤为常见，请特别注意。**
+
+**示例代码：**
+
+```objc
+// Objective-C 示例
+UIViewController *viewController = [[UIViewController alloc] init];
+UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+self.window.rootViewController = navController;
+```
+
+```swift
+// Swift 示例
+let viewController = UIViewController()
+let navController = UINavigationController(rootViewController: viewController)
+self.window?.rootViewController = navController
 ```
 
 # 更多功能
