@@ -590,6 +590,7 @@ SDKCallback 需实现以下成员函数：
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
   * 全版本: `iOS` / `Android` / `Win` / `Mac` / `Linux`
+* 说明：SDK内部发生异常时的错误通知回调。宿主程序收到该回调后，应根据错误码判断处理方式：当 `code < kTMSDKErrorAudioDeviceFailed(-7001)` 时，表示发生了更严重的错误，宿主需要销毁SDK实例；当 `code >= kTMSDKErrorAudioDeviceFailed(-7001)` 时，无需销毁实例，可根据错误信息进行提示或其他处理。
 
 |参数名 |参数类型 | 参数说明 |
 |---|---|---|
