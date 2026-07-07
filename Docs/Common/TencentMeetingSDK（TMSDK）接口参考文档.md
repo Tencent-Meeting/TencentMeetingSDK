@@ -24,6 +24,8 @@
     + [getPreMeetingService](#getpremeetingservice)
     + [getInMeetingService](#getinmeetingservice)
     + [getUserConfigService](#getuserconfigservice)
+    + [setAppearanceMode](#setappearancemode)
+    + [getAppearanceMode](#getappearancemode)
   * [2.2 SDKCallback 回调代理](#22-sdkcallback-回调代理)
     + [onSDKInitializeResult](#onsdkinitializeresult)
     + [onSDKUninitializeResult](#onsdkuninitializeresult)
@@ -34,6 +36,7 @@
     + [onSetProxyResult](#onsetproxyresult)
     + [onHandleSchemaResult](#onhandleschemaresult)
     + [onAddUsersResult](#onaddusersresult)
+    + [onAppearanceChanged](#onappearancechanged)
     + [onParseMeetingInfoUrl](#onparsemeetinginfourl)
 - [3. AccountService 说明](#3-accountservice-说明)
   * [3.1 AccountService 成员函数](#31-accountservice-成员函数)
@@ -278,6 +281,7 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 |prefer_language |string |否 |zh-cn | 指定SDK的语言（仅支持zh-cn，en-us，ja，如传入其它值则显示为zh-cn，3.6.200及以上版本可用， 其中日语从3.30.200及以上版本支持） |
 |proxy_info |string |否 |(无) | 用于初始化时设置网络代理，内容为json串，格式可参考setProxyInfo接口。如果使用了此参数，则必须拿到设置代理的回调后再调用登录接口（3.12.200以及以上版本可用） |
 |allow_home_view |bool |否 | true | 用于初始化时设置是否使用会议主面板，Windows和Mac可用，ios和android默认使用会议主面板，3.30.100以及以上版本可用 |
+|appearance_mode |int（TMAppearanceMode） |否 |`TMAppearanceModeUnspecified(0)` | 初始化时接入方指定的默认外观模式。SDK 会在初始化成功后应用该模式；传 `TMAppearanceModeUnspecified` 时 SDK 不主动改变当前主题（保持上次持久化值）。取值参见`TMAppearanceMode 枚举`。仅 iOS / Android 支持，桌面端暂不支持。3.43.0 及以上版本可用 |
 
 
 ### uninitialize
@@ -555,6 +559,41 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 返回值说明：`UserConfigService`的对象实例
 * 参数说明：无
 
+
+### setAppearanceMode
+* 函数形式：**int setAppearanceMode(int mode)**
+* 可用版本与平台：
+  * 版本 >= 3.43.0：`iOS` / `Android` / `Win` / `Mac`
+* 函数说明：
+  * 设置 SDK 内所有页面的外观模式（浅色 / 深色）。
+  * 调用时机：必须在 SDK 初始化成功之后调用；未初始化时调用会被拒绝，返回 `kTMSDKErrorSdkNotInitialized(-1013)`。
+  * 结果同步返回错误码；同时如切换成功，SDK 会异步回调 `SDKCallback.onAppearanceChanged` 通知外观已变化。
+  * 该设置会被 SDK 内部持久化，下次启动后自动恢复。
+* 返回值说明：处理结果错误码。`0` 表示成功；`-1008` 表示无效参数（`mode` 非 `Light`/`Dark`）；`-1013` 表示 SDK 未初始化。详情参考`7. 错误码`章节。
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+| mode | int（TMAppearanceMode） | 是 | (无) | 目标外观模式，取值必须是 `TMAppearanceModeLight(1)` 或 `TMAppearanceModeDark(2)`；传其它值将返回 `kTMSDKErrorInvalidParam` |
+
+
+### getAppearanceMode
+* 函数形式：**int getAppearanceMode()**
+* 可用版本与平台：
+  * 版本 >= 3.43.0：`iOS` / `Android` / `Win` / `Mac`
+* 函数说明：获取 SDK 当前生效的外观模式。
+* 返回值说明：当前生效的外观模式，取值参见 `TMAppearanceMode 枚举`。若 SDK 未初始化，返回 `TMAppearanceModeUnspecified(0)`。
+* 参数说明：无
+
+
+**`TMAppearanceMode`枚举**
+
+| 枚举值 | 数值 | 说明 |
+|---|---|---|
+| `TMAppearanceModeUnspecified` | 0 | 未设置 / 未初始化，仅作为缺省占位值。不可作为 `setAppearanceMode` 的合法入参 |
+| `TMAppearanceModeLight` | 1 | 浅色模式 |
+| `TMAppearanceModeDark` | 2 | 深色模式 |
+
 ## 2.2 SDKCallback 回调代理
 
 SDKCallback 需实现以下成员函数：
@@ -718,6 +757,21 @@ SDKCallback 需实现以下成员函数：
     "meeting_code": "..." //会议号
 }
 ```
+
+
+### onAppearanceChanged
+* 函数形式：**void onAppearanceChanged(int mode)**
+* 可用版本与平台：
+  * 版本 >= 3.43.0：`iOS` / `Android` / `Win` / `Mac`
+* 函数说明：
+  * SDK 外观模式变化时的回调。
+  * 触发时机：接入方主动调用 `setAppearanceMode` 切换成功后；或 SDK 内部由于其它原因（如通过 `InitParam.appearance_mode` 首次应用）导致外观改变时。
+  * 该回调为可选实现，接入方可按需实现。
+* 参数说明：
+
+| 参数名 | 参数类型 | 参数说明 |
+| --- | --- | --- |
+| mode | int（TMAppearanceMode） | 变化后的外观模式，取值为 `TMAppearanceModeLight(1)` 或 `TMAppearanceModeDark(2)` |
 
 
 
