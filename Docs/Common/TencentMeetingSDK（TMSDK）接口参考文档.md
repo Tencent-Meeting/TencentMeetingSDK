@@ -179,6 +179,7 @@
 | 2025-04-29 | 3.30.200 | 新增服务：UserConfigService(用户配置服务)|
 | 2025-06-16 | 3.30.100 for HarmonyOS | 新增错误码：[-1077]--因成员限制，加入会议时无法入会 |
 | 2026-05-06 | 3.34.100 for HarmonyOS | 鸿蒙端版本升级；支持邀请参会人接口和回调：enableAddressBookCallback、enableInviteUsersCallback、addUsersWithParam、onAddUsersResult、onShowAddressBook、onInviteUsers |
+| 2026-07-17 | 3.43.100 | 新增错误码：[-1078] --用户正在入会|
 
 
 
