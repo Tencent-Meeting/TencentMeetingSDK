@@ -182,6 +182,7 @@
 | 2025-04-29 | 3.30.200 | 新增服务：UserConfigService(用户配置服务)|
 | 2025-06-16 | 3.30.100 for HarmonyOS | 新增错误码：[-1077]--因成员限制，加入会议时无法入会 |
 | 2026-05-06 | 3.34.100 for HarmonyOS | 鸿蒙端版本升级；支持邀请参会人接口和回调：enableAddressBookCallback、enableInviteUsersCallback、addUsersWithParam、onAddUsersResult、onShowAddressBook、onInviteUsers |
+| 2026-07-10 | 3.43.100 | 新增接口：setAppearanceMode（设置外观模式）、getAppearanceMode（获取外观模式）；新增回调：onAppearanceChanged（外观模式变化回调）；初始化参数InitParam新增appearance_mode字段支持设置默认外观模式；通用配置新增音视频、字幕等配置项（详见UserConfigService配置项列表） |
 
 
 
@@ -2506,6 +2507,7 @@ data内容示例
 |    主会场与分组会议切换    | 1003        | 主会场和分组会议切换触发                                             | JSON字符串，格式参考下面示例说明                                  |
 |    第三方应用状态变化     | 1004        | 开放平台的第三方应用状态变化事件(版本>= 3.12.404)                          | JSON字符串，格式参考下面示例说明                                  |
 |      云录制状态       | 1005        | 会中云录制状态变更触发(版本>= 3.21.100)                               | JSON字符串，格式参考下面示例说明                                  |
+|    会中邀请用户结果     | 1006        | 会中场景下邀请用户的结果回调(版本>=3.43.100)：`user_type=3`由调用`TMSDK.addUsersWithParam`接口触发；`user_type=4`为PSTN邀请场景，由SDK内部响铃邀请流程触发，接入方无需/不可直接通过`addUsersWithParam`传入该值 | JSON字符串，格式参考下面示例说明                                  |
 
 
  * `msg`的JSON通用格式如下：
@@ -2710,10 +2712,64 @@ UserConfigService用来管理用户配置，可以设置和获取用户配置。
   ```
 * 支持的设置项列表  
   
-  | 设置项key | 类型 | 默认值 | 说明 | 平台 | 错误码 |
+  | 设置项key | 类型 | 默认值 | 说明 | 平台 | 可用版本 | 错误码 |
+  | ------ | :------: | :------: | :------: | :------: | :------: | ------ |
+  | enableNearDiscover | bool | false | 是否启用近场发现 | 全部 | >= 3.30.200 | -6001 设置失败<br>-6002 无蓝牙权限 |
+  | enableQuickPip | bool | false | 是否开启Android快捷浮窗 | Android & iOS | >= 3.30.200 | -6001 设置失败 |
+
+  **常规设置**
+
+  | 设置项key | 类型 | 说明 | 平台 | 可用版本 | 备注 |
   | ------ | :------: | :------: | :------: | :------: | ------ |
-  | enableNearDiscover | bool | false | 是否启用近场发现 | 全部 | -6001 设置失败<br>-6002 无蓝牙权限 |
-  | enableQuickPip | bool | false | 是否开启Android快捷浮窗 | Android & iOS | -6001 设置失败 |
+  | enableOpenMicPromptTone | bool | 开麦时是否播放提示音 | Android,iOS,Mac,Win | >= 3.43.100 | - |
+  | enableVoiceActivated | bool | 是否启用语音激励 | Android,iOS,Mac,Win | >= 3.43.100 | - |
+  | enableWindowFilter | bool | 是否启用腾讯会议窗口过滤 | Mac,Win | >= 3.43.100 | 桌面端特有 |
+
+  **视频**
+
+  | 设置项key | 类型 | 说明 | 平台 | 可用版本 | 备注 |
+  | ------ | :------: | :------: | :------: | :------: | ------ |
+  | enableVideoMirror | bool | 是否启用视频镜像 | Android,iOS,Mac,Win | >= 3.43.100 | - |
+  | enableHDVideo | bool | 是否启用高清摄像头画质 | Mac,Win | >= 3.43.100 | 移动端不支持 |
+  | enableNoiseCancellation | bool | 是否启用视频降噪 | Android,iOS,Mac,Win | >= 3.43.100 | - |
+  | enableImageQualityEnhance | bool | 是否启用暗场景增强 | Android,iOS,Mac,Win | >= 3.43.100 | - |
+
+  **音频**
+
+  | 设置项key | 类型 | 说明 | 平台 | 可用版本 | 备注 |
+  | ------ | :------: | :------: | :------: | :------: | ------ |
+  | enableAutoMicVolume | bool | 是否自动调整麦克风音量 | Android,iOS,Mac,Win | >= 3.43.100 | - |
+  | audioEnhancementMode | int | 音频降噪与增强模式：0=抑制背景噪音，2=音乐模式 | Android,iOS,Mac,Win | >= 3.43.100 | 可实现为仅会外可配置，会中调用返回失败 |
+  | noiseSuppressionLevel | int | 噪声抑制级别（配合`audioEnhancementMode`=抑制背景噪音时使用）：1=低，2=中，3=高 | Android,iOS,Mac,Win | >= 3.43.100 | 移动端只展示低/高两档；可实现为仅会外可配置，会中调用返回失败 |
+  | enableStereoMode | bool | 音乐模式与专业音频：是否启用立体声 | Mac,Win | >= 3.43.100 | 桌面端特有；可实现为仅会外可配置，会中调用返回失败 |
+  | enableHighFidelityMode | bool | 音乐模式与专业音频：是否启用高保真音乐模式 | Mac,Win | >= 3.43.100 | 桌面端特有；可实现为仅会外可配置，会中调用返回失败 |
+  | enableEchoCancellation | bool | 音乐模式与专业音频：是否启用回声消除 | Mac,Win | >= 3.43.100 | 桌面端特有；可实现为仅会外可配置，会中调用返回失败 |
+  | enableDigitalAGC | bool | 音乐模式与专业音频：是否启用数字AGC | Mac,Win | >= 3.43.100 | 桌面端特有；可实现为仅会外可配置，会中调用返回失败 |
+
+  **字幕与转写**
+
+  | 设置项key | 类型 | 说明 | 平台 | 可用版本 | 备注 |
+  | ------ | :------: | :------: | :------: | :------: | ------ |
+  | captionFontSize | int | 字幕字号大小：12、15、18、21、24 | Mac,Win | >= 3.43.100 | 桌面端特有 |
+  | captionTranslateLang | string | 字幕/转写翻译语言设置 | Android,iOS,Mac,Win | >= 3.43.100 | 异步，需要请求接口 |
+  | enableCaptionBilingual | bool | 字幕是否同时显示双语 | Android,iOS,Mac,Win | >= 3.43.100 | - |
+  | enableTranscriptionBilingual | bool | 转写是否同时显示双语 | Android,iOS,Mac,Win | >= 3.43.100 | - |
+  | asrSplitSpeakerMode | int | 拆分当前设备发言人：1=询问我，2=始终拆分，3=始终不拆分 | Mac,Win | >= 3.43.100 | 桌面端特有 |
+  | captionIndustryDomain | string | 选择常用行业领域 | Android,iOS,Mac,Win | >= 3.43.100 | 异步，需要请求接口 |
+  | transcriptionPermission | int | 文字转写权限 | Android,iOS,Mac,Win | >= 3.43.100 | - |
+  | enableAllowMembersAiSummary | bool | 我创建的会议是否允许参会者使用元宝纪要 | Android,iOS,Mac,Win | >= 3.43.100 | - |
+  | enableAutoOpenAiSummary | bool | 我入会时是否自动打开元宝纪要 | Android,iOS,Mac,Win | >= 3.43.100 | 异步 |
+  | enableAiSummaryBullet | bool | 是否启用元宝纪要弹幕 | Android,iOS,Mac,Win | >= 3.43.100 | - |
+
+  **工具栏入口**
+
+  | 设置项key | 类型 | 说明 | 平台 | 可用版本 | 备注 |
+  | ------ | :------: | :------: | :------: | :------: | ------ |
+  | enableAskYuanbao | bool | 工具箱"问元宝"入口显示/隐藏 | Android,iOS,Mac,Win | >= 3.43.100 | 默认值：开 |
+  | enableTranscription | bool | 工具箱"文字转写"入口显示/隐藏 | Android,iOS,Mac,Win | >= 3.43.100 | 默认值：开 |
+  | enableJiYao | bool | 工具箱"元宝纪要"入口显示/隐藏 | Android,iOS,Mac,Win | >= 3.43.100 | 默认值：开；关闭后入口隐藏、元宝弹幕关闭、入会元宝纪要提示隐藏，相当于总开关 |
+
+  > 以上设置项均需在初始化并登录后调用生效；`config_value`按对应类型（bool/int/string）传递，具体格式参考`setUserConfiguration`函数示例。
 
 * 回调说明：
   
