@@ -72,14 +72,14 @@ cp -R ${SDK_ROOT}/SDK/arm64/TMSDK.framework ./Frameworks/
 
 ### 步骤 3：拷贝 SDK Node Addon
 
-将编译好的 `TMSDK.node` 文件拷贝到项目根目录：
+将编译好的 `wemeet_electron_sdk.node` 文件拷贝到项目根目录：
 
 ```bash
 # 从 tmsdk-node-addon 的编译输出目录拷贝
-cp ${SDK_ROOT}/tmsdk-node-addon/out/mac/arm64/TMSDK.node ./
+cp ${SDK_ROOT}/tmsdk-node-addon/out/mac/arm64/wemeet_electron_sdk.node ./
 ```
 
-> 💡 `TMSDK.node` 是 SDK 的 Node.js Native Addon 模块，提供了与 Electron 的桥接功能
+> 💡 `wemeet_electron_sdk.node` 是 SDK 的 Node.js Native Addon 模块，提供了与 Electron 的桥接功能
 
 ### 步骤 4：配置启动脚本
 
@@ -106,7 +106,7 @@ cp ${SDK_ROOT}/tmsdk-node-addon/out/mac/arm64/TMSDK.node ./
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 // 导入腾讯会议 SDK 的 Node.js 原生模块
-const wemeet_sdk = require(path.join(__dirname, 'TMSDK.node'))
+const wemeet_sdk = require(path.join(__dirname, 'wemeet_electron_sdk.node'))
 
 function setupIPC() {
   // 设置 SDK 的 JavaScript 回调函数，用于接收 SDK 的事件通知

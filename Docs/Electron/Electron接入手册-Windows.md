@@ -66,11 +66,11 @@ npm install --save-dev electron
 
 ### 步骤 2：拷贝 SDK Node Addon、${SDK_ROOT}/SDK   
 
-1. 将编译好的 `TMSDK.node` 文件拷贝到项目根目录：
+1. 将编译好的 `wemeet_electron_sdk.node` 文件拷贝到项目根目录：
 
-> 📌 编译 `TMSDK.node` 的教程请查看：《一分钟跑通Windows端SDK Sample》中的 `2. 运行Electron Sample`。
+> 📌 编译 `wemeet_electron_sdk.node` 的教程请查看：《一分钟跑通Windows端SDK Sample》中的 `2. 运行Electron Sample`。
 
-> 💡 `TMSDK.node` 是 SDK 的 Node.js Native Addon 模块，提供了与 Electron 的桥接功能
+> 💡 `wemeet_electron_sdk.node` 是 SDK 的 Node.js Native Addon 模块，提供了与 Electron 的桥接功能
 
 2. 将 `${SDK_ROOT}/SDK` 目录拷贝到 `my-meeting-app` **同级目录**下（与 `my-meeting-app` 平级）：
 
@@ -78,7 +78,7 @@ npm install --save-dev electron
 <your-workspace>/
 ├── SDK/                 # 从 ${SDK_ROOT}/SDK 拷贝而来
 └── my-meeting-app/
-    ├── TMSDK.node
+    ├── wemeet_electron_sdk.node
     └── ...
 ```
 
@@ -99,7 +99,7 @@ npm install --save-dev electron
 
 ### 步骤 4：在主进程中设置 DLL 搜索路径
 
-创建 main.js，在 `main.js` 引入 `TMSDK.node` 前，先设置 SDK DLL 的搜索路径：
+创建 main.js，在 `main.js` 引入 `wemeet_electron_sdk.node` 前，先设置 SDK DLL 的搜索路径：
 
 ```javascript
 const { app, BrowserWindow, ipcMain } = require('electron')
@@ -117,7 +117,7 @@ process.env.PATH = `${sdkDllPath};${process.env.PATH}`
 
 ```javascript
 // 导入腾讯会议 SDK 的 Node.js 原生模块
-const wemeet_sdk = require(path.join(__dirname, 'TMSDK.node'))
+const wemeet_sdk = require(path.join(__dirname, 'wemeet_electron_sdk.node'))
 
 let mainWindow
 
@@ -307,7 +307,7 @@ function showPreMeetingView() {
 <your-workspace>/
 ├── SDK/                      # 从 ${SDK_ROOT}/SDK 拷贝而来
 └── my-meeting-app/
-    ├── TMSDK.node            
+    ├── wemeet_electron_sdk.node            
     ├── main.js               # 主进程文件
     ├── renderer.js           # 渲染进程文件
     ├── index.html            # 界面文件

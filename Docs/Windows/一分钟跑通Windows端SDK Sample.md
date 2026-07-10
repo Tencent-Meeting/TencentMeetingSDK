@@ -80,7 +80,7 @@ SDKSample/Windows/Win32Sample/
 
    **为什么要安装 Python？**
 
-   Windows 下编译 Node.js Native Addon（用于生成 `TMSDK.node`）通常依赖 `node-gyp` 工具链，而 `node-gyp` 在构建过程中需要 Python 参与执行构建脚本。
+   Windows 下编译 Node.js Native Addon（用于生成 `wemeet_electron_sdk.node`）通常依赖 `node-gyp` 工具链，而 `node-gyp` 在构建过程中需要 Python 参与执行构建脚本。
 
    - 📦 为 `node-gyp` 提供构建脚本运行环境
    - 🚀 保障 `npm install` 过程中原生模块可以正常编译
@@ -91,7 +91,7 @@ SDKSample/Windows/Win32Sample/
 
 2. 编译 Node.js Addon
 
-   SDK 通过 Node.js Native Addon 与 Electron 进行通信，需要先编译生成 `TMSDK.node` 文件：
+   SDK 通过 Node.js Native Addon 与 Electron 进行通信，需要先编译生成 `wemeet_electron_sdk.node` 文件：
    **执行编译命令：**
 
    ```bash
@@ -101,7 +101,7 @@ SDKSample/Windows/Win32Sample/
    # 安装依赖并编译
    npm install
    ```
-   > 💡 此步骤会编译生成 `TMSDK.node` 文件，这是 SDK 的核心桥接模块
+   > 💡 此步骤会编译生成 `wemeet_electron_sdk.node` 文件，这是 SDK 的核心桥接模块
 
 3. 安装 Electron Sample 依赖
 

@@ -133,7 +133,7 @@ SDKSample/Mac/
    npm install
    ```
 
-   > 💡 此步骤会编译生成 `TMSDK.node` 文件，这是 SDK 的核心桥接模块
+   > 💡 此步骤会编译生成 `wemeet_electron_sdk.node` 文件，这是 SDK 的核心桥接模块
 
 3. 安装 Sample 依赖
 
