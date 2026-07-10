@@ -2721,7 +2721,7 @@ UserConfigService用来管理用户配置，可以设置和获取用户配置。
   | 设置项key | 类型 | 说明 | 平台 | 可用版本 | 备注 |
   | ------ | :------: | :------: | :------: | :------: | ------ |
   | enableOpenMicPromptTone | bool | 开麦时是否播放提示音 | Android,iOS,Mac,Win | >= 3.43.100 | - |
-  | enableVoiceActivated | bool | 是否启用语音激励 | Android,iOS,Mac,Win | >= 3.43.100 | Win端在设置界面打开时不生效 |
+  | enableVoiceActivated | bool | 是否启用语音激励 | Android,iOS,Mac,Win | >= 3.43.100 | - |
   | enableWindowFilter | bool | 是否启用腾讯会议窗口过滤 | Mac,Win | >= 3.43.100 | 桌面端特有 |
 
   **视频**
