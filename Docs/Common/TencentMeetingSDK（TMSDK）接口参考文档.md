@@ -182,7 +182,8 @@
 | 2025-04-29 | 3.30.200 | 新增服务：UserConfigService(用户配置服务)|
 | 2025-06-16 | 3.30.100 for HarmonyOS | 新增错误码：[-1077]--因成员限制，加入会议时无法入会 |
 | 2026-05-06 | 3.34.100 for HarmonyOS | 鸿蒙端版本升级；支持邀请参会人接口和回调：enableAddressBookCallback、enableInviteUsersCallback、addUsersWithParam、onAddUsersResult、onShowAddressBook、onInviteUsers |
-| 2026-07-10 | 3.43.100 | 新增接口：setAppearanceMode（设置外观模式）、getAppearanceMode（获取外观模式）；新增回调：onAppearanceChanged（外观模式变化回调）；初始化参数InitParam新增appearance_mode字段支持设置默认外观模式；通用配置新增音视频、字幕等配置项（详见UserConfigService配置项列表） |
+| 2026-07-10 | 3.43.100 | 新增接口：setAppearanceMode（设置外观模式）、getAppearanceMode（获取外观模式）；新增回调：onAppearanceChanged（外观模式变化回调）；初始化参数InitParam新增appearance_mode字段支持设置默认外观模式；通用配置新增音视频、字幕等配置项（详见UserConfigService配置项列表）；新增错误码：[-1078] --用户正在入会 |
+
 
 
 

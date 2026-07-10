@@ -416,3 +416,6 @@ strict_ssl=false
 ## 2.5 SDK会中页面内容与状态栏重叠？
 A: 参见 [UIAbility配置](#1232-uiability配置), 正确传入localStorage对象到Entry中，保证sdk能使用该对象进行状态栏适配。
 
+## 2.6 Harmony PC使用子窗口，SDK会中页面无法正常触发弹窗路由？
+A: 停止使用多个UIAbility的方案，切换到单一UIAbility的模式，并保证UIAbility使用过程中不会被销毁。
+
