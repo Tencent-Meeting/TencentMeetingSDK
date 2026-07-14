@@ -1438,7 +1438,7 @@ msg内容示例：
 
 - 函数形式：**void openQRCodeUrl( string url_string)**
 - 可用版本：>= 3.21.100
-- 可用平台：**HarmonyOS暂不支持**
+- 可用平台：`ios`/`Android`，其他平台暂不支持
 - 函数说明：集成方App上层实现打开摄像头扫描二维码功能，将扫描到的会议二维码内容（一般为URL），通过该函数打开。执行结果通过`PreMeetingCallback.onOpenQRCodeUrlResult`回调通知。
 - 参数说明：扫描二维码后要被打开的URL
 
