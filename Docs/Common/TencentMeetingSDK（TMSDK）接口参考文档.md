@@ -569,7 +569,6 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 * 函数说明：
   * 设置 SDK 内所有页面的外观模式（浅色 / 深色）。
   * 调用时机：必须在 SDK 初始化成功之后调用；未初始化时调用会被拒绝，返回 `kTMSDKErrorSdkNotInitialized(-1013)`。
-  * 结果同步返回错误码；同时如切换成功，SDK 会异步回调 `SDKCallback.onAppearanceChanged` 通知外观已变化。
   * 该设置会被 SDK 内部持久化，下次启动后自动恢复。
 * 返回值说明：处理结果错误码。`0` 表示成功；`-1008` 表示无效参数（`mode` 非 `Light`/`Dark`）；`-1013` 表示 SDK 未初始化。详情参考`7. 错误码`章节。
 * 参数说明：
@@ -759,21 +758,6 @@ SDKCallback 需实现以下成员函数：
     "meeting_code": "..." //会议号
 }
 ```
-
-
-### onAppearanceChanged
-* 函数形式：**void onAppearanceChanged(int mode)**
-* 可用版本与平台：
-  * 版本 >= 3.43.0：`iOS` / `Android` / `Win` / `Mac`
-* 函数说明：
-  * SDK 外观模式变化时的回调。
-  * 触发时机：接入方主动调用 `setAppearanceMode` 切换成功后；或 SDK 内部由于其它原因（如通过 `InitParam.appearance_mode` 首次应用）导致外观改变时。
-  * 该回调为可选实现，接入方可按需实现。
-* 参数说明：
-
-| 参数名 | 参数类型 | 参数说明 |
-| --- | --- | --- |
-| mode | int（TMAppearanceMode） | 变化后的外观模式，取值为 `TMAppearanceModeLight(1)` 或 `TMAppearanceModeDark(2)` |
 
 
 
