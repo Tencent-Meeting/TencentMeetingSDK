@@ -21,13 +21,13 @@ plugins {
 - Glide 4.12.0及以上
 - 使用Android Studio作为IDE
 - 您的项目如果还在使用android.support.*，请先迁移到AndroidX，且项目工程需满足以下条件
->    1. Android Studio 3.2及以上
->    1. AGP版本4.2.0及以上
->    1. KGP版本1.7.0及以上
->    1. Gradle版本6.7.1及以上
->    1. 项目编译版本33及以上
+>    1. Android Studio 2024.1.1及以上
+>    1. AGP版本8.5.0及以上
+>    1. KGP版本1.9.0及以上
+>    1. Gradle版本8.7及以上
+>    1. 项目编译版本35及以上
 >    1. NDK版本21及以上
->    1. JDK版本11及以上
+>    1. JDK版本17及以上
 
 - 迁移到Android X步骤
     1. 在Android studio中点击`Refactor > Migrate to AndroidX`，依照提示进行迁移即可。(迁移过程遇到问题可以参考官方文档)
