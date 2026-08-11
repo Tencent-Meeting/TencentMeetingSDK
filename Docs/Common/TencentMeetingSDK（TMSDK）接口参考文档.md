@@ -1857,8 +1857,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void switchPIPModel(bool isEnterPip)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 3.6.200: `iOS` / `Android` / `Win` / `Mac`
-* 适用平台：移动端（Android, iOS）
+  * 版本 >= 3.6.200: 移动端（Android, iOS）
 * 函数说明：进入悬浮窗或者退出悬浮窗状态，结果会在回调`InMeetingCallback.onSwitchPiPResult`返回。
 * 返回值说明：无
 * 参数说明：
@@ -1872,8 +1871,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 函数形式：**void configPipButtonAction(int pipActionType, string data, Callback complete)**
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
-  * 版本 >= 3.24.300: `iOS` / `Android` / `Win` / `Mac`
-* 适用平台：移动端（Android, iOS）
+  * 版本 >= 3.24.300: 移动端（Android, iOS）
 * 函数说明：
   * 这个接口允许接入方设置用户关闭悬浮窗时的行为，并在相应的回调函数 **InMeetingCallback.onPipModeChanged**参数中返回通知
   * 调用时机：初始化后可调用。
