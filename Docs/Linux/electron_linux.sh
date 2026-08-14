@@ -37,9 +37,11 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ];then
   else
     export WEMEET_XWAYLAND=1
     source ${HERE}/x11-wayland/x11-ext.sh
-    export QT_QPA_PLATFORM=xcb
-    export XDG_SESSION_TYPE=x11
-    unset WAYLAND_DISPLAY
+    if [ $WEMEET_XWAYLAND -eq "1" ];then
+      export QT_QPA_PLATFORM=xcb
+      export XDG_SESSION_TYPE=x11
+      unset WAYLAND_DISPLAY
+    fi
   fi
 fi
 
