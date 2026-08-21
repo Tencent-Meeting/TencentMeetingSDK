@@ -595,6 +595,24 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | `TMAppearanceModeLight` | 1 | 浅色模式 |
 | `TMAppearanceModeDark` | 2 | 深色模式 |
 
+### setCorpAvatarAccessTokenByJSON
+* 函数形式：**void setCorpAvatarAccessTokenByJSON(String jsonConfig)**
+* 可用版本与平台： 
+  * 版本 >= 3.43.200: `iOS` / `Android` / `Win` / `Mac`/ `Linux`
+* 函数说明：为SDK设置企业托管头像服务鉴权配置
+* 返回值说明：无。
+* 参数说明：企业托管头像服务鉴权配置的json字符串
+```
+{
+  "access_token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+jsonConfig字符串参数说明：
+|字段|类型|必填|说明|
+|-|-|-|-|
+|access_token|	string|	是	|企业头像服务器访问 Token，SDK 请求时拼接在url后缀中以?token=${access_token}存在|
+
+
 ## 2.2 SDKCallback 回调代理
 
 SDKCallback 需实现以下成员函数：
@@ -758,6 +776,17 @@ SDKCallback 需实现以下成员函数：
     "meeting_code": "..." //会议号
 }
 ```
+
+### onSetCorpAvatarAccessTokenResult
+- 函数形式：**void onSetCorpAvatarAccessTokenResult(int code, string msg)**
+* 可用版本与平台： 
+  * 版本 >= 3.43.200: `iOS` / `Android` / `Win` / `Mac`/ `Linux`
+- 说明：宿主调用`setCorpAvatarAccessTokenByJSON`接口的结果回调。
+
+| 参数名 | 参数类型 | 参数说明                                                   |
+| ------ | -------- | ---------------------------------------------------------- |
+| code   | int      | 结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节 |
+| msg    | string   | 错误信息                        |
 
 
 
@@ -2311,6 +2340,31 @@ layout_id枚举值如下:
 |code |int |操作结果错误码，0表示成功 |
 |msg |string |操作出错时包含错误信息，操作成功时值为空 |
 
+### updateInvitedMemberProfilesByJSON
+* 函数形式：**void updateInvitedMemberProfilesByJSON(String memberProfiles)**
+* 可用版本：>= 3.43.200
+* 可用平台：`iOS` / `Android` / `Win` / `Mac` / `Linux` 
+* 函数说明：
+  * 宿主批量下发邀请中未入会成员的昵称。
+  * 调用时机：只能在会中调用, 一般是接收到`onInvitedMembersChanged`回调后，拿到回调参数中的membersJson后为members设置昵称。
+  * 操作结果由`InMeetingCallback.onUpdateMemberProfilesResult`回调返回。详情见回调说明。
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明                     |
+|---|---|------|-------|--------------------------|
+|memberProfiles |string | 是    | {}     | JSON字符串，内容为用户userid和nickname键值对 |
+
+* 参数示例：
+```
+{
+  "profiles": [
+    { "open_userid": "user_id1",   "nickname": "Bob" },
+    { "open_userid": "user_id2", "nickname": "Alice" }
+  ]
+}
+```
+
 
 
 ## 5.2 InMeetingCallback 回调代理
@@ -2663,6 +2717,40 @@ data内容示例
 |扬声器|AudioOutputModeSpeaker|2|
 |有线耳机|AudioOutputModeHeadset|3|
 |蓝牙|AudioOutputModeBluetooth|4|
+
+### onInvitedMembersChanged
+* 函数形式：**void onInvitedMembersChanged(int changeType, String membersJson)**
+* 可用版本与平台： 
+  * 可用版本与平台： 
+  * 版本 >= 3.43.200: `iOS` / `Android` / `Win` / `Mac`/ `Linux`
+* 说明：邀请中成员变更；`membersJson` 是 邀请中成员列表userid_list 的 JSON 字符串; `changeType`：0=ADD，1=UPDATE，2=REMOVE
+* 参数说明：
+
+| 参数名       | 参数类型   | 参数说明                                        |
+|-----------|--------|---------------------------------------------|
+| changeType | int | 变更类型：0=ADD，1=UPDATE，2=REMOVE|
+| membersJson | string | 邀请成功的成员列表，JSON字符串，内容如下示例 |
+
+- membersJson
+```json
+{
+  "users": ["user1_id","user2_id","user3_id","user4_id"]
+}
+```
+- users：表示邀请的用户id列表，此用户id是客户侧账户体系中的用户唯一标识
+
+| changeType | 说明              |
+|-----------|-----------------|
+| 0         | 新增邀请中成员  |
+| 1         | 邀请中成员状态变更  |
+| 2         | 邀请中成员从邀请列表移除  |
+
+### onUpdateMemberProfilesResult
+* 函数形式：**void onUpdateMemberProfilesResult(int code, String msg)**
+* 可用版本与平台： 
+  * 版本 >= 3.43.200: `iOS` / `Android` / `Win` / `Mac`/ `Linux`
+* 说明：宿主调用`updateInvitedMemberProfilesByJSON` 接口的结果， code=0表示成功，其他表示失败
+
 
 
 # 6. UserConfigService 说明
