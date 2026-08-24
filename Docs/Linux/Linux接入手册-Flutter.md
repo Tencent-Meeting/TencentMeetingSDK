@@ -457,6 +457,7 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
   if [ -f "/opt/x11-wayland/x11-ext.sh" ]; then
     source /opt/x11-wayland/x11-ext.sh
   else
+    export WEMEET_XWAYLAND=1
     # 系统未预置时，仅 ARM 架构需要 source 包内随附的扩展脚本
     ARCH="$(uname -m)"
     if [[ $ARCH == arm* || $ARCH == aarch64 ]]; then
@@ -466,13 +467,13 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
         echo "Warning: x11-ext.sh not found, ARM Wayland compatibility may be limited."
       fi
     fi
-  fi
 
-  # 通用环境变量（x86_64 / ARM 均需要）
-  export QT_QPA_PLATFORM=xcb
-  export XDG_SESSION_TYPE=x11
-  unset WAYLAND_DISPLAY
-  export WEMEET_XWAYLAND=1
+    if [ $WEMEET_XWAYLAND -eq "1" ];then
+      export QT_QPA_PLATFORM=xcb
+      export XDG_SESSION_TYPE=x11
+      unset WAYLAND_DISPLAY
+    fi
+  fi
 fi
 ```
 
