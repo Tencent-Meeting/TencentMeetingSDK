@@ -35,6 +35,7 @@ ${SDK_ROOT}/
 │   ├── libwemeetsdk.so           # SDK 主库
 │   ├── libwemeet_base.so         # SDK 基础库
 │   ├── Release/                  # SDK 资源文件
+│   │   └── x11-wayland/          # Wayland(XWayland) 兼容扩展，仅 ARM 包携带
 │   └── include/                  # SDK 头文件
 │
 └── Flutter_Demo/                 # Flutter Sample 示例工程
@@ -54,6 +55,8 @@ ${SDK_ROOT}/
 ```
 
 > 📝 **`${SDK_ROOT}`** 表示腾讯会议 SDK 的根目录，即下载解压后的 SDK 包的顶级目录，在执行命令时，请将 `${SDK_ROOT}` 替换为实际的 SDK 根目录路径。
+
+> 📝 **`SDK/Release/x11-wayland/`** 仅 **ARM 架构的 SDK 包** 才会携带，用于在 Wayland 会话下强制走 XWayland 以规避渲染/输入异常。x86_64 包无此目录，无需关注。使用方式详见 [ARM 设备特别说明](#步骤-8运行应用)。
 
 ## SDK 接入指南
 
@@ -457,6 +460,7 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
   if [ -f "/opt/x11-wayland/x11-ext.sh" ]; then
     source /opt/x11-wayland/x11-ext.sh
   else
+    export WEMEET_XWAYLAND=1
     # 系统未预置时，仅 ARM 架构需要 source 包内随附的扩展脚本
     ARCH="$(uname -m)"
     if [[ $ARCH == arm* || $ARCH == aarch64 ]]; then
@@ -466,13 +470,13 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
         echo "Warning: x11-ext.sh not found, ARM Wayland compatibility may be limited."
       fi
     fi
-  fi
 
-  # 通用环境变量（x86_64 / ARM 均需要）
-  export QT_QPA_PLATFORM=xcb
-  export XDG_SESSION_TYPE=x11
-  unset WAYLAND_DISPLAY
-  export WEMEET_XWAYLAND=1
+    if [ $WEMEET_XWAYLAND -eq "1" ];then
+      export QT_QPA_PLATFORM=xcb
+      export XDG_SESSION_TYPE=x11
+      unset WAYLAND_DISPLAY
+    fi
+  fi
 fi
 ```
 
@@ -483,7 +487,18 @@ ARM 设备需要的 `x11-ext.sh` 脚本，脚本会按以下顺序查找：
 1. 优先使用系统预置路径：`/opt/x11-wayland/x11-ext.sh`
 2. 若系统未预置，则回退到 SDK 包内随附的路径：`${SCRIPT_DIR}/x11-wayland/x11-ext.sh`
 
-**是否需要手动下载？** 需接入方在 ARM 目标设备上自行确认 `/opt/x11-wayland/x11-ext.sh` 是否存在。若该路径缺失，请从 SDK 仓库的 `Docs/Linux/x11-wayland/` 目录下载（包含 `x11-ext.sh` 以及对应内核版本的依赖库），并随启动脚本一起放置到项目根目录下的 `x11-wayland/` 子目录中：
+> [!IMPORTANT]
+> **是否需要手动拷贝？**
+>
+> 需接入方在 ARM 目标设备上自行确认 `/opt/x11-wayland/x11-ext.sh` 是否存在。**若该路径缺失**，请通过以下**任一**方式获取 `x11-wayland` 目录（包含 `x11-ext.sh` 以及对应内核版本的依赖库），并随启动脚本一起放置到项目根目录下的 `x11-wayland/` 子目录中：
+>
+> - **方式一（从 SDK 包内拷贝，推荐）**：直接拷贝 SDK 包内的 `SDK/Release/x11-wayland` 目录
+>   ```bash
+>   cp -a ${SDK_ROOT}/SDK/Release/x11-wayland my_meeting_app/
+>   ```
+> - **方式二（从 GitHub 仓库下载）**：下载仓库中的 `TencentMeetingSDK/Docs/Linux/x11-wayland/` 目录，并拷贝到项目根目录
+
+拷贝后的目录结构如下：
 
 ```
 my_meeting_app/
