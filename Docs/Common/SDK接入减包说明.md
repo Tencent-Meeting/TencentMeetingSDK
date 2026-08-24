@@ -49,9 +49,12 @@ tbs打包优化：打包可选择对Release\webview和Release\resources\webview�
    下载失败场景： 遇到下载失败场景请确保能够正常访问updatecdn.meeting.qq.com
    ![image](https://github.com/Tencent-Meeting/TencentMeetingSDK/assets/15232387/8059d96a-01e5-4bd0-824e-e4b5143f3fb8)
 
-#### webview下载目录及升级注意事项
-1. 使用减包方案后，动态下载的内置浏览器（webview）会存放到`initialize`接口参数`data_path`所指定目录下的`Global\webview`中。即完整路径为`<data_path>\Global\webview`。
-2. 由于该目录位于SDK数据目录下，不随SDK包一起更新。因此在SDK发生大版本升级时，需要由接入方在安装新版本时主动清理`<data_path>\Global\webview`目录，避免残留的旧版本webview与新版本SDK不匹配导致页面加载异常。
+#### <font color="red">⚠️ webview下载目录及升级注意事项（重要）</font>
+
+> <font color="red">**注意：使用减包方案后，务必关注以下两点，否则可能导致大版本升级后页面加载异常。**</font>
+>
+> 1. **下载目录**：动态下载的内置浏览器（webview）会存放到 `initialize` 接口参数 `data_path` 所指定目录下的 `Global\webview` 中，即完整路径为 <font color="red">**`<data_path>\Global\webview`**</font>。
+> 2. **升级必须清理**：该目录位于SDK数据目录下，<font color="red">**不随SDK包一起更新**</font>。因此在SDK发生<font color="red">**大版本升级**</font>时，<font color="red">**需要由接入方在安装新版本时主动清理 `<data_path>\Global\webview` 目录**</font>，避免残留的旧版本webview与新版本SDK不匹配导致页面加载异常。清理后新版本首次初始化会重新触发下载。
 
 ### 效果对比
 | 打包    | 有webview | 无webview | 减包大小 |
