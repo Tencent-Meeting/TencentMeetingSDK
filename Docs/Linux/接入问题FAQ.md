@@ -35,7 +35,7 @@ Linux SDK目前不支持原生wayland，这里uos和kylin os操作系统厂商�
 app打包时将Docs/Linux/UOS下x11-wayland拷贝到系统/opt目录下
 
 
-### 补充场景：
+## * 补充场景：
 1. tmsdkapp.coredump 大小为 0kb
 
 这是由于系统限制了崩溃时core文件的大小限制，在终端中ulimit -c unlimited，设置不限制后，复现崩溃场景后再重新提取dump
