@@ -25,14 +25,20 @@ Linux SDK目前不支持原生wayland，这里uos和kylin os操作系统厂商�
 2.若有wayland强诉求，确认是否为uos和kylin os操作系统，其他系统不支持
 3.确认/opt/x11-wayland文件夹是否存在，缺少补丁联系对应系统操作系统厂商提供
 
+## * Linux SDK发生闪退/崩溃
+
+### 排查建议：
+1. 终端输入coredumpctl list tmsdkapp，查看是否有会议进程崩溃记录
+2. 终端输入coredumpctl dump -o ~/Desktop/tmsdkapp.coredump SDK安装目录/Release/tmsdkapp 提取dump文件
+3. 提供桌面的wemeetapp.coredump文件给会议侧分析堆栈
+
 ## * UOS version>=1070 版本打开摄像头出现crash
 
 ### 排查建议：
 看看crash堆栈是否为系统egl库，如果是崩溃在系统egl库，则需要使用统信厂商补丁来处理
 
 ### 解决方法：
-可以通过如下方式解决：
-app打包时将Docs/Linux/UOS下x11-wayland拷贝到系统/opt目录下
+宿主打包时将Docs/Linux/UOS下x11-wayland拷贝到系统/opt目录下
 
 
 ## * 补充场景：
