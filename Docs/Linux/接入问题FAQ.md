@@ -32,7 +32,16 @@ Linux SDK目前不支持原生wayland，这里uos和kylin os操作系统厂商�
 2. 终端输入coredumpctl dump -o ~/Desktop/tmsdkapp.coredump SDK安装目录/Release/tmsdkapp 提取dump文件
 3. 提供桌面的wemeetapp.coredump文件给会议侧分析堆栈
 
-### 补充场景：
+## * UOS version>=1070 版本打开摄像头出现crash
+
+### 排查建议：
+看看crash堆栈是否为系统egl库，如果是崩溃在系统egl库，则需要使用统信厂商补丁来处理
+
+### 解决方法：
+宿主打包时将Docs/Linux/UOS下x11-wayland拷贝到系统/opt目录下
+
+
+## * 补充场景：
 1. tmsdkapp.coredump 大小为 0kb
 
 这是由于系统限制了崩溃时core文件的大小限制，在终端中ulimit -c unlimited，设置不限制后，复现崩溃场景后再重新提取dump
