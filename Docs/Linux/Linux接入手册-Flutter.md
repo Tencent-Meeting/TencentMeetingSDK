@@ -453,6 +453,9 @@ sed -i 's/wemeet_flutter_demo/my_meeting_app/g' run_x86_64.sh
 脚本中的兼容性处理片段如下，**x86_64 与 ARM 均需保留**：
 
 ```bash
+# 保存原始会话类型，供后续 EGL 兼容性检测使用（须在 Wayland 处理前保存）
+ORIGINAL_XDG_SESSION_TYPE="$XDG_SESSION_TYPE"
+
 # ====== Wayland 兼容性处理（x86_64 / ARM 通用，请勿删除） ======
 # 在 Wayland 会话下强制走 XWayland，避免渲染/输入异常。
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
@@ -477,6 +480,52 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
       unset WAYLAND_DISPLAY
     fi
   fi
+fi
+
+# ====== 兆芯 GPU/CPU EGL 兼容性处理（仅 x86_64 XCB 场景） ======
+# 通过 PCI ID 检测兆芯 C960（1d17:3a04）或 C860/KX-5000（1d17:3a03）GPU
+hasZxC960() {
+  if [ -d /sys/bus/pci/devices ]; then
+    for dev in /sys/bus/pci/devices/*/uevent; do
+      if [ -f "$dev" ]; then
+        if grep -q 'PCI_ID=1d17:3a04' "$dev" || grep -q 'PCI_ID=1d17:3a03' "$dev"; then
+          return 0
+        fi
+      fi
+    done
+  fi
+  return 1
+}
+
+# 通过 /proc/cpuinfo 检测兆芯 CPU（Zhaoxin / KX-U6780A / ZX-E）
+isZhaoxinCpu() {
+  if [ -f /proc/cpuinfo ]; then
+    if grep -qE 'Zhaoxin|KX-U6780A|ZX-E' /proc/cpuinfo; then
+      return 0
+    fi
+  fi
+  return 1
+}
+
+# 原始会话为 Wayland 时不触发；否则检测到兆芯 GPU 或（兆芯 CPU + DRI 设备）时强制使用 EGL
+shouldForceEgl() {
+  if [ "$ORIGINAL_XDG_SESSION_TYPE" = "wayland" ]; then
+    return 1
+  fi
+  if hasZxC960; then
+    return 0
+  fi
+  if isZhaoxinCpu && [ -e /dev/dri/renderD128 ]; then
+    return 0
+  fi
+  return 1
+}
+
+if shouldForceEgl; then
+  export QT_XCB_GL_INTEGRATION=xcb_egl
+  export QT_OPENGL=es
+  export QT_XCB_NO_GLX=1
+  echo "Zhaoxin GPU detected, EGL backend enabled for XCB."
 fi
 ```
 
@@ -509,7 +558,23 @@ my_meeting_app/
     └── 1050/lib/aarch64-linux-gnu/   # 对应内核 1050
 ```
 
-4. **库路径与插件路径设置**：
+4. **兆芯 CPU/GPU 的 EGL 兼容性处理（x86_64）**：
+
+> ⚠️ 兆芯 C960/C860 GPU 在 XCB（非 Wayland）会话下使用默认 GLX 后端可能出现渲染异常，需强制切换为 EGL 渲染后端。
+
+相关检测函数（`hasZxC960`、`isZhaoxinCpu`、`shouldForceEgl`）已包含在上方代码段末尾，**x86_64 设备请勿删除**。
+
+**触发条件说明**：
+
+| 条件 | 说明 |
+|------|------|
+| PCI ID `1d17:3a04` | 兆芯 C960 GPU |
+| PCI ID `1d17:3a03` | 兆芯 C860 / KX-5000 GPU |
+| CPU 含 `Zhaoxin` / `KX-U6780A` / `ZX-E` 且存在 `/dev/dri/renderD128` | 兆芯 CPU 配合 DRI 渲染设备 |
+
+> 💡 该处理仅在 XCB（X11）会话下生效，Wayland 会话（`XDG_SESSION_TYPE=wayland`）下不会触发。
+
+5. **库路径与插件路径设置**：
 
 启动脚本中会自动设置以下环境变量，确保 SDK 库和 Qt 插件能被正确加载：
 
