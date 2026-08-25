@@ -481,44 +481,7 @@ if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
     fi
   fi
 fi
-```
 
-📌 **ARM 设备特别说明**：
-
-ARM 设备需要的 `x11-ext.sh` 脚本，脚本会按以下顺序查找：
-
-1. 优先使用系统预置路径：`/opt/x11-wayland/x11-ext.sh`
-2. 若系统未预置，则回退到 SDK 包内随附的路径：`${SCRIPT_DIR}/x11-wayland/x11-ext.sh`
-
-> [!IMPORTANT]
-> **是否需要手动拷贝？**
->
-> 需接入方在 ARM 目标设备上自行确认 `/opt/x11-wayland/x11-ext.sh` 是否存在。**若该路径缺失**，请通过以下**任一**方式获取 `x11-wayland` 目录（包含 `x11-ext.sh` 以及对应内核版本的依赖库），并随启动脚本一起放置到项目根目录下的 `x11-wayland/` 子目录中：
->
-> - **方式一（从 SDK 包内拷贝，推荐）**：直接拷贝 SDK 包内的 `SDK/Release/x11-wayland` 目录
->   ```bash
->   cp -a ${SDK_ROOT}/SDK/Release/x11-wayland my_meeting_app/
->   ```
-> - **方式二（从 GitHub 仓库下载）**：下载仓库中的 `TencentMeetingSDK/Docs/Linux/x11-wayland/` 目录，并拷贝到项目根目录
-
-拷贝后的目录结构如下：
-
-```
-my_meeting_app/
-├── run_x86_64.sh
-└── x11-wayland/
-    ├── x11-ext.sh
-    ├── 1040/lib/aarch64-linux-gnu/   # 对应内核 1040
-    └── 1050/lib/aarch64-linux-gnu/   # 对应内核 1050
-```
-
-4. **兆芯 CPU/GPU 的 EGL 兼容性处理（x86_64）**：
-
-> ⚠️ 兆芯 C960/C860 GPU 在 XCB（非 Wayland）会话下使用默认 GLX 后端可能出现渲染异常，需强制切换为 EGL 渲染后端。
-
-启动脚本中包含以下检测与环境变量设置逻辑，**x86_64 设备请勿删除**：
-
-```bash
 # ====== 兆芯 GPU/CPU EGL 兼容性处理（仅 x86_64 XCB 场景） ======
 # 通过 PCI ID 检测兆芯 C960（1d17:3a04）或 C860/KX-5000（1d17:3a03）GPU
 hasZxC960() {
@@ -565,6 +528,41 @@ if shouldForceEgl; then
   echo "Zhaoxin GPU detected, EGL backend enabled for XCB."
 fi
 ```
+
+📌 **ARM 设备特别说明**：
+
+ARM 设备需要的 `x11-ext.sh` 脚本，脚本会按以下顺序查找：
+
+1. 优先使用系统预置路径：`/opt/x11-wayland/x11-ext.sh`
+2. 若系统未预置，则回退到 SDK 包内随附的路径：`${SCRIPT_DIR}/x11-wayland/x11-ext.sh`
+
+> [!IMPORTANT]
+> **是否需要手动拷贝？**
+>
+> 需接入方在 ARM 目标设备上自行确认 `/opt/x11-wayland/x11-ext.sh` 是否存在。**若该路径缺失**，请通过以下**任一**方式获取 `x11-wayland` 目录（包含 `x11-ext.sh` 以及对应内核版本的依赖库），并随启动脚本一起放置到项目根目录下的 `x11-wayland/` 子目录中：
+>
+> - **方式一（从 SDK 包内拷贝，推荐）**：直接拷贝 SDK 包内的 `SDK/Release/x11-wayland` 目录
+>   ```bash
+>   cp -a ${SDK_ROOT}/SDK/Release/x11-wayland my_meeting_app/
+>   ```
+> - **方式二（从 GitHub 仓库下载）**：下载仓库中的 `TencentMeetingSDK/Docs/Linux/x11-wayland/` 目录，并拷贝到项目根目录
+
+拷贝后的目录结构如下：
+
+```
+my_meeting_app/
+├── run_x86_64.sh
+└── x11-wayland/
+    ├── x11-ext.sh
+    ├── 1040/lib/aarch64-linux-gnu/   # 对应内核 1040
+    └── 1050/lib/aarch64-linux-gnu/   # 对应内核 1050
+```
+
+4. **兆芯 CPU/GPU 的 EGL 兼容性处理（x86_64）**：
+
+> ⚠️ 兆芯 C960/C860 GPU 在 XCB（非 Wayland）会话下使用默认 GLX 后端可能出现渲染异常，需强制切换为 EGL 渲染后端。
+
+相关检测函数（`hasZxC960`、`isZhaoxinCpu`、`shouldForceEgl`）已包含在上方代码段末尾，**x86_64 设备请勿删除**。
 
 **触发条件说明**：
 
