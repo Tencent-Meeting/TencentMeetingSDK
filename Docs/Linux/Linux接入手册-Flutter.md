@@ -453,6 +453,9 @@ sed -i 's/wemeet_flutter_demo/my_meeting_app/g' run_x86_64.sh
 脚本中的兼容性处理片段如下，**x86_64 与 ARM 均需保留**：
 
 ```bash
+# 保存原始会话类型，供后续 EGL 兼容性检测使用（须在 Wayland 处理前保存）
+ORIGINAL_XDG_SESSION_TYPE="$XDG_SESSION_TYPE"
+
 # ====== Wayland 兼容性处理（x86_64 / ARM 通用，请勿删除） ======
 # 在 Wayland 会话下强制走 XWayland，避免渲染/输入异常。
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
@@ -519,43 +522,47 @@ my_meeting_app/
 # ====== 兆芯 GPU/CPU EGL 兼容性处理（仅 x86_64 XCB 场景） ======
 # 通过 PCI ID 检测兆芯 C960（1d17:3a04）或 C860/KX-5000（1d17:3a03）GPU
 hasZxC960() {
-  for uevent in /sys/bus/pci/devices/*/uevent; do
-    content=$(cat "$uevent" 2>/dev/null) || continue
-    if echo "$content" | grep -q 'PCI_ID=1d17:3a04'; then  # C960
-      return 0
-    fi
-    if echo "$content" | grep -q 'PCI_ID=1d17:3a03'; then  # C860（KX-5000）
-      return 0
-    fi
-  done
+  if [ -d /sys/bus/pci/devices ]; then
+    for dev in /sys/bus/pci/devices/*/uevent; do
+      if [ -f "$dev" ]; then
+        if grep -q 'PCI_ID=1d17:3a04' "$dev" || grep -q 'PCI_ID=1d17:3a03' "$dev"; then
+          return 0
+        fi
+      fi
+    done
+  fi
   return 1
 }
 
 # 通过 /proc/cpuinfo 检测兆芯 CPU（Zhaoxin / KX-U6780A / ZX-E）
 isZhaoxinCpu() {
-  cpuinfo=$(cat /proc/cpuinfo 2>/dev/null) || return 1
-  echo "$cpuinfo" | grep -q 'Zhaoxin'   && return 0
-  echo "$cpuinfo" | grep -q 'KX-U6780A' && return 0
-  echo "$cpuinfo" | grep -q 'ZX-E'      && return 0
+  if [ -f /proc/cpuinfo ]; then
+    if grep -qE 'Zhaoxin|KX-U6780A|ZX-E' /proc/cpuinfo; then
+      return 0
+    fi
+  fi
   return 1
 }
 
-# 非 Wayland 会话下，检测到兆芯 GPU 或（兆芯 CPU + DRI 设备）时，强制使用 EGL
-XDG_SESSION_TYPE="${XDG_SESSION_TYPE:-}"
-if [ "$XDG_SESSION_TYPE" != "wayland" ]; then
-  shouldForceEgl=0
+# 原始会话为 Wayland 时不触发；否则检测到兆芯 GPU 或（兆芯 CPU + DRI 设备）时强制使用 EGL
+shouldForceEgl() {
+  if [ "$ORIGINAL_XDG_SESSION_TYPE" = "wayland" ]; then
+    return 1
+  fi
   if hasZxC960; then
-    shouldForceEgl=1
-  elif isZhaoxinCpu && [ -e /dev/dri/renderD128 ]; then
-    shouldForceEgl=1
+    return 0
   fi
+  if isZhaoxinCpu && [ -e /dev/dri/renderD128 ]; then
+    return 0
+  fi
+  return 1
+}
 
-  if [ "$shouldForceEgl" = "1" ]; then
-    export QT_XCB_GL_INTEGRATION=xcb_egl
-    export QT_OPENGL=es
-    export QT_XCB_NO_GLX=1
-    echo "Zhaoxin GPU detected, EGL backend enabled for XCB."
-  fi
+if shouldForceEgl; then
+  export QT_XCB_GL_INTEGRATION=xcb_egl
+  export QT_OPENGL=es
+  export QT_XCB_NO_GLX=1
+  echo "Zhaoxin GPU detected, EGL backend enabled for XCB."
 fi
 ```
 
