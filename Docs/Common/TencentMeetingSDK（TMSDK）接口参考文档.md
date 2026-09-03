@@ -2698,7 +2698,7 @@ UserConfigService用来管理用户配置，可以设置和获取用户配置。
   | 设置项key | 类型 | 默认值 | 说明 | 平台 | 可用版本 | 错误码 |
   | ------ | :------: | :------: | :------: | :------: | :------: | ------ |
   | enableNearDiscover | bool | false | 是否启用近场发现 | 全部 | >= 3.30.200 | -6001 设置失败<br>-6002 无蓝牙权限 |
-  | enableQuickPip | bool | false | 是否开启Android快捷浮窗 | Android & iOS | >= 3.30.200 | -6001 设置失败 |
+  | enableQuickPip | bool | false | 是否开启快捷浮窗/画中画 | Android & iOS | >= 3.30.200 | -6001 设置失败 |
 
   **常规设置**
 
