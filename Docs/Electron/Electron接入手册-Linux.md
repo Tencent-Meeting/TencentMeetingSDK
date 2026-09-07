@@ -102,6 +102,44 @@ if (process.platform === 'linux') {
   process.env.LC_ALL = `zh_CN.UTF-8`;
 
   const xdgSessionType = process.env.XDG_SESSION_TYPE;
+
+  // 兆芯 C960/C860 在 XCB 场景下需使用 EGL 作为渲染后端，否则可能出现渲染异常
+  // 通过 PCI ID 识别：1d17:3a04（C960）、1d17:3a03（C860/KX-5000）
+  function hasZxC960() {
+    try {
+      const devices = fs.readdirSync('/sys/bus/pci/devices');
+      for (const dev of devices) {
+        const uevent = fs.readFileSync(`/sys/bus/pci/devices/${dev}/uevent`, 'utf8');
+        if (uevent.includes('PCI_ID=1d17:3a04')) return true; // C960
+        if (uevent.includes('PCI_ID=1d17:3a03')) return true; // C860（KX-5000）
+      }
+    } catch {}
+    return false;
+  }
+
+  function isZhaoxinCpu() {
+    try {
+      const cpuinfo = fs.readFileSync('/proc/cpuinfo', 'utf8');
+      return (
+        cpuinfo.includes('Zhaoxin') ||
+        cpuinfo.includes('KX-U6780A') ||
+        cpuinfo.includes('ZX-E')
+      );
+    } catch {}
+    return false;
+  }
+
+  const shouldForceEgl =
+    xdgSessionType !== 'wayland' &&
+    (hasZxC960() || (isZhaoxinCpu() && fs.existsSync('/dev/dri/renderD128')));
+
+  if (shouldForceEgl) {
+    process.env.QT_XCB_GL_INTEGRATION = 'xcb_egl';
+    process.env.QT_OPENGL = 'es';
+    process.env.QT_XCB_NO_GLX = '1';
+    console.log("Zhaoxin GPU detected, EGL backend enabled for XCB.");
+  }
+
   if (xdgSessionType == 'x11') {
       // 强制设置图形环境为 X11
       process.env.DISPLAY = process.env.DISPLAY || ':0';
