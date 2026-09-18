@@ -49,6 +49,13 @@ tbs打包优化：打包可选择对Release\webview和Release\resources\webview�
    下载失败场景： 遇到下载失败场景请确保能够正常访问updatecdn.meeting.qq.com
    ![image](https://github.com/Tencent-Meeting/TencentMeetingSDK/assets/15232387/8059d96a-01e5-4bd0-824e-e4b5143f3fb8)
 
+#### webview下载目录及升级注意事项（重要）
+
+> [!IMPORTANT]
+> **动态下载的webview存放目录**：动态下载的内置浏览器（webview）会存放到 `initialize` 接口参数 `data_path` 所指定目录下的 `Global\webview` 中，即完整路径为 **`<data_path>\Global\webview`**。
+
+> [!WARNING]
+> **SDK大版本升级时必须清理webview目录**：`<data_path>\Global\webview` 位于SDK数据目录下，**不随SDK包一起更新**。因此在SDK发生**大版本升级**时，**需要由接入方在安装新版本时主动清理该目录**，否则残留的旧版本webview与新版本SDK不匹配会导致页面加载异常。
 
 ### 效果对比
 | 打包    | 有webview | 无webview | 减包大小 |
