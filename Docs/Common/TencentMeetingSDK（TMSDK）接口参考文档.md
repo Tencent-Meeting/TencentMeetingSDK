@@ -80,6 +80,7 @@
     + [showAIAssistantView](#showAIAssistantView)
     + [showRoomsControllerView](#showRoomsControllerView)
     + [showVoiceRecordView](#showVoiceRecordView)
+    + [checkVoicePrintIsCollected](#checkvoiceprintiscollected)
   * [4.2 PreMeetingCallback 回调代理](#42-premeetingcallback-回调代理)
     + [onJoinMeeting](#onjoinmeeting)
     + [onActionResult](#onactionresult)
@@ -183,6 +184,7 @@
 | 2025-06-16 | 3.30.100 for HarmonyOS | 新增错误码：[-1077]--因成员限制，加入会议时无法入会 |
 | 2026-05-06 | 3.34.100 for HarmonyOS | 鸿蒙端版本升级；支持邀请参会人接口和回调：enableAddressBookCallback、enableInviteUsersCallback、addUsersWithParam、onAddUsersResult、onShowAddressBook、onInviteUsers |
 | 2026-07-10 | 3.43.100 | 新增接口：setAppearanceMode（设置外观模式）、getAppearanceMode（获取外观模式）；新增回调：onAppearanceChanged（外观模式变化回调）；初始化参数InitParam新增appearance_mode字段支持设置默认外观模式；通用配置新增音视频、字幕等配置项（详见UserConfigService配置项列表）；新增错误码：[-1078] --用户正在入会 |
+| 2026-09-22| 3.45.100 | 新增接口：checkVoicePrintIsCollected（检查声纹是否已采集） |
 
 
 
@@ -1576,6 +1578,29 @@ msg内容示例：
 | code        | int      | 结果码：0表示成功；其他值表示失败，详情参考 `7. 错误码`章节 |
 | msg         | string   | 结果信息      
 
+### checkVoicePrintIsCollected
+* 函数形式：**void checkVoicePrintIsCollected(Callback complete)**
+* 可用版本：>= 3.45.100
+* 可用平台：iOS, Android, Windows, Mac
+* 函数说明：
+  * 检查声纹是否已采集。
+  * 调用时机：需要初始化、登录。
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明 |
+|---|---|------|-------|--------------------|
+|complete |Callback | 是    | 无     | 检查声纹采集状态的回调函数 |
+
+* 回调说明：
+
+	`Callback`签名：**void (\*)(int code, string msg, string value)**
+	| 参数名 | 参数类型 | 参数说明 |
+	|---|---|---|
+	| code | int | 结果错误码，0表示成功(见`7. 错误码`) |
+	| msg | string | 结果信息 |
+	| value | string | 声纹采集状态（仅 code==0 时有效）：字符串 `"1"`-已采集，`"0"`-未采集。code!=0 时该值无意义，仅为占位 |
+
 ## 4.2 PreMeetingCallback 回调代理
 
 PreMeetingCallback 需实现以下成员函数：
@@ -2718,6 +2743,7 @@ UserConfigService用来管理用户配置，可以设置和获取用户配置。
   | enableNearDiscover | bool | false | 是否启用近场发现 | 全部 | >= 3.30.200 | -6001 设置失败<br>-6002 无蓝牙权限 |
   | enableMeetingEndAlert | bool | false | 主持人解散会议后是否弹框提示 | 全部 | >= 3.43.111 | -6001 设置失败 |
   | enableCloudRecordDetail | bool | true | 设置-云录制"查看详情"入口显示/隐藏 | Mac,Win | >= 3.43.111 | -6001 设置失败 |
+  | enableLocalRecordAfterMeetingOpenFolder | bool | true | 是否在本地录制结束后自动打开所在文件夹。注意：该开关仅对原本不自动打开的场景生效，不会影响产品本身要求打开的场景（如本地录制与云录制混合录制时始终会打开） | Mac,Win | >= 3.45.100 | -6001 设置失败 |
   | enableQuickPip | bool | false | 是否开启快捷浮窗/画中画 | Android & iOS | >= 3.30.200 | -6001 设置失败 |
 
   **常规设置**
