@@ -1556,7 +1556,25 @@ msg内容示例：
 | ----------- | -------- | ------------------------------------------------------------- |
 | action_type | int      | 这处为 `ShowVoiceRecordView`应对的数值                      |
 | code        | int      | 结果码：0表示成功；其他值表示失败，详情参考 `7. 错误码`章节 |
-| msg         | string   | 结果信息                                                      |
+| msg         | string   | 结果信息         
+
+### showVoicePrintRecordView
+* 函数形式：**void ShowVoicePrintRecordView()**
+* 可用版本：>= 3.45.100
+* 可用平台：iOS, Android, Windows, Mac
+* 函数说明：
+  * 唤起声纹录制界面。
+  * 调用时机：需要初始化、登录。
+  * 通过 `PreMeetingCallback.onActionResult`回调操作结果，`action_type`参数是 `ShowVoicePrintRecordView`
+* 返回值说明：无
+* 参数说明：无
+* `PreMeetingCallback.onActionResult`回调说明：
+  
+| 参数名      | 参数类型 | 参数说明                                                      |
+| ----------- | -------- | ------------------------------------------------------------- |
+| action_type | int      | 这处为 `ShowVoicePrintRecordView`应对的数值                      |
+| code        | int      | 结果码：0表示成功；其他值表示失败，详情参考 `7. 错误码`章节 |
+| msg         | string   | 结果信息      
 
 ## 4.2 PreMeetingCallback 回调代理
 
