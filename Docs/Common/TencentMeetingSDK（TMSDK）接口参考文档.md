@@ -82,6 +82,7 @@
     + [showVoiceRecordView](#showVoiceRecordView)
     + [showVoicePrintRecordView](#showVoicePrintRecordView)
     + [checkVoicePrintIsCollected](#checkvoiceprintiscollected)
+    + [deleteVoicePrint](#deletevoiceprint)
   * [4.2 PreMeetingCallback 回调代理](#42-premeetingcallback-回调代理)
     + [onJoinMeeting](#onjoinmeeting)
     + [onActionResult](#onactionresult)
