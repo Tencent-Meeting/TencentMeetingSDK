@@ -1559,7 +1559,7 @@ msg内容示例：
 | ----------- | -------- | ------------------------------------------------------------- |
 | action_type | int      | 这处为 `ShowVoiceRecordView`应对的数值                      |
 | code        | int      | 结果码：0表示成功；其他值表示失败，详情参考 `7. 错误码`章节 |
-| msg         | string   | 结果信息         
+| msg         | string   | 结果信息   |      
 
 ### showVoicePrintRecordView
 * 函数形式：**void ShowVoicePrintRecordView()**
