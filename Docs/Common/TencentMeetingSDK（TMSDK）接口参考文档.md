@@ -1679,9 +1679,10 @@ PreMeetingCallback 需实现以下成员函数：
 | ShowUploadLogsView | 14   | 打开日志上传页面 |结果的说明文字                                       |
 | DiscoverNearScreenCastCode | 15   | 获取近场投屏码回调 |回调的JSON数据，格式参考`discoverNearScreenCastCode`函数说明                                       |
 | ShowAIAssistantView | 16   | 打开AI小助手页面 |结果的说明文字 |
-| ShowVoiceRecordView | 17   | 打开录音笔页面   | 结果的说明文|
+| ShowVoiceRecordView | 17   | 打开录音笔页面   | 结果的说明文字|
 | ShowRoomsControllerView | 18   | 打开Rooms控制器页面 |结果的说明文字 |
 | OpenPrivacyPage | 19   | 打开SDK隐私协议页面 |结果的说明文字 |
+| ShowVoicePrintRecordView | 20   | 打开声纹录制页面   | 结果的说明文字|
 
 
 ### onShowAddressBook
