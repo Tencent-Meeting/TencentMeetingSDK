@@ -1601,6 +1601,31 @@ msg内容示例：
 	| msg | string | 结果信息 |
 	| value | string | 声纹采集状态（仅 code==0 时有效）：字符串 `"1"`-已采集，`"0"`-未采集。code!=0 时该值无意义，仅为占位 |
 
+### deleteVoicePrint
+* 函数形式：**void deleteVoicePrint(Callback complete)**
+* 可用版本：>= 3.45.100
+* 可用平台：iOS, Android, Windows, Mac
+* 函数说明：
+  * 删除当前用户已录入的声纹信息。
+  * 调用时机：需要初始化、登录。
+  * 删除前会先校验当前用户是否已录入声纹，未录入时返回失败。
+  * 操作结果由`Callback`回调`complete`参数带回，签名详情见回调说明。
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 |参数必填 |参数默认值 |参数说明 |
+|---|---|---|---|---|
+|complete |Callback |否 |空 |操作结束回调block，可以为空 |
+
+* 回调说明：
+
+`Callback`签名：**void (\*)(int code, string msg)**
+
+|参数名 |参数类型 |参数说明 |
+|---|---|---|
+|code |int |操作结果错误码，0表示删除成功 |
+|msg |string |操作出错时包含错误信息，操作成功时值为空 |
+
 ## 4.2 PreMeetingCallback 回调代理
 
 PreMeetingCallback 需实现以下成员函数：
