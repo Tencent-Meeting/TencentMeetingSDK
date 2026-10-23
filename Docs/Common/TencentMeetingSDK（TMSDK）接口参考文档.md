@@ -111,6 +111,7 @@
     + [switchLayout](#switchLayout)
     + [subscribeInMeetingActionEvent](#subscribeInMeetingActionEvent)
     + [showScreenShareView](#showscreenshareview)
+    + [updateMembersProfilesByJSON](#updateMembersProfilesByJSON)
   * [5.2 InMeetingCallback 回调代理](#52-inmeetingcallback-回调代理)
     + [onLeaveMeeting](#onleavemeeting)
     + [onInviteMeeting](#oninvitemeeting)
@@ -125,6 +126,8 @@
     + [onAudioStatusChanged](#onAudioStatusChanged)
     + [onVideoStatusChanged](#onVideoStatusChanged)
     + [onAudioOutputDeviceChanged](#onAudioOutputDeviceChanged)
+    + [onQueryMembersProfiles](#onQueryMembersProfiles)
+    + [onUpdateMembersProfilesResult](#onUpdateMembersProfilesResult)
 - [6. UserConfigService 说明](#6-userconfigservice-说明)
   * [6.1 UserConfigService 成员函数](#61-userconfig-成员函数)
     + [setUserConfiguration](#setuserconfiguration)
@@ -187,6 +190,7 @@
 | 2026-05-06 | 3.34.100 for HarmonyOS | 鸿蒙端版本升级；支持邀请参会人接口和回调：enableAddressBookCallback、enableInviteUsersCallback、addUsersWithParam、onAddUsersResult、onShowAddressBook、onInviteUsers |
 | 2026-07-10 | 3.43.100 | 新增接口：setAppearanceMode（设置外观模式）、getAppearanceMode（获取外观模式）；新增回调：onAppearanceChanged（外观模式变化回调）；初始化参数InitParam新增appearance_mode字段支持设置默认外观模式；通用配置新增音视频、字幕等配置项（详见UserConfigService配置项列表）；新增错误码：[-1078] --用户正在入会 |
 | 2026-09-22| 3.45.100 | 新增接口：checkVoicePrintIsCollected（检查声纹是否已采集）、showVoicePrintRecordView（打开声纹录制页面）、deleteVoicePrint（删除声纹） |
+| 2026-10-30 | 3.45.200 | 新增接口：TMSDK.setCorpAvatarAccessTokenByJSON（设置企业托管头像密钥）、InMeetingService.updateMembersProfilesByJSON（设置会中成员昵称）；新增回调：SDKCallback.onSetCorpAvatarAccessTokenResult（设置企业托管头像密钥回调结果）；InMeetingCallback.onQueryMembersProfiles待查询会中成员回调；InMeetingCallback.onUpdateMembersProfilesResult宿主调用设置会中成员昵称接口的结果； |
 
 
 
@@ -599,6 +603,24 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 | `TMAppearanceModeLight` | 1 | 浅色模式 |
 | `TMAppearanceModeDark` | 2 | 深色模式 |
 
+### setCorpAvatarAccessTokenByJSON
+* 函数形式：**void setCorpAvatarAccessTokenByJSON(String jsonConfig)**
+* 可用版本与平台： 
+  * 版本 >= 3.45.200: `iOS` / `Android` / `Win` / `Mac`/ `Linux`
+* 函数说明：为SDK设置企业托管头像服务鉴权配置，仅支持白名单企业的sdk用户
+* 返回值说明：无。
+* 参数说明：企业托管头像服务鉴权配置的json字符串
+```
+{
+  "access_token": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+jsonConfig字符串参数说明：
+|字段|类型|必填|说明|
+|-|-|-|-|
+|access_token|	string|	是	|企业头像服务器访问 Token，SDK 请求时拼接在url后缀中以?token=${access_token}存在|
+
+
 ## 2.2 SDKCallback 回调代理
 
 SDKCallback 需实现以下成员函数：
@@ -762,6 +784,17 @@ SDKCallback 需实现以下成员函数：
     "meeting_code": "..." //会议号
 }
 ```
+
+### onSetCorpAvatarAccessTokenResult
+- 函数形式：**void onSetCorpAvatarAccessTokenResult(int code, string msg)**
+* 可用版本与平台： 
+  * 版本 >= 3.43.200: `iOS` / `Android` / `Win` / `Mac`/ `Linux`
+- 说明：宿主调用`setCorpAvatarAccessTokenByJSON`接口的结果回调。
+
+| 参数名 | 参数类型 | 参数说明                                                   |
+| ------ | -------- | ---------------------------------------------------------- |
+| code   | int      | 结果码：0表示成功；其他值表示失败，详情参考`7. 错误码`章节 |
+| msg    | string   | 错误信息                        |
 
 
 
@@ -2382,6 +2415,33 @@ layout_id枚举值如下:
 |code |int |操作结果错误码，0表示成功 |
 |msg |string |操作出错时包含错误信息，操作成功时值为空 |
 
+### updateMembersProfilesByJSON
+* 函数形式：**void updateMembersProfilesByJSON(String profilesJson)**
+* 可用版本与平台： 
+  * 版本 >= 3.45.200: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.26.110: `Linux`
+  * 版本 >= 3.34.300: `HarmonyOS`
+* 函数说明：
+  * 宿主批量下发会中成员的昵称，仅支持白名单企业的sdk用户。
+  * 调用时机：只能在会中调用, 一般是接收到`onQueryMembersProfiles`回调后，拿到回调参数中的`usersJson`后为members设置昵称。
+  * 操作结果由`InMeetingCallback.onUpdateMembersProfilesResult`回调返回。详情见回调说明。
+* 返回值说明：无
+* 参数说明：
+
+|参数名 |参数类型 | 参数必填 | 参数默认值 | 参数说明                     |
+|---|---|------|-------|--------------------------|
+|profilesJson |string | 是    | {}     | JSON字符串，内容为用户userid和nickname键值对的集合 |
+
+* 参数示例：
+```
+{
+  "profiles": [
+    { "open_userid": "user_id1",   "nickname": "Bob" },
+    { "open_userid": "user_id2", "nickname": "Alice" }
+  ]
+}
+```
+
 
 
 ## 5.2 InMeetingCallback 回调代理
@@ -2734,6 +2794,36 @@ data内容示例
 |扬声器|AudioOutputModeSpeaker|2|
 |有线耳机|AudioOutputModeHeadset|3|
 |蓝牙|AudioOutputModeBluetooth|4|
+
+### onQueryMembersProfiles
+* 函数形式：**void onQueryMembersProfiles(String usersJson)**
+* 可用版本与平台： 
+  * 版本 >= 3.45.200: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.26.110: `Linux`
+  * 版本 >= 3.34.300: `HarmonyOS`
+* 说明：向宿主查询会中成员列表昵称，仅支持白名单企业的sdk用户；`usersJson` 是 会中成员列表userid_list 的 JSON 字符串; 
+* 参数说明：
+
+| 参数名       | 参数类型   | 参数说明                                        |
+|-----------|--------|---------------------------------------------|
+| usersJson | string | 待查询昵称的会中成员列表，JSON字符串，内容如下示例 |
+
+- usersJson
+```json
+{
+  "users": ["user1_id","user2_id", ...]
+}
+```
+- users：表示用户id列表，此用户id是客户侧账户体系中的用户唯一标识
+
+### onUpdateMembersProfilesResult
+* 函数形式：**void onUpdateMembersProfilesResult(int code, String msg)**
+* 可用版本与平台： 
+  * 版本 >= 3.45.200: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.26.110: `Linux`
+  * 版本 >= 3.34.300: `HarmonyOS`
+* 说明：宿主调用`updateMembersProfilesByJSON` 接口的结果，仅支持白名单企业的sdk用户。 code=0表示成功，其它表示失败
+
 
 
 # 6. UserConfigService 说明
