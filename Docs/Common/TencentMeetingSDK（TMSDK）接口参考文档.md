@@ -1717,6 +1717,8 @@ PreMeetingCallback 需实现以下成员函数：
 | ShowRoomsControllerView | 18   | 打开Rooms控制器页面 |结果的说明文字 |
 | OpenPrivacyPage | 19   | 打开SDK隐私协议页面 |结果的说明文字 |
 | ShowVoicePrintRecordView | 20   | 打开声纹录制页面   | 结果的说明文字|
+| VoicePrintRecordViewClosed | 21   | 关闭声纹录制页面的回调 | 结果的说明文字|
+| MeetingSettingViewClosed | 22   | 关闭会议设置界面的回调 | 结果的说明文字|
 
 
 ### onShowAddressBook
