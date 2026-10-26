@@ -2894,6 +2894,7 @@ UserConfigService用来管理用户配置，可以设置和获取用户配置。
   | enableHighFidelityMode | bool | 音乐模式与专业音频：是否启用高保真音乐模式 | Mac,Win | >= 3.43.100 | 桌面端特有；可实现为仅会外可配置，会中调用返回失败 |
   | enableEchoCancellation | bool | 音乐模式与专业音频：是否启用回声消除 | Mac,Win | >= 3.43.100 | 桌面端特有；可实现为仅会外可配置，会中调用返回失败 |
   | enableDigitalAGC | bool | 音乐模式与专业音频：是否启用数字AGC | Mac,Win | >= 3.43.100 | 桌面端特有；可实现为仅会外可配置，会中调用返回失败 |
+  | enableVoicePrintRecognition | bool | 是否启用声纹识别 | Android,iOS,Mac,Win | >= 3.45.200 | - |
 
   **字幕与转写**
 
