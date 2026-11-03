@@ -606,7 +606,8 @@ in_meeting_service = tm_sdk.getInMeetingService()   //获取InMeetingService
 ### setCorpAvatarAccessTokenByJSON
 * 函数形式：**void setCorpAvatarAccessTokenByJSON(String jsonConfig)**
 * 可用版本与平台： 
-  * 版本 >= 3.45.200: `iOS` / `Android` / `Win` / `Mac`/ `Linux`
+  * 版本 >= 3.45.200: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.26.110: `Linux`
 * 函数说明：为SDK设置企业托管头像服务鉴权配置，仅支持白名单企业的sdk用户
 * 返回值说明：无。
 * 参数说明：企业托管头像服务鉴权配置的json字符串
@@ -788,7 +789,8 @@ SDKCallback 需实现以下成员函数：
 ### onSetCorpAvatarAccessTokenResult
 - 函数形式：**void onSetCorpAvatarAccessTokenResult(int code, string msg)**
 * 可用版本与平台： 
-  * 版本 >= 3.43.200: `iOS` / `Android` / `Win` / `Mac`/ `Linux`
+  * 版本 >= 3.43.200: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.26.110: `Linux`
 - 说明：宿主调用`setCorpAvatarAccessTokenByJSON`接口的结果回调。
 
 | 参数名 | 参数类型 | 参数说明                                                   |
@@ -1189,6 +1191,7 @@ AuthenticationCallback 需实现以下成员函数：
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
   * 全版本: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.26.110: `Linux`
 * 函数说明：显示SDK自带的投屏码输入界面。登录完成后，才可调用。
 * 可用平台：**Linux暂不支持**
 * 返回值说明：无
@@ -1231,6 +1234,7 @@ msg内容示例：
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
   * 版本 >= 3.12.201: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.26.110: `Linux`
 * 可用平台：**Linux暂不支持**
 * 函数说明：
   - 开始投屏，如调用成功会自动入会，然后弹出投屏选择界面
@@ -1412,6 +1416,7 @@ msg内容示例：
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
   * 版本 >= 3.12.400: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.26.110: `Linux`
 * 可用平台：**Linux暂不支持**
 * 函数说明：设置是否显示SDK的响铃邀请界面
 * 返回值说明：无
@@ -1430,6 +1435,7 @@ msg内容示例：
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
   * 版本 >= 3.12.400: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.26.110: `Linux`
 * 可用平台：**Linux暂不支持**
 * 函数说明：
   * 处理响铃邀请
@@ -1751,6 +1757,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 可用版本与平台： 
   * 版本 >= 3.30.100: `HarmonyOS` 
   * 版本 >= 3.12.400: `iOS` / `Android` / `Win` / `Mac`
+  * 版本 >= 3.26.110: `Linux`
 * 可用平台：**Linux暂不支持**
 * 说明：
   * 用户在收到响铃邀请时的回调，可用作接入方定制响铃邀请界面的通知。
@@ -1924,7 +1931,7 @@ PreMeetingCallback 需实现以下成员函数：
 * 可用版本与平台：
   * 版本 >= 3.34.100: `HarmonyOS` 
   * 版本 >= 2.18.2: `iOS` / `Android` / `Win` / `Mac`
-  * 暂不支持: `Linux`
+  * 版本 >= 3.26.110: `Linux`
 
 * 函数说明：
    * 设置是否使用添加成员的回调，如果使用，点击会议中界面成员列表上的添加成员按钮，会触发`InMeetingCallback.onInviteUsers`回调，并回调会中成员列表信息（users）和场景类型（user_type）。
