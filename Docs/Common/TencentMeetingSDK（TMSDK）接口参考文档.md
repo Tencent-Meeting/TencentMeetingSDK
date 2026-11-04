@@ -2356,7 +2356,10 @@ layout_id枚举值如下:
 
 ### subscribeInMeetingActionEvent
 * 函数形式：**int subscribeInMeetingActionEvent(int action_type, bool subscribe, string subscription_json)**
-* 可用版本：>= 3.12.404（**仅支持桌面端，Linux、HarmonyOS暂不支持**）
+* 可用版本与平台：
+  * 版本 >= 3.12.404: `Windows` / `Mac`
+  * 版本 >= 3.45.200: `iOS` / `Android`
+  * 暂不支持：`Linux` / `HarmonyOS`
 * 函数说明：
   * 订阅/退订会中事件。
   * 调用时机：初始化后可调用。
