@@ -767,8 +767,9 @@ SDKCallback 需实现以下成员函数：
 
 ### onParseMeetingInfoUrl
 - 函数形式：**void onParseMeetingInfoUrl(int code, string msg)**
-- 可用版本：>= 3.12.100
-- 可用平台：**HarmonyOS暂不支持**
+* 可用版本与平台：
+  * 版本 >= 3.12.100: `HarmonyOS`
+  * 版本 >= 3.43.113: `iOS`
 - 说明：通过入会短链获取对应的会议信息的回调。
 
 | 参数名 | 参数类型 | 参数说明                                                   |
